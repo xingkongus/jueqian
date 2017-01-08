@@ -48,7 +48,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         }
         // 准备数据
         prepareData();
-        // 初始化标题栏，iOS版
+        // 初始化标题栏
         initToolbar();
         // 初始化视图
         initView();
