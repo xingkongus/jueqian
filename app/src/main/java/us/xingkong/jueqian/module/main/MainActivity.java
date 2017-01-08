@@ -1,9 +1,12 @@
 package us.xingkong.jueqian.module.main;
 
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 
+import butterknife.BindView;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.base.BaseActivity;
+import us.xingkong.jueqian.utils.AppUtils;
 
 /**
  * Created by hugeterry(http://hugeterry.cn)
@@ -11,7 +14,6 @@ import us.xingkong.jueqian.base.BaseActivity;
  */
 
 public class MainActivity extends BaseActivity<MainContract.Presenter> implements MainContract.View {
-
 
     @Override
     protected MainContract.Presenter createPresenter() {
@@ -30,7 +32,7 @@ public class MainActivity extends BaseActivity<MainContract.Presenter> implement
 
     @Override
     protected void initView() {
-
+        setToolbarTitle(AppUtils.getAppName(this));
     }
 
     @Override

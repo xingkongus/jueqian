@@ -2,4 +2,10 @@
     <string name="app_name">觉浅</string>
 
     <string name="title_dialog_tips">提示</string>
+
+    <string-array name="tab_title">
+        <item>发现</item>
+        <item>干货</item>
+        <item>论坛</item>
+    </string-array>
 </resources>

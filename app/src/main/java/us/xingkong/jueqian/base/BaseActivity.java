@@ -5,9 +5,11 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 
 import com.umeng.analytics.MobclickAgent;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import us.xingkong.jueqian.R;
@@ -20,6 +22,9 @@ import us.xingkong.jueqian.utils.ToastUtils;
 
 public abstract class BaseActivity<P extends BasePresenter> extends AppCompatActivity
         implements BaseView<P> {
+
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
 
     Unbinder bind;
 
@@ -46,6 +51,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
             // 调用Presenter初始化方法
             mPresenter.onStart();
         }
+
         // 准备数据
         prepareData();
         // 初始化标题栏
@@ -77,9 +83,33 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     }
 
     /**
-     * 初始化标题栏
+     * 初始化Toolbar
      */
     private void initToolbar() {
+        setSupportActionBar(mToolbar);
+    }
+
+    /**
+     * 设置Toolbar标题
+     *
+     * @param title 标题
+     */
+    protected void setToolbarTitle(String title) {
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(title);
+        }
+    }
+
+    /**
+     * 设置Toolbar显示返回按钮及标题
+     *
+     * @param title 标题
+     */
+    protected void setToolbarBackEnable(String title) {
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_white_24dp);
+        }
     }
 
     /**
