@@ -2,10 +2,16 @@
     <string name="app_name">觉浅</string>
 
     <string name="title_dialog_tips">提示</string>
+    <string name="text_discovery">发现</string>
+    <string name="text_homepage">首页</string>
+    <string name="text_type">分类</string>
+    <string name="text_forum">讨论</string>
 
     <string-array name="tab_title">
         <item>发现</item>
         <item>干货</item>
         <item>论坛</item>
     </string-array>
+
+    <string name="text_press_again">再按一次退出觉浅</string>
 </resources>
