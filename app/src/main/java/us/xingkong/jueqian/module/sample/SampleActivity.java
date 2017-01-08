@@ -1,7 +1,9 @@
 package us.xingkong.jueqian.module.sample;
 
 import android.os.Bundle;
+import android.widget.TextView;
 
+import butterknife.BindView;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.base.BaseActivity;
 
@@ -11,6 +13,10 @@ import us.xingkong.jueqian.base.BaseActivity;
  */
 
 public class SampleActivity extends BaseActivity<SampleContract.Presenter> implements SampleContract.View {
+
+    @BindView(R.id.tv_sample_text)
+    TextView mTvSample;
+
     @Override
     protected SampleContract.Presenter createPresenter() {
         return new SamplePresenter(this);
@@ -18,7 +24,8 @@ public class SampleActivity extends BaseActivity<SampleContract.Presenter> imple
 
     @Override
     protected int bindLayout() {
-        return R.layout.activity_main;
+        //TODO:添加视图，记得添加androidmanifest
+        return R.layout.activity_sample;
     }
 
     @Override
@@ -29,6 +36,7 @@ public class SampleActivity extends BaseActivity<SampleContract.Presenter> imple
     @Override
     protected void initView() {
         //TODO:初始化视图 比如：recycleview的准备，添加adapter等等
+        mTvSample.setText("这是一个sample");
     }
 
     @Override

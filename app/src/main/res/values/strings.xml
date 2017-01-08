@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">jueqian</string>
+    <string name="app_name">觉浅</string>
+
+    <string name="title_dialog_tips">提示</string>
 </resources>
