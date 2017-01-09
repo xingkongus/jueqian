@@ -1,18 +1,27 @@
 package us.xingkong.jueqian.module.Forum;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.adapter.ForumRecyclerViewAdapter;
 import us.xingkong.jueqian.base.BaseFragment;
+
+import static android.R.attr.key;
 
 /**
  * Created by hugeterry(http://hugeterry.cn)
@@ -24,8 +33,12 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
 
     @BindView(R.id.recyclerview_forum_main)
     RecyclerView recyclerview;
+    @BindView(R.id.swipeRefreshLayout)
+    SwipeRefreshLayout swipeRefreshLayout;
 
     private int mPageCount;
+    ArrayList infoSets;
+    private Handler mHandler;
     private RecyclerView.LayoutManager mLayoutManager;
     private ForumRecyclerViewAdapter recyclerViewAdapter;
     private static final String PAGE_COUNT = "page_count";
@@ -53,15 +66,46 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
         Bundle bundle = getArguments();
         mPageCount = bundle.getInt(PAGE_COUNT);
 
+        infoSets = new ArrayList();
+        for (int i = 0; i < 30; ++i) {
+            ArrayList arrayList = new ArrayList();
+            arrayList.add("position " + i);
+            infoSets.add(arrayList);
+        }
     }
 
     @Override
     protected void initView(View rootView) {
 
-        recyclerViewAdapter = new ForumRecyclerViewAdapter();
+        recyclerViewAdapter = new ForumRecyclerViewAdapter(infoSets);
         mLayoutManager = new LinearLayoutManager(getContext());
         recyclerview.setLayoutManager(mLayoutManager);
         recyclerview.setAdapter(recyclerViewAdapter);
+        recyclerview.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
+        recyclerview.setItemAnimator(new DefaultItemAnimator());
+
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+        swipeRefreshLayout.setSize(SwipeRefreshLayout.DEFAULT);
+//        swipeRefreshLayout.setProgressBackgroundColor(Color.WHITE);
+        swipeRefreshLayout.setProgressViewEndTarget(true, 200);
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Thread.sleep(1500);
+                            mHandler.sendEmptyMessage(1);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }).start();
+            }
+        });
 
     }
 
@@ -74,7 +118,21 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
     @Override
     protected void initEvent() {
 
+        mHandler = new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                switch (msg.what) {
+                    case 1:
+                        swipeRefreshLayout.setRefreshing(false);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        };
     }
+
 
 
 }

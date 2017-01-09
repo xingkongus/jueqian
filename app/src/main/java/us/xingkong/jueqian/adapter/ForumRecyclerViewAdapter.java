@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import us.xingkong.jueqian.R;
 
 /**
@@ -13,6 +15,11 @@ import us.xingkong.jueqian.R;
  */
 
 public class ForumRecyclerViewAdapter extends RecyclerView.Adapter<ForumRecyclerViewAdapter.VH>{
+    ArrayList<ArrayList> infoSets;
+    public ForumRecyclerViewAdapter(ArrayList<ArrayList> infoSets) {
+        this.infoSets = infoSets;
+    }
+
     @Override
     public VH onCreateViewHolder(ViewGroup parent, int viewType) {
         return new VH(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_forum_main, parent, false));
@@ -20,19 +27,19 @@ public class ForumRecyclerViewAdapter extends RecyclerView.Adapter<ForumRecycler
 
     @Override
     public void onBindViewHolder(VH holder, int position) {
-//        holder.content.setText("这是第"+position+"个项目");
+        holder.title.setText(String.valueOf(infoSets.get(position).get(0)));
     }
 
     @Override
     public int getItemCount() {
-        return 10;
+        return infoSets.size();
     }
 
     class VH extends RecyclerView.ViewHolder{
-        TextView content;
+        TextView title;
         public VH(View itemView) {
             super(itemView);
-//            content = (TextView) itemView.findViewById(R.id.content_forum);
+            title = (TextView) itemView.findViewById(R.id.title_forum);
         }
     }
 }
