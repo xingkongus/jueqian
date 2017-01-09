@@ -1,7 +1,7 @@
 package us.xingkong.jueqian.adapter;
 
-import android.content.Context;
-import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,11 +10,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.logging.Handler;
 
 import us.xingkong.jueqian.R;
-import us.xingkong.jueqian.module.QuestionPage.QuestionActivity;
-import us.xingkong.jueqian.module.main.MainActivity;
 
 /**
  * Created by Garfield on 1/9/17.
@@ -22,12 +19,15 @@ import us.xingkong.jueqian.module.main.MainActivity;
 
 public class ForumRecyclerViewAdapter extends RecyclerView.Adapter<ForumRecyclerViewAdapter.VH> implements View.OnClickListener {
     ArrayList<ArrayList> infoSets;
+    Handler mHandler;
 
 
     public ForumRecyclerViewAdapter(ArrayList<ArrayList> infoSets, Handler handler) {
         this.infoSets = infoSets;
-
+        mHandler = handler;
+//        Message m = new Message();
     }
+
 
     @Override
     public VH onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -47,7 +47,7 @@ public class ForumRecyclerViewAdapter extends RecyclerView.Adapter<ForumRecycler
 
     @Override
     public void onClick(View view) {
-
+        mHandler.sendEmptyMessage(2);
     }
 
     class VH extends RecyclerView.ViewHolder {

@@ -109,7 +109,9 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_white_24dp);
+            setToolbarTitle(title);
         }
+
     }
 
     /**

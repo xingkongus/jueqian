@@ -74,12 +74,29 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
             arrayList.add("position " + i);
             infoSets.add(arrayList);
         }
+        mHandler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                switch (msg.what) {
+                    case 1:
+                        swipeRefreshLayout.setRefreshing(false);
+                        break;
+                    case 2:
+                        Intent intent = new Intent(getContext(), QuestionActivity.class);
+                        startActivity(intent);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        };
     }
 
     @Override
     protected void initView(View rootView) {
 
-        recyclerViewAdapter = new ForumRecyclerViewAdapter(infoSets);
+        recyclerViewAdapter = new ForumRecyclerViewAdapter(infoSets, mHandler);
         mLayoutManager = new LinearLayoutManager(getContext());
         recyclerview.setLayoutManager(mLayoutManager);
         recyclerview.setAdapter(recyclerViewAdapter);
@@ -121,24 +138,12 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
     @Override
     protected void initEvent() {
 
-        mHandler = new Handler(){
-            @Override
-            public void handleMessage(Message msg) {
-                super.handleMessage(msg);
-                switch (msg.what) {
-                    case 1:
-                        swipeRefreshLayout.setRefreshing(false);
-                        break;
-                    default:
-                        break;
-                }
-            }
-        };
+
     }
 
-    public void onClick(View view){
-        String strTmp="点击Button03";
-        Intent intent = new Intent(getContext(),QuestionActivity.class);
+    public void onClick(View view) {
+        String strTmp = "点击Button03";
+        Intent intent = new Intent(getContext(), QuestionActivity.class);
 
     }
 

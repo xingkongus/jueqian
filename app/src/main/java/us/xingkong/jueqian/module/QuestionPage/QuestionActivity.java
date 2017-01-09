@@ -1,18 +1,18 @@
 package us.xingkong.jueqian.module.QuestionPage;
 
 import android.os.Bundle;
+
 import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import us.xingkong.jueqian.JueQianAPP;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.adapter.QuestionRecyclerViewAdapter;
 import us.xingkong.jueqian.base.BaseActivity;
-import us.xingkong.jueqian.utils.AppUtils;
 
 /**
  * Created by hugeterry(http://hugeterry.cn)
@@ -54,10 +54,12 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
 
     @Override
     protected void initView() {
-        setToolbarTitle(AppUtils.getAppName(this));
+        setToolbarBackEnable("问题详情");
         recyclerViewAdapter = new QuestionRecyclerViewAdapter(questionSets, answerSetsArr);
+        recyclerviewQuestionpage.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
         recyclerviewQuestionpage.setAdapter(recyclerViewAdapter);
-        recyclerviewQuestionpage.addItemDecoration(new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL));
+        recyclerviewQuestionpage.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+
 
     }
 
@@ -73,9 +75,11 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
     }
 
     @Override
-    public void onBackPressed() {
-        JueQianAPP.exitApp();
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId()==android.R.id.home){
+            onBackPressed();
+            showToast("heihei");
+        }
+        return super.onOptionsItemSelected(item);
     }
-
-
 }
