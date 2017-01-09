@@ -1,5 +1,6 @@
 package us.xingkong.jueqian.module.Forum;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,6 +21,7 @@ import butterknife.ButterKnife;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.adapter.ForumRecyclerViewAdapter;
 import us.xingkong.jueqian.base.BaseFragment;
+import us.xingkong.jueqian.module.QuestionPage.QuestionActivity;
 
 import static android.R.attr.key;
 
@@ -84,6 +86,7 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
         recyclerview.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         recyclerview.setItemAnimator(new DefaultItemAnimator());
 
+
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         swipeRefreshLayout.setSize(SwipeRefreshLayout.DEFAULT);
 //        swipeRefreshLayout.setProgressBackgroundColor(Color.WHITE);
@@ -133,6 +136,10 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
         };
     }
 
+    public void onClick(View view){
+        String strTmp="点击Button03";
+        Intent intent = new Intent(getContext(),QuestionActivity.class);
 
+    }
 
 }

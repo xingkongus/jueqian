@@ -1,23 +1,18 @@
 package us.xingkong.jueqian.module.QuestionPage;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import butterknife.BindArray;
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import us.xingkong.jueqian.JueQianAPP;
 import us.xingkong.jueqian.R;
-import us.xingkong.jueqian.adapter.MainPagerAdapter;
+import us.xingkong.jueqian.adapter.QuestionRecyclerViewAdapter;
 import us.xingkong.jueqian.base.BaseActivity;
-import us.xingkong.jueqian.module.Forum.ForumFragment;
-import us.xingkong.jueqian.module.Home.HomePageFragment;
 import us.xingkong.jueqian.utils.AppUtils;
-import us.xingkong.jueqian.widget.ScrollViewPager;
 
 /**
  * Created by hugeterry(http://hugeterry.cn)
@@ -27,7 +22,11 @@ import us.xingkong.jueqian.widget.ScrollViewPager;
 public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> implements QuestionContract.View {
 
 
-
+    @BindView(R.id.recyclerview_questionpage)
+    RecyclerView recyclerviewQuestionpage;
+    private QuestionRecyclerViewAdapter recyclerViewAdapter;
+    private ArrayList questionSets;
+    private ArrayList<ArrayList> answerSetsArr;
 
 
     @Override
@@ -43,18 +42,25 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
     @Override
     protected void prepareData() {
 
+        questionSets = new ArrayList();
+        questionSets.add("header");
+        answerSetsArr = new ArrayList();
+        for (int i = 0; i < 30; ++i) {
+            ArrayList answerSets = new ArrayList();
+            answerSets.add("position " + i);
+            answerSetsArr.add(answerSets);
+        }
     }
 
     @Override
     protected void initView() {
         setToolbarTitle(AppUtils.getAppName(this));
-
-
-    }
-
-    private void addFragmentList(List<Fragment> fragments) {
+        recyclerViewAdapter = new QuestionRecyclerViewAdapter(questionSets, answerSetsArr);
+        recyclerviewQuestionpage.setAdapter(recyclerViewAdapter);
+        recyclerviewQuestionpage.addItemDecoration(new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL));
 
     }
+
 
     @Override
     protected void initData(Bundle savedInstanceState) {
@@ -70,5 +76,6 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
     public void onBackPressed() {
         JueQianAPP.exitApp();
     }
+
 
 }

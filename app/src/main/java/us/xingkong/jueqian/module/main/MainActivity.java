@@ -1,7 +1,9 @@
 package us.xingkong.jueqian.module.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
@@ -16,6 +18,7 @@ import us.xingkong.jueqian.adapter.MainPagerAdapter;
 import us.xingkong.jueqian.base.BaseActivity;
 import us.xingkong.jueqian.module.Forum.ForumFragment;
 import us.xingkong.jueqian.module.Home.HomePageFragment;
+import us.xingkong.jueqian.module.QuestionPage.QuestionActivity;
 import us.xingkong.jueqian.utils.AppUtils;
 import us.xingkong.jueqian.widget.ScrollViewPager;
 
@@ -117,6 +120,12 @@ public class MainActivity extends BaseActivity<MainContract.Presenter> implement
     @Override
     public void onBackPressed() {
         JueQianAPP.exitApp();
+    }
+
+    public void onClick(View view){
+        String strTmp="点击Button03";
+        Intent intent = new Intent(MainActivity.this,QuestionActivity.class);
+
     }
 
 }
