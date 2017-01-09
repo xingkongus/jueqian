@@ -16,6 +16,7 @@ import butterknife.BindView;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.adapter.QuestionRecyclerViewAdapter;
 import us.xingkong.jueqian.base.BaseActivity;
+import us.xingkong.jueqian.module.AnwserPage.AnswerActivity;
 import us.xingkong.jueqian.module.Comment.CommentActivity;
 
 
@@ -68,6 +69,10 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                         Intent intent = new Intent(getApplicationContext(), CommentActivity.class);
                         startActivity(intent);
                         break;
+                    case 3:
+                        Intent intent2 = new Intent(getApplicationContext(), AnswerActivity.class);
+                        startActivity(intent2);
+                        break;
                     default:
                         break;
                 }
@@ -78,7 +83,7 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
     @Override
     protected void initView() {
         setToolbarBackEnable("问题详情");
-        recyclerViewAdapter = new QuestionRecyclerViewAdapter(questionSets, answerSetsArr,mHandler);
+        recyclerViewAdapter = new QuestionRecyclerViewAdapter(questionSets, answerSetsArr, mHandler);
         recyclerviewQuestionpage.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
         recyclerviewQuestionpage.setAdapter(recyclerViewAdapter);
         recyclerviewQuestionpage.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));

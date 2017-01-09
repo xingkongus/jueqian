@@ -57,7 +57,13 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
     @Override
     public void onBindViewHolder(VH holder, int position) {
         if (position != 0) {
-            holder.content.setText(String.valueOf(answerSetsArr.get(position - 1).get(0)));
+            holder.content.setText(String.valueOf(answerSetsArr.get(position - 1).get(0)+": {点我点我}"));
+            holder.content.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mHandler.sendEmptyMessage(3);
+                }
+            });
         }
         holder.comment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,6 +71,7 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
                 mHandler.sendEmptyMessage(2);
             }
         });
+
     }
 
     @Override
