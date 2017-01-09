@@ -1,7 +1,6 @@
 package us.xingkong.jueqian.adapter;
 
 import android.os.Handler;
-import android.os.Message;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +24,6 @@ public class ForumRecyclerViewAdapter extends RecyclerView.Adapter<ForumRecycler
     public ForumRecyclerViewAdapter(ArrayList<ArrayList> infoSets, Handler handler) {
         this.infoSets = infoSets;
         mHandler = handler;
-//        Message m = new Message();
     }
 
 

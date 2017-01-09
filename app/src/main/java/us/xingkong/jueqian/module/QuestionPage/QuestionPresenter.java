@@ -3,8 +3,8 @@ package us.xingkong.jueqian.module.QuestionPage;
 import us.xingkong.jueqian.base.BasePresenterImpl;
 
 /**
- * Created by hugeterry(http://hugeterry.cn)
- * Date: 17/1/8 12:15
+ * Created by boluoxiaomo
+ * Date: 17/1/9
  */
 
 public class QuestionPresenter extends BasePresenterImpl implements QuestionContract.Presenter {

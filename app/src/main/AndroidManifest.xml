@@ -19,6 +19,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".module.QuestionPage.QuestionActivity"/>
+        <activity android:name=".module.Comment.CommentActivity"/>
     </application>
 
     <!-- 友盟统计 -->

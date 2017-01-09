@@ -4,7 +4,7 @@ import us.xingkong.jueqian.base.BasePresenter;
 import us.xingkong.jueqian.base.BaseView;
 
 /**
- * Created by hugeterry(http://hugeterry.cn)
+ * Created by boluoxiaomo
  * Date: 17/1/8 15:33
  */
 

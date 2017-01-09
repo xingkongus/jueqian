@@ -69,6 +69,7 @@
             android:layout_centerVertical="true"
             android:text="赞同：999999" />
         <TextView
+            android:id="@+id/comment_questionpage"
             android:layout_marginLeft="16dp"
             android:layout_toEndOf="@+id/like_questionpage_header"
             android:layout_width="wrap_content"

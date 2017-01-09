@@ -26,8 +26,8 @@ import us.xingkong.jueqian.module.QuestionPage.QuestionActivity;
 import static android.R.attr.key;
 
 /**
- * Created by hugeterry(http://hugeterry.cn)
- * Date: 17/1/8 15:30
+ * Created by boluoxiaomo
+ * Date: 17/1/9
  */
 
 public class ForumFragment extends BaseFragment<ForumContract.Presenter> implements ForumContract.View {

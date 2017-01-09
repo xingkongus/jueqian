@@ -122,10 +122,6 @@ public class MainActivity extends BaseActivity<MainContract.Presenter> implement
         JueQianAPP.exitApp();
     }
 
-    public void onClick(View view){
-        String strTmp="点击Button03";
-        Intent intent = new Intent(MainActivity.this,QuestionActivity.class);
 
-    }
 
 }

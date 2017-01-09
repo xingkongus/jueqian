@@ -1,5 +1,6 @@
 package us.xingkong.jueqian.adapter;
 
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,11 +22,13 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
     private int HEADER = 0x1;
     private int CONTENT = 0x2;
     private int FOOTER = 0x3;
+    private Handler mHandler;
 
 
-    public QuestionRecyclerViewAdapter(ArrayList questionSets, ArrayList<ArrayList> answerSetsArr) {
+    public QuestionRecyclerViewAdapter(ArrayList questionSets, ArrayList<ArrayList> answerSetsArr, Handler mHandler) {
         this.questionSets = questionSets;
         this.answerSetsArr = answerSetsArr;
+        this.mHandler = mHandler;
     }
 
     @Override
@@ -56,6 +59,12 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
         if (position != 0) {
             holder.content.setText(String.valueOf(answerSetsArr.get(position - 1).get(0)));
         }
+        holder.comment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mHandler.sendEmptyMessage(2);
+            }
+        });
     }
 
     @Override
@@ -65,10 +74,12 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
 
     class VH extends RecyclerView.ViewHolder {
         TextView content;
+        TextView comment;
 
         public VH(View itemView) {
             super(itemView);
             content = (TextView) itemView.findViewById(R.id.content_questionpage);
+            comment = (TextView) itemView.findViewById(R.id.comment_questionpage);
         }
     }
 }
