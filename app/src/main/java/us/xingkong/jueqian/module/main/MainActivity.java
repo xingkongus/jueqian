@@ -66,7 +66,7 @@ public class MainActivity extends BaseActivity<MainContract.Presenter> implement
         List<Fragment> fragments = new ArrayList<>();
         addFragmentList(fragments);
 
-        mViewPager.setOffscreenPageLimit(3);
+        mViewPager.setOffscreenPageLimit(4);
         MainPagerAdapter pagerAdapter = new MainPagerAdapter(
                 getSupportFragmentManager(),
                 fragments,
@@ -82,6 +82,8 @@ public class MainActivity extends BaseActivity<MainContract.Presenter> implement
         mHomePageFragment = new HomePageFragment().getInstance(1);
         fragments.add(mHomePageFragment);
         mHomePageFragment = new HomePageFragment().getInstance(2);
+        fragments.add(mHomePageFragment);
+        mHomePageFragment = new HomePageFragment().getInstance(3);
         fragments.add(mHomePageFragment);
     }
 
