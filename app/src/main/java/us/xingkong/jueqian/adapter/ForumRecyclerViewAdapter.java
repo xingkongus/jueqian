@@ -20,7 +20,7 @@ public class ForumRecyclerViewAdapter extends RecyclerView.Adapter<ForumRecycler
 
     @Override
     public void onBindViewHolder(VH holder, int position) {
-        holder.content.setText("这是第"+position+"个项目");
+//        holder.content.setText("这是第"+position+"个项目");
     }
 
     @Override
@@ -32,7 +32,7 @@ public class ForumRecyclerViewAdapter extends RecyclerView.Adapter<ForumRecycler
         TextView content;
         public VH(View itemView) {
             super(itemView);
-            content = (TextView) itemView.findViewById(R.id.content);
+//            content = (TextView) itemView.findViewById(R.id.content_forum);
         }
     }
 }
