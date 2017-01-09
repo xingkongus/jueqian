@@ -1,9 +1,7 @@
 package us.xingkong.jueqian.module.main;
 
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
@@ -18,6 +16,7 @@ import us.xingkong.jueqian.adapter.MainPagerAdapter;
 import us.xingkong.jueqian.base.BaseActivity;
 import us.xingkong.jueqian.module.Home.HomePageFragment;
 import us.xingkong.jueqian.utils.AppUtils;
+import us.xingkong.jueqian.widget.ScrollViewPager;
 
 /**
  * Created by hugeterry(http://hugeterry.cn)
@@ -29,18 +28,16 @@ public class MainActivity extends BaseActivity<MainContract.Presenter> implement
     @BindArray(R.array.tab_title)
     String[] mTitles;
     @BindView(R.id.viewpager)
-    ViewPager mViewPager;
+    ScrollViewPager mViewPager;
 
-    @BindView(R.id.tablayout)
-    TabLayout tablayout;
-//    @BindView(R.id.tab_homepager)
-//    RadioButton mTabHomePager;
-//    @BindView(R.id.tab_type)
-//    RadioButton mTabType;
-//    @BindView(R.id.tab_forum)
-//    RadioButton mTabForm;
-//    @BindView(R.id.rg_tab)
-//    RadioGroup mRgTab;
+    @BindView(R.id.tab_homepager)
+    RadioButton mTabHomePager;
+    @BindView(R.id.tab_discovery)
+    RadioButton mTabDiscovery;
+    @BindView(R.id.tab_ganhuo)
+    RadioButton mTabGanH;
+    @BindView(R.id.rg_tab)
+    RadioGroup mRadioGroup;
 
     private HomePageFragment mHomePageFragment;
 
@@ -63,6 +60,7 @@ public class MainActivity extends BaseActivity<MainContract.Presenter> implement
     protected void initView() {
         setToolbarTitle(AppUtils.getAppName(this));
 
+        mViewPager.setPagingEnabled(false);
         List<Fragment> fragments = new ArrayList<>();
         addFragmentList(fragments);
 
@@ -73,7 +71,6 @@ public class MainActivity extends BaseActivity<MainContract.Presenter> implement
                 this.mTitles);
         mViewPager.setAdapter(pagerAdapter);
 
-        tablayout.setupWithViewPager(mViewPager);
     }
 
     private void addFragmentList(List<Fragment> fragments) {
@@ -94,7 +91,25 @@ public class MainActivity extends BaseActivity<MainContract.Presenter> implement
 
     @Override
     protected void initEvent() {
-
+        mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                switch (i) {
+                    case R.id.tab_homepager:
+                        mViewPager.setCurrentItem(0, false);
+                        break;
+                    case R.id.tab_discovery:
+                        mViewPager.setCurrentItem(1, false);
+                        break;
+                    case R.id.tab_ganhuo:
+                        mViewPager.setCurrentItem(2, false);
+                        break;
+                    case R.id.tab_me:
+                        mViewPager.setCurrentItem(3, false);
+                        break;
+                }
+            }
+        });
     }
 
     @Override

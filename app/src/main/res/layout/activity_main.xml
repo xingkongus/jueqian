@@ -9,7 +9,7 @@
 
     <include layout="@layout/view_toolbar" />
 
-    <android.support.v4.view.ViewPager
+    <us.xingkong.jueqian.widget.ScrollViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -20,9 +20,35 @@
         android:layout_height="0.6dp"
         android:background="#dfdfdf" />
 
-    <android.support.design.widget.TabLayout
-        android:id="@+id/tablayout"
+    <RadioGroup
+        android:id="@+id/rg_tab"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="?actionBarSize"
+        android:orientation="horizontal">
 
+        <RadioButton
+            android:id="@+id/tab_homepager"
+            style="@style/main_tab_bottom"
+            android:checked="true"
+            android:text="@string/text_homepage" />
+        <!--android:drawableTop="@drawable/tab_homepager"-->
+
+        <RadioButton
+            android:id="@+id/tab_discovery"
+            style="@style/main_tab_bottom"
+            android:text="@string/text_discovery" />
+        <!--android:drawableTop="@drawable/tab_discovery"-->
+
+        <RadioButton
+            android:id="@+id/tab_ganhuo"
+            style="@style/main_tab_bottom"
+            android:text="@string/text_ganhuo" />
+        <!--android:drawableTop="@drawable/tab_ganhuo"-->
+
+        <RadioButton
+            android:id="@+id/tab_me"
+            style="@style/main_tab_bottom"
+            android:text="@string/text_me" />
+        <!--android:drawableTop="@drawable/tab_me"-->
+    </RadioGroup>
 </LinearLayout>
