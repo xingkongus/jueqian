@@ -1,4 +1,4 @@
-package us.xingkong.jueqian.module.Comment;
+package us.xingkong.jueqian.module.Forum.QuestionPage.Comment;
 
 import us.xingkong.jueqian.base.BasePresenterImpl;
 
