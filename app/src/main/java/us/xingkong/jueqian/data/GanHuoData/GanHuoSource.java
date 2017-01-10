@@ -1,4 +1,4 @@
-package us.xingkong.jueqian.data;
+package us.xingkong.jueqian.data.GanHuoData;
 
 import rx.Observable;
 import us.xingkong.jueqian.bean.GanHuoBean.DataResults;
