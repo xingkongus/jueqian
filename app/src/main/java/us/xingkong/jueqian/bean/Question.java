@@ -1,19 +1,36 @@
 package us.xingkong.jueqian.bean;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by PERFECTLIN on 2017/1/9 0009.
  */
 
 public class Question {
+    private String questionID;
+    private String senderID;
     private String title; //问题
     private String discription; //问题描述
     private Date date; //问题发表时间
-    private User sender; //提问者
     private boolean isHidedUser; //是否匿名
     private String tag; //分类标签
 
+    public String getQuestionID() {
+        return questionID;
+    }
+
+    public void setQuestionID(String questionID) {
+        this.questionID = questionID;
+    }
+
+    public String getSenderID() {
+        return senderID;
+    }
+
+    public void setSenderID(String senderID) {
+        this.senderID = senderID;
+    }
 
     public String getTitle() {
         return title;
@@ -39,12 +56,12 @@ public class Question {
         this.date = date;
     }
 
-    public User getSender() {
-        return sender;
+    public boolean isHidedUser() {
+        return isHidedUser;
     }
 
-    public void setSender(User sender) {
-        this.sender = sender;
+    public void setHidedUser(boolean hidedUser) {
+        isHidedUser = hidedUser;
     }
 
     public String getTag() {
@@ -54,13 +71,4 @@ public class Question {
     public void setTag(String tag) {
         this.tag = tag;
     }
-
-    public boolean isHidedUser() {
-        return isHidedUser;
-    }
-
-    public void setHidedUser(boolean hidedUser) {
-        isHidedUser = hidedUser;
-    }
-
 }
