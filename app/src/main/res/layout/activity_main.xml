@@ -7,7 +7,9 @@
     android:orientation="vertical"
     tools:context="us.xingkong.jueqian.module.main.MainActivity">
 
-    <include layout="@layout/view_toolbar" />
+    <include
+        layout="@layout/view_toolbar"
+        android:visibility="gone" />
 
     <us.xingkong.jueqian.widget.ScrollViewPager
         android:id="@+id/viewpager"

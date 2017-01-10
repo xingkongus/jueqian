@@ -32,10 +32,12 @@ dependencies {
     testCompile 'junit:junit:4.12'
 
     compile 'io.reactivex:rxandroid:1.2.1'
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
     compile 'com.jakewharton:butterknife:8.4.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
     compile 'com.umeng.analytics:analytics:latest.integration'
-
     compile 'cn.bmob.android:bmob-sdk:3.4.7-aar'
     //bmob-push：Bmob的推送包
     compile 'cn.bmob.android:bmob-push:0.8'
@@ -48,6 +50,6 @@ dependencies {
     compile 'cn.bmob.android:bmob-sms:1.0.1'
     //如果你想应用能够兼容Android6.0，请添加此依赖(org.apache.http.legacy.jar)
     compile 'cn.bmob.android:http-legacy:1.0'
-
+    compile 'de.hdodenhof:circleimageview:2.1.0'
 
 }

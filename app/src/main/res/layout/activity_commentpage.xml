@@ -6,9 +6,11 @@
 
     <include layout="@layout/view_toolbar" />
 
-    <TextView
-        android:id="@+id/tv_page_count"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerview_commentpage"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="这是第一个界面" />
+        android:layout_height="wrap_content">
+
+    </android.support.v7.widget.RecyclerView>
+
 </LinearLayout>
