@@ -1,11 +1,11 @@
-package us.xingkong.jueqian.bean.GanHuoBean;
+package us.xingkong.jueqian.bean.RealSBean;
 
 /**
  * Created by hugeterry(http://hugeterry.cn)
  * Date: 17/1/10 09:31
  */
 
-public class BaseGanHuoBean {
+public class BaseRealSBean {
 
     protected boolean error;
 
@@ -19,7 +19,7 @@ public class BaseGanHuoBean {
 
     @Override
     public String toString() {
-        return "BaseGanHuoBean{" +
+        return "BaseRealSBean{" +
                 "error=" + error +
                 '}';
     }

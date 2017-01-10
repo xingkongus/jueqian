@@ -2,7 +2,7 @@ package us.xingkong.jueqian.listener;
 
 import rx.Subscriber;
 import us.xingkong.jueqian.JueQianAPP;
-import us.xingkong.jueqian.bean.GanHuoBean.BaseGanHuoBean;
+import us.xingkong.jueqian.bean.RealSBean.BaseRealSBean;
 import us.xingkong.jueqian.utils.LogUtils;
 import us.xingkong.jueqian.utils.NetUtils;
 
@@ -11,7 +11,7 @@ import us.xingkong.jueqian.utils.NetUtils;
  * Date: 17/1/10 12:41
  */
 
-public abstract class NetSubscriber<T extends BaseGanHuoBean> extends Subscriber<T> {
+public abstract class NetSubscriber<T extends BaseRealSBean> extends Subscriber<T> {
 
     @Override
     public void onCompleted() {

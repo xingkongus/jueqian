@@ -1,4 +1,4 @@
-package us.xingkong.jueqian.bean.GanHuoBean;
+package us.xingkong.jueqian.bean.RealSBean;
 
 /**
  * Created by hugeterry(http://hugeterry.cn)

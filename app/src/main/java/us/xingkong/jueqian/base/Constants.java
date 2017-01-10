@@ -6,5 +6,5 @@ package us.xingkong.jueqian.base;
  */
 
 public class Constants {
-    public static final String GANHUO_BASE_URL = "http://gank.io/api/";
+    public static final String REALS_BASE_URL = "http://gank.io/api/";
 }

@@ -14,7 +14,7 @@ import us.xingkong.jueqian.base.Constants;
 public class ApiClient {
 
     private static OkHttpClient okHttpClient;
-    private static GanHuoService sGanHuoService;
+    private static RealSService sRealSService;
 
     private static class ApiClientHolder {
         public static final ApiClient INSTANCE = new ApiClient();
@@ -28,17 +28,17 @@ public class ApiClient {
         okHttpClient = new OkHttpClient();
     }
 
-    public GanHuoService getGanHuoService() {
-        if (sGanHuoService == null) {
+    public RealSService getRealSService() {
+        if (sRealSService == null) {
             Retrofit retrofit = new Retrofit.Builder()
                     .client(okHttpClient)
-                    .baseUrl(Constants.GANHUO_BASE_URL)
+                    .baseUrl(Constants.REALS_BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                     .build();
-            sGanHuoService = retrofit.create(GanHuoService.class);
+            sRealSService = retrofit.create(RealSService.class);
         }
-        return sGanHuoService;
+        return sRealSService;
     }
 
 }
