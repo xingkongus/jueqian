@@ -12,7 +12,7 @@ import us.xingkong.jueqian.base.BaseActivity;
 public class MyMessageActivity extends BaseActivity<MyMessageContract.Presenter> implements MyMessageContract.View {
     @Override
     protected MyMessageContract.Presenter createPresenter() {
-        return null;
+        return new MyMessagePresenter(this);
     }
 
     @Override

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_mymessage"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/item_mymessage_circleimageview"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:src="@mipmap/touxiang" />
+
+    <TextView
+        android:id="@+id/item_mymessage_tv_nickname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/item_mymessage_circleimageview"
+        android:layout_toRightOf="@id/item_mymessage_circleimageview"
+        android:text="Lamyuk"
+        android:layout_marginRight="16dp"
+        android:textColor="#000"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/item_mymessage_tv_action"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/item_mymessage_circleimageview"
+        android:layout_toRightOf="@id/item_mymessage_tv_nickname"
+        android:text="回复"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/item_mymessage_tv_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/item_mymessage_tv_nickname"
+        android:layout_alignLeft="@id/item_mymessage_tv_nickname"
+        android:text="Look for wonderful！我爱学习！天天向上！"
+        android:textSize="16sp"
+        android:layout_marginTop="16dp"/>
+
+
+
+</RelativeLayout>
