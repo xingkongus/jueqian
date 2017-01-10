@@ -9,6 +9,10 @@ import java.util.List;
 public class User {
     private String username; //用户名
     private String password; //密码
+<<<<<<< HEAD
+=======
+    private String nickname; //昵称
+>>>>>>> origin/Jying
     private String icon;  //头像URL
     private String selfIntrodution; //自我介绍
     private Boolean isTeacher; //是否是教师
@@ -35,6 +39,17 @@ public class User {
         this.password = password;
     }
 
+<<<<<<< HEAD
+=======
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+>>>>>>> origin/Jying
     public String getIcon() {
         return icon;
     }

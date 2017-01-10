@@ -6,10 +6,13 @@
     android:layout_height="match_parent"
     tools:context="us.xingkong.jueqian.module.main.MainActivity">
 
-    <include layout="@layout/view_toolbar" />
-
     <TextView
         android:id="@+id/tv_sample_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hello World!" />
+    <TextView
+        android:id="@+id/tv_sample_text1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Hello World!" />
