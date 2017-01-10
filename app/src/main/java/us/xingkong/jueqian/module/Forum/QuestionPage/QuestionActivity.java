@@ -1,5 +1,6 @@
 package us.xingkong.jueqian.module.Forum.QuestionPage;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -9,7 +10,10 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
+
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.util.ArrayList;
 
@@ -35,6 +39,7 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
     private ArrayList questionSets;
     private ArrayList<ArrayList> answerSetsArr;
     private Handler mHandler;
+    private Context mContext;
 
 
     @Override
@@ -49,6 +54,7 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
 
     @Override
     protected void prepareData() {
+        mContext = this;
 
         questionSets = new ArrayList();
         questionSets.add("header");
@@ -74,6 +80,17 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                         Intent intent2 = new Intent(getApplicationContext(), AnswerActivity.class);
                         startActivity(intent2);
                         break;
+                    case 4:
+                        new MaterialDialog.Builder(mContext)
+                                .items(R.array.option_head)
+                                .itemsCallback(new MaterialDialog.ListCallback() {
+                                    @Override
+                                    public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                                        Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+                                    }
+                                })
+                                .show();
+                        break;
                     default:
                         break;
                 }
@@ -94,10 +111,10 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     if (!recyclerView.canScrollVertically(1)) {
-                        Toast.makeText(getApplicationContext(),"到底啦",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "到底啦", Toast.LENGTH_SHORT).show();
                     }
                     if (!recyclerView.canScrollVertically(-1)) {
-                        Toast.makeText(getApplicationContext(),"到头啦",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "到头啦", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -120,11 +137,13 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
     @Override
     protected void initEvent() {
 
+
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
+
             onBackPressed();
         }
         return super.onOptionsItemSelected(item);

@@ -7,4 +7,5 @@ package us.xingkong.jueqian.base;
 
 public class Constants {
     public static final String REALS_BASE_URL = "http://gank.io/api/";
+    public static final int REALS_READ_NUM = 20;
 }

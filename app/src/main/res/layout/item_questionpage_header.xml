@@ -78,12 +78,14 @@
             android:text="评论：999999"
             android:layout_toRightOf="@+id/like_questionpage_header" />
 
-        <ImageView
+        <ImageButton
+            android:id="@+id/more_questionpage"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:src="@drawable/ic_more_vert_black_24dp"/>
+            android:src="@drawable/ic_more_vert_black_24dp"
+            android:background="#00ffffff"/>
     </RelativeLayout>
 
 
