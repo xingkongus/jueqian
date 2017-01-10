@@ -15,6 +15,7 @@ import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.adapter.MainPagerAdapter;
 import us.xingkong.jueqian.base.BaseActivity;
 import us.xingkong.jueqian.module.Home.HomePageFragment;
+import us.xingkong.jueqian.module.me.MeFragment;
 import us.xingkong.jueqian.utils.AppUtils;
 import us.xingkong.jueqian.widget.ScrollViewPager;
 
@@ -40,6 +41,7 @@ public class MainActivity extends BaseActivity<MainContract.Presenter> implement
     RadioGroup mRadioGroup;
 
     private HomePageFragment mHomePageFragment;
+    private MeFragment mMeFragment;
 
     @Override
     protected MainContract.Presenter createPresenter() {
@@ -80,8 +82,8 @@ public class MainActivity extends BaseActivity<MainContract.Presenter> implement
         fragments.add(mHomePageFragment);
         mHomePageFragment = new HomePageFragment().getInstance(2);
         fragments.add(mHomePageFragment);
-        mHomePageFragment = new HomePageFragment().getInstance(3);
-        fragments.add(mHomePageFragment);
+        mMeFragment = new MeFragment().getInstance(3);
+        fragments.add(mMeFragment);
     }
 
     @Override
