@@ -1,16 +1,9 @@
-package us.xingkong.jueqian.module.AnwserPage;
+package us.xingkong.jueqian.module.Forum.QuestionPage.AnwserPage;
 
 import android.os.Bundle;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 
-import java.util.ArrayList;
-
-import butterknife.BindView;
 import us.xingkong.jueqian.R;
-import us.xingkong.jueqian.adapter.CommentRecyclerViewAdapter;
 import us.xingkong.jueqian.base.BaseActivity;
 
 /**

@@ -1,4 +1,4 @@
-package us.xingkong.jueqian.module.NewPage;
+package us.xingkong.jueqian.module.Forum.QuestionPage.Comment;
 
 import us.xingkong.jueqian.base.BasePresenter;
 import us.xingkong.jueqian.base.BaseView;
@@ -8,8 +8,9 @@ import us.xingkong.jueqian.base.BaseView;
  * Date: 17/1/9
  */
 
-public interface NewContract {
-    interface View extends BaseView<NewContract.Presenter> {
+public interface CommentContract {
+    interface View extends BaseView<CommentContract.Presenter> {
+
     }
 
     interface Presenter extends BasePresenter {

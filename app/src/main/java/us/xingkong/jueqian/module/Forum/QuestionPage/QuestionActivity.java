@@ -1,4 +1,4 @@
-package us.xingkong.jueqian.module.QuestionPage;
+package us.xingkong.jueqian.module.Forum.QuestionPage;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,10 +17,8 @@ import butterknife.BindView;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.adapter.QuestionRecyclerViewAdapter;
 import us.xingkong.jueqian.base.BaseActivity;
-import us.xingkong.jueqian.module.AnwserPage.AnswerActivity;
-import us.xingkong.jueqian.module.Comment.CommentActivity;
-
-import static java.security.AccessController.getContext;
+import us.xingkong.jueqian.module.Forum.QuestionPage.AnwserPage.AnswerActivity;
+import us.xingkong.jueqian.module.Forum.QuestionPage.Comment.CommentActivity;
 
 
 /**

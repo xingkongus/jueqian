@@ -1,4 +1,4 @@
-package us.xingkong.jueqian.module.Comment;
+package us.xingkong.jueqian.module.Forum.QuestionPage.Comment;
 
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -12,8 +12,6 @@ import butterknife.BindView;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.adapter.CommentRecyclerViewAdapter;
 import us.xingkong.jueqian.base.BaseActivity;
-import us.xingkong.jueqian.module.QuestionPage.QuestionContract;
-import us.xingkong.jueqian.module.QuestionPage.QuestionPresenter;
 
 /**
  * Created by boluoxiaomo
