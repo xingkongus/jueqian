@@ -9,6 +9,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -18,6 +19,8 @@ import us.xingkong.jueqian.adapter.QuestionRecyclerViewAdapter;
 import us.xingkong.jueqian.base.BaseActivity;
 import us.xingkong.jueqian.module.AnwserPage.AnswerActivity;
 import us.xingkong.jueqian.module.Comment.CommentActivity;
+
+import static java.security.AccessController.getContext;
 
 
 /**
@@ -87,6 +90,25 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
         recyclerviewQuestionpage.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
         recyclerviewQuestionpage.setAdapter(recyclerViewAdapter);
         recyclerviewQuestionpage.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        recyclerviewQuestionpage.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    if (!recyclerView.canScrollVertically(1)) {
+                        Toast.makeText(getApplicationContext(),"到底啦",Toast.LENGTH_SHORT).show();
+                    }
+                    if (!recyclerView.canScrollVertically(-1)) {
+                        Toast.makeText(getApplicationContext(),"到头啦",Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
 
 
     }

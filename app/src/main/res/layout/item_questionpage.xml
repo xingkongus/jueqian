@@ -76,7 +76,7 @@
             android:layout_height="24dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:background="#6a5b" />
+            android:src="@drawable/ic_more_vert_black_24dp" />
     </RelativeLayout>
 
 
