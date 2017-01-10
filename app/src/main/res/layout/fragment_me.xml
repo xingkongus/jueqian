@@ -5,6 +5,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <include layout="@layout/view_toolbar" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -79,22 +81,23 @@
                     android:id="@+id/me_iv_mymessage"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
+                    android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="16dp"
-                    android:layout_centerVertical="true"
                     android:src="@drawable/iv_message" />
 
                 <TextView
-                    android:layout_marginLeft="16dp"
-                    android:layout_toRightOf="@id/me_iv_mymessage"
-                    android:layout_centerVertical="true"
                     android:id="@+id/me_tv_mymessage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="16dp"
+                    android:layout_toRightOf="@id/me_iv_mymessage"
                     android:gravity="center"
                     android:text="@string/text_mymessage"
                     android:textSize="16sp" />
             </RelativeLayout>
+
             <RelativeLayout
                 android:id="@+id/me_linerlayout_mycollection"
                 android:layout_width="match_parent"
@@ -108,18 +111,18 @@
                     android:id="@+id/me_iv_mycollection"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
+                    android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="16dp"
-                    android:layout_centerVertical="true"
                     android:src="@drawable/iv_collection" />
 
                 <TextView
-                    android:layout_marginLeft="16dp"
-                    android:layout_toRightOf="@id/me_iv_mycollection"
-                    android:layout_centerVertical="true"
                     android:id="@+id/me_tv_mycollection"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="16dp"
+                    android:layout_toRightOf="@id/me_iv_mycollection"
                     android:gravity="center"
                     android:text="@string/text_mycollection"
                     android:textSize="16sp" />
@@ -138,18 +141,18 @@
                     android:id="@+id/me_iv_myanswer"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
+                    android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="16dp"
-                    android:layout_centerVertical="true"
                     android:src="@drawable/iv_myanswer" />
 
                 <TextView
-                    android:layout_marginLeft="16dp"
-                    android:layout_toRightOf="@id/me_iv_myanswer"
-                    android:layout_centerVertical="true"
                     android:id="@+id/me_tv_myanswer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="16dp"
+                    android:layout_toRightOf="@id/me_iv_myanswer"
                     android:gravity="center"
                     android:text="@string/text_myanswer"
                     android:textSize="16sp" />
@@ -168,18 +171,18 @@
                     android:id="@+id/me_iv_recentlook"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
+                    android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="16dp"
-                    android:layout_centerVertical="true"
                     android:src="@drawable/iv_recentlook" />
 
                 <TextView
-                    android:layout_marginLeft="16dp"
-                    android:layout_toRightOf="@id/me_iv_recentlook"
-                    android:layout_centerVertical="true"
                     android:id="@+id/me_tv_recentlook"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="16dp"
+                    android:layout_toRightOf="@id/me_iv_recentlook"
                     android:gravity="center"
                     android:text="@string/text_recentlook"
                     android:textSize="16sp" />
@@ -198,18 +201,18 @@
                     android:id="@+id/me_iv_settings"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
+                    android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="16dp"
-                    android:layout_centerVertical="true"
                     android:src="@drawable/iv_settings" />
 
                 <TextView
-                    android:layout_marginLeft="16dp"
-                    android:layout_toRightOf="@id/me_iv_settings"
-                    android:layout_centerVertical="true"
                     android:id="@+id/me_tv_settings"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="16dp"
+                    android:layout_toRightOf="@id/me_iv_settings"
                     android:gravity="center"
                     android:text="@string/text_settings"
                     android:textSize="16sp" />
