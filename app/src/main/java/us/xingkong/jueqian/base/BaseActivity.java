@@ -23,9 +23,6 @@ import us.xingkong.jueqian.utils.ToastUtils;
 public abstract class BaseActivity<P extends BasePresenter> extends AppCompatActivity
         implements BaseView<P> {
 
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
-
     Unbinder bind;
 
     /**
@@ -55,8 +52,6 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         // 准备数据
         prepareData();
         // 初始化标题栏
-        initToolbar();
-        // 初始化视图
         initView();
         // 初始化数据
         initData(savedInstanceState);
@@ -80,36 +75,6 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     @Override
     public void setPresenter(P presenter) {
         mPresenter = presenter;
-    }
-
-    /**
-     * 初始化Toolbar
-     */
-    private void initToolbar() {
-        setSupportActionBar(mToolbar);
-    }
-
-    /**
-     * 设置Toolbar标题
-     *
-     * @param title 标题
-     */
-    protected void setToolbarTitle(String title) {
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(title);
-        }
-    }
-
-    /**
-     * 设置Toolbar显示返回按钮及标题
-     *
-     * @param title 标题
-     */
-    protected void setToolbarBackEnable(String title) {
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_white_24dp);
-        }
     }
 
     /**
