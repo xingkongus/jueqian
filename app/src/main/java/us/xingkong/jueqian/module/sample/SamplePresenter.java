@@ -14,4 +14,6 @@ public class SamplePresenter extends BasePresenterImpl implements SampleContract
         mView = view;
         this.mView.setPresenter(this);
     }
+
+
 }
