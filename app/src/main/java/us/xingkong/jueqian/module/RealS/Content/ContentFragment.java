@@ -4,9 +4,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import java.util.List;
+
 import butterknife.BindView;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.base.BaseFragment;
+import us.xingkong.jueqian.bean.RealSBean.Results;
+import us.xingkong.jueqian.data.RealSData.RealSRepository;
 
 /**
  * Created by hugeterry(http://hugeterry.cn)
@@ -31,7 +35,7 @@ public class ContentFragment extends BaseFragment<ContentContract.Presenter> imp
 
     @Override
     protected ContentContract.Presenter createPresenter() {
-        return new ContentPresenter(this);
+        return new ContentPresenter(new RealSRepository(), this);
     }
 
     @Override
@@ -61,4 +65,23 @@ public class ContentFragment extends BaseFragment<ContentContract.Presenter> imp
 
     }
 
+    @Override
+    public void loadSuccess(int page) {
+
+    }
+
+    @Override
+    public void loadFailure(int page) {
+
+    }
+
+    @Override
+    public void showRefresh(boolean isRefresh) {
+
+    }
+
+    @Override
+    public void showRealSList(int page, List<Results> realSList) {
+
+    }
 }
