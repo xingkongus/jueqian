@@ -11,6 +11,9 @@ public class Question {
     private String discription; //问题描述
     private Date date; //问题发表时间
     private User sender; //提问者
+    private boolean isHidedUser; //是否匿名
+    private String tag; //分类标签
+
 
     public String getTitle() {
         return title;
@@ -52,5 +55,12 @@ public class Question {
         this.tag = tag;
     }
 
-    private String tag; //分类标签
+    public boolean isHidedUser() {
+        return isHidedUser;
+    }
+
+    public void setHidedUser(boolean hidedUser) {
+        isHidedUser = hidedUser;
+    }
+
 }
