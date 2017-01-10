@@ -1,6 +1,8 @@
 package us.xingkong.jueqian.module.me.mysettings;
 
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.view.MenuItem;
 
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.base.BaseActivity;
@@ -27,7 +29,9 @@ public class MySettingsActivity extends BaseActivity<MySettingsContract.Presente
 
     @Override
     protected void initView() {
-
+        ActionBar acb = getSupportActionBar();
+        acb.setDisplayHomeAsUpEnabled(true);
+        acb.setTitle("个人设置");
     }
 
     @Override
@@ -38,5 +42,15 @@ public class MySettingsActivity extends BaseActivity<MySettingsContract.Presente
     @Override
     protected void initEvent() {
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

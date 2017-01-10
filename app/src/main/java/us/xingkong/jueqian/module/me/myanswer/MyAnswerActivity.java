@@ -1,6 +1,8 @@
 package us.xingkong.jueqian.module.me.myanswer;
 
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.view.MenuItem;
 
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.base.BaseActivity;
@@ -12,7 +14,7 @@ import us.xingkong.jueqian.base.BaseActivity;
 public class MyAnswerActivity extends BaseActivity<MyAnswerContract.Presenter> implements MyAnswerContract.View {
     @Override
     protected MyAnswerContract.Presenter createPresenter() {
-        return null;
+        return new MyAnswerPresenter(this);
     }
 
     @Override
@@ -27,6 +29,13 @@ public class MyAnswerActivity extends BaseActivity<MyAnswerContract.Presenter> i
 
     @Override
     protected void initView() {
+        setToolbar();
+    }
+
+    private void setToolbar() {
+        ActionBar acb = getSupportActionBar();
+        acb.setDisplayHomeAsUpEnabled(true);
+        acb.setTitle("我的回答");
 
     }
 
@@ -38,5 +47,15 @@ public class MyAnswerActivity extends BaseActivity<MyAnswerContract.Presenter> i
     @Override
     protected void initEvent() {
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
