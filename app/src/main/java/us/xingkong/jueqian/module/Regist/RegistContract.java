@@ -12,6 +12,6 @@ public interface RegistContract {
     }
     interface Presenter extends BasePresenter {
         void regist(final Context context, final String username, final String password);
-        void a();
+        //void a();
     }
 }
