@@ -14,5 +14,13 @@
         <item>我</item>
     </string-array>
 
+    <string-array name="tab_reals">
+        <item>热门</item>
+        <item>Android</item>
+        <item>iOS</item>
+        <item>前端</item>
+        <item>拓展资源</item>
+    </string-array>
+
     <string name="text_press_again">再按一次退出觉浅</string>
 </resources>
