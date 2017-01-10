@@ -21,6 +21,7 @@
         <activity android:name=".module.QuestionPage.QuestionActivity"/>
         <activity android:name=".module.Comment.CommentActivity"/>
         <activity android:name=".module.AnwserPage.AnswerActivity"/>
+        <activity android:name=".module.NewPage.NewActivity"/>
     </application>
 
     <!-- 友盟统计 -->

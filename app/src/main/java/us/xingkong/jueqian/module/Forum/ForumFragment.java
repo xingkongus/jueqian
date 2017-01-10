@@ -1,10 +1,10 @@
 package us.xingkong.jueqian.module.Forum;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
@@ -18,12 +18,13 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.adapter.ForumRecyclerViewAdapter;
 import us.xingkong.jueqian.base.BaseFragment;
+import us.xingkong.jueqian.module.NewPage.NewActivity;
 import us.xingkong.jueqian.module.QuestionPage.QuestionActivity;
 
-import static android.R.attr.key;
 
 /**
  * Created by boluoxiaomo
@@ -37,6 +38,8 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
     RecyclerView recyclerview;
     @BindView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;
+    @BindView(R.id.fab_forum_main)
+    FloatingActionButton fabForumMain;
 
     private int mPageCount;
     ArrayList infoSets;
@@ -103,7 +106,6 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
         recyclerview.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         recyclerview.setItemAnimator(new DefaultItemAnimator());
 
-
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         swipeRefreshLayout.setSize(SwipeRefreshLayout.DEFAULT);
 //        swipeRefreshLayout.setProgressBackgroundColor(Color.WHITE);
@@ -138,13 +140,14 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
     @Override
     protected void initEvent() {
 
-
     }
 
-    public void onClick(View view) {
-        String strTmp = "点击Button03";
-        Intent intent = new Intent(getContext(), QuestionActivity.class);
 
+
+
+    @OnClick(R.id.fab_forum_main)
+    public void onClick() {
+        Intent intent = new Intent(getContext(), NewActivity.class);
+        startActivity(intent);
     }
-
 }

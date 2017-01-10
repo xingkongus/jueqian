@@ -18,7 +18,7 @@ import us.xingkong.jueqian.adapter.MainPagerAdapter;
 import us.xingkong.jueqian.base.BaseActivity;
 import us.xingkong.jueqian.module.Forum.ForumFragment;
 import us.xingkong.jueqian.module.Home.HomePageFragment;
-import us.xingkong.jueqian.module.QuestionPage.QuestionActivity;
+//import us.xingkong.jueqian.module.QuestionPage.QuestionActivity;
 import us.xingkong.jueqian.utils.AppUtils;
 import us.xingkong.jueqian.widget.ScrollViewPager;
 

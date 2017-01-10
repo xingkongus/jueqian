@@ -15,4 +15,5 @@ public class CommentPresenter extends BasePresenterImpl implements CommentContra
         this.mView.setPresenter(this);
     }
 
+
 }

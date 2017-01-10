@@ -42,7 +42,6 @@ public class CommentActivity extends BaseActivity<CommentContract.Presenter> imp
 
     @Override
     protected void prepareData() {
-
         questionSets = new ArrayList();
         questionSets.add("header");
         answerSetsArr = new ArrayList();
@@ -60,7 +59,6 @@ public class CommentActivity extends BaseActivity<CommentContract.Presenter> imp
         recyclerviewCommentpage.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
         recyclerviewCommentpage.setAdapter(recyclerViewAdapter);
         recyclerviewCommentpage.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-
 
     }
 
@@ -82,7 +80,6 @@ public class CommentActivity extends BaseActivity<CommentContract.Presenter> imp
         }
         return super.onOptionsItemSelected(item);
     }
-
 
 
 }
