@@ -1,7 +1,9 @@
 package us.xingkong.jueqian.module.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
@@ -14,8 +16,10 @@ import us.xingkong.jueqian.JueQianAPP;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.adapter.MainPagerAdapter;
 import us.xingkong.jueqian.base.BaseActivity;
+import us.xingkong.jueqian.module.Forum.ForumFragment;
 import us.xingkong.jueqian.module.Home.HomePageFragment;
 import us.xingkong.jueqian.module.me.MeFragment;
+import us.xingkong.jueqian.module.RealS.RealSFragment;
 import us.xingkong.jueqian.utils.AppUtils;
 import us.xingkong.jueqian.widget.ScrollViewPager;
 
@@ -42,6 +46,8 @@ public class MainActivity extends BaseActivity<MainContract.Presenter> implement
 
     private HomePageFragment mHomePageFragment;
     private MeFragment mMeFragment;
+    private ForumFragment mForumFragment;
+    private RealSFragment mRealSFragment;
 
     @Override
     protected MainContract.Presenter createPresenter() {
@@ -60,7 +66,6 @@ public class MainActivity extends BaseActivity<MainContract.Presenter> implement
 
     @Override
     protected void initView() {
-        setToolbarTitle(AppUtils.getAppName(this));
 
         mViewPager.setPagingEnabled(false);
         List<Fragment> fragments = new ArrayList<>();
@@ -76,12 +81,12 @@ public class MainActivity extends BaseActivity<MainContract.Presenter> implement
     }
 
     private void addFragmentList(List<Fragment> fragments) {
-        mHomePageFragment = new HomePageFragment().getInstance(0);
-        fragments.add(mHomePageFragment);
+        mForumFragment = new ForumFragment().getInstance(0);
+        fragments.add(mForumFragment);
         mHomePageFragment = new HomePageFragment().getInstance(1);
         fragments.add(mHomePageFragment);
-        mHomePageFragment = new HomePageFragment().getInstance(2);
-        fragments.add(mHomePageFragment);
+        mRealSFragment = new RealSFragment();
+        fragments.add(mRealSFragment);
         mMeFragment = new MeFragment().getInstance(3);
         fragments.add(mMeFragment);
     }
@@ -118,5 +123,7 @@ public class MainActivity extends BaseActivity<MainContract.Presenter> implement
     public void onBackPressed() {
         JueQianAPP.exitApp();
     }
+
+
 
 }
