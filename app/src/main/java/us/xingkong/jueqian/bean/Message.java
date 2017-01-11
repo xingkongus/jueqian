@@ -5,6 +5,7 @@ package us.xingkong.jueqian.bean;
  */
 
 public class Message {
+
     private User user; //发出消息的用户
     private Question question; //消息关联的问题
     private Answer answer; //消息的回答
