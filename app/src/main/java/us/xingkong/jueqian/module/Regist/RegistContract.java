@@ -1,18 +1,16 @@
-package us.xingkong.jueqian.module.QuestionPage;
+package us.xingkong.jueqian.module.Regist;
+
+import android.content.Context;
 
 import us.xingkong.jueqian.base.BasePresenter;
 import us.xingkong.jueqian.base.BaseView;
 
-/**
- * Created by boluoxiaomo
- * Date: 17/1/9
- */
 
-public interface QuestionContract {
 
+public interface RegistContract {
     interface View extends BaseView<Presenter> {
     }
-
     interface Presenter extends BasePresenter {
+        void regist(final Context context, final String username, final String password);
     }
 }

@@ -14,5 +14,6 @@ public interface SampleContract {
     }
 
     interface Presenter extends BasePresenter {
+
     }
 }

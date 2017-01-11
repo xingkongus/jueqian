@@ -1,4 +1,4 @@
-package us.xingkong.jueqian.module.AnwserPage;
+package us.xingkong.jueqian.module.Forum.QuestionPage.AnwserPage;
 
 import us.xingkong.jueqian.base.BasePresenter;
 import us.xingkong.jueqian.base.BaseView;

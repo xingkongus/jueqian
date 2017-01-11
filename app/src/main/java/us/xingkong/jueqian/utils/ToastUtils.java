@@ -1,6 +1,7 @@
 package us.xingkong.jueqian.utils;
 
 import android.content.Context;
+import android.view.View;
 import android.widget.Toast;
 
 import us.xingkong.jueqian.JueQianAPP;
@@ -18,7 +19,7 @@ public class ToastUtils {
     }
 
 
-    public static void shortToast(CharSequence msg) {
+    public static void shortToast(View.OnClickListener onClickListener, CharSequence msg) {
         show(JueQianAPP.getAppContext(), msg, Toast.LENGTH_SHORT);
     }
 

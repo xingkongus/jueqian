@@ -9,6 +9,7 @@ import java.util.List;
 public class User {
     private String username; //用户名
     private String password; //密码
+
     private String nickname; //昵称
     private String icon;  //头像URL
     private String selfIntrodution; //自我介绍

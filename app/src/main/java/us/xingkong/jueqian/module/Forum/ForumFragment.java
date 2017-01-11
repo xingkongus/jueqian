@@ -5,27 +5,23 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.adapter.ForumRecyclerViewAdapter;
 import us.xingkong.jueqian.base.BaseFragment;
-import us.xingkong.jueqian.module.NewPage.NewActivity;
-import us.xingkong.jueqian.module.QuestionPage.QuestionActivity;
+import us.xingkong.jueqian.module.Forum.NewPage.NewActivity;
+import us.xingkong.jueqian.module.Forum.QuestionPage.QuestionActivity;
 
 
 /**
