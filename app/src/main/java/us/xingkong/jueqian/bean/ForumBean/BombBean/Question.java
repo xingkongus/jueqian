@@ -17,7 +17,7 @@ public class Question extends BmobObject {
     private String TAG1_ID;/*第一个Tag的id*/
     private String TAG2_ID;/*第二个Tag的id*/
     private Integer good_count;/*点赞的数量*/
-    private Integer answer_count;/*点赞的数量*/
+    private Integer answer_count;/*回答的数量*/
 
     public Integer getAnswer_count() {
         return answer_count;

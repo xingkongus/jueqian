@@ -1,4 +1,4 @@
-package us.xingkong.jueqian.bean.ForumBean.GsonBean;
+package us.xingkong.jueqian.bean.ForumBean.RealmBean;
 
 import java.sql.Date;
 
@@ -6,10 +6,10 @@ import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
 /**
- * Created by Garfield on 1/11/17.
+ * Created by Garfield on 1/12/17.
  */
 
-public class ForumPageBean {
+public class ForumPageBean extends RealmObject{
     @PrimaryKey
     private String OBJ_ID;
 
@@ -18,13 +18,21 @@ public class ForumPageBean {
     private Integer sender_state;
     private String mtitle;/*问题的标题*/
     private String isHided;/*是否为匿名问题*/
-    private String TAG1_ID;/*第一个Tag的id*/
-    private String TAG2_ID;/*第二个Tag的id*/
+    private String TAG1;/*第一个Tag的id*/
+    private String TAG2;/*第二个Tag的id*/
     private Integer good_count;/*点赞的数量*/
     private Integer answer_count;/*点赞的数量*/
     private Date time_create;/*被作者创建的时间*/
     private Date last_update;/*作者最后更新时间*/
+    private Integer state;
 
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
+    }
 
     public String getOBJ_ID() {
         return OBJ_ID;
@@ -74,20 +82,20 @@ public class ForumPageBean {
         this.isHided = isHided;
     }
 
-    public String getTAG1_ID() {
-        return TAG1_ID;
+    public String getTAG1() {
+        return TAG1;
     }
 
-    public void setTAG1_ID(String TAG1_ID) {
-        this.TAG1_ID = TAG1_ID;
+    public void setTAG1(String TAG1) {
+        this.TAG1 = TAG1;
     }
 
-    public String getTAG2_ID() {
-        return TAG2_ID;
+    public String getTAG2() {
+        return TAG2;
     }
 
-    public void setTAG2_ID(String TAG2_ID) {
-        this.TAG2_ID = TAG2_ID;
+    public void setTAG2(String TAG2) {
+        this.TAG2 = TAG2;
     }
 
     public Integer getGood_count() {
