@@ -1,16 +1,11 @@
-package us.xingkong.jueqian.bean.ForumBean.RealmBean;
+package us.xingkong.jueqian.bean.ForumBean.GsonBean;
 
-import cn.bmob.v3.datatype.BmobFile;
-import io.realm.RealmObject;
-import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by Garfield on 1/11/17.
  */
 
-public class User extends RealmObject {
-
-
+public class User {
 
     public Boolean getGender() {
         return gender;
@@ -19,7 +14,6 @@ public class User extends RealmObject {
     public void setGender(Boolean gender) {
         this.gender = gender;
     }
-
 
 
     public Boolean getSelfIntro() {
@@ -61,6 +55,7 @@ public class User extends RealmObject {
     public void setProfile(String profile) {
         this.profile = profile;
     }
+
     public String getUsername() {
         return username;
     }
@@ -70,8 +65,6 @@ public class User extends RealmObject {
     }
 
     private String username;
-
-    @PrimaryKey
     private String OBJ_ID;//用户主键
 
     private String ACCOUNT;//账号

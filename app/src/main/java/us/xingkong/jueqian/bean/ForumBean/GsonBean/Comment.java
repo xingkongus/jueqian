@@ -1,4 +1,4 @@
-package us.xingkong.jueqian.bean.ForumBean.RealmBean;
+package us.xingkong.jueqian.bean.ForumBean.GsonBean;
 
 import java.sql.Date;
 
@@ -9,7 +9,7 @@ import io.realm.annotations.PrimaryKey;
  * Created by Garfield on 1/11/17.
  */
 
-public class Comment extends RealmObject {
+public class Comment {
 
     @PrimaryKey
     private String OBJ_ID;

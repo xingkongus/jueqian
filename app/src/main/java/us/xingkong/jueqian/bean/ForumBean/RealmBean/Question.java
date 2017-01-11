@@ -21,8 +21,26 @@ public class Question extends RealmObject {
     private String TAG1_ID;/*第一个Tag的id*/
     private String TAG2_ID;/*第二个Tag的id*/
     private Integer good_count;/*点赞的数量*/
+    private Integer answer_count;
+    private Date time_create;/*被作者创建的时间*/
     private Date last_update;/*作者最后更新时间*/
     private Date last_add;/*最后入库时间*/
+
+    public Integer getAnswer_count() {
+        return answer_count;
+    }
+
+    public void setAnswer_count(Integer answer_count) {
+        this.answer_count = answer_count;
+    }
+
+    public Date getTime_create() {
+        return time_create;
+    }
+
+    public void setTime_create(Date time_create) {
+        this.time_create = time_create;
+    }
 
     public Date getLast_update() {
         return last_update;

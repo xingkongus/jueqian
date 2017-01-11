@@ -8,4 +8,15 @@ package us.xingkong.jueqian.base;
 public class Constants {
     public static final String REALS_BASE_URL = "http://gank.io/api/";
     public static final int REALS_READ_NUM = 20;
+
+    public static final int ACCOUNT_FROZED = -0x01;
+    public static final int STATE_MEMBER = 0x01;
+    public static final int STATE_TEACHER = 0x02;
+
+
+    public static final int QUESTION_FROZED = -0x01;
+    public static final int QUESTION_NOMAL = 0x01;
+
+
+
 }

@@ -1,25 +1,22 @@
-package us.xingkong.jueqian.bean.ForumBean.RealmBean;
+package us.xingkong.jueqian.bean.ForumBean.GsonBean;
 
 import java.sql.Date;
 
-import io.realm.RealmObject;
+import cn.bmob.v3.BmobObject;
 import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by Garfield on 1/11/17.
  */
 
-public class Comment extends RealmObject {
-
-    @PrimaryKey
+public class Answer {
     private String OBJ_ID;
 
-    private String mcontent;/*评论正文*/
+    private String mcontent; /*回答的正文*/
     private String SENDER_ID;/*发送者的id*/
     private String QUESTION_ID;/*问题的id*/
-    private String ANSWER_ID;/*回答的id*/
-    private Integer state;/*该评论的状态，-1为不显示，1为正常问题*/
-    private Integer good_count;/*该问题收到的点赞数*/
+    private Integer state;/*问题的状态，-1为举报成功的问题，1为正常问*/
+    private Integer good_count;/*点赞数*/
     private Date last_update;/*作者最后更新时间*/
     private Date last_add;/*最后入库时间*/
     private Date time_create;/*被作者创建的时间*/
@@ -78,14 +75,6 @@ public class Comment extends RealmObject {
 
     public void setQUESTION_ID(String QUESTION_ID) {
         this.QUESTION_ID = QUESTION_ID;
-    }
-
-    public String getANSWER_ID() {
-        return ANSWER_ID;
-    }
-
-    public void setANSWER_ID(String ANSWER_ID) {
-        this.ANSWER_ID = ANSWER_ID;
     }
 
     public Integer getState() {

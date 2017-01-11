@@ -57,7 +57,7 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
 
     @Override
     protected ForumContract.Presenter createPresenter() {
-        return new ForumPresenter(this, new ForumRepository());
+        return new ForumPresenter(this, new ForumRepository(getContext()));
     }
 
     @Override

@@ -8,13 +8,7 @@ import cn.bmob.v3.datatype.BmobFile;
  */
 
 public class User extends BmobObject {
-    public String getAccount() {
-        return ACCOUNT;
-    }
 
-    public void setAccount(String ACCOUNT) {
-        this.ACCOUNT = ACCOUNT;
-    }
 
     public Boolean getGender() {
         return gender;
@@ -48,6 +42,23 @@ public class User extends BmobObject {
         this.state = state;
     }
 
+    public String getACCOUNT() {
+        return ACCOUNT;
+    }
+
+    public void setACCOUNT(String ACCOUNT) {
+        this.ACCOUNT = ACCOUNT;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    private String username;
     private String ACCOUNT;//账号
     private Boolean gender;//性别
     private BmobFile profile;//头像

@@ -2,14 +2,14 @@ package us.xingkong.jueqian.bean.ForumBean.RealmBean;
 
 import java.sql.Date;
 
-import cn.bmob.v3.BmobObject;
+import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by Garfield on 1/11/17.
  */
 
-public class Answer extends BmobObject {
+public class Answer extends RealmObject {
     @PrimaryKey
     private String OBJ_ID;
 
@@ -20,6 +20,15 @@ public class Answer extends BmobObject {
     private Integer good_count;/*点赞数*/
     private Date last_update;/*作者最后更新时间*/
     private Date last_add;/*最后入库时间*/
+    private Date time_create;/*被作者创建的时间*/
+
+    public Date getTime_create() {
+        return time_create;
+    }
+
+    public void setTime_create(Date time_create) {
+        this.time_create = time_create;
+    }
 
     public Date getLast_update() {
         return last_update;
