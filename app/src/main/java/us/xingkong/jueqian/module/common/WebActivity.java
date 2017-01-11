@@ -36,7 +36,7 @@ import us.xingkong.jueqian.utils.ShareUtils;
 
 public class WebActivity extends BaseActivity {
 
-    @BindView(R.id.swipeRefreshLayout)
+    @BindView(R.id.swiperefreshlayout)
     SwipeRefreshLayout mSwipeRefreshLayout;
     @BindView(R.id.webview)
     WebView mWebView;

@@ -2,7 +2,6 @@ package us.xingkong.jueqian.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -93,23 +92,21 @@ public class PartHotAdapter extends RecyclerView.Adapter<PartHotAdapter.PartView
             }
         });
 
-        Uri uri = null;
         switch (part_list.get(position).getType()) {
             case "Android":
-                uri = Uri.parse("res:///" + R.mipmap.android_icon);
+                holder.iv_icon.setImageResource(R.mipmap.android_icon);
                 break;
             case "iOS":
-                uri = Uri.parse("res:///" + R.mipmap.ios_icon);
+                holder.iv_icon.setImageResource(R.mipmap.ios_icon);
                 break;
             case "前端":
-                uri = Uri.parse("res:///" + R.mipmap.js_icon);
+                holder.iv_icon.setImageResource(R.mipmap.js_icon);
                 break;
             case "拓展资源":
-                uri = Uri.parse("res:///" + R.mipmap.other_icon);
+                holder.iv_icon.setImageResource(R.mipmap.other_icon);
                 break;
         }
 
-        holder.iv_icon.setImageURI(uri);
         String author = part_list.get(position).getWho();
         if (author != null) {
             holder.tv_author.setText(author);

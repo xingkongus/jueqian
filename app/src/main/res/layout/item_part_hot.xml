@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="8dp"
-    android:background="?selectableItemBackground"
+    android:background="@drawable/item_part_touch"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -63,7 +63,7 @@
             android:layout_alignParentRight="true"
             android:gravity="center"
             android:paddingRight="10dp"
-            android:textSize="@dimen/sp_18"
+            android:textSize="@dimen/sp_12"
             tools:text="02:46" />
 
     </RelativeLayout>
