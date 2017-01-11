@@ -33,6 +33,7 @@ public class ContentFragment extends BaseFragment<ContentContract.Presenter> imp
     RecyclerView mRecyclerView;
 
     private LinearLayoutManager mLinearLayoutManager;
+    private BaseAdapter mBaseAdapter;
     private PartHotAdapter mPartHotAdapter;
     private PartTypeAdapter mPartTypeAdapter;
 
@@ -69,6 +70,7 @@ public class ContentFragment extends BaseFragment<ContentContract.Presenter> imp
     @Override
     protected void initView(View rootView) {
         initRecyclerView();
+        mBaseAdapter = mPartHotAdapter != null ? mPartHotAdapter : mPartTypeAdapter;
     }
 
     private void initRecyclerView() {
@@ -106,8 +108,7 @@ public class ContentFragment extends BaseFragment<ContentContract.Presenter> imp
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 int lastVisiableItemPosition = mLinearLayoutManager.findLastVisibleItemPosition();
-                BaseAdapter commonAdapter = mPartHotAdapter != null ? mPartHotAdapter : mPartTypeAdapter;
-                if (lastVisiableItemPosition + 1 == commonAdapter.getItemCount()) {
+                if (lastVisiableItemPosition + 1 == mBaseAdapter.getItemCount()) {
                     if (pageNum == 1) {
                         pageNum++;
                     }
@@ -143,21 +144,10 @@ public class ContentFragment extends BaseFragment<ContentContract.Presenter> imp
 
     @Override
     public void showRealSList(int page, List<Results> realSList) {
-        switch (mRealSTitle) {
-            case "all":
-                if (page == 1) {
-                    mPartHotAdapter.replaceData(realSList);
-                } else {
-                    mPartHotAdapter.addData(realSList);
-                }
-                break;
-            default:
-                if (page == 1) {
-                    mPartTypeAdapter.replaceData(realSList);
-                } else {
-                    mPartTypeAdapter.addData(realSList);
-                }
-                break;
+        if (page == 1) {
+            mBaseAdapter.replaceData(realSList);
+        } else {
+            mBaseAdapter.addData(realSList);
         }
     }
 }
