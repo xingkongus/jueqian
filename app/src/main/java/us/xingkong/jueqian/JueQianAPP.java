@@ -37,6 +37,8 @@ public class JueQianAPP extends Application {
         if (System.currentTimeMillis() - exitTime > 2000) {
             ToastUtils.shortToast(getAppContext(), appContext.getString(R.string.text_press_again));
             exitTime = System.currentTimeMillis();
+        } else {
+            android.os.Process.killProcess(android.os.Process.myPid());
         }
     }
 }
