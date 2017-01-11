@@ -1,4 +1,4 @@
-package us.xingkong.jueqian.bean.ForumBean;
+package us.xingkong.jueqian.bean.ForumBean.BombBean;
 
 import cn.bmob.v3.BmobObject;
 

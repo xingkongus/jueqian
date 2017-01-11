@@ -1,13 +1,17 @@
-package us.xingkong.jueqian.bean.ForumBean;
+package us.xingkong.jueqian.bean.ForumBean.RealmBean;
 
-import cn.bmob.v3.BmobObject;
-import cn.bmob.v3.datatype.BmobFile;
+import java.sql.Date;
+
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by Garfield on 1/11/17.
  */
 
-public class Question extends BmobObject {
+public class Question extends RealmObject {
+    @PrimaryKey
+    private String OBJ_ID;
 
     private String mtitle;/*问题的标题*/
     private String isHided;/*是否为匿名问题*/
@@ -17,6 +21,32 @@ public class Question extends BmobObject {
     private String TAG1_ID;/*第一个Tag的id*/
     private String TAG2_ID;/*第二个Tag的id*/
     private Integer good_count;/*点赞的数量*/
+    private Date last_update;/*作者最后更新时间*/
+    private Date last_add;/*最后入库时间*/
+
+    public Date getLast_update() {
+        return last_update;
+    }
+
+    public void setLast_update(Date last_update) {
+        this.last_update = last_update;
+    }
+
+    public Date getLast_add() {
+        return last_add;
+    }
+
+    public void setLast_add(Date last_add) {
+        this.last_add = last_add;
+    }
+
+    public String getOBJ_ID() {
+        return OBJ_ID;
+    }
+
+    public void setOBJ_ID(String OBJ_ID) {
+        this.OBJ_ID = OBJ_ID;
+    }
 
     public String getMtitle() {
         return mtitle;

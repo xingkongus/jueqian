@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'realm-android'
 
 android {
     compileSdkVersion 25
@@ -38,7 +39,6 @@ dependencies {
     compile 'com.jakewharton:butterknife:8.4.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
     compile 'com.umeng.analytics:analytics:latest.integration'
-    compile 'cn.bmob.android:bmob-sdk:3.4.7-aar'
     //bmob-push：Bmob的推送包
     compile 'cn.bmob.android:bmob-push:0.8'
     //bmob-im：Bmob的即时通讯包，注意每个版本的im依赖特定版本的bmob-sdk
@@ -54,4 +54,5 @@ dependencies {
 
     //一个小小的dialog库
     compile 'com.afollestad.material-dialogs:core:0.9.2.2'
+
 }

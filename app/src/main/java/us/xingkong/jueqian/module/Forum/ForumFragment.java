@@ -20,6 +20,7 @@ import butterknife.OnClick;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.adapter.ForumRecyclerViewAdapter;
 import us.xingkong.jueqian.base.BaseFragment;
+import us.xingkong.jueqian.data.RealSData.ForumRepository;
 import us.xingkong.jueqian.module.Forum.NewPage.NewActivity;
 import us.xingkong.jueqian.module.Forum.QuestionPage.QuestionActivity;
 
@@ -56,7 +57,7 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
 
     @Override
     protected ForumContract.Presenter createPresenter() {
-        return new ForumPresenter(this);
+        return new ForumPresenter(this, new ForumRepository());
     }
 
     @Override
@@ -96,7 +97,6 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
 
     @Override
     protected void initView(View rootView) {
-
         recyclerViewAdapter = new ForumRecyclerViewAdapter(infoSets, mHandler);
         mLayoutManager = new LinearLayoutManager(getContext());
         recyclerview.setLayoutManager(mLayoutManager);
@@ -109,10 +109,10 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     if (!recyclerView.canScrollVertically(1)) {
-                        Toast.makeText(getContext(),"到底啦",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "到底啦", Toast.LENGTH_SHORT).show();
                     }
                     if (!recyclerView.canScrollVertically(-1)) {
-                        Toast.makeText(getContext(),"到头啦",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "到头啦", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -122,8 +122,6 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
                 super.onScrolled(recyclerView, dx, dy);
             }
         });
-
-
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         swipeRefreshLayout.setSize(SwipeRefreshLayout.DEFAULT);
 //        swipeRefreshLayout.setProgressBackgroundColor(Color.WHITE);
@@ -159,8 +157,6 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
     protected void initEvent() {
 
     }
-
-
 
 
     @OnClick(R.id.fab_forum_main)

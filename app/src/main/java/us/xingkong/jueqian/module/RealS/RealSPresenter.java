@@ -14,4 +14,5 @@ public class RealSPresenter extends BasePresenterImpl implements RealSContract.P
         mView = view;
         this.mView.setPresenter(this);
     }
+
 }
