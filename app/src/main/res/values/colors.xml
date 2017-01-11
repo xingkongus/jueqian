@@ -6,4 +6,8 @@
 
     <color name="tab_bgcolor">#ffeeeeee</color>
     <color name="tab_text">#ff797979</color>
+
+    <color name="text_color">#ffffffff</color>
+    <color name="text_primary">#ff000000</color>
+    <color name="text_secondary">#87000000</color>
 </resources>
