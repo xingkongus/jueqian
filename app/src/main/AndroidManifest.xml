@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="us.xingkong.jueqian">
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
     <application
         android:name=".JueQianAPP"
         android:allowBackup="true"
@@ -19,19 +21,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".module.Forum.QuestionPage.QuestionActivity"/>
-        <activity android:name=".module.Forum.QuestionPage.Comment.CommentActivity"/>
-        <activity android:name=".module.Forum.QuestionPage.AnwserPage.AnswerActivity"/>
-        <activity android:name=".module.Forum.NewPage.NewActivity"/>
+        <activity android:name=".module.Forum.QuestionPage.QuestionActivity" />
+        <activity android:name=".module.Forum.QuestionPage.Comment.CommentActivity" />
+        <activity android:name=".module.Forum.QuestionPage.AnwserPage.AnswerActivity" />
+        <activity android:name=".module.Forum.NewPage.NewActivity" />
+        <activity android:name=".module.common.WebActivity" />
     </application>
 
     <!-- 友盟统计 -->
     <meta-data
         android:name="UMENG_APPKEY"
-        android:value="5871aaa24ad156103b0004d0"/>
+        android:value="5871aaa24ad156103b0004d0" />
     <meta-data
         android:name="UMENG_CHANNEL"
-        android:value="JueQian"/>
+        android:value="JueQian" />
     <!-- 友盟统计 -->
 
 </manifest>

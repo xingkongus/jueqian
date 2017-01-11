@@ -7,7 +7,7 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/read_tv"
+        android:id="@+id/tv_read"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
@@ -23,17 +23,17 @@
         android:paddingRight="10dp">
 
         <TextView
-            android:id="@+id/read_tv_author"
+            android:id="@+id/tv_read_author"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             tools:text="HugeTerry" />
 
         <TextView
-            android:id="@+id/read_tv_time"
+            android:id="@+id/tv_read_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/read_tv_author"
+            android:layout_toRightOf="@id/tv_read_author"
             android:paddingLeft="15dp"
             tools:text="02:46" />
     </RelativeLayout>
