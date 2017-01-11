@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -28,38 +27,12 @@ import us.xingkong.jueqian.utils.TimeDifferenceUtils;
  * Date: 17/1/11 15:01
  */
 
-public class PartHotAdapter extends RecyclerView.Adapter<PartHotAdapter.PartViewHolder> {
+public class PartHotAdapter extends BaseAdapter<Results> {
 
     private Context context;
-    private List<Results> part_list = new ArrayList<>();
 
-    public List<Results> getDatas() {
-        return part_list;
-    }
-
-    public void replaceData(List<Results> list) {
-        part_list.clear();
-        part_list.addAll(list);
-        notifyDataSetChanged();
-    }
-
-    public List<Results> addData(List<Results> list) {
-        part_list.addAll(list);
-        notifyDataSetChanged();
-        return part_list;
-    }
-
-    public List<Results> addData(Results results) {
-        part_list.add(results);
-        notifyDataSetChanged();
-        return part_list;
-    }
-
-    public PartHotAdapter(Context context, List<Results> part_list) {
+    public PartHotAdapter(Context context) {
         this.context = context;
-        if (part_list != null) {
-            this.part_list = part_list;
-        }
     }
 
     @Override
@@ -70,8 +43,15 @@ public class PartHotAdapter extends RecyclerView.Adapter<PartHotAdapter.PartView
     }
 
     @Override
-    public void onBindViewHolder(PartViewHolder holder, final int position) {
-        List<String> images = part_list.get(position).getImages();
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        if (holder instanceof PartViewHolder) {
+            PartViewHolder viewHolder = (PartViewHolder) holder;
+            onBindViewHolder(viewHolder, position);
+        }
+    }
+
+    private void onBindViewHolder(PartViewHolder holder, final int position) {
+        List<String> images = mData.get(position).getImages();
         if (!images.isEmpty()) {
             holder.iv_img.setVisibility(View.VISIBLE);
             Glide.with(context)
@@ -82,17 +62,17 @@ public class PartHotAdapter extends RecyclerView.Adapter<PartHotAdapter.PartView
             holder.iv_img.setVisibility(View.GONE);
         }
         holder.relativeLayout.setVisibility(View.VISIBLE);
-        holder.textView.setText(part_list.get(position).getDesc());
+        holder.textView.setText(mData.get(position).getDesc());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 WebActivity.newIntent(context,
-                        part_list.get(position).getUrl(),
-                        part_list.get(position).getDesc());
+                        mData.get(position).getUrl(),
+                        mData.get(position).getDesc());
             }
         });
 
-        switch (part_list.get(position).getType()) {
+        switch (mData.get(position).getType()) {
             case "Android":
                 holder.iv_icon.setImageResource(R.mipmap.android_icon);
                 break;
@@ -107,7 +87,7 @@ public class PartHotAdapter extends RecyclerView.Adapter<PartHotAdapter.PartView
                 break;
         }
 
-        String author = part_list.get(position).getWho();
+        String author = mData.get(position).getWho();
         if (author != null) {
             holder.tv_author.setText(author);
             holder.tv_author.setTextColor(Color.parseColor("#87000000"));
@@ -115,8 +95,8 @@ public class PartHotAdapter extends RecyclerView.Adapter<PartHotAdapter.PartView
             holder.tv_author.setText("");
         }
 
-        String time = part_list.get(position).getCreatedAt();
-        String type = part_list.get(position).getType();
+        String time = mData.get(position).getCreatedAt();
+        String type = mData.get(position).getType();
         if (time != null) {
             holder.tv_time.setText(TimeDifferenceUtils.getTimeDifference(time));
         } else {
@@ -124,11 +104,6 @@ public class PartHotAdapter extends RecyclerView.Adapter<PartHotAdapter.PartView
         }
         holder.tv_type.setText(type);
 
-    }
-
-    @Override
-    public int getItemCount() {
-        return part_list == null ? 0 : part_list.size();
     }
 
     class PartViewHolder extends RecyclerView.ViewHolder {

@@ -15,8 +15,6 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 
-import com.umeng.analytics.MobclickAgent;
-
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
