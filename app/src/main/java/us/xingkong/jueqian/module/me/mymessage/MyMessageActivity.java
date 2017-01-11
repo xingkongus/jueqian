@@ -3,6 +3,7 @@ package us.xingkong.jueqian.module.me.mymessage;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
@@ -26,6 +27,8 @@ public class MyMessageActivity extends BaseActivity<MyMessageContract.Presenter>
 
     @BindView(R.id.mymessage_recyclerview)
     RecyclerView mRecyclerView;
+    @BindView(R.id.swipeRefreshLayout)
+    SwipeRefreshLayout mSwipeRefreshLayout;
 
     private ArrayList<String> mArrayList;
     private Handler mHandler = new Handler() {
@@ -34,7 +37,8 @@ public class MyMessageActivity extends BaseActivity<MyMessageContract.Presenter>
             super.handleMessage(msg);
             switch (msg.what) {
                 case 1:
-                    Toast.makeText(getApplicationContext(), "刷新成功", Toast.LENGTH_SHORT).show();
+                    mSwipeRefreshLayout.setRefreshing(false);
+//                    Toast.makeText(getApplicationContext(), "刷新成功", Toast.LENGTH_SHORT).show();
                     break;
             }
         }
@@ -64,7 +68,32 @@ public class MyMessageActivity extends BaseActivity<MyMessageContract.Presenter>
     protected void initView() {
         setToolbar();
         initRecyclerView();
+        SetSwipeRefreshLayout();
 
+    }
+
+    private void SetSwipeRefreshLayout() {
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+        mSwipeRefreshLayout.setSize(SwipeRefreshLayout.DEFAULT);
+        mSwipeRefreshLayout.setProgressViewEndTarget(true, 200);
+
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Thread.sleep(1500);
+                            mHandler.sendEmptyMessage(1);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }).start();
+            }
+        });
     }
 
     private void initRecyclerView() {
@@ -84,7 +113,6 @@ public class MyMessageActivity extends BaseActivity<MyMessageContract.Presenter>
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-
     }
 
     @Override

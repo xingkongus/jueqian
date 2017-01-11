@@ -20,10 +20,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".module.QuestionPage.QuestionActivity" />
-        <activity android:name=".module.Comment.CommentActivity" />
-        <activity android:name=".module.AnwserPage.AnswerActivity" />
-        <activity android:name=".module.NewPage.NewActivity" />
+        <activity android:name=".module.Forum.QuestionPage.QuestionActivity" />
+        <activity android:name=".module.Forum.QuestionPage.Comment.CommentActivity" />
+        <activity android:name=".module.Forum.QuestionPage.AnwserPage.AnswerActivity" />
+        <activity android:name=".module.Forum.NewPage.NewActivity" />
         <activity android:name=".module.me.mymessage.MyMessageActivity" />
         <activity android:name=".module.me.mycollection.MyCollectionActivity" />
         <activity android:name=".module.me.myanswer.MyAnswerActivity" />
