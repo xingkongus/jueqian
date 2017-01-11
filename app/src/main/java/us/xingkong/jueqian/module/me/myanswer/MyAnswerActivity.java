@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 
+import java.util.ArrayList;
+
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.base.BaseActivity;
 
@@ -12,6 +14,9 @@ import us.xingkong.jueqian.base.BaseActivity;
  */
 
 public class MyAnswerActivity extends BaseActivity<MyAnswerContract.Presenter> implements MyAnswerContract.View {
+
+
+
     @Override
     protected MyAnswerContract.Presenter createPresenter() {
         return new MyAnswerPresenter(this);
