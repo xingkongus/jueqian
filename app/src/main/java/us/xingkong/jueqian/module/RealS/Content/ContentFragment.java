@@ -94,6 +94,7 @@ public class ContentFragment extends BaseFragment<ContentContract.Presenter> imp
 
     @Override
     protected void initEvent() {
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
