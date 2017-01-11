@@ -56,6 +56,9 @@ public class MyMessageActivity extends BaseActivity<MyMessageContract.Presenter>
 
     @Override
     protected void prepareData() {
+        if (mArrayList != null) {
+            mArrayList.clear();
+        }
         mArrayList = new ArrayList<>();
         for (int i = 0; i < 15; i++) {
 //            ArrayList arrayList = new ArrayList();
