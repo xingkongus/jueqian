@@ -33,7 +33,7 @@
             android:layout_marginRight="8dp"
             android:layout_toRightOf="@id/iv_part_type_icon"
             android:gravity="center"
-            android:textColor="@color/text_primary"
+            android:textColor="@color/text_secondary"
             android:textSize="15sp"
             tools:text="Android" />
 
@@ -53,6 +53,7 @@
             android:layout_height="25dp"
             android:layout_toRightOf="@id/tv_part_author_img"
             android:gravity="center"
+            android:textColor="@color/text_secondary"
             android:textSize="@dimen/sp_12"
             tools:text="HugeTerry" />
 
@@ -86,7 +87,8 @@
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="5dp"
-            android:background="@mipmap/video_icon"
+            android:background="@android:color/white"
+            android:scaleType="fitCenter"
             android:visibility="gone"
             tools:visibility="visible" />
 

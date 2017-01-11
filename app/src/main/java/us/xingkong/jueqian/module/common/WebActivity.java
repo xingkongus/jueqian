@@ -25,6 +25,7 @@ import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.base.BaseActivity;
 import us.xingkong.jueqian.base.BasePresenter;
 import us.xingkong.jueqian.utils.BrowserUtils;
+import us.xingkong.jueqian.utils.LogUtils;
 import us.xingkong.jueqian.utils.ShareUtils;
 
 /**
@@ -77,7 +78,6 @@ public class WebActivity extends BaseActivity {
         setToolbarBackEnable(desc);
         setupWebView();
         setupSwipeRefreshLayout();
-
     }
 
     private void setupWebView() {
@@ -196,7 +196,6 @@ public class WebActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         if (mWebView != null) {
             ViewGroup parent = (ViewGroup) mWebView.getParent();
             if (parent != null) {
@@ -205,5 +204,6 @@ public class WebActivity extends BaseActivity {
             mWebView.removeAllViews();
             mWebView.destroy();
         }
+        super.onDestroy();
     }
 }

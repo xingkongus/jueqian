@@ -27,19 +27,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
+            android:textColor="@color/text_secondary"
             tools:text="HugeTerry" />
 
         <TextView
             android:id="@+id/tv_read_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/tv_read_author"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/text_secondary"
             android:paddingLeft="15dp"
             tools:text="02:46" />
     </RelativeLayout>
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="#bfbfbf" />
+        android:layout_height="1dp"
+        android:background="#80bfbfbf" />
 </LinearLayout>
