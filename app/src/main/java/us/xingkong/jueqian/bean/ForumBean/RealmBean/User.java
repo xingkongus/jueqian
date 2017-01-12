@@ -1,6 +1,5 @@
 package us.xingkong.jueqian.bean.ForumBean.RealmBean;
 
-import cn.bmob.v3.datatype.BmobFile;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 

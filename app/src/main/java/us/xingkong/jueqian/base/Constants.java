@@ -18,5 +18,9 @@ public class Constants {
     public static final int QUESTION_NOMAL = 0x01;
 
 
+    public static final int QUESTION_HIDED = -0x01;
+    public static final int QUESTION_SHOWN = 0x01;
+
+
 
 }

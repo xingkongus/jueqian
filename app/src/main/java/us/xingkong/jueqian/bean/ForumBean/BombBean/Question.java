@@ -1,7 +1,6 @@
 package us.xingkong.jueqian.bean.ForumBean.BombBean;
 
 import cn.bmob.v3.BmobObject;
-import cn.bmob.v3.datatype.BmobFile;
 
 /**
  * Created by Garfield on 1/11/17.

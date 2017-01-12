@@ -1,6 +1,6 @@
 package us.xingkong.jueqian.bean.ForumBean.GsonBean;
 
-import java.sql.Date;
+import java.util.Date;
 
 import cn.bmob.v3.BmobObject;
 import io.realm.annotations.PrimaryKey;

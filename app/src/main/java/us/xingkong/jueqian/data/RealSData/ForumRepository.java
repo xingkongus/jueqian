@@ -112,7 +112,6 @@ public class ForumRepository {
                 for (int i = 0; i < list.size(); i++) {
 
                     /**    private String OBJ_ID;
-
                      private String profileURI;
                      private String sender;
                      private Integer sender_state;
@@ -130,12 +129,11 @@ public class ForumRepository {
                     forumPageBean.setSender(getUsername(list.get(i).getSENDER_ID()));
                     forumPageBean.setSender_state(getUserState(list.get(i).getSENDER_ID()));
                     forumPageBean.setMtitle(list.get(i).getMtitle());
-//                    forumPageBean.setIsHided();
+                    forumPageBean.setIsHided(list.get(i).getIsHided());
                     forumPageBean.setTAG1(getTag(list.get(i).getTAG1_ID()));
                     forumPageBean.setTAG2(list.get(i).getTAG2_ID());
-//                    forumPageBean.setGood_count();
+                    forumPageBean.setGood_count(list.get(i).getGood_count());
                     forumPageBean.setAnswer_count(list.get(i).getAnswer_count());
-
                     forumPageBean.setTime_create(Date.valueOf(list.get(i).getCreatedAt()));
                     forumPageBean.setLast_update(Date.valueOf(list.get(i).getUpdatedAt()));
                     arr.add(i, forumPageBean);
@@ -203,6 +201,7 @@ public class ForumRepository {
             @Override
             public void onSuccess(User user) {
                 isGot3 = 1;
+//                user.getProfile().getUrl();
 //                IOFiles.toSaveFile(BitmapFactory.user.getProfile().)
 //                mState = user.getProfile();
             }
@@ -219,7 +218,6 @@ public class ForumRepository {
     }
 
     private String getTag(final String tag_id) {
-
         isGot_getTag = 0;
         BmobQuery<TagBean> bmobQuery = new BmobQuery<>();
         bmobQuery.getObject(mContext, tag_id, new GetListener<TagBean>() {
