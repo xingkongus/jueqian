@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/loadingview"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.wang.avi.AVLoadingIndicatorView
+        android:id="@+id/loadingIndicatorView"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dp_48"
+        android:layout_gravity="center"
+        android:visibility="visible"
+        app:indicatorColor="@color/colorPrimary" />
+
+    <TextView
+        android:id="@+id/tv_load_data_again"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_48"
+        android:gravity="center"
+        android:text="@string/text_loaddata_again"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/sp_16"
+        android:visibility="gone"
+        tools:visibility="visible" />
+</LinearLayout>

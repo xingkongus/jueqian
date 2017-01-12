@@ -11,6 +11,7 @@
     <string name="text_myanswer">我的回答</string>
     <string name="text_recentlook">最近浏览</string>
     <string name="text_settings">个人设置</string>
+    <string name="text_loaddata_again">点击重新加载</string>
 
     <string-array name="tab_title">
         <item>论坛</item>

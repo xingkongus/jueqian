@@ -1,7 +1,6 @@
 package us.xingkong.jueqian.module.RealS.Content;
 
 import java.util.List;
-import java.util.Map;
 
 import us.xingkong.jueqian.base.BasePresenter;
 import us.xingkong.jueqian.base.BaseView;

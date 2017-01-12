@@ -7,6 +7,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -18,6 +19,8 @@ import us.xingkong.jueqian.adapter.PartTypeAdapter;
 import us.xingkong.jueqian.base.BaseFragment;
 import us.xingkong.jueqian.bean.RealSBean.Results;
 import us.xingkong.jueqian.data.RealSData.RealSRepository;
+import us.xingkong.jueqian.listener.LoadMoreDataAgainListener;
+import us.xingkong.jueqian.utils.LogUtils;
 
 /**
  * Created by hugeterry(http://hugeterry.cn)
@@ -116,6 +119,14 @@ public class ContentFragment extends BaseFragment<ContentContract.Presenter> imp
 
             }
         });
+        mBaseAdapter.setOnMoreDataLoadAgainListener(new LoadMoreDataAgainListener() {
+            @Override
+            public void loadMoreDataAgain(TextView textView, View loadingView) {
+                textView.setVisibility(View.GONE);
+                loadingView.setVisibility(View.VISIBLE);
+                mPresenter.getRealSList(mRealSTitle, pageNum);
+            }
+        });
     }
 
     @Override
@@ -124,7 +135,6 @@ public class ContentFragment extends BaseFragment<ContentContract.Presenter> imp
             mSwipeRefreshLayout.setRefreshing(false);
             pageNum = 1;
         } else {
-            mRecyclerView.scrollToPosition(mBaseAdapter.getItemCount());
             pageNum = ++page;
         }
     }
@@ -133,6 +143,8 @@ public class ContentFragment extends BaseFragment<ContentContract.Presenter> imp
     public void loadFailure(int page) {
         if (page == 1) {
             mSwipeRefreshLayout.setRefreshing(false);
+        } else {
+            mBaseAdapter.setloadFailureView();
         }
     }
 
