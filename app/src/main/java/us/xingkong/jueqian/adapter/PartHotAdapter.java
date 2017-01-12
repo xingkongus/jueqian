@@ -57,6 +57,8 @@ public class PartHotAdapter extends BaseAdapter<Results> {
             Glide.with(context)
                     .load(images.get(0))
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .override(100, 100)
+                    .thumbnail(0.5f)
                     .into(holder.iv_img);
         } else {
             holder.iv_img.setVisibility(View.GONE);
@@ -92,7 +94,7 @@ public class PartHotAdapter extends BaseAdapter<Results> {
             holder.tv_author.setText(author);
             holder.tv_author.setTextColor(Color.parseColor("#87000000"));
         } else {
-            holder.tv_author.setText("");
+            holder.tv_author.setText("匿名");
         }
 
         String time = mData.get(position).getCreatedAt();

@@ -34,7 +34,6 @@
             android:layout_toRightOf="@id/iv_part_type_icon"
             android:gravity="center"
             android:textColor="@color/text_secondary"
-            android:textSize="15sp"
             tools:text="Android" />
 
         <ImageView

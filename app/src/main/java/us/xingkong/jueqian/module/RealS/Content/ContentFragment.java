@@ -2,11 +2,11 @@ package us.xingkong.jueqian.module.RealS.Content;
 
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
-import android.widget.TextView;
 
 import java.util.List;
 
@@ -18,7 +18,6 @@ import us.xingkong.jueqian.adapter.PartTypeAdapter;
 import us.xingkong.jueqian.base.BaseFragment;
 import us.xingkong.jueqian.bean.RealSBean.Results;
 import us.xingkong.jueqian.data.RealSData.RealSRepository;
-import us.xingkong.jueqian.utils.LogUtils;
 
 /**
  * Created by hugeterry(http://hugeterry.cn)
@@ -40,7 +39,6 @@ public class ContentFragment extends BaseFragment<ContentContract.Presenter> imp
     private int pageNum = 1;
     private String mRealSTitle;
     private static final String REALS_TITLE = "reals_title";
-    private List<Results> mResults;
 
     public static ContentFragment getInstance(String title) {
         ContentFragment fra = new ContentFragment();
@@ -86,6 +84,7 @@ public class ContentFragment extends BaseFragment<ContentContract.Presenter> imp
                 mRecyclerView.setAdapter(mPartTypeAdapter);
                 break;
         }
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
     }
 

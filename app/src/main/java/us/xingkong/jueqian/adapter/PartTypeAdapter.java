@@ -7,7 +7,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,13 +51,25 @@ public class PartTypeAdapter extends BaseAdapter<Results> {
     }
 
     private void onBindViewHolder(PartTypeHolder holder, final int position) {
+        List<String> images = mData.get(position).getImages();
+        if (!images.isEmpty()) {
+            holder.iv_img.setVisibility(View.VISIBLE);
+            Glide.with(context)
+                    .load(images.get(0))
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .override(100, 100)
+                    .thumbnail(0.5f)
+                    .into(holder.iv_img);
+        } else {
+            holder.iv_img.setVisibility(View.GONE);
+        }
         holder.textView.setText(mData.get(position).getDesc());
         String author = mData.get(position).getWho();
         if (author != null) {
             holder.tv_author.setText(author);
             holder.tv_author.setTextColor(Color.parseColor("#87000000"));
         } else {
-            holder.tv_author.setText("");
+            holder.tv_author.setText("匿名");
         }
         String time = mData.get(position).getCreatedAt();
         if (time != null) {
@@ -76,6 +94,8 @@ public class PartTypeAdapter extends BaseAdapter<Results> {
         TextView tv_author;
         @BindView(R.id.tv_read_time)
         TextView tv_time;
+        @BindView(R.id.iv_read_img)
+        ImageView iv_img;
 
         public PartTypeHolder(View itemView) {
             super(itemView);
