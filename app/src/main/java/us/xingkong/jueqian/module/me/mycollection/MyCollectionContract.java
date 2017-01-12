@@ -1,15 +1,14 @@
-package us.xingkong.jueqian.module.me;
+package us.xingkong.jueqian.module.me.mycollection;
 
 import us.xingkong.jueqian.base.BasePresenter;
 import us.xingkong.jueqian.base.BaseView;
-import us.xingkong.jueqian.module.main.MainContract;
 
 /**
  * Created by PERFECTLIN on 2017/1/10 0010.
  */
 
-public class MeContract {
-    interface View extends BaseView<Presenter> {
+public class MyCollectionContract {
+    interface View extends BaseView<MyCollectionContract.Presenter> {
     }
 
     interface Presenter extends BasePresenter {
