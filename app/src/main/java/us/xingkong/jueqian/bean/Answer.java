@@ -7,17 +7,35 @@ import java.util.Date;
  */
 
 public class Answer {
-    private Question question; //所回答的问题
+    private String answerID; //回答的ID
+    private String questionID; //回答的问题的ID
+    private String senderID; //提问者ID
     private String content; //回答的内容
     private Date date; //回答的时间
     private int good_count; //这个回答获得的赞数量
 
-    public Question getQuestion() {
-        return question;
+    public String getAnswerID() {
+        return answerID;
     }
 
-    public void setQuestion(Question question) {
-        this.question = question;
+    public void setAnswerID(String answerID) {
+        this.answerID = answerID;
+    }
+
+    public String getQuestionID() {
+        return questionID;
+    }
+
+    public void setQuestionID(String questionID) {
+        this.questionID = questionID;
+    }
+
+    public String getSenderID() {
+        return senderID;
+    }
+
+    public void setSenderID(String senderID) {
+        this.senderID = senderID;
     }
 
     public String getContent() {
@@ -43,14 +61,4 @@ public class Answer {
     public void setGood_count(int good_count) {
         this.good_count = good_count;
     }
-
-    public Answer getAnswer() {
-        return answer;
-    }
-
-    public void setAnswer(Answer answer) {
-        this.answer = answer;
-    }
-
-    private Answer answer; //这个评论的评论
 }

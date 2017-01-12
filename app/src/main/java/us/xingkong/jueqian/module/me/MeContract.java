@@ -9,7 +9,7 @@ import us.xingkong.jueqian.module.main.MainContract;
  */
 
 public class MeContract {
-    interface View extends BaseView<MeContract.Presenter> {
+    interface View extends BaseView<Presenter> {
     }
 
     interface Presenter extends BasePresenter {
