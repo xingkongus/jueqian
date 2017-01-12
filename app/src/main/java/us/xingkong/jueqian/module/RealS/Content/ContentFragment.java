@@ -124,7 +124,7 @@ public class ContentFragment extends BaseFragment<ContentContract.Presenter> imp
             mSwipeRefreshLayout.setRefreshing(false);
             pageNum = 1;
         } else {
-            mRecyclerView.scrollToPosition((page - 1) * 20);
+            mRecyclerView.scrollToPosition(mBaseAdapter.getItemCount());
             pageNum = ++page;
         }
     }
