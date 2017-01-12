@@ -39,7 +39,7 @@ public class ContentPresenter extends BasePresenterImpl implements ContentContra
                             mView.showRefresh(false);
                         }
                         mView.loadSuccess(page);
-                        mView.showRealSList(REALS_READ_NUM, data.getResults());
+                        mView.showRealSList(page, data.getResults());
                     }
 
                     @Override

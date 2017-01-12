@@ -44,9 +44,9 @@ public class ScrollAwareBehavior extends FloatingActionButton.Behavior {
 //    }
 //
 //    // Same animation that FloatingActionButton.Behavior uses to hide the FAB when the AppBarLayout exits
-//    private void animateOut(final FloatingActionButton button) {
+//    private void animateOut(final FloatingActionButton view_feedback) {
 //        if (Build.VERSION.SDK_INT >= 14) {
-//            ViewCompat.animate(button).scaleX(0.0F).scaleY(0.0F).alpha(0.0F).setInterpolator(INTERPOLATOR).withLayer()
+//            ViewCompat.animate(view_feedback).scaleX(0.0F).scaleY(0.0F).alpha(0.0F).setInterpolator(INTERPOLATOR).withLayer()
 //                    .setListener(new ViewPropertyAnimatorListener() {
 //                        public void onAnimationStart(View view) {
 //                            ScrollAwareBehavior.this.mIsAnimatingOut = true;
@@ -62,7 +62,7 @@ public class ScrollAwareBehavior extends FloatingActionButton.Behavior {
 //                        }
 //                    }).start();
 //        } else {
-//            Animation anim = AnimationUtils.loadAnimation(button.getContext(), R.anim.fab_out);
+//            Animation anim = AnimationUtils.loadAnimation(view_feedback.getContext(), R.anim.fab_out);
 //            anim.setInterpolator(INTERPOLATOR);
 //            anim.setDuration(200L);
 //            anim.setAnimationListener(new Animation.AnimationListener() {
@@ -72,29 +72,29 @@ public class ScrollAwareBehavior extends FloatingActionButton.Behavior {
 //
 //                public void onAnimationEnd(Animation animation) {
 //                    ScrollAwareBehavior.this.mIsAnimatingOut = false;
-//                    button.setVisibility(View.GONE);
+//                    view_feedback.setVisibility(View.GONE);
 //                }
 //
 //                @Override
 //                public void onAnimationRepeat(final Animation animation) {
 //                }
 //            });
-//            button.startAnimation(anim);
+//            view_feedback.startAnimation(anim);
 //        }
 //    }
 //
 //    // Same animation that FloatingActionButton.Behavior uses to show the FAB when the AppBarLayout enters
-//    private void animateIn(FloatingActionButton button) {
-//        button.setVisibility(View.VISIBLE);
+//    private void animateIn(FloatingActionButton view_feedback) {
+//        view_feedback.setVisibility(View.VISIBLE);
 //        if (Build.VERSION.SDK_INT >= 14) {
-//            ViewCompat.animate(button).scaleX(1.0F).scaleY(1.0F).alpha(1.0F)
+//            ViewCompat.animate(view_feedback).scaleX(1.0F).scaleY(1.0F).alpha(1.0F)
 //                    .setInterpolator(INTERPOLATOR).withLayer().setListener(null)
 //                    .start();
 //        } else {
-//            Animation anim = AnimationUtils.loadAnimation(button.getContext(), R.anim.fab_in);
+//            Animation anim = AnimationUtils.loadAnimation(view_feedback.getContext(), R.anim.fab_in);
 //            anim.setDuration(200L);
 //            anim.setInterpolator(INTERPOLATOR);
-//            button.startAnimation(anim);
+//            view_feedback.startAnimation(anim);
 //        }
 //    }
 
@@ -128,9 +128,9 @@ public class ScrollAwareBehavior extends FloatingActionButton.Behavior {
 //    }
 //
 //    // Same animation that FloatingActionButton.Behavior uses to hide the FAB when the AppBarLayout exits
-//    private void animateOut(final FloatingActionButton button) {
+//    private void animateOut(final FloatingActionButton view_feedback) {
 //        if (Build.VERSION.SDK_INT >= 14) {
-//            ViewCompat.animate(button).scaleX(0.0F).scaleY(0.0F).alpha(0.0F).setInterpolator(INTERPOLATOR).withLayer()
+//            ViewCompat.animate(view_feedback).scaleX(0.0F).scaleY(0.0F).alpha(0.0F).setInterpolator(INTERPOLATOR).withLayer()
 //                    .setListener(new ViewPropertyAnimatorListener() {
 //                        public void onAnimationStart(View view) {
 //                            ScrollAwareBehavior.this.mIsAnimatingOut = true;
@@ -146,7 +146,7 @@ public class ScrollAwareBehavior extends FloatingActionButton.Behavior {
 //                        }
 //                    }).start();
 //        } else {
-//            Animation anim = AnimationUtils.loadAnimation(button.getContext(), R.anim.fab_out);
+//            Animation anim = AnimationUtils.loadAnimation(view_feedback.getContext(), R.anim.fab_out);
 //            anim.setInterpolator(INTERPOLATOR);
 //            anim.setDuration(200L);
 //            anim.setAnimationListener(new Animation.AnimationListener() {
@@ -156,29 +156,29 @@ public class ScrollAwareBehavior extends FloatingActionButton.Behavior {
 //
 //                public void onAnimationEnd(Animation animation) {
 //                    ScrollAwareBehavior.this.mIsAnimatingOut = false;
-//                    button.setVisibility(View.GONE);
+//                    view_feedback.setVisibility(View.GONE);
 //                }
 //
 //                @Override
 //                public void onAnimationRepeat(final Animation animation) {
 //                }
 //            });
-//            button.startAnimation(anim);
+//            view_feedback.startAnimation(anim);
 //        }
 //    }
 //
 //    // Same animation that FloatingActionButton.Behavior uses to show the FAB when the AppBarLayout enters
-//    private void animateIn(FloatingActionButton button) {
-//        button.setVisibility(View.VISIBLE);
+//    private void animateIn(FloatingActionButton view_feedback) {
+//        view_feedback.setVisibility(View.VISIBLE);
 //        if (Build.VERSION.SDK_INT >= 14) {
-//            ViewCompat.animate(button).scaleX(1.0F).scaleY(1.0F).alpha(1.0F)
+//            ViewCompat.animate(view_feedback).scaleX(1.0F).scaleY(1.0F).alpha(1.0F)
 //                    .setInterpolator(INTERPOLATOR).withLayer().setListener(null)
 //                    .start();
 //        } else {
-//            Animation anim = AnimationUtils.loadAnimation(button.getContext(), R.anim.fab_in);
+//            Animation anim = AnimationUtils.loadAnimation(view_feedback.getContext(), R.anim.fab_in);
 //            anim.setDuration(200L);
 //            anim.setInterpolator(INTERPOLATOR);
-//            button.startAnimation(anim);
+//            view_feedback.startAnimation(anim);
 //        }
 //    }
 
