@@ -21,6 +21,8 @@ public class Constants {
     public static final int QUESTION_HIDED = -0x01;
     public static final int QUESTION_SHOWN = 0x01;
 
-
-
+    // ---- forum专用
+    public static final int REQUEST_REFRESH = 0x1;
+    public static final int REQUEST_INTENT_TO_QUESTIONPAGE = 0x2;
+    // ---- forum专用
 }

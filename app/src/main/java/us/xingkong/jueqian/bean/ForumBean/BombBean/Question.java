@@ -9,7 +9,7 @@ import cn.bmob.v3.BmobObject;
 public class Question extends BmobObject {
 
     private String mtitle;/*问题的标题*/
-    private String isHided;/*是否为匿名问题*/
+    private boolean isHided;/*是否为匿名问题*/
     private String mcontent;/*问题的内容*/
     private String SENDER_ID;/*发送者的ID*/
     private Integer state;/*问题的状态，-1既是封掉的问题，1为正常问题*/
@@ -34,12 +34,12 @@ public class Question extends BmobObject {
         this.mtitle = mtitle;
     }
 
-    public String getIsHided() {
+    public boolean isHided() {
         return isHided;
     }
 
-    public void setIsHided(String isHided) {
-        this.isHided = isHided;
+    public void setHided(boolean hided) {
+        isHided = hided;
     }
 
     public String getMcontent() {

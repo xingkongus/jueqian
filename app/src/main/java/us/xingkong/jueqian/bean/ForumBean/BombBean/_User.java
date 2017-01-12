@@ -7,7 +7,7 @@ import cn.bmob.v3.datatype.BmobFile;
  * Created by Garfield on 1/11/17.
  */
 
-public class User extends BmobObject {
+public class _User extends BmobObject {
 
 
     public Boolean getGender() {
@@ -26,13 +26,6 @@ public class User extends BmobObject {
         this.profile = profile;
     }
 
-    public Boolean getSelfIntro() {
-        return selfIntro;
-    }
-
-    public void setSelfIntro(Boolean selfIntro) {
-        this.selfIntro = selfIntro;
-    }
 
     public Integer getState() {
         return state;
@@ -58,10 +51,18 @@ public class User extends BmobObject {
         this.username = username;
     }
 
+    public String getSelfIntro() {
+        return selfIntro;
+    }
+
+    public void setSelfIntro(String selfIntro) {
+        this.selfIntro = selfIntro;
+    }
+
     private String username;
     private String ACCOUNT;//账号
     private Boolean gender;//性别
     private BmobFile profile;//头像
-    private Boolean selfIntro;//自我介绍
+    private String selfIntro;//自我介绍
     private Integer state;//用户状态
 }

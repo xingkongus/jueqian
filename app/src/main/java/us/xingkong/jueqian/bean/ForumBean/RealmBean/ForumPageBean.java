@@ -15,11 +15,11 @@ public class ForumPageBean extends RealmObject{
     @PrimaryKey
     private String OBJ_ID;
 
-    private String profileURI;
+    private String profileURL;
     private String sender;
     private Integer sender_state;
     private String mtitle;/*问题的标题*/
-    private String isHided;/*是否为匿名问题*/
+    private boolean isHided;/*是否为匿名问题*/
     private String TAG1;/*第一个Tag的id*/
     private String TAG2;/*第二个Tag的id*/
     private Integer good_count;/*点赞的数量*/
@@ -44,12 +44,12 @@ public class ForumPageBean extends RealmObject{
         this.OBJ_ID = OBJ_ID;
     }
 
-    public String getProfileURI() {
-        return profileURI;
+    public String getProfileURL() {
+        return profileURL;
     }
 
-    public void setProfileURI(String profileURI) {
-        this.profileURI = profileURI;
+    public void setProfileURL(String profileURL) {
+        this.profileURL = profileURL;
     }
 
     public String getSender() {
@@ -76,12 +76,12 @@ public class ForumPageBean extends RealmObject{
         this.mtitle = mtitle;
     }
 
-    public String getIsHided() {
+    public boolean isHided() {
         return isHided;
     }
 
-    public void setIsHided(String isHided) {
-        this.isHided = isHided;
+    public void setHided(boolean hided) {
+        isHided = hided;
     }
 
     public String getTAG1() {

@@ -12,11 +12,11 @@ public class GSON_ForumPageBean {
     @PrimaryKey
     private String OBJ_ID;
 
-    private String profileURI;
+    private String profileURL;
     private String sender;
     private Integer sender_state;
     private String mtitle;/*问题的标题*/
-    private String isHided;/*是否为匿名问题*/
+    private boolean isHided;/*是否为匿名问题*/
     private String TAG1;/*第一个Tag的id*/
     private String TAG2;/*第二个Tag的id*/
     private Integer good_count;/*点赞的数量*/
@@ -33,12 +33,12 @@ public class GSON_ForumPageBean {
         this.OBJ_ID = OBJ_ID;
     }
 
-    public String getProfileURI() {
-        return profileURI;
+    public String getProfileURL() {
+        return profileURL;
     }
 
-    public void setProfileURI(String profileURI) {
-        this.profileURI = profileURI;
+    public void setProfileURL(String profileURL) {
+        this.profileURL = profileURL;
     }
 
     public String getSender() {
@@ -65,12 +65,20 @@ public class GSON_ForumPageBean {
         this.mtitle = mtitle;
     }
 
-    public String getIsHided() {
+    public boolean isHided() {
         return isHided;
     }
 
-    public void setIsHided(String isHided) {
-        this.isHided = isHided;
+    public void setHided(boolean hided) {
+        isHided = hided;
+    }
+
+    public void setTime_create(Date time_create) {
+        this.time_create = time_create;
+    }
+
+    public void setLast_update(Date last_update) {
+        this.last_update = last_update;
     }
 
     public String getTAG1() {
@@ -109,15 +117,5 @@ public class GSON_ForumPageBean {
         return time_create;
     }
 
-    public void setTime_create(Date time_create) {
-        this.time_create = time_create;
-    }
 
-    public Date getLast_update() {
-        return last_update;
-    }
-
-    public void setLast_update(Date last_update) {
-        this.last_update = last_update;
-    }
 }
