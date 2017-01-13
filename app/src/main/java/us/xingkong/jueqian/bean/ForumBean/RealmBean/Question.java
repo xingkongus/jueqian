@@ -122,11 +122,11 @@
 //        this.TAG2_ID = TAG2_ID;
 //    }
 //
-//    public Integer getGood_count() {
+//    public Integer getLike() {
 //        return good_count;
 //    }
 //
-//    public void setGood_count(Integer good_count) {
+//    public void setLike(Integer good_count) {
 //        this.good_count = good_count;
 //    }
 //}

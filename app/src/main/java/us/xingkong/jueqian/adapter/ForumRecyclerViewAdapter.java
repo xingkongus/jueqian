@@ -31,13 +31,11 @@ public class ForumRecyclerViewAdapter extends RecyclerView.Adapter<ForumRecycler
     Handler mHandler;
     Context mContext;
 
-
     public ForumRecyclerViewAdapter(ArrayList<GSON_ForumPageBean> infoSets, Handler handler, Context mContext) {
         this.infoSets = infoSets;
         mHandler = handler;
         this.mContext = mContext;
     }
-
 
     @Override
     public VH onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -63,8 +61,6 @@ public class ForumRecyclerViewAdapter extends RecyclerView.Adapter<ForumRecycler
         } else if (infoSets.get(position).getSender_state() == Constants.STATE_MEMBER) {
             holder.userState.setBackgroundColor(Color.CYAN);
         }
-
-
     }
 
     @Override
@@ -99,6 +95,4 @@ public class ForumRecyclerViewAdapter extends RecyclerView.Adapter<ForumRecycler
             tag2 = (TextView) itemView.findViewById(R.id.TAG2_forum);
         }
     }
-
-
 }

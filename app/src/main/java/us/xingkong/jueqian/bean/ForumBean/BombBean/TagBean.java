@@ -1,7 +1,5 @@
 package us.xingkong.jueqian.bean.ForumBean.BombBean;
 
-import android.nfc.Tag;
-
 import cn.bmob.v3.BmobObject;
 
 /**
@@ -9,13 +7,7 @@ import cn.bmob.v3.BmobObject;
  */
 
 public class TagBean extends BmobObject{
+
     private String tag;
 
-    public String getTag() {
-        return tag;
-    }
-
-    public void setTag(String tag) {
-        this.tag = tag;
-    }
 }

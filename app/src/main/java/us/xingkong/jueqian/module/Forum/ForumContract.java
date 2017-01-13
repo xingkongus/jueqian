@@ -22,6 +22,6 @@ public interface ForumContract {
 
     interface Presenter extends BasePresenter {
         void initList();
-        void getForumList(boolean isNewest, Date date, int num);
+        void getForumListFromBmob(boolean isNewest, Date date, int num);
     }
 }
