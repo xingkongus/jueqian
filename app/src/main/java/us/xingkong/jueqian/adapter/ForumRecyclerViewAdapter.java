@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,7 +49,7 @@ public class ForumRecyclerViewAdapter extends RecyclerView.Adapter<ForumRecycler
         holder.linearLayout.setOnClickListener(this);
         holder.title.setText(infoSets.get(position).getMtitle());
         holder.username.setText(infoSets.get(position).getSender());
-        holder.count_answer.setText(infoSets.get(position).getAnswer_count());
+        holder.count_answer.setText(String.valueOf(infoSets.get(position).getAnswer_count()));
         holder.tag1.setText(infoSets.get(position).getTAG1());
         holder.tag2.setText(infoSets.get(position).getTAG2());
 //        holder.profile

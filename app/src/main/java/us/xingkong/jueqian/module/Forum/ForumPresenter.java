@@ -2,6 +2,9 @@ package us.xingkong.jueqian.module.Forum;
 
 import android.util.Log;
 
+import org.json.JSONObject;
+
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,10 +18,9 @@ import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.TagBean;
 import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
 import us.xingkong.jueqian.bean.ForumBean.GsonBean.GSON_ForumPageBean;
-import us.xingkong.jueqian.data.RealSData.ForumRepository;
+import us.xingkong.jueqian.data.RepositData.ForumRepository;
 import us.xingkong.jueqian.utils.ToastUtils;
 
-import static u.aly.dc.i;
 
 /**
  * Created by boluoxiaomo
@@ -58,7 +60,7 @@ public class ForumPresenter extends BasePresenterImpl implements ForumContract.P
     @Override
     public void getForumList(boolean isNewest, Date date, int num) {
         i = 0;
-
+        infoSet = new ArrayList<>();
 //        Bmob.initialize(mContext, "2d6a319fa542339021237173a1990ead");
         BmobQuery<Question> query = new BmobQuery<>();
         query.order("-createdAt");
@@ -73,7 +75,7 @@ public class ForumPresenter extends BasePresenterImpl implements ForumContract.P
             public void onSuccess(List<Question> list) {
                 /*for (int i = 0; i < list.size(); i++) */
                 size_of_list = list.size();
-                while (i < list.size()) {
+//                while (i < list.size()) {
                     /**    private String OBJ_ID;
                      private String profileURI;
                      private String sender;
@@ -92,22 +94,28 @@ public class ForumPresenter extends BasePresenterImpl implements ForumContract.P
                     forumPageBean.setHided(list.get(i).isHided());
                     forumPageBean.setGood_count(list.get(i).getGood_count());
                     forumPageBean.setAnswer_count(list.get(i).getAnswer_count());
-                    forumPageBean.setTime_create(new Date(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(list.get(i).getCreatedAt())));
-                    forumPageBean.setLast_update(new Date(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(list.get(i).getUpdatedAt())));
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    try {
+                        forumPageBean.setTime_create(format.parse(list.get(i).getCreatedAt()));
+                        forumPageBean.setLast_update(format.parse(list.get(i).getUpdatedAt()));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
+                    Log.d("hhhh", "这里-" + i);
 
 //                    forumPageBean.setTAG1(getTag(list.get(i).getTAG1_ID()));
 //                    forumPageBean.setTAG2(list.get(i).getTAG2_ID());
                     getLeastInfo(forumPageBean, list.get(i).getTAG1_ID(), list.get(i).getTAG2_ID(), list.get(i).getSENDER_ID());
 
 
-                }
+//                }
 
             }
 
             @Override
             public void onError(int i, String s) {
                 ToastUtils.shortToast(mView.getmContext(), "请求bmob错误");
-                Log.d("bf", "意外发生了！67");
             }
         });
 
@@ -121,6 +129,8 @@ public class ForumPresenter extends BasePresenterImpl implements ForumContract.P
             public void onSuccess(TagBean tagBean) {
                 forumPageBean.setTAG1(tagBean.getTag());
                 getTag2(forumPageBean, tag2_id, sender_id);
+                Log.d("hhhh", "这里--" + i);
+
             }
 
             @Override
@@ -131,6 +141,7 @@ public class ForumPresenter extends BasePresenterImpl implements ForumContract.P
 
     }
 
+
     private void getTag2(final GSON_ForumPageBean forumPageBean, final String tag_id, final String sender_id) {
         BmobQuery<TagBean> bmobQuery = new BmobQuery<>();
         bmobQuery.getObject(mView.getmContext(), tag_id, new GetListener<TagBean>() {
@@ -138,6 +149,8 @@ public class ForumPresenter extends BasePresenterImpl implements ForumContract.P
             public void onSuccess(TagBean tagBean) {
                 forumPageBean.setTAG2(tagBean.getTag());
                 getUserInfo(forumPageBean, sender_id);
+                Log.d("hhhh", "这里---" + i);
+
             }
 
             @Override
@@ -157,11 +170,12 @@ public class ForumPresenter extends BasePresenterImpl implements ForumContract.P
                 forumPageBean.setProfileURL(user.getProfile().getUrl());
                 infoSet.add(i, forumPageBean);
                 i++;
-                if (i ==size_of_list){
-                    Log.d("td","这里"+infoSet.size());
+                Log.d("hhhh", "这里----" + i);
+//                if (i == size_of_list) {
+                    Log.d("hhhh", "这里" + infoSet.size());
                     infoSet.size();
                     mView.initShowList(infoSet);
-                }
+//                }
             }
 
             @Override

@@ -23,7 +23,7 @@ import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.adapter.ForumRecyclerViewAdapter;
 import us.xingkong.jueqian.base.BaseFragment;
 import us.xingkong.jueqian.bean.ForumBean.GsonBean.GSON_ForumPageBean;
-import us.xingkong.jueqian.data.RealSData.ForumRepository;
+import us.xingkong.jueqian.data.RepositData.ForumRepository;
 import us.xingkong.jueqian.module.Forum.NewPage.NewActivity;
 import us.xingkong.jueqian.module.Forum.QuestionPage.QuestionActivity;
 

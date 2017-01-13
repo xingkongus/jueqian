@@ -1,4 +1,4 @@
-package us.xingkong.jueqian.data.RealSData;
+package us.xingkong.jueqian.data.RepositData;
 
 import android.content.Context;
 import android.util.Log;
@@ -9,7 +9,6 @@ import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.GetListener;
@@ -72,9 +71,7 @@ public class ForumRepository {
                     i++;
                     continue;
                 }
-
                 Gson gson = new Gson();
-
                 GSON_ForumPageBean forumPageBean = new GSON_ForumPageBean();
                 forumPageBean.setTAG1(results.get(i).getTAG1());
                 forumPageBean.setTAG2(results.get(i).getTAG2());
@@ -93,13 +90,8 @@ public class ForumRepository {
         }
         Log.d("bf", "意外发生了！51");
         if (arr.size() != 0) {
-            Log.d("bf", "意外发生了！52");
             return arr;
         } else {
-            Log.d("bf", "意外发生了！53");
-
-
-
             return getDataFromBmob(20, new Date(System.currentTimeMillis()), true);
         }
     }
@@ -120,7 +112,7 @@ public class ForumRepository {
             public void onSuccess(List<Question> list) {
                 isGot_getDataFromBmob = 1;
                 for (int i = 0; i < list.size(); i++) {
-                    /**    private String OBJ_ID;
+                    /** private String OBJ_ID;
                      private String profileURI;
                      private String sender;
                      private Integer sender_state;
@@ -148,7 +140,6 @@ public class ForumRepository {
                     forumPageBean.setProfileURL(getProfileURL(list.get(i).getSENDER_ID()));
                     arr.add(i, forumPageBean);
                 }
-
             }
 
             @Override
@@ -158,8 +149,6 @@ public class ForumRepository {
                 isGot_getDataFromBmob = -1;
             }
         });
-
-        Log.d("bf", "意外发生了！78");
         return arr;
     }
 
