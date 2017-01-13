@@ -15,5 +15,4 @@ public class Answer extends BmobObject {
     private Integer state;/*问题的状态，-1为举报成功的问题，1为正常问*/
     private BmobRelation like;/*点赞数*/
 
-
 }
