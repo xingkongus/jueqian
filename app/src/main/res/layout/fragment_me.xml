@@ -125,7 +125,35 @@
                     android:text="@string/text_mycollection"
                     android:textSize="@dimen/sp_16" />
             </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/me_linerlayout_myquestions"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_48"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="8dp"
+                android:background="#F2F2F2"
+                android:paddingRight="@dimen/dp_16">
 
+                <ImageView
+                    android:id="@+id/me_iv_myquestions"
+                    android:layout_width="@dimen/dp_24"
+                    android:layout_height="@dimen/dp_24"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/dp_16"
+                    android:src="@drawable/iv_myquestions" />
+
+                <TextView
+                    android:id="@+id/me_tv_myquestions"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/dp_16"
+                    android:layout_toRightOf="@id/me_iv_myquestions"
+                    android:gravity="center"
+                    android:text="@string/text_myquestions"
+                    android:textSize="@dimen/sp_16" />
+            </RelativeLayout>
             <RelativeLayout
                 android:id="@+id/me_linerlayout_myanswer"
                 android:layout_width="match_parent"

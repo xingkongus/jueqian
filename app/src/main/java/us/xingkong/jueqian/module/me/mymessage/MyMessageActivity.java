@@ -15,6 +15,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import butterknife.BindView;
+import cn.bmob.v3.datatype.BmobRelation;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.adapter.MyMessageRecyclerAdapter;
 import us.xingkong.jueqian.base.BaseActivity;
@@ -71,32 +72,6 @@ public class MyMessageActivity extends BaseActivity<MyMessageContract.Presenter>
     protected void initView() {
         setToolbar();
         initRecyclerView();
-        SetSwipeRefreshLayout();
-
-    }
-
-    private void SetSwipeRefreshLayout() {
-        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
-        mSwipeRefreshLayout.setSize(SwipeRefreshLayout.DEFAULT);
-        mSwipeRefreshLayout.setProgressViewEndTarget(true, 200);
-
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            Thread.sleep(1500);
-                            mHandler.sendEmptyMessage(1);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                }).start();
-            }
-        });
     }
 
     private void initRecyclerView() {
@@ -120,7 +95,27 @@ public class MyMessageActivity extends BaseActivity<MyMessageContract.Presenter>
 
     @Override
     protected void initEvent() {
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+        mSwipeRefreshLayout.setSize(SwipeRefreshLayout.DEFAULT);
+        mSwipeRefreshLayout.setProgressViewEndTarget(true, 200);
 
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Thread.sleep(2500);
+                            mHandler.sendEmptyMessage(1);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }).start();
+            }
+        });
     }
 
     @Override
@@ -131,5 +126,20 @@ public class MyMessageActivity extends BaseActivity<MyMessageContract.Presenter>
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void loadSuccess() {
+
+    }
+
+    @Override
+    public void loadFailure() {
+
+    }
+
+    @Override
+    public void showRefresh(boolean isRefresh) {
+
     }
 }

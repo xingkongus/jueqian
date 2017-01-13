@@ -20,4 +20,59 @@ public class _User extends BmobObject {
     private List<String> questionsID;//提问列表
     private List<String> collectionsID;//收藏列表
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public Boolean getBoy() {
+        return isBoy;
+    }
+
+    public void setBoy(Boolean boy) {
+        isBoy = boy;
+    }
+
+    public BmobFile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(BmobFile profile) {
+        this.profile = profile;
+    }
+
+    public String getSelfIntro() {
+        return selfIntro;
+    }
+
+    public void setSelfIntro(String selfIntro) {
+        this.selfIntro = selfIntro;
+    }
+
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
+    }
+
+    public List<String> getQuestionsID() {
+        return questionsID;
+    }
+
+    public void setQuestionsID(List<String> questionsID) {
+        this.questionsID = questionsID;
+    }
+
+    public List<String> getCollectionsID() {
+        return collectionsID;
+    }
+
+    public void setCollectionsID(List<String> collectionsID) {
+        this.collectionsID = collectionsID;
+    }
 }

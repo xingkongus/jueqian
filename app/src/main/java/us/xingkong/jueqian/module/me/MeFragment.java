@@ -14,6 +14,7 @@ import us.xingkong.jueqian.module.main.MainContract;
 import us.xingkong.jueqian.module.me.myanswer.MyAnswerActivity;
 import us.xingkong.jueqian.module.me.mycollection.MyCollectionActivity;
 import us.xingkong.jueqian.module.me.mymessage.MyMessageActivity;
+import us.xingkong.jueqian.module.me.myquestions.MyQuestionsAcitivity;
 import us.xingkong.jueqian.module.me.myrecentlook.MyRecentLookActivity;
 import us.xingkong.jueqian.module.me.mysettings.MySettingsActivity;
 
@@ -32,6 +33,9 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
     RelativeLayout mLinerlayout_myrecentlook;
     @BindView(R.id.me_linerlayout_settings)
     RelativeLayout mLinerlayout_mysettings;
+    @BindView(R.id.me_linerlayout_myquestions)
+    RelativeLayout mLinerlayout_myquestions;
+
 
     private int mPageCount;
     private static final String PAGE_COUNT = "page_count";
@@ -71,6 +75,17 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
         toMyAnswer();
         toMyRecentLook();
         toMySettings();
+        toMyQusetions();
+    }
+
+    private void toMyQusetions() {
+        mLinerlayout_myquestions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), MyQuestionsAcitivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void toMyMessage() {

@@ -30,7 +30,8 @@
         <activity android:name=".module.me.myanswer.MyAnswerActivity" />
         <activity android:name=".module.me.myrecentlook.MyRecentLookActivity" />
         <activity android:name=".module.me.mysettings.MySettingsActivity" />
-        <activity android:name=".module.me.mysettings.aboutme.AboutMeActivity"/>
+        <activity android:name=".module.me.mysettings.aboutme.AboutMeActivity" />
+        <activity android:name=".module.me.myquestions.MyQuestionsAcitivity" />
         <activity android:name=".module.common.WebActivity" />
     </application>
 

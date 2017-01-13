@@ -15,13 +15,13 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="©星空学生创新中心"
+            android:text="@string/text_aboutme_line1"
             android:textSize="@dimen/sp_24" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="xingkong.us"
+            android:text="@string/text_aboutme_line2"
             android:textSize="@dimen/sp_20" />
     </LinearLayout>
 
