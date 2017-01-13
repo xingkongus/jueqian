@@ -4,9 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
-import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.listener.SaveListener;
 import us.xingkong.jueqian.base.BasePresenterImpl;
+import us.xingkong.jueqian.bean.LoginRegistBean.Userinfo;
 import us.xingkong.jueqian.module.main.MainActivity;
 
 /**
@@ -28,13 +28,13 @@ public class LoginPresenter extends BasePresenterImpl implements LoginContract.P
         new Thread(new Runnable() {
             @Override
             public void run() {
-                BmobUser bu=new BmobUser();
+                Userinfo bu=new Userinfo();
                 bu.setUsername(username);
                 bu.setPassword(password);
                 bu.login(context, new SaveListener() {
                     @Override
                     public void onSuccess() {
-                        System.out.println("login successful");
+                        System.out.println("activity_login successful");
                         Intent intent=new Intent(context, MainActivity.class);
                         context.startActivity(intent);
                         onFinish();
@@ -42,7 +42,7 @@ public class LoginPresenter extends BasePresenterImpl implements LoginContract.P
 
                     @Override
                     public void onFailure(int i, String s) {
-                        System.out.println("login fail");
+                        System.out.println("activity_login fail");
                         Toast.makeText(context, "用户名不存在或密码错误", Toast.LENGTH_SHORT).show();
                     }
                 });

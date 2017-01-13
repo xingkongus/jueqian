@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+   >
+    <include layout="@layout/view_toolbar" />
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_margin="20dp"
+        android:id="@+id/repassword_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        app:passwordToggleEnabled="true">
+
+        <EditText
+            android:maxLines="1"
+            android:id="@+id/repassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="原密码"
+            android:inputType="textPassword"
+            />
+
+    </android.support.design.widget.TextInputLayout>
+    <android.support.design.widget.TextInputLayout
+        android:layout_margin="20dp"
+        android:id="@+id/nowpassword_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        app:passwordToggleEnabled="true">
+
+        <EditText
+            android:maxLines="1"
+            app:passwordToggleEnabled="true"
+            android:id="@+id/nowpassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="新密码"
+            android:inputType="textPassword"
+            />
+
+    </android.support.design.widget.TextInputLayout>
+<Button
+    android:layout_margin="20dp"
+    android:id="@+id/commit"
+    android:layout_marginTop="10dp"
+    android:background="@drawable/buttonshape"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="提交"/>
+</LinearLayout>

@@ -42,7 +42,7 @@ public class RegistActivity extends BaseActivity<RegistContract.Presenter> imple
     @Override
     protected int bindLayout() {
         //TODO:添加视图，记得添加androidmanifest
-        return R.layout.regist;
+        return R.layout.activity_regist;
     }
 
     @Override

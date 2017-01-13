@@ -21,6 +21,8 @@ import android.widget.RadioGroup;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 
 import butterknife.BindView;
 import us.xingkong.jueqian.R;
@@ -63,7 +65,7 @@ public class EditUserActivity extends BaseActivity<EditUserContract.Presenter> i
     @Override
     protected int bindLayout() {
         //TODO:添加视图，记得添加androidmanifest
-        return R.layout.edit_user;
+        return R.layout.activity_edit_user;
     }
 
     @Override
@@ -78,6 +80,7 @@ public class EditUserActivity extends BaseActivity<EditUserContract.Presenter> i
         phone_layout.setHint("手机号");
         email_layout.setHint("邮箱");
         context=this;
+
     }
 
     @Override
@@ -94,6 +97,15 @@ public class EditUserActivity extends BaseActivity<EditUserContract.Presenter> i
                 nick=nick_edit.getText().toString();
                 phone=phone_edit.getText().toString();
                 email=email_edit.getText().toString();
+                Uri uri = Uri.parse(MediaStore.Images.Media.insertImage(getContentResolver(), bmp, null,null));
+                try {
+                    String url= URLDecoder.decode(String.valueOf(uri),"UTF-8");
+                    mPresenter.saveUser(context,url,nick,phone,email,sex);
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+
+//                mPresenter.pushURL(context,uri);
 
             }
         });
@@ -110,7 +122,7 @@ public class EditUserActivity extends BaseActivity<EditUserContract.Presenter> i
                             startActivityForResult(Intent.createChooser(intent, "选择图片"), 1000);
                         } else {
 
-                            File file = new File(Environment.getExternalStorageDirectory(), "testphoto.jpg");
+                            File file = new File(Environment.getExternalStorageDirectory()+"/juexian", "testphoto.jpg");
                             outputFileUri = Uri.fromFile(file);
 
                             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);

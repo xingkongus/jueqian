@@ -44,7 +44,7 @@ public class LoginActivity extends BaseActivity<LoginContract.Presenter> impleme
     @Override
     protected int bindLayout() {
         //TODO:添加视图，记得添加androidmanifest
-        return R.layout.login;
+        return R.layout.activity_login;
     }
 
     @Override
@@ -85,7 +85,6 @@ public class LoginActivity extends BaseActivity<LoginContract.Presenter> impleme
                 else {
                     username_layout.setErrorEnabled(false);
                     password_layout.setErrorEnabled(false);
-                    showToast("Login successful");
                     mPresenter.login(con,username,password);
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);

@@ -35,16 +35,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/usernameWrapper"
-        android:layout_marginTop="4dp">
+        android:layout_marginTop="4dp"
+        app:passwordToggleEnabled="true">
 
         <EditText
             android:maxLines="1"
-            app:passwordToggleEnabled="true"
             android:id="@+id/regist_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Password"
-            android:visibility="invisible"
             android:inputType="textPassword"
             />
 

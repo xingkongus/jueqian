@@ -5,7 +5,7 @@ android {
     buildToolsVersion "25.0.2"
 
     useLibrary 'org.apache.http.legacy'
-
+    apply plugin: 'realm-android'
     defaultConfig {
         applicationId "us.xingkong.jueqian"
         minSdkVersion 15
