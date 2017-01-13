@@ -141,9 +141,9 @@ public class ContentFragment extends BaseFragment<ContentContract.Presenter> imp
     public void loadFailure(int page) {
         if (page == 1) {
             mSwipeRefreshLayout.setRefreshing(false);
-        } else {
-            mAddFooterBaseAdapter.setLoadFailureView();
         }
+        mAddFooterBaseAdapter.setLoadFailureView();
+
     }
 
     @Override
