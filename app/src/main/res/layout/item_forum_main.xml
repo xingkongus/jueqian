@@ -28,6 +28,7 @@
                 android:layout_marginLeft="8dp" />
 
             <ImageView
+                android:id="@+id/user_state_forum"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
                 android:background="#6a7e" />

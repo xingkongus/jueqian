@@ -68,7 +68,8 @@
                 android:text="赞同：999999" />
 
 
-            <ImageView
+            <ImageButton
+                android:id="@+id/more_commentpage"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_alignParentEnd="true"

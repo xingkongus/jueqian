@@ -3,6 +3,7 @@ package us.xingkong.jueqian;
 import android.app.Application;
 import android.content.Context;
 
+import cn.bmob.v3.Bmob;
 import us.xingkong.jueqian.utils.ToastUtils;
 
 /**
@@ -28,6 +29,7 @@ public class JueQianAPP extends Application {
     public void onCreate() {
         super.onCreate();
         appContext = getApplicationContext();
+        Bmob.initialize(this, "2d6a319fa542339021237173a1990ead");
     }
 
     /**

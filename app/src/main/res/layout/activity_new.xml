@@ -2,14 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:Android="http://schemas.android.com/tools"
     android:orientation="vertical">
-
     <include layout="@layout/view_toolbar" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        Android:focusable="true"
+        android:focusableInTouchMode="true"
         android:padding="8dp">
 
         <TextView
@@ -46,10 +48,40 @@
             android:scrollbars="vertical"></EditText>
 
     </LinearLayout>
-    <Switch
-        android:padding="8dp"
-        android:layout_width="wrap_content"
+
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="匿名发布"/>
+        >
+
+        <TextView
+            android:id="@+id/tv_tag_newpage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_margin="16dp"
+            android:text="无标签" />
+
+        <Button
+            android:id="@+id/bt_tag_newpage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/tv_tag_newpage"
+            android:layout_toRightOf="@+id/tv_tag_newpage"
+            android:background="#9a3240"
+            android:text="选择标签" />
+
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:padding="8dp"
+            android:text="匿名发布" />
+
+    </RelativeLayout>
+
 
 </LinearLayout>

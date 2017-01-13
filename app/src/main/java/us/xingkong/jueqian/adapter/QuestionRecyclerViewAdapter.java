@@ -5,7 +5,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
+
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.util.ArrayList;
 
@@ -57,7 +60,7 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
     @Override
     public void onBindViewHolder(VH holder, int position) {
         if (position != 0) {
-            holder.content.setText(String.valueOf(answerSetsArr.get(position - 1).get(0)+": {点我点我}"));
+            holder.content.setText(String.valueOf(answerSetsArr.get(position - 1).get(0) + ": {点我点我}"));
             holder.content.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -71,6 +74,14 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
                 mHandler.sendEmptyMessage(2);
             }
         });
+        holder.imageButton_more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                mHandler.sendEmptyMessage(4);
+
+            }
+        });
 
     }
 
@@ -82,11 +93,13 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
     class VH extends RecyclerView.ViewHolder {
         TextView content;
         TextView comment;
+        ImageButton imageButton_more;
 
         public VH(View itemView) {
             super(itemView);
             content = (TextView) itemView.findViewById(R.id.content_questionpage);
             comment = (TextView) itemView.findViewById(R.id.comment_questionpage);
+            imageButton_more = (ImageButton) itemView.findViewById(R.id.more_questionpage);
         }
     }
 }
