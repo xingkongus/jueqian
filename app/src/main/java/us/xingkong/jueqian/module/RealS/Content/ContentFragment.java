@@ -3,7 +3,6 @@ package us.xingkong.jueqian.module.RealS.Content;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -13,14 +12,13 @@ import java.util.List;
 
 import butterknife.BindView;
 import us.xingkong.jueqian.R;
-import us.xingkong.jueqian.adapter.BaseAdapter;
+import us.xingkong.jueqian.adapter.AddFooterBaseAdapter;
 import us.xingkong.jueqian.adapter.PartHotAdapter;
 import us.xingkong.jueqian.adapter.PartTypeAdapter;
 import us.xingkong.jueqian.base.BaseFragment;
 import us.xingkong.jueqian.bean.RealSBean.Results;
 import us.xingkong.jueqian.data.RealSData.RealSRepository;
 import us.xingkong.jueqian.listener.LoadMoreDataAgainListener;
-import us.xingkong.jueqian.utils.LogUtils;
 
 /**
  * Created by hugeterry(http://hugeterry.cn)
@@ -35,7 +33,7 @@ public class ContentFragment extends BaseFragment<ContentContract.Presenter> imp
     RecyclerView mRecyclerView;
 
     private LinearLayoutManager mLinearLayoutManager;
-    private BaseAdapter mBaseAdapter;
+    private AddFooterBaseAdapter mAddFooterBaseAdapter;
     private PartHotAdapter mPartHotAdapter;
     private PartTypeAdapter mPartTypeAdapter;
 
@@ -71,7 +69,7 @@ public class ContentFragment extends BaseFragment<ContentContract.Presenter> imp
     @Override
     protected void initView(View rootView) {
         initRecyclerView();
-        mBaseAdapter = mPartHotAdapter != null ? mPartHotAdapter : mPartTypeAdapter;
+        mAddFooterBaseAdapter = mPartHotAdapter != null ? mPartHotAdapter : mPartTypeAdapter;
     }
 
     private void initRecyclerView() {
@@ -110,7 +108,7 @@ public class ContentFragment extends BaseFragment<ContentContract.Presenter> imp
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 int lastVisiableItemPosition = mLinearLayoutManager.findLastVisibleItemPosition();
-                if (lastVisiableItemPosition + 1 == mBaseAdapter.getItemCount()) {
+                if (lastVisiableItemPosition + 1 == mAddFooterBaseAdapter.getItemCount()) {
                     if (pageNum == 1) {
                         pageNum++;
                     }
@@ -119,7 +117,7 @@ public class ContentFragment extends BaseFragment<ContentContract.Presenter> imp
 
             }
         });
-        mBaseAdapter.setOnMoreDataLoadAgainListener(new LoadMoreDataAgainListener() {
+        mAddFooterBaseAdapter.setOnMoreDataLoadAgainListener(new LoadMoreDataAgainListener() {
             @Override
             public void loadMoreDataAgain(TextView textView, View loadingView) {
                 textView.setVisibility(View.GONE);
@@ -144,7 +142,7 @@ public class ContentFragment extends BaseFragment<ContentContract.Presenter> imp
         if (page == 1) {
             mSwipeRefreshLayout.setRefreshing(false);
         } else {
-            mBaseAdapter.setloadFailureView();
+            mAddFooterBaseAdapter.setLoadFailureView();
         }
     }
 
@@ -156,9 +154,9 @@ public class ContentFragment extends BaseFragment<ContentContract.Presenter> imp
     @Override
     public void showRealSList(int page, List<Results> realSList) {
         if (page == 1) {
-            mBaseAdapter.replaceData(realSList);
+            mAddFooterBaseAdapter.replaceData(realSList);
         } else {
-            mBaseAdapter.addData(realSList);
+            mAddFooterBaseAdapter.addData(realSList);
         }
     }
 }

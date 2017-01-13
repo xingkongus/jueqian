@@ -5,8 +5,6 @@ import android.support.v7.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-import us.xingkong.jueqian.listener.LoadMoreDataAgainListener;
-
 /**
  * Created by hugeterry(http://hugeterry.cn)
  * Date: 17/1/12 00:46
@@ -39,10 +37,6 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<RecyclerView.V
         this.mData.addAll(data);
         notifyDataSetChanged();
     }
-
-    public abstract void setOnMoreDataLoadAgainListener(LoadMoreDataAgainListener onMoreDataLoadAgainListener);
-
-    public abstract void setloadFailureView();
 
     public T getItem(int position) {
         return mData.get(position);

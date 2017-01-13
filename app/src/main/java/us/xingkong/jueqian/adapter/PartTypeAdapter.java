@@ -12,16 +12,13 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.bean.RealSBean.Results;
-import us.xingkong.jueqian.listener.LoadMoreDataAgainListener;
 import us.xingkong.jueqian.module.common.WebActivity;
 import us.xingkong.jueqian.utils.TimeDifferenceUtils;
 
@@ -30,30 +27,13 @@ import us.xingkong.jueqian.utils.TimeDifferenceUtils;
  * Date: 17/1/11 15:23
  */
 
-public class PartTypeAdapter extends BaseAdapter<Results> {
-
-    private static final int TYPE_ITEM = 0;
-    private static final int TYPE_FOOTER = 1;
+public class PartTypeAdapter extends AddFooterBaseAdapter<Results> {
 
     private Context context;
     private View mFooterView;
-    private PartTypeAdapter.FooterViewHolder mFooterViewHolder;
 
     public PartTypeAdapter(Context context) {
         this.context = context;
-    }
-
-    private LoadMoreDataAgainListener mLoadMoreDataAgainListener;
-
-    @Override
-    public void setOnMoreDataLoadAgainListener(LoadMoreDataAgainListener onMoreDataLoadAgainListener) {
-        mLoadMoreDataAgainListener = onMoreDataLoadAgainListener;
-    }
-
-    @Override
-    public void setloadFailureView() {
-        mFooterViewHolder.mAvLoadingIndicatorView.setVisibility(View.GONE);
-        mFooterViewHolder.mTvLoadDataAgain.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -70,13 +50,10 @@ public class PartTypeAdapter extends BaseAdapter<Results> {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        super.onBindViewHolder(holder, position);
         if (holder instanceof PartTypeHolder) {
             PartTypeHolder viewHolder = (PartTypeHolder) holder;
             onBindViewHolder(viewHolder, position);
-        } else if (holder instanceof PartTypeAdapter.FooterViewHolder) {
-            mFooterViewHolder = ((PartTypeAdapter.FooterViewHolder) holder);
-            mFooterViewHolder.mAvLoadingIndicatorView.setVisibility(View.VISIBLE);
-            mFooterViewHolder.mTvLoadDataAgain.setVisibility(View.GONE);
         }
     }
 
@@ -117,17 +94,6 @@ public class PartTypeAdapter extends BaseAdapter<Results> {
         });
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        if (position + 1 == getItemCount()) return TYPE_FOOTER;
-        else return TYPE_ITEM;
-    }
-
-    @Override
-    public int getItemCount() {
-        return mData.size() + 1;
-    }
-
     class PartTypeHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.tv_read)
         TextView textView;
@@ -141,23 +107,6 @@ public class PartTypeAdapter extends BaseAdapter<Results> {
         public PartTypeHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-        }
-    }
-
-    class FooterViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.loadingIndicatorView)
-        AVLoadingIndicatorView mAvLoadingIndicatorView;
-        @BindView(R.id.tv_load_data_again)
-        TextView mTvLoadDataAgain;
-
-        public FooterViewHolder(View itemView) {
-            super(itemView);
-            ButterKnife.bind(this, itemView);
-        }
-
-        @OnClick({R.id.loadingIndicatorView, R.id.tv_load_data_again})
-        public void onClick(View view) {
-            mLoadMoreDataAgainListener.loadMoreDataAgain(mTvLoadDataAgain, mAvLoadingIndicatorView);
         }
     }
 }
