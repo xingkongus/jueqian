@@ -38,8 +38,10 @@ public abstract class AddFooterBaseAdapter<T> extends BaseAdapter<T> {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof AddFooterBaseAdapter.FooterViewHolder) {
             mFooterViewHolder = ((FooterViewHolder) holder);
-            mFooterViewHolder.mAvLoadingIndicatorView.setVisibility(View.VISIBLE);
-            mFooterViewHolder.mTvLoadDataAgain.setVisibility(View.GONE);
+            if (mData.size() != 0) {
+                mFooterViewHolder.mAvLoadingIndicatorView.setVisibility(View.VISIBLE);
+                mFooterViewHolder.mTvLoadDataAgain.setVisibility(View.GONE);
+            } else setLoadFailureView();
         }
     }
 
