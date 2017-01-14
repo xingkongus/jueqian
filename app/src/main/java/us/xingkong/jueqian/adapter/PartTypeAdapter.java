@@ -80,7 +80,7 @@ public class PartTypeAdapter extends AddFooterBaseAdapter<Results> {
         }
         String time = mData.get(position).getCreatedAt();
         if (time != null) {
-            holder.tv_time.setText(TimeDifferenceUtils.getTimeDifference(time));
+            holder.tv_time.setText(time);
         } else {
             holder.tv_time.setText("");
         }

@@ -107,7 +107,7 @@ public class PartHotAdapter extends AddFooterBaseAdapter<Results> {
         String time = mData.get(position).getCreatedAt();
         String type = mData.get(position).getType();
         if (time != null) {
-            holder.tv_time.setText(TimeDifferenceUtils.getTimeDifference(time));
+            holder.tv_time.setText(time);
         } else {
             holder.tv_time.setText("");
         }

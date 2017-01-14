@@ -31,6 +31,7 @@ public class DataSecurityFilter implements Func1<DataResults, DataResults> {
                     || results.getType().equals("休息视频")) {
                 delList.add(results);
             }
+            results.setCreatedAt(TimeDifferenceUtils.getTimeDifference(results.getCreatedAt()));
         }
         data.getResults().removeAll(delList);
         return data;
