@@ -26,12 +26,18 @@ public class DataSecurityFilter implements Func1<DataResults, DataResults> {
     @Override
     public DataResults call(DataResults data) {
         List<Results> delList = new ArrayList();
+        String time;
         for (Results results : data.getResults()) {
             if (results.getType().equals("福利")
                     || results.getType().equals("休息视频")) {
                 delList.add(results);
             }
-            results.setCreatedAt(TimeDifferenceUtils.getTimeDifference(results.getCreatedAt()));
+            time = results.getCreatedAt();
+            if (time != null) {
+                results.setCreatedAt(TimeDifferenceUtils.getTimeDifference(results.getCreatedAt()));
+            } else {
+                results.setCreatedAt("");
+            }
         }
         data.getResults().removeAll(delList);
         return data;

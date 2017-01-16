@@ -104,15 +104,8 @@ public class PartHotAdapter extends AddFooterBaseAdapter<Results> {
             holder.tv_author.setText("匿名");
         }
 
-        String time = mData.get(position).getCreatedAt();
-        String type = mData.get(position).getType();
-        if (time != null) {
-            holder.tv_time.setText(time);
-        } else {
-            holder.tv_time.setText("");
-        }
-        holder.tv_type.setText(type);
-
+        holder.tv_time.setText(mData.get(position).getCreatedAt());
+        holder.tv_type.setText(mData.get(position).getType());
     }
 
     class PartViewHolder extends RecyclerView.ViewHolder {
