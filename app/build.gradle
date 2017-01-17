@@ -56,5 +56,5 @@ dependencies {
 
     //一个小小的dialog库
     compile 'com.afollestad.material-dialogs:core:0.9.2.2'
-
+    compile 'com.github.githubwing:ByeBurger:1.2.3'
 }

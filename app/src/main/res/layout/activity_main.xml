@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
@@ -14,19 +15,16 @@
     <us.xingkong.jueqian.widget.ScrollViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.6dp"
-        android:background="#dfdfdf" />
+        android:layout_height="match_parent" />
 
     <RadioGroup
         android:id="@+id/rg_tab"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
-        android:orientation="horizontal">
+        android:layout_gravity="bottom"
+        android:background="@android:color/white"
+        android:orientation="horizontal"
+        app:layout_behavior="@string/bye_burger_bottom_behavior">
 
         <RadioButton
             android:id="@+id/tab_homepager"
@@ -53,4 +51,4 @@
             android:text="@string/text_me" />
         <!--android:drawableTop="@drawable/tab_me"-->
     </RadioGroup>
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

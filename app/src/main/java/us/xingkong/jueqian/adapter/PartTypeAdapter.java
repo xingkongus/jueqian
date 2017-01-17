@@ -78,12 +78,7 @@ public class PartTypeAdapter extends AddFooterBaseAdapter<Results> {
         } else {
             holder.tv_author.setText("匿名");
         }
-        String time = mData.get(position).getCreatedAt();
-        if (time != null) {
-            holder.tv_time.setText(TimeDifferenceUtils.getTimeDifference(time));
-        } else {
-            holder.tv_time.setText("");
-        }
+        holder.tv_time.setText(mData.get(position).getCreatedAt());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
