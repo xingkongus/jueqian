@@ -6,7 +6,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.TextView;
 
 import java.util.List;
 
@@ -119,9 +118,7 @@ public class ContentFragment extends BaseFragment<ContentContract.Presenter> imp
         });
         mAddFooterBaseAdapter.setOnMoreDataLoadAgainListener(new LoadMoreDataAgainListener() {
             @Override
-            public void loadMoreDataAgain(TextView textView, View loadingView) {
-                textView.setVisibility(View.GONE);
-                loadingView.setVisibility(View.VISIBLE);
+            public void loadMoreDataAgain() {
                 mPresenter.getRealSList(mRealSTitle, pageNum);
             }
         });

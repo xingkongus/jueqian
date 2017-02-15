@@ -9,5 +9,5 @@ import android.widget.TextView;
  */
 
 public interface LoadMoreDataAgainListener {
-    void loadMoreDataAgain(TextView textView, View loadingView);
+    void loadMoreDataAgain();
 }
