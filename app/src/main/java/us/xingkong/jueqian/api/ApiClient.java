@@ -45,7 +45,7 @@ public class ApiClient {
                 .addInterceptor(cacheStrategyInterceptor)
                 .addNetworkInterceptor(cacheStrategyInterceptor)
                 .retryOnConnectionFailure(true)
-                .connectTimeout(15, TimeUnit.SECONDS)
+                .connectTimeout(7, TimeUnit.SECONDS)
                 .build();
     }
 

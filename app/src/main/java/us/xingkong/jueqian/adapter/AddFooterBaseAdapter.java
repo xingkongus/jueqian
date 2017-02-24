@@ -69,7 +69,9 @@ public abstract class AddFooterBaseAdapter<T> extends BaseAdapter<T> {
 
         @OnClick({R.id.loadingIndicatorView, R.id.tv_load_data_again})
         public void onClick(View view) {
-            mLoadMoreDataAgainListener.loadMoreDataAgain(mTvLoadDataAgain, mAvLoadingIndicatorView);
+            mTvLoadDataAgain.setVisibility(View.GONE);
+            mAvLoadingIndicatorView.setVisibility(View.VISIBLE);
+            mLoadMoreDataAgainListener.loadMoreDataAgain();
         }
     }
 }
