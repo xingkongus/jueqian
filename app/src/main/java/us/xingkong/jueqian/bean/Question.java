@@ -1,6 +1,7 @@
 package us.xingkong.jueqian.bean;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by PERFECTLIN on 2017/1/9 0009.

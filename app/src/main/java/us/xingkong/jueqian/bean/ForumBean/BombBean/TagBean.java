@@ -9,6 +9,7 @@ import cn.bmob.v3.BmobObject;
  */
 
 public class TagBean extends BmobObject{
+
     private String tag;
 
     public String getTag() {
@@ -18,4 +19,5 @@ public class TagBean extends BmobObject{
     public void setTag(String tag) {
         this.tag = tag;
     }
+
 }

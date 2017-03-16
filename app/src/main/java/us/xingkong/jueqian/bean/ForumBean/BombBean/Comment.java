@@ -1,6 +1,8 @@
 package us.xingkong.jueqian.bean.ForumBean.BombBean;
 
 import cn.bmob.v3.BmobObject;
+import cn.bmob.v3.datatype.BmobRelation;
+
 
 /**
  * Created by Garfield on 1/11/17.
@@ -8,6 +10,7 @@ import cn.bmob.v3.BmobObject;
 
 public class Comment extends BmobObject {
     private String mcontent;/*评论正文*/
+
     private String SENDER_ID;/*发送者的id*/
     private String QUESTION_ID;/*问题的id*/
     private String ANSWER_ID;/*回答的id*/
@@ -61,4 +64,5 @@ public class Comment extends BmobObject {
     public void setGood_count(Integer good_count) {
         this.good_count = good_count;
     }
+
 }

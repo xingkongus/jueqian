@@ -28,13 +28,12 @@
             android:id="@+id/fab_forum_main"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_marginBottom="@dimen/dp_72"
+            android:layout_marginRight="@dimen/dp_16"
             android:clickable="true"
             android:src="@mipmap/ic_launcher"
             app:layout_anchor="@+id/recyclerview_forum_main"
-            app:layout_anchorGravity="bottom|end"
-
-            />
-        <!--app:layout_behavior="us.xingkong.jueqian.myCommon.ScrollAwareBehavior"-->
+            app:layout_anchorGravity="right|bottom"
+            app:layout_behavior="@string/bye_burger_float_behavior" />
     </android.support.design.widget.CoordinatorLayout>
 </LinearLayout>

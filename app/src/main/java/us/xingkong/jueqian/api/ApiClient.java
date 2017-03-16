@@ -1,10 +1,16 @@
 package us.xingkong.jueqian.api;
 
+import java.io.File;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import us.xingkong.jueqian.JueQianAPP;
 import us.xingkong.jueqian.base.Constants;
+import us.xingkong.jueqian.utils.CacheStrategyInterceptor;
 
 /**
  * Created by hugeterry(http://hugeterry.cn)
@@ -25,7 +31,22 @@ public class ApiClient {
     }
 
     private ApiClient() {
-        okHttpClient = new OkHttpClient();
+        setOkhttpAndCache();
+    }
+
+    private void setOkhttpAndCache() {
+        File httpCacheDirectory = new File(JueQianAPP.getAppContext().getExternalCacheDir().getAbsolutePath(), "responses");
+        Cache cache = new Cache(httpCacheDirectory, 10 * 1024 * 1024);
+        CacheStrategyInterceptor cacheStrategyInterceptor = new CacheStrategyInterceptor();
+
+        okHttpClient = new OkHttpClient
+                .Builder()
+                .cache(cache)
+                .addInterceptor(cacheStrategyInterceptor)
+                .addNetworkInterceptor(cacheStrategyInterceptor)
+                .retryOnConnectionFailure(true)
+                .connectTimeout(7, TimeUnit.SECONDS)
+                .build();
     }
 
     public RealSService getRealSService() {

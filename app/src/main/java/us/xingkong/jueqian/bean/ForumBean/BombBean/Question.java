@@ -2,6 +2,9 @@ package us.xingkong.jueqian.bean.ForumBean.BombBean;
 
 import cn.bmob.v3.BmobObject;
 
+import cn.bmob.v3.datatype.BmobRelation;
+
+
 /**
  * Created by Garfield on 1/11/17.
  */
@@ -11,6 +14,7 @@ public class Question extends BmobObject {
     private String mtitle;/*问题的标题*/
     private boolean isHided;/*是否为匿名问题*/
     private String mcontent;/*问题的内容*/
+
     private String SENDER_ID;/*发送者的ID*/
     private Integer state;/*问题的状态，-1既是封掉的问题，1为正常问题*/
     private String TAG1_ID;/*第一个Tag的id*/
@@ -89,4 +93,5 @@ public class Question extends BmobObject {
     public void setGood_count(Integer good_count) {
         this.good_count = good_count;
     }
+
 }

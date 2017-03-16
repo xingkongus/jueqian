@@ -1,5 +1,8 @@
 package us.xingkong.jueqian.bean.ForumBean.BombBean;
 
+
+import java.util.List;
+
 import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.datatype.BmobFile;
 
@@ -8,7 +11,6 @@ import cn.bmob.v3.datatype.BmobFile;
  */
 
 public class _User extends BmobObject {
-
 
     public Boolean getGender() {
         return gender;
@@ -65,4 +67,5 @@ public class _User extends BmobObject {
     private BmobFile profile;//头像
     private String selfIntro;//自我介绍
     private Integer state;//用户状态
+
 }

@@ -1,31 +1,34 @@
 package us.xingkong.jueqian.module.Forum;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.adapter.ForumRecyclerViewAdapter;
 import us.xingkong.jueqian.base.BaseFragment;
-import us.xingkong.jueqian.module.NewPage.NewActivity;
-import us.xingkong.jueqian.module.QuestionPage.QuestionActivity;
+import us.xingkong.jueqian.bean.ForumBean.GsonBean.GSON_ForumPageBean;
+import us.xingkong.jueqian.data.RepositData.ForumRepository;
+import us.xingkong.jueqian.module.Forum.NewPage.NewActivity;
+import us.xingkong.jueqian.module.Forum.QuestionPage.QuestionActivity;
+
+import static us.xingkong.jueqian.base.Constants.REQUEST_INTENT_TO_QUESTIONPAGE;
+import static us.xingkong.jueqian.base.Constants.REQUEST_REFRESH;
 
 
 /**
@@ -43,12 +46,15 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
     @BindView(R.id.fab_forum_main)
     FloatingActionButton fabForumMain;
 
-    private int mPageCount;
-    ArrayList infoSets;
+
+
+
+    private ArrayList<GSON_ForumPageBean> infoSets;
     private Handler mHandler;
     private RecyclerView.LayoutManager mLayoutManager;
     private ForumRecyclerViewAdapter recyclerViewAdapter;
     private static final String PAGE_COUNT = "page_count";
+
 
     public static ForumFragment getInstance(int page_count) {
         ForumFragment fra = new ForumFragment();
@@ -60,36 +66,75 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
 
     @Override
     protected ForumContract.Presenter createPresenter() {
-        return new ForumPresenter(this);
+        return new ForumPresenter(this, new ForumRepository(getContext()));
     }
 
     @Override
     protected int bindLayout() {
+        Log.d("bf", "意外发生了！");
         return R.layout.fragment_forum;
     }
 
     @Override
     protected void prepareData(Bundle savedInstanceState) {
-        Bundle bundle = getArguments();
-        mPageCount = bundle.getInt(PAGE_COUNT);
+        Log.d("bf", "意外发生了！2");
+        mPresenter.initList();
+        Log.d("bf", "意外发生了！3");
 
-        infoSets = new ArrayList();
-        for (int i = 0; i < 30; ++i) {
-            ArrayList arrayList = new ArrayList();
-            arrayList.add("position " + i);
-            infoSets.add(arrayList);
-        }
+    }
+
+    @Override
+    protected void initView(View rootView) {
+
+        initSwipeRefreshLayout();
+
+    }
+
+    private void initSwipeRefreshLayout() {
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+        swipeRefreshLayout.setSize(SwipeRefreshLayout.DEFAULT);
+        swipeRefreshLayout.setProgressViewEndTarget(true, 200);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Thread.sleep(1500);
+                            mHandler.sendEmptyMessage(REQUEST_REFRESH);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }).start();
+            }
+        });
+    }
+
+    @Override
+    protected void initData(Bundle savedInstanceState) {
+
+    }
+
+    @Override
+    protected void initEvent() {
+
         mHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
                 switch (msg.what) {
-                    case 1:
+                    case REQUEST_REFRESH:
                         swipeRefreshLayout.setRefreshing(false);
                         break;
-                    case 2:
+                    case REQUEST_INTENT_TO_QUESTIONPAGE:
                         Intent intent = new Intent(getContext(), QuestionActivity.class);
                         startActivity(intent);
+                        break;
+                    case 3:
+
                         break;
                     default:
                         break;
@@ -98,13 +143,29 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
         };
     }
 
-    @Override
-    protected void initView(View rootView) {
 
-        recyclerViewAdapter = new ForumRecyclerViewAdapter(infoSets, mHandler);
+    @OnClick(R.id.fab_forum_main)
+    public void onClick() {
+        Intent intent = new Intent(getContext(), NewActivity.class);
+        startActivity(intent);
+    }
+
+
+    @Override
+    public void initShowList(ArrayList<GSON_ForumPageBean> arrayList) {
+        infoSets=arrayList;
+        initRecyclerview();
+    }
+
+    @Override
+    public Context getmContext() {
+        return getContext();
+    }
+
+    private void initRecyclerview() {
+        recyclerViewAdapter = new ForumRecyclerViewAdapter(infoSets, mHandler,getContext());
         mLayoutManager = new LinearLayoutManager(getContext());
         recyclerview.setLayoutManager(mLayoutManager);
-        recyclerview.setAdapter(recyclerViewAdapter);
         recyclerview.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         recyclerview.setItemAnimator(new DefaultItemAnimator());
         recyclerview.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -113,10 +174,10 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     if (!recyclerView.canScrollVertically(1)) {
-                        Toast.makeText(getContext(),"到底啦",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "到底啦", Toast.LENGTH_SHORT).show();
                     }
                     if (!recyclerView.canScrollVertically(-1)) {
-                        Toast.makeText(getContext(),"到头啦",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "到头啦", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -126,50 +187,7 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
                 super.onScrolled(recyclerView, dx, dy);
             }
         });
-
-
-        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
-        swipeRefreshLayout.setSize(SwipeRefreshLayout.DEFAULT);
-//        swipeRefreshLayout.setProgressBackgroundColor(Color.WHITE);
-        swipeRefreshLayout.setProgressViewEndTarget(true, 200);
-
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            Thread.sleep(1500);
-                            mHandler.sendEmptyMessage(1);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                }).start();
-            }
-        });
-
+        recyclerview.setAdapter(recyclerViewAdapter);
     }
 
-    @Override
-    protected void initData(Bundle savedInstanceState) {
-
-    }
-
-
-    @Override
-    protected void initEvent() {
-
-    }
-
-
-
-
-    @OnClick(R.id.fab_forum_main)
-    public void onClick() {
-        Intent intent = new Intent(getContext(), NewActivity.class);
-        startActivity(intent);
-    }
 }
