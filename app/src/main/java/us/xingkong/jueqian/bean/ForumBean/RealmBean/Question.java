@@ -1,4 +1,6 @@
-//package us.xingkong.jueqian.bean.ForumBean.RealmBean;
+
+package us.xingkong.jueqian.bean.ForumBean.RealmBean;//package us.xingkong.jueqian.bean.ForumBean.RealmBean;
+
 //
 //import java.sql.Date;
 //
@@ -121,12 +123,13 @@
 //    public void setTAG2_ID(String TAG2_ID) {
 //        this.TAG2_ID = TAG2_ID;
 //    }
-//
-//    public Integer getLike() {
+
+//    public Integer getGood_count() {
 //        return good_count;
 //    }
 //
-//    public void setLike(Integer good_count) {
+//    public void setGood_count(Integer good_count) {
+
 //        this.good_count = good_count;
 //    }
 //}
