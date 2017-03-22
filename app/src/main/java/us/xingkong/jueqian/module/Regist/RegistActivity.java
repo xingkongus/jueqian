@@ -1,20 +1,18 @@
 package us.xingkong.jueqian.module.Regist;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
 import butterknife.BindView;
-import cn.bmob.v3.Bmob;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.base.BaseActivity;
-import us.xingkong.jueqian.utils.Key;
+import us.xingkong.jueqian.utils.CheckUtils;
 
 
 
@@ -30,6 +28,8 @@ public class RegistActivity extends BaseActivity<RegistContract.Presenter> imple
     EditText regist_password;
     @BindView(R.id.registButton)
     Button registButton;
+    @BindView(R.id.loginButton)
+    Button loginButton;
     String username;
     String password;
     Context context;
@@ -42,7 +42,7 @@ public class RegistActivity extends BaseActivity<RegistContract.Presenter> imple
     @Override
     protected int bindLayout() {
         //TODO:添加视图，记得添加androidmanifest
-        return R.layout.regist;
+        return R.layout.activity_regist;
     }
 
     @Override
@@ -55,7 +55,7 @@ public class RegistActivity extends BaseActivity<RegistContract.Presenter> imple
     protected void initView() {
         //TODO:初始化视图 比如：recycleview的准备，添加adapter等等
         context=this;
-        Bmob.initialize(context,Key.Application_ID);
+
         usernameWrapper.setHint("Username");
         passwordWrapper.setHint("Password");
 
@@ -79,47 +79,27 @@ public class RegistActivity extends BaseActivity<RegistContract.Presenter> imple
                 if (username.equals("")) {
                     usernameWrapper.setError("Not a valid username!");
                 }
-                  else if (!validatePassword(password)) {
+                  else if (!CheckUtils.checkPassword(password)) {
                         passwordWrapper.setError("Not a valid password!");
                 }
                 else {
                     usernameWrapper.setErrorEnabled(false);
                     passwordWrapper.setErrorEnabled(false);
-                  showToast("Regisr successful");
                     mPresenter.regist(context,username,password);
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
                 }
             }
         });
-       regist_username.addTextChangedListener(new TextWatcher() {
-           @Override
-           public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-           }
-
-           @Override
-           public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-           }
-
-           @Override
-           public void afterTextChanged(Editable s) {
-
-           }
-       });
-
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(context,RegistActivity.class);
+                context.startActivity(intent);
+                finish();
+            }
+        });
 
     }
 
-    private void hideKeyboard() {
-        View view = getCurrentFocus();
-        if (view != null) {
-            ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).
-                    hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-        }
-    }
-    public boolean validatePassword(String password) {
-        return password.length() > 5;
-    }
 }

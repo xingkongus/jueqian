@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import butterknife.BindArray;
 import butterknife.BindView;
+import cn.hugeterry.coordinatortablayout.CoordinatorTabLayout;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.adapter.MainPagerAdapter;
 import us.xingkong.jueqian.base.BaseFragment;
@@ -25,12 +26,13 @@ public class RealSFragment extends BaseFragment<RealSContract.Presenter> impleme
 
     @BindArray(R.array.tab_reals)
     String[] mRealSTitles;
-    @BindView(R.id.tabLayout)
-    TabLayout mTabLayout;
+    @BindView(R.id.coordinatortablayout)
+    CoordinatorTabLayout mCoordinatorTabLayout;
     @BindView(R.id.viewpager)
     ViewPager mViewPager;
 
     private ArrayList<Fragment> mFragments;
+    private int[] mImageArray, mColorArray;
 
     @Override
     protected RealSContract.Presenter createPresenter() {
@@ -53,9 +55,25 @@ public class RealSFragment extends BaseFragment<RealSContract.Presenter> impleme
 
     @Override
     protected void initView(View rootView) {
-        mViewPager.setOffscreenPageLimit(5);
+        mViewPager.setOffscreenPageLimit(4);
         mViewPager.setAdapter(new MainPagerAdapter(getChildFragmentManager(), mFragments, mRealSTitles));
-        mTabLayout.setupWithViewPager(mViewPager);
+        mImageArray = new int[]{
+                R.mipmap.bg_other,
+                R.mipmap.bg_android,
+                R.mipmap.bg_ios,
+                R.mipmap.bg_js,
+                R.mipmap.bg_other};
+        mColorArray = new int[]{
+                android.R.color.holo_blue_light,
+                android.R.color.holo_red_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_green_light,
+                android.R.color.holo_purple};
+
+        mCoordinatorTabLayout
+                .setImageArray(mImageArray, mColorArray)
+                .setupWithViewPager(mViewPager);
+
     }
 
     @Override

@@ -1,7 +1,9 @@
 package us.xingkong.jueqian.bean.ForumBean.BombBean;
 
 import cn.bmob.v3.BmobObject;
+
 import cn.bmob.v3.datatype.BmobRelation;
+
 
 /**
  * Created by Garfield on 1/11/17.
@@ -12,11 +14,21 @@ public class Question extends BmobObject {
     private String mtitle;/*问题的标题*/
     private boolean isHided;/*是否为匿名问题*/
     private String mcontent;/*问题的内容*/
-    private _User SENDER;/*发送者的ID*/
+
+    private String SENDER_ID;/*发送者的ID*/
     private Integer state;/*问题的状态，-1既是封掉的问题，1为正常问题*/
-    private TagBean TAG1;/*第一个Tag的id*/
-    private TagBean TAG2;/*第二个Tag的id*/
-    private BmobRelation like;/*点赞的数量*/
+    private String TAG1_ID;/*第一个Tag的id*/
+    private String TAG2_ID;/*第二个Tag的id*/
+    private Integer good_count;/*点赞的数量*/
+    private Integer answer_count;/*回答的数量*/
+
+    public Integer getAnswer_count() {
+        return answer_count;
+    }
+
+    public void setAnswer_count(Integer answer_count) {
+        this.answer_count = answer_count;
+    }
 
     public String getMtitle() {
         return mtitle;
@@ -42,12 +54,12 @@ public class Question extends BmobObject {
         this.mcontent = mcontent;
     }
 
-    public _User getSENDER() {
-        return SENDER;
+    public String getSENDER_ID() {
+        return SENDER_ID;
     }
 
-    public void setSENDER(_User SENDER) {
-        this.SENDER = SENDER;
+    public void setSENDER_ID(String SENDER_ID) {
+        this.SENDER_ID = SENDER_ID;
     }
 
     public Integer getState() {
@@ -58,27 +70,28 @@ public class Question extends BmobObject {
         this.state = state;
     }
 
-    public TagBean getTAG1() {
-        return TAG1;
+    public String getTAG1_ID() {
+        return TAG1_ID;
     }
 
-    public void setTAG1(TagBean TAG1) {
-        this.TAG1 = TAG1;
+    public void setTAG1_ID(String TAG1_ID) {
+        this.TAG1_ID = TAG1_ID;
     }
 
-    public TagBean getTAG2() {
-        return TAG2;
+    public String getTAG2_ID() {
+        return TAG2_ID;
     }
 
-    public void setTAG2(TagBean TAG2) {
-        this.TAG2 = TAG2;
+    public void setTAG2_ID(String TAG2_ID) {
+        this.TAG2_ID = TAG2_ID;
     }
 
-    public BmobRelation getLike() {
-        return like;
+    public Integer getGood_count() {
+        return good_count;
     }
 
-    public void setLike(BmobRelation like) {
-        this.like = like;
+    public void setGood_count(Integer good_count) {
+        this.good_count = good_count;
     }
+
 }
