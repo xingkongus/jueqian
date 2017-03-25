@@ -8,20 +8,30 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.datatype.BmobPointer;
+import cn.bmob.v3.listener.FindListener;
+import us.xingkong.jueqian.JueQianAPP;
 import us.xingkong.jueqian.R;
+import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
+import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
 
 /**
  * Created by PERFECTLIN on 2017/1/11 0011.
  */
 
 public class MyCollectionAdapter extends RecyclerView.Adapter<MyCollectionAdapter.MyViewHolder> {
-    private ArrayList<String> mArrayList;
     private Handler mHandler;
+    private List<Question> questions;
+//    private ArrayList<String> mArrayList;
 
-    public MyCollectionAdapter(ArrayList<String> mArrayList, Handler mHandler) {
-        this.mArrayList = mArrayList;
+    public MyCollectionAdapter(Handler mHandler, List<Question> questions) {
         this.mHandler = mHandler;
+        this.questions = questions;
+//        this.mArrayList = mArrayList;
+
     }
 
 
@@ -32,13 +42,13 @@ public class MyCollectionAdapter extends RecyclerView.Adapter<MyCollectionAdapte
 
     @Override
     public void onBindViewHolder(MyCollectionAdapter.MyViewHolder holder, int position) {
-        holder.tv_questiontitle.setText(mArrayList.get(position));
-
+//        holder.tv_questiontitle.setText(questions.get(position).getMtitle());
+        holder.tv_questiontitle.setText(questions.get(position).getMtitle());
     }
 
     @Override
     public int getItemCount() {
-        return mArrayList.size();
+        return questions.size();
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {

@@ -10,7 +10,6 @@ import cn.bmob.v3.datatype.BmobRelation;
 
 public class Comment extends BmobObject {
     private String mcontent;/*评论正文*/
-
     private String SENDER_ID;/*发送者的id*/
     private String QUESTION_ID;/*问题的id*/
     private String ANSWER_ID;/*回答的id*/

@@ -1,27 +1,14 @@
 package us.xingkong.jueqian.module.Forum;
 
-import android.util.Log;
-
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import cn.bmob.v3.BmobQuery;
-import cn.bmob.v3.listener.FindListener;
-import cn.bmob.v3.listener.GetListener;
 import us.xingkong.jueqian.base.BasePresenterImpl;
-import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
-import us.xingkong.jueqian.bean.ForumBean.BombBean.TagBean;
-import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
 import us.xingkong.jueqian.bean.ForumBean.GsonBean.GSON_ForumPageBean;
 import us.xingkong.jueqian.data.RepositData.ForumRepository;
-import us.xingkong.jueqian.utils.ToastUtils;
 
 
 /**

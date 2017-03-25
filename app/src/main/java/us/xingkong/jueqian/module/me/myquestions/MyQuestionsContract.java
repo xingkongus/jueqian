@@ -9,5 +9,6 @@ import us.xingkong.jueqian.base.BaseView;
 
 public class MyQuestionsContract {
     interface View extends BaseView<Presenter>{}
-    interface Presenter extends BasePresenter{}
+    interface Presenter extends BasePresenter{
+    }
 }

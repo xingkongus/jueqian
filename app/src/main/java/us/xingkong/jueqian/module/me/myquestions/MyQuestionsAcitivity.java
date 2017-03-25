@@ -83,7 +83,6 @@ public class MyQuestionsAcitivity extends BaseActivity<MyQuestionsContract.Prese
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-
     }
 
     @Override

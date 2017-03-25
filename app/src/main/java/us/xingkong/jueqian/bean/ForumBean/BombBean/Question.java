@@ -14,7 +14,6 @@ public class Question extends BmobObject {
     private String mtitle;/*问题的标题*/
     private boolean isHided;/*是否为匿名问题*/
     private String mcontent;/*问题的内容*/
-
     private String SENDER_ID;/*发送者的ID*/
     private Integer state;/*问题的状态，-1既是封掉的问题，1为正常问题*/
     private String TAG1_ID;/*第一个Tag的id*/

@@ -12,11 +12,18 @@ import cn.bmob.v3.datatype.BmobRelation;
 public class Answer extends BmobObject {
 
     private String mcontent; /*回答的正文*/
-
     private String SENDER_ID;/*发送者的id*/
     private String QUESTION_ID;/*问题的id*/
     private Integer state;/*问题的状态，-1为举报成功的问题，1为正常问*/
-    private Integer good_count;/*点赞数*/
+    private Integer likes;/*点赞数*/
+
+    public Integer getLikes() {
+        return likes;
+    }
+
+    public void setLikes(Integer likes) {
+        this.likes = likes;
+    }
 
     public String getMcontent() {
         return mcontent;
@@ -48,53 +55,5 @@ public class Answer extends BmobObject {
 
     public void setState(Integer state) {
         this.state = state;
-    }
-
-    public Integer getGood_count() {
-        return good_count;
-    }
-
-    public void setGood_count(Integer good_count) {
-        this.good_count = good_count;
-    }
-
-    public String getMcontent() {
-        return mcontent;
-    }
-
-    public void setMcontent(String mcontent) {
-        this.mcontent = mcontent;
-    }
-
-    public _User getSENDER() {
-        return SENDER;
-    }
-
-    public void setSENDER(_User SENDER) {
-        this.SENDER = SENDER;
-    }
-
-    public Question getQUESTION() {
-        return QUESTION;
-    }
-
-    public void setQUESTION(Question QUESTION) {
-        this.QUESTION = QUESTION;
-    }
-
-    public Integer getState() {
-        return state;
-    }
-
-    public void setState(Integer state) {
-        this.state = state;
-    }
-
-    public BmobRelation getLike() {
-        return like;
-    }
-
-    public void setLike(BmobRelation like) {
-        this.like = like;
     }
 }
