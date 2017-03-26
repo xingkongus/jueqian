@@ -1,6 +1,7 @@
 package us.xingkong.jueqian.bean.ForumBean.BombBean;
 
 import cn.bmob.v3.BmobObject;
+import cn.bmob.v3.datatype.BmobPointer;
 import cn.bmob.v3.datatype.BmobRelation;
 
 
@@ -15,6 +16,7 @@ public class Comment extends BmobObject {
     private String ANSWER_ID;/*回答的id*/
     private Integer state;/*该评论的状态，-1为不显示，1为正常问题*/
     private Integer good_count;/*该问题收到的点赞数*/
+    private BmobPointer comments;/*该评论的评论*/
 
     public String getMcontent() {
         return mcontent;
@@ -64,4 +66,11 @@ public class Comment extends BmobObject {
         this.good_count = good_count;
     }
 
+    public BmobPointer getComments() {
+        return comments;
+    }
+
+    public void setComments(BmobPointer comments) {
+        this.comments = comments;
+    }
 }

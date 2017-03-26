@@ -29,7 +29,7 @@ public class JueQianAPP extends Application {
     public void onCreate() {
         super.onCreate();
         appContext = getApplicationContext();
-        Bmob.initialize(this, "2d6a319fa542339021237173a1990ead");
+        Bmob.initialize(this, "0f9a062b723b72b09a2543f2c6b81090"); //2d6a319fa542339021237173a1990ead
     }
 
     /**

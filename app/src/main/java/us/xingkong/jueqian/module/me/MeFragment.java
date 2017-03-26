@@ -2,6 +2,7 @@ package us.xingkong.jueqian.module.me;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -16,6 +17,7 @@ import us.xingkong.jueqian.base.BaseActivity;
 import us.xingkong.jueqian.base.BaseFragment;
 import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
 import us.xingkong.jueqian.bean.ForumBean.GsonBean.User;
+import us.xingkong.jueqian.module.Login.LoginActivity;
 import us.xingkong.jueqian.module.main.MainContract;
 import us.xingkong.jueqian.module.me.myanswer.MyAnswerActivity;
 import us.xingkong.jueqian.module.me.mycollection.MyCollectionActivity;
@@ -41,7 +43,8 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
     RelativeLayout mLinerlayout_mysettings;
     @BindView(R.id.me_linerlayout_myquestions)
     RelativeLayout mLinerlayout_myquestions;
-
+    @BindView(R.id.me_layout_edit)
+    CardView mCardView_editinfo;
 
     private int mPageCount;
     private static final String PAGE_COUNT = "page_count";
@@ -76,12 +79,23 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
 
     @Override
     protected void initView(View rootView) {
+        toEditInfo();
         toMyMessage();
         toMyCollection();
         toMyAnswer();
         toMyRecentLook();
         toMySettings();
         toMyQusetions();
+    }
+
+    private void toEditInfo() {
+        mCardView_editinfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), LoginActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void toMyQusetions() {

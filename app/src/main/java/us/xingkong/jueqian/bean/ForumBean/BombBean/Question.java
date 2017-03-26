@@ -2,6 +2,7 @@ package us.xingkong.jueqian.bean.ForumBean.BombBean;
 
 import cn.bmob.v3.BmobObject;
 
+import cn.bmob.v3.datatype.BmobPointer;
 import cn.bmob.v3.datatype.BmobRelation;
 
 
@@ -20,6 +21,7 @@ public class Question extends BmobObject {
     private String TAG2_ID;/*第二个Tag的id*/
     private Integer good_count;/*点赞的数量*/
     private Integer answer_count;/*回答的数量*/
+    private BmobPointer answers;/*问题的回答列表*/
 
     public Integer getAnswer_count() {
         return answer_count;
@@ -93,4 +95,11 @@ public class Question extends BmobObject {
         this.good_count = good_count;
     }
 
+    public BmobPointer getAnswers() {
+        return answers;
+    }
+
+    public void setAnswers(BmobPointer answers) {
+        this.answers = answers;
+    }
 }

@@ -2,6 +2,7 @@ package us.xingkong.jueqian.bean.ForumBean.BombBean;
 
 import cn.bmob.v3.BmobObject;
 
+import cn.bmob.v3.datatype.BmobPointer;
 import cn.bmob.v3.datatype.BmobRelation;
 
 
@@ -16,6 +17,7 @@ public class Answer extends BmobObject {
     private String QUESTION_ID;/*问题的id*/
     private Integer state;/*问题的状态，-1为举报成功的问题，1为正常问*/
     private Integer likes;/*点赞数*/
+    private BmobPointer comments;/*回答的评论列表*/
 
     public Integer getLikes() {
         return likes;
@@ -55,5 +57,13 @@ public class Answer extends BmobObject {
 
     public void setState(Integer state) {
         this.state = state;
+    }
+
+    public BmobPointer getComments() {
+        return comments;
+    }
+
+    public void setComments(BmobPointer comments) {
+        this.comments = comments;
     }
 }
