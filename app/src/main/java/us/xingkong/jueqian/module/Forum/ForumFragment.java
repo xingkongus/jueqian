@@ -47,8 +47,7 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
     private RecyclerView.LayoutManager mLayoutManager;
     private ForumRecyclerViewAdapter recyclerViewAdapter;
     private static final String PAGE_COUNT = "page_count";
-     ArrayList<Question> questions =new ArrayList<>();
-
+    ArrayList<Question> questions = new ArrayList<>();
 
 
     public static ForumFragment getInstance(int page_count) {
@@ -71,14 +70,16 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
 
     @Override
     protected void prepareData(Bundle savedInstanceState) {
-       questions= (ArrayList<Question>) mPresenter.getBmobQuestion(getContext(), questions,mHandler);
+        questions = (ArrayList<Question>) mPresenter.getBmobQuestion(getContext(), questions, mHandler);
 
     }
 
     @Override
     protected void initView(View rootView) {
         initSwipeRefreshLayout();
+        swipeRefreshLayout.setRefreshing(true);
         initRecyclerview();
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     private void initSwipeRefreshLayout() {
@@ -91,7 +92,9 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
 //                new Thread(new Runnable() {
 //                    @Override
 //                    public void run() {
-//                        mHandler.sendEmptyMessage(REQUEST_REFRESH);
+//                            mHandler.sendEmptyMessage(REQUEST_REFRESH);
+//
+//
 //                    }
 //                }).start();
 //            }
@@ -128,13 +131,14 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     if (!recyclerView.canScrollVertically(1)) {
 
-                        Toast.makeText(getContext(), "---我是有底线的---", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getContext(), "---我是有底线的---", Toast.LENGTH_SHORT).show();
 
                     }
                     if (!recyclerView.canScrollVertically(-1)) {
                         Toast.makeText(getContext(), "刷新", Toast.LENGTH_SHORT).show();
-                        swipeRefreshLayout.setRefreshing(true);
-                        mHandler.sendEmptyMessage(REQUEST_REFRESH);
+                            swipeRefreshLayout.setRefreshing(true);
+                            mHandler.sendEmptyMessage(REQUEST_REFRESH);
+
                     }
                 }
 
@@ -143,23 +147,25 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                Handler handler= ((MainActivity)getActivity()).handler123;
-                if(dy>0){
+                Handler handler = ((MainActivity) getActivity()).handler123;
+                if (dy > 0) {
                     handler.sendEmptyMessage(0);
-                }else if(dy<0){
+                } else if (dy < 0) {
                     handler.sendEmptyMessage(1);
                 }
             }
         });
         recyclerview.setAdapter(recyclerViewAdapter);
     }
-   Handler mHandler = new Handler() {
+
+    Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
                 case REQUEST_REFRESH:
-                    recyclerViewAdapter.notifyDataSetChanged();
+                    questions.clear();
+                    mPresenter.getBmobQuestion(getContext(),questions,mHandler);
                     swipeRefreshLayout.setRefreshing(false);
                     break;
                 case REQUEST_INTENT_TO_QUESTIONPAGE:
@@ -167,7 +173,7 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
                     startActivity(intent);
                     break;
                 case 3:
-                    initRecyclerview();
+                    recyclerViewAdapter.notifyDataSetChanged();
                     break;
             }
         }
