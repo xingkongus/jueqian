@@ -17,4 +17,5 @@ public interface BaseView<P> {
 
     void hideLoadingDialog();
 
+
 }

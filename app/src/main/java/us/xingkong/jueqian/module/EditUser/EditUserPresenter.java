@@ -21,7 +21,7 @@ public class EditUserPresenter extends BasePresenterImpl implements EditUserCont
         Userinfo newInfo = new Userinfo();
         newInfo.setUrl(url);
         newInfo.setNick(nick);
-        newInfo.setPhone(phone);
+        newInfo.setMobilePhoneNumber(phone);
         newInfo.setEmail(email);
         newInfo.setSex(sex);
         Userinfo oldInfo = (Userinfo) Userinfo.getCurrentUser(context);

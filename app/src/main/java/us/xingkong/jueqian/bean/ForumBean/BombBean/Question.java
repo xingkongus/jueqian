@@ -1,8 +1,8 @@
 package us.xingkong.jueqian.bean.ForumBean.BombBean;
 
 import cn.bmob.v3.BmobObject;
-
 import cn.bmob.v3.datatype.BmobRelation;
+import us.xingkong.jueqian.bean.LoginRegistBean.Userinfo;
 
 
 /**
@@ -12,15 +12,30 @@ import cn.bmob.v3.datatype.BmobRelation;
 public class Question extends BmobObject {
 
     private String mtitle;/*问题的标题*/
-    private boolean isHided;/*是否为匿名问题*/
     private String mcontent;/*问题的内容*/
-
-    private String SENDER_ID;/*发送者的ID*/
     private Integer state;/*问题的状态，-1既是封掉的问题，1为正常问题*/
     private String TAG1_ID;/*第一个Tag的id*/
     private String TAG2_ID;/*第二个Tag的id*/
     private Integer good_count;/*点赞的数量*/
     private Integer answer_count;/*回答的数量*/
+    private Userinfo userinfo;//提问题的用户
+    private BmobRelation star;//收藏问题的用户
+
+    public BmobRelation getStar() {
+        return star;
+    }
+
+    public void setStar(BmobRelation star) {
+        this.star = star;
+    }
+
+    public Userinfo getUserinfo() {
+        return userinfo;
+    }
+
+    public void setUserinfo(Userinfo userinfo) {
+        this.userinfo = userinfo;
+    }
 
     public Integer getAnswer_count() {
         return answer_count;
@@ -38,13 +53,6 @@ public class Question extends BmobObject {
         this.mtitle = mtitle;
     }
 
-    public boolean isHided() {
-        return isHided;
-    }
-
-    public void setHided(boolean hided) {
-        isHided = hided;
-    }
 
     public String getMcontent() {
         return mcontent;
@@ -54,13 +62,6 @@ public class Question extends BmobObject {
         this.mcontent = mcontent;
     }
 
-    public String getSENDER_ID() {
-        return SENDER_ID;
-    }
-
-    public void setSENDER_ID(String SENDER_ID) {
-        this.SENDER_ID = SENDER_ID;
-    }
 
     public Integer getState() {
         return state;

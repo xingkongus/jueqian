@@ -3,14 +3,12 @@ package us.xingkong.jueqian.module.me;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import butterknife.BindView;
 import us.xingkong.jueqian.R;
-import us.xingkong.jueqian.base.BaseActivity;
 import us.xingkong.jueqian.base.BaseFragment;
-import us.xingkong.jueqian.module.main.MainContract;
+import us.xingkong.jueqian.module.EditUser.EditUserActivity;
 import us.xingkong.jueqian.module.me.myanswer.MyAnswerActivity;
 import us.xingkong.jueqian.module.me.mycollection.MyCollectionActivity;
 import us.xingkong.jueqian.module.me.mymessage.MyMessageActivity;
@@ -35,6 +33,9 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
 
     private int mPageCount;
     private static final String PAGE_COUNT = "page_count";
+
+    @BindView(R.id.me_myinfo)
+    RelativeLayout me_layout;
 
     public static MeFragment getInstance(int page_count) {
         MeFragment fra = new MeFragment();
@@ -71,6 +72,17 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
         toMyAnswer();
         toMyRecentLook();
         toMySettings();
+        toMyInfo();
+    }
+
+    private void toMyInfo() {
+        me_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getContext(),EditUserActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void toMyMessage() {
@@ -126,6 +138,12 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
 
     @Override
     protected void initEvent() {
-
+        me_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), EditUserActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }

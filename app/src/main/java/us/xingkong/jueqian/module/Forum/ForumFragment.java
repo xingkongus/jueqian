@@ -1,6 +1,5 @@
 package us.xingkong.jueqian.module.Forum;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,7 +10,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -22,7 +20,7 @@ import butterknife.OnClick;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.adapter.ForumRecyclerViewAdapter;
 import us.xingkong.jueqian.base.BaseFragment;
-import us.xingkong.jueqian.bean.ForumBean.GsonBean.GSON_ForumPageBean;
+import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
 import us.xingkong.jueqian.data.RepositData.ForumRepository;
 import us.xingkong.jueqian.module.Forum.NewPage.NewActivity;
 import us.xingkong.jueqian.module.Forum.QuestionPage.QuestionActivity;
@@ -47,14 +45,10 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
     FloatingActionButton fabForumMain;
 
 
-
-
-    private ArrayList<GSON_ForumPageBean> infoSets;
-    private Handler mHandler;
     private RecyclerView.LayoutManager mLayoutManager;
     private ForumRecyclerViewAdapter recyclerViewAdapter;
     private static final String PAGE_COUNT = "page_count";
-
+     ArrayList<Question> questions =new ArrayList<>();
 
     public static ForumFragment getInstance(int page_count) {
         ForumFragment fra = new ForumFragment();
@@ -71,46 +65,36 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
 
     @Override
     protected int bindLayout() {
-        Log.d("bf", "意外发生了！");
         return R.layout.fragment_forum;
     }
 
     @Override
     protected void prepareData(Bundle savedInstanceState) {
-        Log.d("bf", "意外发生了！2");
-        mPresenter.initList();
-        Log.d("bf", "意外发生了！3");
+       questions= (ArrayList<Question>) mPresenter.getBmobQuestion(getContext(), questions,mHandler);
 
     }
 
     @Override
     protected void initView(View rootView) {
-
         initSwipeRefreshLayout();
-
+        initRecyclerview();
     }
 
     private void initSwipeRefreshLayout() {
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         swipeRefreshLayout.setSize(SwipeRefreshLayout.DEFAULT);
         swipeRefreshLayout.setProgressViewEndTarget(true, 200);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            Thread.sleep(1500);
-                            mHandler.sendEmptyMessage(REQUEST_REFRESH);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                }).start();
-            }
-        });
+//        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                new Thread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        mHandler.sendEmptyMessage(REQUEST_REFRESH);
+//                    }
+//                }).start();
+//            }
+//        });
     }
 
     @Override
@@ -121,28 +105,7 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
     @Override
     protected void initEvent() {
 
-        mHandler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                super.handleMessage(msg);
-                switch (msg.what) {
-                    case REQUEST_REFRESH:
-                        swipeRefreshLayout.setRefreshing(false);
-                        break;
-                    case REQUEST_INTENT_TO_QUESTIONPAGE:
-                        Intent intent = new Intent(getContext(), QuestionActivity.class);
-                        startActivity(intent);
-                        break;
-                    case 3:
-
-                        break;
-                    default:
-                        break;
-                }
-            }
-        };
     }
-
 
     @OnClick(R.id.fab_forum_main)
     public void onClick() {
@@ -150,20 +113,8 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
         startActivity(intent);
     }
 
-
-    @Override
-    public void initShowList(ArrayList<GSON_ForumPageBean> arrayList) {
-        infoSets=arrayList;
-        initRecyclerview();
-    }
-
-    @Override
-    public Context getmContext() {
-        return getContext();
-    }
-
     private void initRecyclerview() {
-        recyclerViewAdapter = new ForumRecyclerViewAdapter(infoSets, mHandler,getContext());
+        recyclerViewAdapter = new ForumRecyclerViewAdapter(questions, mHandler, getContext());
         mLayoutManager = new LinearLayoutManager(getContext());
         recyclerview.setLayoutManager(mLayoutManager);
         recyclerview.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
@@ -174,10 +125,13 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     if (!recyclerView.canScrollVertically(1)) {
-                        Toast.makeText(getContext(), "到底啦", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "---我是有底线的---", Toast.LENGTH_SHORT).show();
+
                     }
                     if (!recyclerView.canScrollVertically(-1)) {
-                        Toast.makeText(getContext(), "到头啦", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "刷新", Toast.LENGTH_SHORT).show();
+                        swipeRefreshLayout.setRefreshing(true);
+                        mHandler.sendEmptyMessage(REQUEST_REFRESH);
                     }
                 }
             }
@@ -189,5 +143,23 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
         });
         recyclerview.setAdapter(recyclerViewAdapter);
     }
-
+   Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case REQUEST_REFRESH:
+                    recyclerview.notifyAll();
+                    swipeRefreshLayout.setRefreshing(false);
+                    break;
+                case REQUEST_INTENT_TO_QUESTIONPAGE:
+                    Intent intent = new Intent(getContext(), QuestionActivity.class);
+                    startActivity(intent);
+                    break;
+                case 3:
+                    initRecyclerview();
+                    break;
+            }
+        }
+    };
 }

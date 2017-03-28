@@ -1,5 +1,7 @@
 package us.xingkong.jueqian.module.main;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.widget.RadioButton;
@@ -10,15 +12,16 @@ import java.util.List;
 
 import butterknife.BindArray;
 import butterknife.BindView;
+import cn.bmob.v3.BmobUser;
 import us.xingkong.jueqian.JueQianAPP;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.adapter.MainPagerAdapter;
 import us.xingkong.jueqian.base.BaseActivity;
 import us.xingkong.jueqian.module.Forum.ForumFragment;
 import us.xingkong.jueqian.module.Home.HomePageFragment;
-import us.xingkong.jueqian.module.me.MeFragment;
+import us.xingkong.jueqian.module.Login.LoginActivity;
 import us.xingkong.jueqian.module.RealS.RealSFragment;
-import us.xingkong.jueqian.utils.AppUtils;
+import us.xingkong.jueqian.module.me.MeFragment;
 import us.xingkong.jueqian.widget.ScrollViewPager;
 
 /**
@@ -46,6 +49,7 @@ public class MainActivity extends BaseActivity<MainContract.Presenter> implement
     private MeFragment mMeFragment;
     private ForumFragment mForumFragment;
     private RealSFragment mRealSFragment;
+    Context con;
 
     @Override
     protected MainContract.Presenter createPresenter() {
@@ -64,7 +68,13 @@ public class MainActivity extends BaseActivity<MainContract.Presenter> implement
 
     @Override
     protected void initView() {
+        con=this;
+        BmobUser user = BmobUser.getCurrentUser(con);
+        if (user == null) {
+            Intent intent = new Intent(con, LoginActivity.class);
+            startActivity(intent);
 
+        }
         mViewPager.setPagingEnabled(false);
         List<Fragment> fragments = new ArrayList<>();
         addFragmentList(fragments);

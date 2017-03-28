@@ -5,6 +5,7 @@
     android:orientation="vertical"
     android:background="#F2F2F2">
     <include layout="@layout/view_toolbar" />
+
     <RelativeLayout
         android:layout_marginTop="30dp"
         android:layout_width="match_parent"
