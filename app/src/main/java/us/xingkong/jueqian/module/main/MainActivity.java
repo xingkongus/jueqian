@@ -3,7 +3,10 @@ package us.xingkong.jueqian.module.main;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
@@ -50,7 +53,20 @@ public class MainActivity extends BaseActivity<MainContract.Presenter> implement
     private ForumFragment mForumFragment;
     private RealSFragment mRealSFragment;
     Context con;
-
+   public Handler handler123=new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch(msg.what){
+                case 0:
+                    mRadioGroup.setVisibility(View.GONE);
+                    break;
+                case 1:
+                    mRadioGroup.setVisibility(View.VISIBLE);
+                    break;
+            }
+        }
+    };
     @Override
     protected MainContract.Presenter createPresenter() {
         return new MainPresenter(this);
@@ -125,13 +141,14 @@ public class MainActivity extends BaseActivity<MainContract.Presenter> implement
                 }
             }
         });
+
+
     }
 
     @Override
     public void onBackPressed() {
         JueQianAPP.exitApp();
     }
-
 
 
 }

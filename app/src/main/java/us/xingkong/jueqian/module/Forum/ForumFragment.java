@@ -24,6 +24,7 @@ import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
 import us.xingkong.jueqian.data.RepositData.ForumRepository;
 import us.xingkong.jueqian.module.Forum.NewPage.NewActivity;
 import us.xingkong.jueqian.module.Forum.QuestionPage.QuestionActivity;
+import us.xingkong.jueqian.module.main.MainActivity;
 
 import static us.xingkong.jueqian.base.Constants.REQUEST_INTENT_TO_QUESTIONPAGE;
 import static us.xingkong.jueqian.base.Constants.REQUEST_REFRESH;
@@ -43,12 +44,12 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
     SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.fab_forum_main)
     FloatingActionButton fabForumMain;
-
-
     private RecyclerView.LayoutManager mLayoutManager;
     private ForumRecyclerViewAdapter recyclerViewAdapter;
     private static final String PAGE_COUNT = "page_count";
      ArrayList<Question> questions =new ArrayList<>();
+
+
 
     public static ForumFragment getInstance(int page_count) {
         ForumFragment fra = new ForumFragment();
@@ -123,8 +124,10 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
+
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     if (!recyclerView.canScrollVertically(1)) {
+
                         Toast.makeText(getContext(), "---我是有底线的---", Toast.LENGTH_SHORT).show();
 
                     }
@@ -134,11 +137,18 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
                         mHandler.sendEmptyMessage(REQUEST_REFRESH);
                     }
                 }
+
             }
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
+                Handler handler= ((MainActivity)getActivity()).handler123;
+                if(dy>0){
+                    handler.sendEmptyMessage(0);
+                }else if(dy<0){
+                    handler.sendEmptyMessage(1);
+                }
             }
         });
         recyclerview.setAdapter(recyclerViewAdapter);
@@ -149,7 +159,7 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
             super.handleMessage(msg);
             switch (msg.what) {
                 case REQUEST_REFRESH:
-                    recyclerview.notifyAll();
+                    recyclerViewAdapter.notifyDataSetChanged();
                     swipeRefreshLayout.setRefreshing(false);
                     break;
                 case REQUEST_INTENT_TO_QUESTIONPAGE:
