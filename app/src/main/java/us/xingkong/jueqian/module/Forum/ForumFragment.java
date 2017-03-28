@@ -131,7 +131,6 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     if (!recyclerView.canScrollVertically(1)) {
 
-//                        Toast.makeText(getContext(), "---我是有底线的---", Toast.LENGTH_SHORT).show();
 
                     }
                     if (!recyclerView.canScrollVertically(-1)) {
