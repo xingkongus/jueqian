@@ -36,14 +36,14 @@ public class MainActivity extends BaseActivity<MainContract.Presenter> implement
 
     @BindView(R.id.tab_homepager)
     RadioButton mTabHomePager;
-    @BindView(R.id.tab_discovery)
-    RadioButton mTabDiscovery;
+    //    @BindView(R.id.tab_discovery)
+//    RadioButton mTabDiscovery;
     @BindView(R.id.tab_ganhuo)
     RadioButton mTabGanH;
     @BindView(R.id.rg_tab)
     RadioGroup mRadioGroup;
 
-    private HomePageFragment mHomePageFragment;
+    //    private HomePageFragment mHomePageFragment;
     private MeFragment mMeFragment;
     private ForumFragment mForumFragment;
     private RealSFragment mRealSFragment;
@@ -65,12 +65,12 @@ public class MainActivity extends BaseActivity<MainContract.Presenter> implement
 
     @Override
     protected void initView() {
-       Bmob.initialize(getApplicationContext(),"2d6a319fa542339021237173a1990ead");
+//       Bmob.initialize(getApplicationContext(),"2d6a319fa542339021237173a1990ead");
         mViewPager.setPagingEnabled(false);
         List<Fragment> fragments = new ArrayList<>();
         addFragmentList(fragments);
 
-        mViewPager.setOffscreenPageLimit(4);
+        mViewPager.setOffscreenPageLimit(3);
         MainPagerAdapter pagerAdapter = new MainPagerAdapter(
                 getSupportFragmentManager(),
                 fragments,
@@ -82,11 +82,11 @@ public class MainActivity extends BaseActivity<MainContract.Presenter> implement
     private void addFragmentList(List<Fragment> fragments) {
         mForumFragment = new ForumFragment().getInstance(0);
         fragments.add(mForumFragment);
-        mHomePageFragment = new HomePageFragment().getInstance(1);
-        fragments.add(mHomePageFragment);
+//        mHomePageFragment = new HomePageFragment().getInstance(1);
+//        fragments.add(mHomePageFragment);
         mRealSFragment = new RealSFragment();
         fragments.add(mRealSFragment);
-        mMeFragment = new MeFragment().getInstance(3);
+        mMeFragment = new MeFragment().getInstance(2);
         fragments.add(mMeFragment);
     }
 
@@ -104,14 +104,14 @@ public class MainActivity extends BaseActivity<MainContract.Presenter> implement
                     case R.id.tab_homepager:
                         mViewPager.setCurrentItem(0, false);
                         break;
-                    case R.id.tab_discovery:
+//                    case R.id.tab_discovery:
+//                        mViewPager.setCurrentItem(1, false);
+//                        break;
+                    case R.id.tab_ganhuo:
                         mViewPager.setCurrentItem(1, false);
                         break;
-                    case R.id.tab_ganhuo:
-                        mViewPager.setCurrentItem(2, false);
-                        break;
                     case R.id.tab_me:
-                        mViewPager.setCurrentItem(3, false);
+                        mViewPager.setCurrentItem(2, false);
                         break;
                 }
             }
@@ -122,7 +122,6 @@ public class MainActivity extends BaseActivity<MainContract.Presenter> implement
     public void onBackPressed() {
         JueQianAPP.exitApp();
     }
-
 
 
 }
