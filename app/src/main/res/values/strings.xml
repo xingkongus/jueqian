@@ -10,7 +10,12 @@
     <string name="text_mycollection">我的收藏</string>
     <string name="text_myanswer">我的回答</string>
     <string name="text_recentlook">最近浏览</string>
+    <string name="text_myquestions">我的问题</string>
     <string name="text_settings">个人设置</string>
+    <string name="text_cleancache">清除缓存</string>
+    <string name="text_aboutme">关于我们</string>
+    <string name="text_aboutme_line1">©星空学生创新中心</string>
+    <string name="text_aboutme_line2">www.xingkong.us</string>
     <string name="text_loaddata_again">点击重新加载</string>
 
     <string-array name="tab_title">

@@ -2,6 +2,7 @@ package us.xingkong.jueqian.bean.ForumBean.BombBean;
 
 import cn.bmob.v3.BmobObject;
 
+import cn.bmob.v3.datatype.BmobPointer;
 import cn.bmob.v3.datatype.BmobRelation;
 
 
@@ -12,11 +13,12 @@ import cn.bmob.v3.datatype.BmobRelation;
 public class Answer extends BmobObject {
 
     private String mcontent; /*回答的正文*/
-
-    private String SENDER_ID;/*发送者的id*/
-    private String QUESTION_ID;/*问题的id*/
     private Integer state;/*问题的状态，-1为举报成功的问题，1为正常问*/
-    private Integer good_count;/*点赞数*/
+    private Integer ups;/*赞同数*/
+    private _User user;/*回答者*/
+    private BmobPointer question;/*所回答的问题*/
+    private BmobRelation comments;/*回答的评论列表*/
+    private BmobRelation likepeople;/*点赞的人的列表*/
 
     public String getMcontent() {
         return mcontent;
@@ -24,22 +26,6 @@ public class Answer extends BmobObject {
 
     public void setMcontent(String mcontent) {
         this.mcontent = mcontent;
-    }
-
-    public String getSENDER_ID() {
-        return SENDER_ID;
-    }
-
-    public void setSENDER_ID(String SENDER_ID) {
-        this.SENDER_ID = SENDER_ID;
-    }
-
-    public String getQUESTION_ID() {
-        return QUESTION_ID;
-    }
-
-    public void setQUESTION_ID(String QUESTION_ID) {
-        this.QUESTION_ID = QUESTION_ID;
     }
 
     public Integer getState() {
@@ -50,12 +36,43 @@ public class Answer extends BmobObject {
         this.state = state;
     }
 
-    public Integer getGood_count() {
-        return good_count;
+    public Integer getUps() {
+        return ups;
     }
 
-    public void setGood_count(Integer good_count) {
-        this.good_count = good_count;
+    public void setUps(Integer ups) {
+        this.ups = ups;
     }
 
+    public _User getUser() {
+        return user;
+    }
+
+    public void setUser(_User user) {
+        this.user = user;
+    }
+
+    public BmobPointer getQuestion() {
+        return question;
+    }
+
+    public void setQuestion(BmobPointer question) {
+        this.question = question;
+    }
+
+    public BmobRelation getComments() {
+        return comments;
+    }
+
+    public void setComments(BmobRelation comments) {
+        this.comments = comments;
+    }
+
+    public BmobRelation getLikepeople() {
+        return likepeople;
+    }
+
+    public void setLikepeople(BmobRelation likepeople) {
+        this.likepeople = likepeople;
+    }
 }

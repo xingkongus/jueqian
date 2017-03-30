@@ -10,6 +10,7 @@ import java.util.List;
 
 import butterknife.BindArray;
 import butterknife.BindView;
+import cn.bmob.v3.Bmob;
 import us.xingkong.jueqian.JueQianAPP;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.adapter.MainPagerAdapter;
@@ -64,7 +65,7 @@ public class MainActivity extends BaseActivity<MainContract.Presenter> implement
 
     @Override
     protected void initView() {
-
+       Bmob.initialize(getApplicationContext(),"2d6a319fa542339021237173a1990ead");
         mViewPager.setPagingEnabled(false);
         List<Fragment> fragments = new ArrayList<>();
         addFragmentList(fragments);

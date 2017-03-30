@@ -14,6 +14,7 @@ import cn.bmob.v3.Bmob;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.base.BaseActivity;
 import us.xingkong.jueqian.module.Regist.RegistActivity;
+import us.xingkong.jueqian.module.main.MainActivity;
 import us.xingkong.jueqian.utils.CheckUtils;
 import us.xingkong.jueqian.utils.Key;
 
@@ -74,21 +75,24 @@ public class LoginActivity extends BaseActivity<LoginContract.Presenter> impleme
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                username=username_edit.getText().toString();
-                password=password_edit.getText().toString();
-                if (!CheckUtils.checkPassword(username)) {
-                    username_layout.setError("Not a valid username!");
-                }
-                else if (!CheckUtils.checkPassword(password)) {
-                    password_layout.setError("Not a valid password!");
-                }
-                else {
-                    username_layout.setErrorEnabled(false);
-                    password_layout.setErrorEnabled(false);
-                    mPresenter.login(con,username,password);
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                }
+//                username=username_edit.getText().toString();
+//                password=password_edit.getText().toString();
+//                if (!CheckUtils.checkPassword(username)) {
+//                    username_layout.setError("Not a valid username!");
+//                }
+//                else if (!CheckUtils.checkPassword(password)) {
+//                    password_layout.setError("Not a valid password!");
+//                }
+//                else {
+//                    username_layout.setErrorEnabled(false);
+//                    password_layout.setErrorEnabled(false);
+//                    mPresenter.login(con,username,password);
+//                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+//                }
+                Intent intent=new Intent(con, MainActivity.class);
+                con.startActivity(intent);
+                finish();
             }
         });
         registButton.setOnClickListener(new View.OnClickListener() {

@@ -5,5 +5,5 @@ package us.xingkong.jueqian.utils;
  */
 
 public class Key {
-    public static String Application_ID="2d6a319fa542339021237173a1990ead";
+    public static String Application_ID="0f9a062b723b72b09a2543f2c6b81090";
 }
