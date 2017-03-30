@@ -69,17 +69,38 @@
             android:layout_centerVertical="true"
             android:layout_toEndOf="@+id/tv_tag_newpage"
             android:layout_toRightOf="@+id/tv_tag_newpage"
-            android:background="#9a3240"
+            android:background="@drawable/buttonshape"
             android:text="选择标签" />
 
-        <Switch
+        <TextView
+            android:text=" "
+            android:textSize="20sp"
+            android:textColor="@color/text_primary"
+            android:layout_marginLeft="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:padding="8dp"
-            android:text="匿名发布" />
+            android:id="@+id/tag1_new"
+            android:layout_toRightOf="@+id/bt_tag_newpage"/>
+        <TextView
+            android:text=" "
+            android:textSize="20sp"
+            android:textColor="@color/text_primary"
+            android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:id="@+id/tag2_new"
+            android:layout_toRightOf="@+id/tag1_new"/>
+        <!--<Switch-->
+            <!--android:id="@+id/swich_new"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentEnd="true"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:padding="8dp"-->
+            <!--android:text="匿名发布" />-->
 
     </RelativeLayout>
 

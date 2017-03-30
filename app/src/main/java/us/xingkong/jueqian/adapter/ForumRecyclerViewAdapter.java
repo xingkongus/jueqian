@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,13 +11,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+import java.util.List;
 
-import java.util.ArrayList;
-
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.listener.GetListener;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.base.Constants;
-import us.xingkong.jueqian.bean.ForumBean.GsonBean.GSON_ForumPageBean;
+import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
+import us.xingkong.jueqian.bean.LoginRegistBean.Userinfo;
 
 import static us.xingkong.jueqian.base.Constants.REQUEST_INTENT_TO_QUESTIONPAGE;
 
@@ -27,11 +27,11 @@ import static us.xingkong.jueqian.base.Constants.REQUEST_INTENT_TO_QUESTIONPAGE;
  */
 
 public class ForumRecyclerViewAdapter extends RecyclerView.Adapter<ForumRecyclerViewAdapter.VH> implements View.OnClickListener {
-    ArrayList<GSON_ForumPageBean> infoSets;
+    List<Question>infoSets;
     Handler mHandler;
     Context mContext;
 
-    public ForumRecyclerViewAdapter(ArrayList<GSON_ForumPageBean> infoSets, Handler handler, Context mContext) {
+    public ForumRecyclerViewAdapter(List<Question> infoSets, Handler handler, Context mContext) {
         this.infoSets = infoSets;
         mHandler = handler;
         this.mContext = mContext;
@@ -43,25 +43,40 @@ public class ForumRecyclerViewAdapter extends RecyclerView.Adapter<ForumRecycler
     }
 
     @Override
-    public void onBindViewHolder(VH holder, int position) {
+    public void onBindViewHolder(final VH holder, final int position) {
         holder.linearLayout.setOnClickListener(this);
         holder.title.setText(infoSets.get(position).getMtitle());
-        holder.username.setText(infoSets.get(position).getSender());
         holder.count_answer.setText(String.valueOf(infoSets.get(position).getAnswer_count()));
-        holder.tag1.setText(infoSets.get(position).getTAG1());
-        holder.tag2.setText(infoSets.get(position).getTAG2());
+        holder.tag1.setText(infoSets.get(position).getTAG1_ID());
+        holder.tag2.setText(infoSets.get(position).getTAG2_ID());
+        String a=infoSets.get(position).getUserinfo().getObjectId();
+        BmobQuery<Userinfo> query=new BmobQuery<>();
+        query.getObject(mContext, a, new GetListener<Userinfo>() {
+            @Override
+            public void onSuccess(Userinfo userinfo) {
+                holder.username.setText(userinfo.getUsername());
+            }
+
+            @Override
+            public void onFailure(int i, String s) {
+
+            }
+        });
+
 //        holder.profile
-        Glide.with(mContext)
-                .load(infoSets.get(position).getProfileURL())
+//        Glide.with(mContext)
+//                .load(infoSets.get(position).getProfileURL())
 //                .placeholder(R.drawable.loading_spinner)
-                .crossFade()
-                .into(holder.profile);
-        if (infoSets.get(position).getSender_state() == Constants.STATE_MEMBER) {
+//                .crossFade()
+//                .into(holder.profile);
+        if (infoSets.get(position).getState() == Constants.STATE_MEMBER) {
             holder.userState.setBackgroundColor(Color.BLACK);
-        } else if (infoSets.get(position).getSender_state() == Constants.STATE_MEMBER) {
+        } else if (infoSets.get(position).getState() == Constants.STATE_MEMBER) {
             holder.userState.setBackgroundColor(Color.CYAN);
         }
+
     }
+
 
     @Override
     public int getItemCount() {
