@@ -2,7 +2,11 @@ package us.xingkong.jueqian.module.Regist;
 
 import android.content.Context;
 import android.content.Intent;
-import android.widget.Toast;
+import android.os.Handler;
+import android.view.ActionMode;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.EditText;
 
 import cn.bmob.v3.listener.SaveListener;
 import us.xingkong.jueqian.base.BasePresenterImpl;
@@ -13,35 +17,62 @@ import us.xingkong.jueqian.module.Login.LoginActivity;
 public class RegistPresenter extends BasePresenterImpl implements RegistContract.Presenter {
 
     private final RegistContract.View mView;
+
     public RegistPresenter(RegistContract.View view) {
         mView = view;
         this.mView.setPresenter(this);
     }
-    public void regist(final Context context, final String username, final String password){
-       Thread thread=new Thread(new Runnable() {
-           @Override
-           public void run() {
-               Userinfo bu=new Userinfo();
-               bu.setUsername(username);
-               bu.setPassword(password);
-               bu.signUp(context, new SaveListener() {
-                   @Override
-                   public void onSuccess() {
-                       System.out.println("activity_regist successful");
-                       Intent intent=new Intent(context, LoginActivity.class);
-                       context.startActivity(intent);
-                       onFinish();
-                   }
 
-                   @Override
-                   public void onFailure(int i, String s) {
-                       System.out.println("activity_regist fail");
-                       Toast.makeText(context, "用户名已存在", Toast.LENGTH_SHORT).show();
-                   }
-               });
-           }
-       });
+    public void regist(final Context context, final String username, final String password, final Handler handler) {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Userinfo bu = new Userinfo();
+                bu.setUsername(username);
+                bu.setPassword(password);
+                bu.signUp(context, new SaveListener() {
+                    @Override
+                    public void onSuccess() {
+                        mView.showToast("注册完成");
+                        Intent intent = new Intent(context, LoginActivity.class);
+                        context.startActivity(intent);
+                        handler.sendEmptyMessage(0);
+                    }
+
+                    @Override
+                    public void onFailure(int i, String s) {
+                        mView.showToast("用户名已存在");
+                    }
+                });
+            }
+        });
         thread.start();
 
+    }
+
+    @Override
+    public void setEditText(EditText editText) {
+        editText.setCustomSelectionActionModeCallback(new ActionMode.Callback() {
+            @Override
+            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+                return false;
+            }
+
+            @Override
+            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+                return false;
+            }
+
+            @Override
+            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                return false;
+            }
+
+            @Override
+            public void onDestroyActionMode(ActionMode mode) {
+
+            }
+        });
+        editText.setLongClickable(false);
     }
 }

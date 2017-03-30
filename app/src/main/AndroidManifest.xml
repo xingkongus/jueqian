@@ -23,7 +23,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity android:name=".module.EditUser.EditUserActivity"></activity>
         <activity android:name=".module.Login.LoginActivity"></activity>
         <activity android:name=".module.Regist.RegistActivity"></activity>
         <activity android:name=".module.ChangePassWord.ChangePWActivity"></activity>

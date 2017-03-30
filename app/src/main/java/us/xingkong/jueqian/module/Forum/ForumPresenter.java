@@ -1,12 +1,19 @@
 package us.xingkong.jueqian.module.Forum;
 
+
+import android.content.Context;
+import android.os.Handler;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.listener.FindListener;
 import us.xingkong.jueqian.base.BasePresenterImpl;
+import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
 import us.xingkong.jueqian.bean.ForumBean.GsonBean.GSON_ForumPageBean;
 import us.xingkong.jueqian.data.RepositData.ForumRepository;
 
@@ -22,7 +29,7 @@ public class ForumPresenter extends BasePresenterImpl implements ForumContract.P
 
     private final ForumContract.View mView;
     private ForumRepository mRepository;
-    private ArrayList<GSON_ForumPageBean> infoSet=new ArrayList<>(
+    private List<Question> infoSet=new ArrayList<>(
     );
     private int i;
     private int size_of_list;
@@ -41,18 +48,41 @@ public class ForumPresenter extends BasePresenterImpl implements ForumContract.P
     }
 
 
-    @Override
-    public void initList() {
-//        if ((infoSet = mRepository.initDataFromLocal()) != null) {
-        mView.initShowList(infoSet);
-//        } else {
-//            getForumListFromBmob(true, new Date(System.currentTimeMillis()), 20);
-//        }
-    }
 
     @Override
     public void getForumListFromBmob(boolean isNewest, Date date, int num) {
 
+    }
+
+    @Override
+    public List<Question> getBmobQuestion(Context context, final ArrayList<Question> questions, final Handler handler) {
+        BmobQuery<Question> query=new BmobQuery<>();
+        query.setLimit(20);
+        query.order("-createdAt");
+        query.findObjects(context, new FindListener<Question>() {
+            @Override
+            public void onSuccess(List<Question> list) {
+                for(Question question:list){
+                    question.getMtitle();
+                    question.getMcontent();
+                    question.getTAG1_ID();
+                    question.getTAG2_ID();
+                    question.getAnswer_count();
+                    question.getUserinfo();
+                    questions.add(question);
+
+                }
+                handler.sendEmptyMessage(3);
+                mView.showToast("获取列表成功"+questions.size());
+            }
+
+            @Override
+            public void onError(int i, String s) {
+
+            }
+        });
+
+        return questions;
     }
 
 

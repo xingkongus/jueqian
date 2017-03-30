@@ -19,7 +19,7 @@ public class CheckUtils {
     /**
      * 正则表达式：验证密码
      */
-    private static final String REGEX_PASSWORD = "^[a-zA-Z0-9]{6,16}$";
+    private static final String REGEX_PASSWORD = "^[a-z0-9]{6,16}$";
 
     /**
      * 正则表达式：验证邮箱
