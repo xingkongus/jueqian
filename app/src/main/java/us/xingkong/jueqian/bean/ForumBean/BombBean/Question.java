@@ -45,6 +45,7 @@ public class Question extends BmobObject {
         this.answer_count = answer_count;
     }
 
+
     public String getMtitle() {
         return mtitle;
     }
@@ -52,7 +53,6 @@ public class Question extends BmobObject {
     public void setMtitle(String mtitle) {
         this.mtitle = mtitle;
     }
-
 
     public String getMcontent() {
         return mcontent;
@@ -62,7 +62,6 @@ public class Question extends BmobObject {
         this.mcontent = mcontent;
     }
 
-
     public Integer getState() {
         return state;
     }
@@ -71,28 +70,43 @@ public class Question extends BmobObject {
         this.state = state;
     }
 
-    public String getTAG1_ID() {
-        return TAG1_ID;
+    public _User getUser() {
+        return user;
     }
 
-    public void setTAG1_ID(String TAG1_ID) {
-        this.TAG1_ID = TAG1_ID;
+    public void setUser(_User user) {
+        this.user = user;
     }
 
-    public String getTAG2_ID() {
-        return TAG2_ID;
+    public BmobRelation getAnswers() {
+        return answers;
     }
 
-    public void setTAG2_ID(String TAG2_ID) {
-        this.TAG2_ID = TAG2_ID;
+    public void setAnswers(BmobRelation answers) {
+        this.answers = answers;
     }
 
-    public Integer getGood_count() {
-        return good_count;
+    public BmobRelation getLikepeople() {
+        return likepeople;
     }
 
-    public void setGood_count(Integer good_count) {
-        this.good_count = good_count;
+    public void setLikepeople(BmobRelation likepeople) {
+        this.likepeople = likepeople;
     }
 
+    public BmobRelation getCollectpeople() {
+        return collectpeople;
+    }
+
+    public void setCollectpeople(BmobRelation collectpeople) {
+        this.collectpeople = collectpeople;
+    }
+
+    public BmobRelation getFocuspeople() {
+        return focuspeople;
+    }
+
+    public void setFocuspeople(BmobRelation focuspeople) {
+        this.focuspeople = focuspeople;
+    }
 }

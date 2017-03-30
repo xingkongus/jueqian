@@ -6,6 +6,8 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name=".JueQianAPP"
@@ -25,20 +27,17 @@
         <activity android:name=".module.Login.LoginActivity"></activity>
         <activity android:name=".module.Regist.RegistActivity"></activity>
         <activity android:name=".module.ChangePassWord.ChangePWActivity"></activity>
-        <activity android:name=".module.QuestionPage.QuestionActivity"/>
-        <activity android:name=".module.Comment.CommentActivity"/>
-        <activity android:name=".module.AnwserPage.AnswerActivity"/>
-        <activity android:name=".module.NewPage.NewActivity"/>
-        <activity android:name=".module.Forum.QuestionPage.QuestionActivity" />
-        <activity android:name=".module.Forum.QuestionPage.Comment.CommentActivity" />
-        <activity android:name=".module.Forum.QuestionPage.AnwserPage.AnswerActivity" />
-        <activity android:name=".module.Forum.NewPage.NewActivity" />
+        <activity android:name=".module.Forum.QuestionPage.QuestionActivity"/>
+        <activity android:name=".module.Forum.QuestionPage.Comment.CommentActivity"/>
+        <activity android:name=".module.Forum.QuestionPage.AnwserPage.AnswerActivity"/>
+        <activity android:name=".module.Forum.NewPage.NewActivity"/>
         <activity android:name=".module.me.mymessage.MyMessageActivity" />
         <activity android:name=".module.me.mycollection.MyCollectionActivity" />
         <activity android:name=".module.me.myanswer.MyAnswerActivity" />
         <activity android:name=".module.me.myrecentlook.MyRecentLookActivity" />
         <activity android:name=".module.me.mysettings.MySettingsActivity" />
-        <activity android:name=".module.me.mysettings.aboutme.AboutMeActivity"/>
+        <activity android:name=".module.me.mysettings.aboutme.AboutMeActivity" />
+        <activity android:name=".module.me.myquestions.MyQuestionsAcitivity" />
         <activity android:name=".module.common.WebActivity" />
 
     </application>

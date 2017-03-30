@@ -9,7 +9,15 @@ import us.xingkong.jueqian.base.BaseView;
 
 public class MyMessageContract {
     interface View extends BaseView<Presenter> {
+        void loadSuccess();
+
+        void loadFailure();
+
+        void showRefresh(boolean isRefresh);
     }
+
     interface Presenter extends BasePresenter {
+        void getMessageList();
     }
+
 }

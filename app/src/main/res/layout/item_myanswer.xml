@@ -19,7 +19,7 @@
         android:layout_toRightOf="@id/item_myanswer_iv"
         android:text="你为什么是一个傻逼？"
         android:textColor="#000000"
-        android:textSize="@dimen/sp_20" />
+        android:textSize="@dimen/sp_16" />
 
 
 </RelativeLayout>

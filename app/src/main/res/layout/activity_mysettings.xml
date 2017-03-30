@@ -27,7 +27,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/dp_16"
-                android:text="清楚缓存"
+                android:text="@string/text_cleancache"
                 android:textSize="@dimen/sp_16" />
 
             <ImageView
@@ -54,7 +54,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/dp_16"
-                android:text="关于我们"
+                android:text="@string/text_aboutme"
                 android:textSize="@dimen/sp_16" />
 
             <ImageView

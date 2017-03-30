@@ -2,6 +2,9 @@ package us.xingkong.jueqian.bean.ForumBean.BombBean;
 
 import cn.bmob.v3.BmobObject;
 import us.xingkong.jueqian.bean.LoginRegistBean.Userinfo;
+import cn.bmob.v3.datatype.BmobPointer;
+import cn.bmob.v3.datatype.BmobRelation;
+
 
 
 /**
@@ -14,6 +17,12 @@ public class Comment extends BmobObject {
     private Integer good_count;/*该问题收到的点赞数*/
     private Userinfo userinfo;//评论的用户
     private Question question;//评论的问题
+    private Integer likes;/*该问题收到的点赞数*/
+    private _User user;/*评论的用户*/
+    private BmobPointer answer;/*评论所属的回答*/
+    private BmobPointer comments;/*该评论的评论*/
+    private BmobRelation likepeople;/*点赞的用户*/
+
 
     public Userinfo getUserinfo() {
         return userinfo;
@@ -40,20 +49,27 @@ public class Comment extends BmobObject {
     }
 
 
-    public Integer getState() {
-        return state;
+    public BmobPointer getAnswer() {
+        return answer;
     }
 
-    public void setState(Integer state) {
-        this.state = state;
+    public void setAnswer(BmobPointer answer) {
+        this.answer = answer;
     }
 
-    public Integer getGood_count() {
-        return good_count;
+    public BmobPointer getComments() {
+        return comments;
     }
 
-    public void setGood_count(Integer good_count) {
-        this.good_count = good_count;
+    public void setComments(BmobPointer comments) {
+        this.comments = comments;
     }
 
+    public BmobRelation getLikepeople() {
+        return likepeople;
+    }
+
+    public void setLikepeople(BmobRelation likepeople) {
+        this.likepeople = likepeople;
+    }
 }

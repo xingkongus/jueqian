@@ -1,14 +1,14 @@
 package us.xingkong.jueqian.module.Forum;
 
+
 import android.content.Context;
 import android.os.Handler;
-
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+
 
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.listener.FindListener;

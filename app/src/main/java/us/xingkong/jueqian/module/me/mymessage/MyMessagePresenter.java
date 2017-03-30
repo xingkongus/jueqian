@@ -13,4 +13,9 @@ public class MyMessagePresenter extends BasePresenterImpl implements MyMessageCo
         this.mView = mView;
         this.mView.setPresenter(this);
     }
+
+    @Override
+    public void getMessageList() {
+
+    }
 }

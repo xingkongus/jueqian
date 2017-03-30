@@ -1,16 +1,43 @@
 package us.xingkong.jueqian.bean.ForumBean.BombBean;
 
 
-import java.util.List;
-
-import cn.bmob.v3.BmobObject;
+import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
+import cn.bmob.v3.datatype.BmobPointer;
+import cn.bmob.v3.datatype.BmobRelation;
 
 /**
  * Created by Garfield on 1/11/17.
  */
 
-public class _User extends BmobObject {
+public class _User extends BmobUser {
+
+    private String nickname; //昵称
+    private String selfsign;//个性签名
+    private Boolean gender;//性别
+    private BmobFile profile;//头像
+    private Integer state;//用户状态
+    private BmobRelation collections;//我的收藏列表
+    private BmobRelation questions;//我的问题列表
+    private BmobRelation answers;//我的回答列表
+    private BmobRelation recentlooks;//最近浏览列表
+    private BmobRelation comments;//回复我的列表
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public String getSelfsign() {
+        return selfsign;
+    }
+
+    public void setSelfsign(String selfsign) {
+        this.selfsign = selfsign;
+    }
 
     public Boolean getGender() {
         return gender;
@@ -28,7 +55,6 @@ public class _User extends BmobObject {
         this.profile = profile;
     }
 
-
     public Integer getState() {
         return state;
     }
@@ -37,35 +63,43 @@ public class _User extends BmobObject {
         this.state = state;
     }
 
-    public String getACCOUNT() {
-        return ACCOUNT;
+    public BmobRelation getCollections() {
+        return collections;
     }
 
-    public void setACCOUNT(String ACCOUNT) {
-        this.ACCOUNT = ACCOUNT;
+    public void setCollections(BmobRelation collections) {
+        this.collections = collections;
     }
 
-    public String getUsername() {
-        return username;
+    public BmobRelation getQuestions() {
+        return questions;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setQuestions(BmobRelation questions) {
+        this.questions = questions;
     }
 
-    public String getSelfIntro() {
-        return selfIntro;
+    public BmobRelation getAnswers() {
+        return answers;
     }
 
-    public void setSelfIntro(String selfIntro) {
-        this.selfIntro = selfIntro;
+    public void setAnswers(BmobRelation answers) {
+        this.answers = answers;
     }
 
-    private String username;
-    private String ACCOUNT;//账号
-    private Boolean gender;//性别
-    private BmobFile profile;//头像
-    private String selfIntro;//自我介绍
-    private Integer state;//用户状态
+    public BmobRelation getRecentlooks() {
+        return recentlooks;
+    }
 
+    public void setRecentlooks(BmobRelation recentlooks) {
+        this.recentlooks = recentlooks;
+    }
+
+    public BmobRelation getComments() {
+        return comments;
+    }
+
+    public void setComments(BmobRelation comments) {
+        this.comments = comments;
+    }
 }

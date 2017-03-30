@@ -16,6 +16,7 @@ import java.util.List;
 import butterknife.BindArray;
 import butterknife.BindView;
 import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.Bmob;
 import us.xingkong.jueqian.JueQianAPP;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.adapter.MainPagerAdapter;

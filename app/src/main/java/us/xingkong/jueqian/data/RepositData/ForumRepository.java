@@ -1,28 +1,20 @@
 package us.xingkong.jueqian.data.RepositData;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.google.gson.Gson;
 
-import java.util.Date;
 import java.util.ArrayList;
-import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
-import cn.bmob.v3.listener.FindListener;
-import cn.bmob.v3.listener.GetListener;
 import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
 import io.realm.Sort;
 import us.xingkong.jueqian.base.Constants;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
-import us.xingkong.jueqian.bean.ForumBean.BombBean.TagBean;
-import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
 import us.xingkong.jueqian.bean.ForumBean.GsonBean.GSON_ForumPageBean;
 import us.xingkong.jueqian.bean.ForumBean.RealmBean.ForumPageBean;
-import us.xingkong.jueqian.utils.ToastUtils;
 
 
 /**
