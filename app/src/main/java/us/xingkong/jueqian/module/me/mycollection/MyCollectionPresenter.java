@@ -1,13 +1,9 @@
 package us.xingkong.jueqian.module.me.mycollection;
 
-import android.util.Log;
-
-import java.util.Iterator;
 import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.datatype.BmobPointer;
-import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 import us.xingkong.jueqian.JueQianAPP;
 import us.xingkong.jueqian.base.BasePresenterImpl;

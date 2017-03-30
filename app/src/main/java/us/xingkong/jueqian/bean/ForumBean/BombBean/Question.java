@@ -4,6 +4,7 @@ import cn.bmob.v3.BmobObject;
 
 import cn.bmob.v3.datatype.BmobPointer;
 import cn.bmob.v3.datatype.BmobRelation;
+import us.xingkong.jueqian.bean.LoginRegistBean.Userinfo;
 
 
 /**
@@ -13,23 +14,16 @@ import cn.bmob.v3.datatype.BmobRelation;
 public class Question extends BmobObject {
 
     private String mtitle;/*问题的标题*/
-    private boolean isHided;/*是否为匿名问题*/
     private String mcontent;/*问题的内容*/
-    private String SENDER_ID;/*发送者的ID*/
-    private Integer state;/*问题的状态，-1既是封掉的问题，1为正常问题*/
     private String TAG1_ID;/*第一个Tag的id*/
     private String TAG2_ID;/*第二个Tag的id*/
-    private Integer good_count;/*点赞的数量*/
-    private Integer answer_count;/*回答的数量*/
-    private BmobPointer answers;/*问题的回答列表*/
-
-    public Integer getAnswer_count() {
-        return answer_count;
-    }
-
-    public void setAnswer_count(Integer answer_count) {
-        this.answer_count = answer_count;
-    }
+    private Integer focus;/*关注的数量*/
+    private Integer state;/*问题的状态，-1既是封掉的问题，1为正常问题*/
+    private _User user;/*发表问题的用户*/
+    private BmobRelation answers;/*问题的回答列表*/
+    private BmobRelation likepeople;/*喜欢的人的列表*/
+    private BmobRelation collectpeople;/*收藏的人的列表*/
+    private BmobRelation focuspeople;/*关注的人的列表*/
 
     public String getMtitle() {
         return mtitle;
@@ -39,36 +33,12 @@ public class Question extends BmobObject {
         this.mtitle = mtitle;
     }
 
-    public boolean isHided() {
-        return isHided;
-    }
-
-    public void setHided(boolean hided) {
-        isHided = hided;
-    }
-
     public String getMcontent() {
         return mcontent;
     }
 
     public void setMcontent(String mcontent) {
         this.mcontent = mcontent;
-    }
-
-    public String getSENDER_ID() {
-        return SENDER_ID;
-    }
-
-    public void setSENDER_ID(String SENDER_ID) {
-        this.SENDER_ID = SENDER_ID;
-    }
-
-    public Integer getState() {
-        return state;
-    }
-
-    public void setState(Integer state) {
-        this.state = state;
     }
 
     public String getTAG1_ID() {
@@ -87,19 +57,59 @@ public class Question extends BmobObject {
         this.TAG2_ID = TAG2_ID;
     }
 
-    public Integer getGood_count() {
-        return good_count;
+    public Integer getFocus() {
+        return focus;
     }
 
-    public void setGood_count(Integer good_count) {
-        this.good_count = good_count;
+    public void setFocus(Integer focus) {
+        this.focus = focus;
     }
 
-    public BmobPointer getAnswers() {
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
+    }
+
+    public _User getUser() {
+        return user;
+    }
+
+    public void setUser(_User user) {
+        this.user = user;
+    }
+
+    public BmobRelation getAnswers() {
         return answers;
     }
 
-    public void setAnswers(BmobPointer answers) {
+    public void setAnswers(BmobRelation answers) {
         this.answers = answers;
+    }
+
+    public BmobRelation getLikepeople() {
+        return likepeople;
+    }
+
+    public void setLikepeople(BmobRelation likepeople) {
+        this.likepeople = likepeople;
+    }
+
+    public BmobRelation getCollectpeople() {
+        return collectpeople;
+    }
+
+    public void setCollectpeople(BmobRelation collectpeople) {
+        this.collectpeople = collectpeople;
+    }
+
+    public BmobRelation getFocuspeople() {
+        return focuspeople;
+    }
+
+    public void setFocuspeople(BmobRelation focuspeople) {
+        this.focuspeople = focuspeople;
     }
 }

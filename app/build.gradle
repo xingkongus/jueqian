@@ -48,8 +48,8 @@ dependencies {
     compile 'cn.bmob.android:androidasync:2.1.6'
     compile 'cn.bmob.android:bmob-sdk:3.4.6'
     //bmob-sdk:3.4.6依赖以下包
-//    compile 'com.squareup.okhttp:okhttp:2.4.0'//CDN文件服务使用okhttp相关包进行文件的上传和下载（必填）
-//    compile 'com.squareup.okio:okio:1.4.0'
+    compile 'com.squareup.okhttp:okhttp:2.4.0'//CDN文件服务使用okhttp相关包进行文件的上传和下载（必填）
+    compile 'com.squareup.okio:okio:1.4.0'
     //注：别忘记导入3.4.6的相关依赖包
     //bmob-sms ：Bmob单独为短信服务提供的包
     compile 'cn.bmob.android:bmob-sms:1.0.1'

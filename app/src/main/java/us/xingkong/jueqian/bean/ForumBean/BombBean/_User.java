@@ -11,16 +11,17 @@ import cn.bmob.v3.datatype.BmobRelation;
  */
 
 public class _User extends BmobUser {
+
     private String nickname; //昵称
+    private String selfsign;//个性签名
     private Boolean gender;//性别
     private BmobFile profile;//头像
-    private String selfIntro;//自我介绍
     private Integer state;//用户状态
-    private BmobPointer collections;//我的收藏列表
-    private BmobPointer questions;//我的问题列表
-    private BmobPointer answers;//我的回答列表
-    private BmobPointer recentlooks;//最近浏览列表
-    private BmobPointer comments;//回复我的列表
+    private BmobRelation collections;//我的收藏列表
+    private BmobRelation questions;//我的问题列表
+    private BmobRelation answers;//我的回答列表
+    private BmobRelation recentlooks;//最近浏览列表
+    private BmobRelation comments;//回复我的列表
 
     public String getNickname() {
         return nickname;
@@ -28,6 +29,14 @@ public class _User extends BmobUser {
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
+    }
+
+    public String getSelfsign() {
+        return selfsign;
+    }
+
+    public void setSelfsign(String selfsign) {
+        this.selfsign = selfsign;
     }
 
     public Boolean getGender() {
@@ -46,14 +55,6 @@ public class _User extends BmobUser {
         this.profile = profile;
     }
 
-    public String getSelfIntro() {
-        return selfIntro;
-    }
-
-    public void setSelfIntro(String selfIntro) {
-        this.selfIntro = selfIntro;
-    }
-
     public Integer getState() {
         return state;
     }
@@ -62,43 +63,43 @@ public class _User extends BmobUser {
         this.state = state;
     }
 
-    public BmobPointer getCollections() {
+    public BmobRelation getCollections() {
         return collections;
     }
 
-    public void setCollections(BmobPointer collections) {
+    public void setCollections(BmobRelation collections) {
         this.collections = collections;
     }
 
-    public BmobPointer getQuestions() {
+    public BmobRelation getQuestions() {
         return questions;
     }
 
-    public void setQuestions(BmobPointer questions) {
+    public void setQuestions(BmobRelation questions) {
         this.questions = questions;
     }
 
-    public BmobPointer getAnswers() {
+    public BmobRelation getAnswers() {
         return answers;
     }
 
-    public void setAnswers(BmobPointer answers) {
+    public void setAnswers(BmobRelation answers) {
         this.answers = answers;
     }
 
-    public BmobPointer getRecentlooks() {
+    public BmobRelation getRecentlooks() {
         return recentlooks;
     }
 
-    public void setRecentlooks(BmobPointer recentlooks) {
+    public void setRecentlooks(BmobRelation recentlooks) {
         this.recentlooks = recentlooks;
     }
 
-    public BmobPointer getComments() {
+    public BmobRelation getComments() {
         return comments;
     }
 
-    public void setComments(BmobPointer comments) {
+    public void setComments(BmobRelation comments) {
         this.comments = comments;
     }
 }

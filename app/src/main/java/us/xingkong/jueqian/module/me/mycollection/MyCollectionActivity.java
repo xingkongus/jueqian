@@ -10,11 +10,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.datatype.BmobPointer;
 import cn.bmob.v3.listener.FindListener;
@@ -24,7 +22,6 @@ import us.xingkong.jueqian.adapter.MyCollectionAdapter;
 import us.xingkong.jueqian.base.BaseActivity;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
 import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
-import us.xingkong.jueqian.utils.Key;
 
 /**
  * Created by PERFECTLIN on 2017/1/10 0010.

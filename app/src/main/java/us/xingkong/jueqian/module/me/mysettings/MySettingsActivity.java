@@ -8,8 +8,13 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import butterknife.BindView;
+import cn.bmob.v3.listener.SaveListener;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.base.BaseActivity;
+import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
+import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
+import us.xingkong.jueqian.bean.LoginRegistBean.Userinfo;
+import us.xingkong.jueqian.module.main.MainActivity;
 import us.xingkong.jueqian.module.me.mysettings.aboutme.AboutMeActivity;
 
 /**
@@ -20,6 +25,8 @@ public class MySettingsActivity extends BaseActivity<MySettingsContract.Presente
 
     @BindView(R.id.mysettings_ry_aboutme)
     RelativeLayout mRelativeLayout_aboutme;
+    @BindView(R.id.mysettings_ry_clean)
+    RelativeLayout mRelativeLayout_clean;
 
     @Override
     protected MySettingsContract.Presenter createPresenter() {
@@ -39,7 +46,37 @@ public class MySettingsActivity extends BaseActivity<MySettingsContract.Presente
     @Override
     protected void initView() {
         setToolbar();
+        setClean();
         setAboutMe();
+    }
+
+    private void setClean() {
+        mRelativeLayout_clean.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Thread thread=new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Question u = new Question();
+                        u.setState(1);
+                        u.setMtitle("11111111111111");
+                        u.setMcontent("111111222333333333333");
+                        u.save(getApplicationContext(), new SaveListener() {
+                            @Override
+                            public void onSuccess() {
+                                showToast("YES!");
+                            }
+
+                            @Override
+                            public void onFailure(int i, String s) {
+                                showToast("NO!"+s);
+                            }
+                        });
+                    }
+                });
+                thread.start();
+            }
+        });
     }
 
     private void setAboutMe() {

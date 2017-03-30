@@ -4,21 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import butterknife.BindView;
-import cn.bmob.v3.listener.UpdateListener;
 import us.xingkong.jueqian.R;
-import us.xingkong.jueqian.base.BaseActivity;
 import us.xingkong.jueqian.base.BaseFragment;
-import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
-import us.xingkong.jueqian.bean.ForumBean.GsonBean.User;
 import us.xingkong.jueqian.module.Login.LoginActivity;
-import us.xingkong.jueqian.module.main.MainContract;
 import us.xingkong.jueqian.module.me.myanswer.MyAnswerActivity;
 import us.xingkong.jueqian.module.me.mycollection.MyCollectionActivity;
 import us.xingkong.jueqian.module.me.mymessage.MyMessageActivity;
