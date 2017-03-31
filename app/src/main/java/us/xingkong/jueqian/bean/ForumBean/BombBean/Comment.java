@@ -19,7 +19,13 @@ public class Comment extends BmobObject {
     private Comment comments;/*该评论的评论*/
     private BmobRelation likepeople;/*点赞的用户*/
 
+    public String getMcontent() {
+        return mcontent;
+    }
 
+    public void setMcontent(String mcontent) {
+        this.mcontent = mcontent;
+    }
 
     public Question getQuestion() {
         return question;
@@ -29,14 +35,21 @@ public class Comment extends BmobObject {
         this.question = question;
     }
 
-    public String getMcontent() {
-        return mcontent;
+    public Integer getLikes() {
+        return likes;
     }
 
-    public void setMcontent(String mcontent) {
-        this.mcontent = mcontent;
+    public void setLikes(Integer likes) {
+        this.likes = likes;
     }
 
+    public _User getUser() {
+        return user;
+    }
+
+    public void setUser(_User user) {
+        this.user = user;
+    }
 
     public Answer getAnswer() {
         return answer;

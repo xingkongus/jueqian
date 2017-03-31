@@ -42,6 +42,7 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
     private ArrayList<ArrayList> answerSetsArr;
     private Handler mHandler;
     private Context mContext;
+
     @BindView(R.id.question_tab)
     RadioGroup tab;
     @BindView(R.id.tab_huida)
@@ -136,11 +137,13 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
+
                 if(dy>0){
                     tab.setVisibility(View.GONE);
                 }else if(dy<0){
                     tab.setVisibility(View.VISIBLE);
                 }
+
             }
         });
 
@@ -163,6 +166,7 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                 startActivity(intent);
             }
         });
+
 
     }
 

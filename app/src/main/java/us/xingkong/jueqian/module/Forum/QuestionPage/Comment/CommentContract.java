@@ -12,7 +12,7 @@ import us.xingkong.jueqian.base.BaseView;
  */
 
 public interface CommentContract {
-    interface View extends BaseView<CommentContract.Presenter> {
+    interface View extends BaseView<Presenter> {
 
     }
 

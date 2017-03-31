@@ -1,5 +1,6 @@
 package us.xingkong.jueqian.module.Forum.NewAnswer;
 
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,10 +23,9 @@ public class NewAnswerActivity extends BaseActivity <NewAnswerContract.Presenter
     Button new_Answer;
     @BindView(R.id.new_huidacontent)
     EditText new_huidacontent;
+
     Context context;
     String questionID;
-
-
 
     @Override
     protected NewAnswerContract.Presenter createPresenter() {
@@ -42,10 +42,12 @@ public class NewAnswerActivity extends BaseActivity <NewAnswerContract.Presenter
         Intent intent=getIntent();
         Bundle bundle=intent.getExtras();
         questionID=bundle.getString("questionObjectid");
+
     }
 
     @Override
     protected void initView() {
+
         context=this;
         setToolbarBackEnable("回答");
     }
@@ -57,6 +59,7 @@ public class NewAnswerActivity extends BaseActivity <NewAnswerContract.Presenter
 
     @Override
     protected void initEvent() {
+
         new_Answer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,6 +67,7 @@ public class NewAnswerActivity extends BaseActivity <NewAnswerContract.Presenter
                 mPresenter.addNewAnswer(context,newAnswer,questionID);
             }
         });
+
     }
 
     @Override

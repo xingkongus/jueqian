@@ -9,7 +9,7 @@ import us.xingkong.jueqian.base.BaseView;
  */
 
 public interface AnswerContract {
-    interface View extends BaseView<AnswerContract.Presenter> {
+    interface View extends BaseView<Presenter> {
     }
 
     interface Presenter extends BasePresenter {

@@ -41,6 +41,7 @@ public class _User extends BmobUser {
 
     public void setRecentlooks(BmobRelation recentlooks) {
         this.recentlooks = recentlooks;
+
     }
 
     public BmobRelation getAnswers() {

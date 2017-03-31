@@ -71,7 +71,6 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
     @Override
     protected void prepareData(Bundle savedInstanceState) {
         questions = (ArrayList<Question>) mPresenter.getBmobQuestion(getContext(), questions, mHandler);
-
     }
 
     @Override
