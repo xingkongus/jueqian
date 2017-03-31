@@ -13,11 +13,11 @@ import us.xingkong.jueqian.base.BaseView;
  */
 
 public interface NewContract {
-    interface View extends BaseView<NewContract.Presenter> {
+    interface View extends BaseView<Presenter> {
     }
 
     interface Presenter extends BasePresenter {
-        void addQuestion(Context context,String title,String content,String tag1,String tag2);
+        void addQuestion(Context context, String title, String content, String tag1, String tag2);
     }
 
 }

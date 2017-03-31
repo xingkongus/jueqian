@@ -8,9 +8,12 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import butterknife.BindView;
+import cn.bmob.v3.datatype.BmobRelation;
 import cn.bmob.v3.listener.SaveListener;
+import cn.bmob.v3.listener.UpdateListener;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.base.BaseActivity;
+import us.xingkong.jueqian.bean.ForumBean.BombBean.Answer;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
 import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
 import us.xingkong.jueqian.bean.LoginRegistBean.Userinfo;
@@ -54,27 +57,39 @@ public class MySettingsActivity extends BaseActivity<MySettingsContract.Presente
         mRelativeLayout_clean.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Thread thread=new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Question u = new Question();
-                        u.setState(1);
-                        u.setMtitle("11111111111111");
-                        u.setMcontent("111111222333333333333");
-                        u.save(getApplicationContext(), new SaveListener() {
-                            @Override
-                            public void onSuccess() {
-                                showToast("YES!");
-                            }
+                Question u = new Question();
 
-                            @Override
-                            public void onFailure(int i, String s) {
-                                showToast("NO!"+s);
-                            }
-                        });
+                Answer answer = new Answer();
+                answer.setState(1);
+                answer.setMcontent("这是回答");
+                answer.setUps(2);
+                answer.save(getApplicationContext(), new SaveListener() {
+                    @Override
+                    public void onSuccess() {
+                        showToast("YES1!");
+                    }
+
+                    @Override
+                    public void onFailure(int i, String s) {
+                        showToast("NO1!" + s);
                     }
                 });
-                thread.start();
+
+                BmobRelation bmobRelation = new BmobRelation();
+                bmobRelation.add(answer);
+                u.setAnswers(bmobRelation);
+                u.save(getApplicationContext(), new SaveListener() {
+                    @Override
+                    public void onSuccess() {
+                        showToast("YES2!");
+                    }
+
+                    @Override
+                    public void onFailure(int i, String s) {
+                        showToast("NO2!" + s);
+                    }
+                });
+
             }
         });
     }

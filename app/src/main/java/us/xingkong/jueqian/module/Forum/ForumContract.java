@@ -17,7 +17,7 @@ import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
  */
 
 public interface ForumContract {
-    interface View extends BaseView<ForumContract.Presenter> {
+    interface View extends BaseView<Presenter> {
 
     }
 

@@ -11,7 +11,6 @@ import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.base.BaseFragment;
 import us.xingkong.jueqian.module.EditUser.EditUserActivity;
 import us.xingkong.jueqian.module.Login.LoginActivity;
-
 import us.xingkong.jueqian.module.me.myanswer.MyAnswerActivity;
 import us.xingkong.jueqian.module.me.mycollection.MyCollectionActivity;
 import us.xingkong.jueqian.module.me.mymessage.MyMessageActivity;
@@ -82,44 +81,7 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
         toMyRecentLook();
         toMySettings();
         toMyInfo();
-    }
-
-    private void toMyInfo() {
-        me_layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(getContext(),EditUserActivity.class);
         toMyQusetions();
-    }
-
-    private void toEditInfo() {
-        mCardView_editinfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(), LoginActivity.class);
-                startActivity(intent);
-            }
-        });
-    }
-
-    private void toMyQusetions() {
-        mLinerlayout_myquestions.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(), MyQuestionsAcitivity.class);
-                startActivity(intent);
-            }
-        });
-    }
-
-    private void toMyMessage() {
-        mLinerlayout_mymessage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(), MyMessageActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 
     private void toMyCollection() {
@@ -170,6 +132,46 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), EditUserActivity.class);
                 startActivity(intent);
+            }
+        });
+    }
+
+    private void toMyMessage() {
+        mLinerlayout_mymessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), MyMessageActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void toMyQusetions() {
+        mLinerlayout_myquestions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), MyQuestionsAcitivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void toEditInfo() {
+        mCardView_editinfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void toMyInfo() {
+        me_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), EditUserActivity.class);
+                toMyQusetions();
             }
         });
     }

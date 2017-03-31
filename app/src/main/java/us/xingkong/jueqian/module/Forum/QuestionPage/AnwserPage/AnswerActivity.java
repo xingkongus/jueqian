@@ -6,10 +6,6 @@ import android.view.MenuItem;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.base.BaseActivity;
 
-/**
- * Created by boluoxiaomo
- * Date: 17/1/9
- */
 
 public class AnswerActivity extends BaseActivity<AnswerContract.Presenter> implements AnswerContract.View {
 

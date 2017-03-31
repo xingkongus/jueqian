@@ -29,7 +29,7 @@
                 android:layout_width="@dimen/dp_72"
                 android:layout_height="@dimen/dp_72"
                 android:layout_marginLeft="16dp"
-                android:src="@mipmap/touxiang" />
+                android:src="@mipmap/ic_launcher" />
 
             <TextView
                 android:id="@+id/me_tv_nickname"
@@ -39,7 +39,7 @@
                 android:layout_marginBottom="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_toRightOf="@id/me_circleimageview"
-                android:text="Lamyuk"
+                android:text="点击登录"
                 android:textColor="#000"
                 android:textSize="18sp" />
 

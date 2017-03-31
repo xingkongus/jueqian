@@ -14,22 +14,27 @@ import cn.bmob.v3.datatype.BmobRelation;
 public class Comment extends BmobObject {
     private String mcontent;/*评论正文*/
     private Integer state;/*该评论的状态，-1为不显示，1为正常问题*/
-    private Integer good_count;/*该问题收到的点赞数*/
-    private Userinfo userinfo;//评论的用户
     private Question question;//评论的问题
     private Integer likes;/*该问题收到的点赞数*/
     private _User user;/*评论的用户*/
-    private BmobPointer answer;/*评论所属的回答*/
-    private BmobPointer comments;/*该评论的评论*/
+    private Answer answer;/*评论所属的回答*/
+    private Comment comments;/*该评论的评论*/
     private BmobRelation likepeople;/*点赞的用户*/
 
-
-    public Userinfo getUserinfo() {
-        return userinfo;
+    public String getMcontent() {
+        return mcontent;
     }
 
-    public void setUserinfo(Userinfo userinfo) {
-        this.userinfo = userinfo;
+    public void setMcontent(String mcontent) {
+        this.mcontent = mcontent;
+    }
+
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
     }
 
     public Question getQuestion() {
@@ -40,28 +45,35 @@ public class Comment extends BmobObject {
         this.question = question;
     }
 
-    public String getMcontent() {
-        return mcontent;
+    public Integer getLikes() {
+        return likes;
     }
 
-    public void setMcontent(String mcontent) {
-        this.mcontent = mcontent;
+    public void setLikes(Integer likes) {
+        this.likes = likes;
     }
 
+    public _User getUser() {
+        return user;
+    }
 
-    public BmobPointer getAnswer() {
+    public void setUser(_User user) {
+        this.user = user;
+    }
+
+    public Answer getAnswer() {
         return answer;
     }
 
-    public void setAnswer(BmobPointer answer) {
+    public void setAnswer(Answer answer) {
         this.answer = answer;
     }
 
-    public BmobPointer getComments() {
+    public Comment getComments() {
         return comments;
     }
 
-    public void setComments(BmobPointer comments) {
+    public void setComments(Comment comments) {
         this.comments = comments;
     }
 
