@@ -22,14 +22,16 @@ public class NewAnswerPresenter extends BasePresenterImpl implements NewAnswerCo
     }
 
     @Override
-    public void addNewComment(Context context,String newAnswer) {
+    public void addNewAnswer(Context context,String newAnswer,String questionID) {
         _User user= BmobUser.getCurrentUser(context,_User.class);
         Question question=new Question();
-        question.setObjectId("");
+        question.setObjectId(questionID);
         Answer answer=new Answer();
         answer.setUser(user);
         answer.setQuestion(question);
         answer.setMcontent(newAnswer);
+        answer.setState(1);//用户状态
+        answer.setUps(0);//点赞数
         answer.save(context, new SaveListener() {
             @Override
             public void onSuccess() {

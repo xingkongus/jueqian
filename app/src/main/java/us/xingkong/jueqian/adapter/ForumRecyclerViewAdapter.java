@@ -50,19 +50,23 @@ public class ForumRecyclerViewAdapter extends RecyclerView.Adapter<ForumRecycler
         holder.tag1.setText(infoSets.get(position).getTAG1_ID());
         holder.tag2.setText(infoSets.get(position).getTAG2_ID());
         String a = infoSets.get(position).getUser().getObjectId();
-         questionID=infoSets.get(position).getObjectId();
+        questionID = infoSets.get(position).getObjectId();
         BmobQuery<_User> query = new BmobQuery<>();
-        query.getObject(mContext, a, new GetListener<_User>() {
-            @Override
-            public void onSuccess(_User user) {
-                holder.username.setText(user.getUsername());
-            }
+        if (!a.isEmpty()){
+            query.getObject(mContext, a, new GetListener<_User>() {
+                @Override
+                public void onSuccess(_User user) {
+                    holder.username.setText(user.getUsername());
+                }
 
-            @Override
-            public void onFailure(int i, String s) {
+                @Override
+                public void onFailure(int i, String s) {
 
-            }
-        });
+                }
+            });
+    }else{
+
+        }
 
         if (infoSets.get(position).getState() == Constants.STATE_MEMBER) {
             holder.userState.setBackgroundColor(Color.BLACK);
@@ -83,7 +87,6 @@ public class ForumRecyclerViewAdapter extends RecyclerView.Adapter<ForumRecycler
         Intent intent = new Intent(mContext, QuestionActivity.class);
         intent.putExtra("questionid",questionID);
         mContext.startActivity(intent);
-//        mHandler.sendEmptyMessage(REQUEST_INTENT_TO_QUESTIONPAGE);
     }
 
     class VH extends RecyclerView.ViewHolder {

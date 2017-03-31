@@ -14,11 +14,11 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             >
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/user_icon_forum"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:background="#916a" />
+                android:background="#916a"/>
             <TextView
                 android:layout_marginStart="8dp"
                 android:id="@+id/username_forum"

@@ -14,6 +14,6 @@ public interface NewAnswerContract {
     }
 
     interface Presenter extends BasePresenter {
-        void addNewComment(Context context,String newAnswer);
+        void addNewAnswer(Context context,String newAnswer,String questionID);
     }
 }

@@ -1,6 +1,7 @@
 package us.xingkong.jueqian.module.Forum.NewAnswer;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,7 +23,7 @@ public class NewAnswerActivity extends BaseActivity <NewAnswerContract.Presenter
     @BindView(R.id.new_huidacontent)
     EditText new_huidacontent;
     Context context;
-
+    String questionID;
 
 
 
@@ -38,7 +39,9 @@ public class NewAnswerActivity extends BaseActivity <NewAnswerContract.Presenter
 
     @Override
     protected void prepareData() {
-
+        Intent intent=getIntent();
+        Bundle bundle=intent.getExtras();
+        questionID=bundle.getString("questionObjectid");
     }
 
     @Override
@@ -58,7 +61,7 @@ public class NewAnswerActivity extends BaseActivity <NewAnswerContract.Presenter
             @Override
             public void onClick(View v) {
                 String newAnswer=new_huidacontent.getText().toString();
-                mPresenter.addNewComment(context,newAnswer);
+                mPresenter.addNewAnswer(context,newAnswer,questionID);
             }
         });
     }

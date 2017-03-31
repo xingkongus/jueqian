@@ -159,6 +159,7 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(mContext, NewAnswerActivity.class);
+                intent.putExtra("questionObjectid",questionID);
                 startActivity(intent);
             }
         });
