@@ -3,7 +3,6 @@ package us.xingkong.jueqian.module.Forum.QuestionPage;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.DividerItemDecoration;
@@ -11,6 +10,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -21,6 +22,7 @@ import butterknife.BindView;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.adapter.QuestionRecyclerViewAdapter;
 import us.xingkong.jueqian.base.BaseActivity;
+import us.xingkong.jueqian.module.Forum.NewAnswer.NewAnswerActivity;
 import us.xingkong.jueqian.module.Forum.QuestionPage.AnwserPage.AnswerActivity;
 import us.xingkong.jueqian.module.Forum.QuestionPage.Comment.CommentActivity;
 
@@ -40,6 +42,10 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
     private ArrayList<ArrayList> answerSetsArr;
     private Handler mHandler;
     private Context mContext;
+//    @BindView(R.id.question_tab)
+//    RadioGroup tab;
+//    @BindView(R.id.tab_huida)
+//    RadioButton huida;
 
 
     @Override
@@ -122,6 +128,11 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
+//                if(dy>0){
+//                    tab.setVisibility(View.GONE);
+//                }else if(dy<0){
+//                    tab.setVisibility(View.VISIBLE);
+//                }
             }
         });
 
@@ -136,7 +147,13 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
 
     @Override
     protected void initEvent() {
-
+//        huida.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent=new Intent(mContext, NewAnswerActivity.class);
+//                startActivity(intent);
+//            }
+//        });
 
     }
 

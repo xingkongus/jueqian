@@ -1,7 +1,12 @@
 package us.xingkong.jueqian.module.main;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
@@ -10,16 +15,16 @@ import java.util.List;
 
 import butterknife.BindArray;
 import butterknife.BindView;
-import cn.bmob.v3.Bmob;
+import cn.bmob.v3.BmobUser;
 import us.xingkong.jueqian.JueQianAPP;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.adapter.MainPagerAdapter;
 import us.xingkong.jueqian.base.BaseActivity;
+import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
 import us.xingkong.jueqian.module.Forum.ForumFragment;
-import us.xingkong.jueqian.module.Home.HomePageFragment;
-import us.xingkong.jueqian.module.me.MeFragment;
+import us.xingkong.jueqian.module.Login.LoginActivity;
 import us.xingkong.jueqian.module.RealS.RealSFragment;
-import us.xingkong.jueqian.utils.AppUtils;
+import us.xingkong.jueqian.module.me.MeFragment;
 import us.xingkong.jueqian.widget.ScrollViewPager;
 
 /**
@@ -36,17 +41,29 @@ public class MainActivity extends BaseActivity<MainContract.Presenter> implement
 
     @BindView(R.id.tab_homepager)
     RadioButton mTabHomePager;
-    @BindView(R.id.tab_discovery)
-    RadioButton mTabDiscovery;
     @BindView(R.id.tab_ganhuo)
     RadioButton mTabGanH;
     @BindView(R.id.rg_tab)
     RadioGroup mRadioGroup;
 
-    private HomePageFragment mHomePageFragment;
     private MeFragment mMeFragment;
     private ForumFragment mForumFragment;
     private RealSFragment mRealSFragment;
+    Context con;
+    public Handler handler123 = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case 0:
+                    mRadioGroup.setVisibility(View.GONE);
+                    break;
+                case 1:
+                    mRadioGroup.setVisibility(View.VISIBLE);
+                    break;
+            }
+        }
+    };
 
     @Override
     protected MainContract.Presenter createPresenter() {
@@ -55,6 +72,12 @@ public class MainActivity extends BaseActivity<MainContract.Presenter> implement
 
     @Override
     protected int bindLayout() {
+        _User user = BmobUser.getCurrentUser(getApplicationContext(),_User.class);
+        if (user==null) {
+            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
         return R.layout.activity_main;
     }
 
@@ -65,7 +88,7 @@ public class MainActivity extends BaseActivity<MainContract.Presenter> implement
 
     @Override
     protected void initView() {
-       Bmob.initialize(getApplicationContext(),"2d6a319fa542339021237173a1990ead");
+
         mViewPager.setPagingEnabled(false);
         List<Fragment> fragments = new ArrayList<>();
         addFragmentList(fragments);
@@ -82,8 +105,6 @@ public class MainActivity extends BaseActivity<MainContract.Presenter> implement
     private void addFragmentList(List<Fragment> fragments) {
         mForumFragment = new ForumFragment().getInstance(0);
         fragments.add(mForumFragment);
-        mHomePageFragment = new HomePageFragment().getInstance(1);
-        fragments.add(mHomePageFragment);
         mRealSFragment = new RealSFragment();
         fragments.add(mRealSFragment);
         mMeFragment = new MeFragment().getInstance(3);
@@ -104,25 +125,26 @@ public class MainActivity extends BaseActivity<MainContract.Presenter> implement
                     case R.id.tab_homepager:
                         mViewPager.setCurrentItem(0, false);
                         break;
-                    case R.id.tab_discovery:
+//                    case R.id.tab_discovery:
+//                        mViewPager.setCurrentItem(1, false);
+//                        break;
+                    case R.id.tab_ganhuo:
                         mViewPager.setCurrentItem(1, false);
                         break;
-                    case R.id.tab_ganhuo:
-                        mViewPager.setCurrentItem(2, false);
-                        break;
                     case R.id.tab_me:
-                        mViewPager.setCurrentItem(3, false);
+                        mViewPager.setCurrentItem(2, false);
                         break;
                 }
             }
         });
+
+
     }
 
     @Override
     public void onBackPressed() {
         JueQianAPP.exitApp();
     }
-
 
 
 }

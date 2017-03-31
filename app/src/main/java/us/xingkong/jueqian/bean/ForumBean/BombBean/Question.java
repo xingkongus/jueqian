@@ -13,38 +13,23 @@ public class Question extends BmobObject {
 
     private String mtitle;/*问题的标题*/
     private String mcontent;/*问题的内容*/
-    private Integer state;/*问题的状态，-1既是封掉的问题，1为正常问题*/
     private String TAG1_ID;/*第一个Tag的id*/
     private String TAG2_ID;/*第二个Tag的id*/
-    private Integer good_count;/*点赞的数量*/
-    private Integer answer_count;/*回答的数量*/
-    private Userinfo userinfo;//提问题的用户
-    private BmobRelation star;//收藏问题的用户
+    private Integer focus;/*关注的数量*/
+    private Integer state;/*问题的状态，-1既是封掉的问题，1为正常问题*/
+    private _User user;//提问题的用户
+    private BmobRelation answers;//问题的回答列表
+    private BmobRelation likepeople;//喜欢的人的列表
+    private BmobRelation collectpeople;//收藏的人的列表
+    private BmobRelation focuspeople;//关注的人的列表
 
-    public BmobRelation getStar() {
-        return star;
+    public BmobRelation getCollectpeople() {
+        return collectpeople;
     }
 
-    public void setStar(BmobRelation star) {
-        this.star = star;
+    public void setCollectpeople(BmobRelation collectpeople) {
+        this.collectpeople = collectpeople;
     }
-
-    public Userinfo getUserinfo() {
-        return userinfo;
-    }
-
-    public void setUserinfo(Userinfo userinfo) {
-        this.userinfo = userinfo;
-    }
-
-    public Integer getAnswer_count() {
-        return answer_count;
-    }
-
-    public void setAnswer_count(Integer answer_count) {
-        this.answer_count = answer_count;
-    }
-
 
     public String getMtitle() {
         return mtitle;
@@ -60,6 +45,30 @@ public class Question extends BmobObject {
 
     public void setMcontent(String mcontent) {
         this.mcontent = mcontent;
+    }
+
+    public String getTAG1_ID() {
+        return TAG1_ID;
+    }
+
+    public void setTAG1_ID(String TAG1_ID) {
+        this.TAG1_ID = TAG1_ID;
+    }
+
+    public String getTAG2_ID() {
+        return TAG2_ID;
+    }
+
+    public void setTAG2_ID(String TAG2_ID) {
+        this.TAG2_ID = TAG2_ID;
+    }
+
+    public Integer getFocus() {
+        return focus;
+    }
+
+    public void setFocus(Integer focus) {
+        this.focus = focus;
     }
 
     public Integer getState() {
@@ -92,14 +101,6 @@ public class Question extends BmobObject {
 
     public void setLikepeople(BmobRelation likepeople) {
         this.likepeople = likepeople;
-    }
-
-    public BmobRelation getCollectpeople() {
-        return collectpeople;
-    }
-
-    public void setCollectpeople(BmobRelation collectpeople) {
-        this.collectpeople = collectpeople;
     }
 
     public BmobRelation getFocuspeople() {

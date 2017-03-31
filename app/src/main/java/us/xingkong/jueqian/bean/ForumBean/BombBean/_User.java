@@ -14,7 +14,7 @@ public class _User extends BmobUser {
 
     private String nickname; //昵称
     private String selfsign;//个性签名
-    private Boolean gender;//性别
+    private String gender;//性别
     private BmobFile profile;//头像
     private Integer state;//用户状态
     private BmobRelation collections;//我的收藏列表
@@ -39,11 +39,11 @@ public class _User extends BmobUser {
         this.selfsign = selfsign;
     }
 
-    public Boolean getGender() {
+    public String getGender() {
         return gender;
     }
 
-    public void setGender(Boolean gender) {
+    public void setGender(String gender) {
         this.gender = gender;
     }
 

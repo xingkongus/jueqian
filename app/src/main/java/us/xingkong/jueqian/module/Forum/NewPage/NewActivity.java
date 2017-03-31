@@ -36,7 +36,7 @@ public class NewActivity extends BaseActivity<NewContract.Presenter> implements 
     private Context mContext;
     @BindView(R.id.title_new)
     EditText title;
-    @BindView(R.id.addcontent_new)
+    @BindView(R.id.new_answercontent)
     EditText content;
     @BindView(R.id.tag1_new)
     TextView tag1;
@@ -101,6 +101,7 @@ public class NewActivity extends BaseActivity<NewContract.Presenter> implements 
                                     mPresenter.addQuestion(mContext,t,c,t1,t2);
                                     Intent intent=new Intent(mContext,MainActivity.class);
                                     startActivity(intent);
+                                    finish();
                                 }else{
                                     showToast("内容没有填写完整");
                                 }

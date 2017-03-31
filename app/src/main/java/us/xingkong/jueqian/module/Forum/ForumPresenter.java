@@ -3,18 +3,18 @@ package us.xingkong.jueqian.module.Forum;
 
 import android.content.Context;
 import android.os.Handler;
+
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-
 
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.listener.FindListener;
 import us.xingkong.jueqian.base.BasePresenterImpl;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
-import us.xingkong.jueqian.bean.ForumBean.GsonBean.GSON_ForumPageBean;
 import us.xingkong.jueqian.data.RepositData.ForumRepository;
 
 
@@ -31,10 +31,7 @@ public class ForumPresenter extends BasePresenterImpl implements ForumContract.P
     private ForumRepository mRepository;
     private List<Question> infoSet=new ArrayList<>(
     );
-    private int i;
-    private int size_of_list;
 
-    GSON_ForumPageBean forumPageBean;
 
     private Lock lock = new ReentrantLock();
     Condition condition_pro = lock.newCondition();
@@ -67,8 +64,8 @@ public class ForumPresenter extends BasePresenterImpl implements ForumContract.P
                     question.getMcontent();
                     question.getTAG1_ID();
                     question.getTAG2_ID();
-                    question.getAnswer_count();
-                    question.getUserinfo();
+//                    question.getAnswer_count();
+                    question.getUser();
                     questions.add(question);
 
                 }

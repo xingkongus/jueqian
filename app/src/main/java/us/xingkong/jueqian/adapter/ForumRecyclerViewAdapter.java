@@ -18,6 +18,7 @@ import cn.bmob.v3.listener.GetListener;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.base.Constants;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
+import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
 import us.xingkong.jueqian.bean.LoginRegistBean.Userinfo;
 
 import static us.xingkong.jueqian.base.Constants.REQUEST_INTENT_TO_QUESTIONPAGE;
@@ -27,7 +28,7 @@ import static us.xingkong.jueqian.base.Constants.REQUEST_INTENT_TO_QUESTIONPAGE;
  */
 
 public class ForumRecyclerViewAdapter extends RecyclerView.Adapter<ForumRecyclerViewAdapter.VH> implements View.OnClickListener {
-    List<Question>infoSets;
+    List<Question> infoSets;
     Handler mHandler;
     Context mContext;
 
@@ -46,15 +47,15 @@ public class ForumRecyclerViewAdapter extends RecyclerView.Adapter<ForumRecycler
     public void onBindViewHolder(final VH holder, final int position) {
         holder.linearLayout.setOnClickListener(this);
         holder.title.setText(infoSets.get(position).getMtitle());
-        holder.count_answer.setText(String.valueOf(infoSets.get(position).getAnswer_count()));
+//        holder.count_answer.setText(String.valueOf(infoSets.get(position).getAnswer_count()));
         holder.tag1.setText(infoSets.get(position).getTAG1_ID());
         holder.tag2.setText(infoSets.get(position).getTAG2_ID());
-        String a=infoSets.get(position).getUserinfo().getObjectId();
-        BmobQuery<Userinfo> query=new BmobQuery<>();
-        query.getObject(mContext, a, new GetListener<Userinfo>() {
+        String a = infoSets.get(position).getUser().getObjectId();
+        BmobQuery<_User> query = new BmobQuery<>();
+        query.getObject(mContext, a, new GetListener<_User>() {
             @Override
-            public void onSuccess(Userinfo userinfo) {
-                holder.username.setText(userinfo.getUsername());
+            public void onSuccess(_User user) {
+                holder.username.setText(user.getUsername());
             }
 
             @Override
