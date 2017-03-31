@@ -15,9 +15,6 @@ import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.base.BaseActivity;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Answer;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
-import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
-import us.xingkong.jueqian.bean.LoginRegistBean.Userinfo;
-import us.xingkong.jueqian.module.main.MainActivity;
 import us.xingkong.jueqian.module.me.mysettings.aboutme.AboutMeActivity;
 
 /**

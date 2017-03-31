@@ -4,7 +4,7 @@ import android.content.Context;
 
 import cn.bmob.v3.listener.UpdateListener;
 import us.xingkong.jueqian.base.BasePresenterImpl;
-import us.xingkong.jueqian.bean.LoginRegistBean.Userinfo;
+import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
 
 
 public class EditUserPresenter extends BasePresenterImpl implements EditUserContract.Presenter {
@@ -18,13 +18,13 @@ public class EditUserPresenter extends BasePresenterImpl implements EditUserCont
 
     @Override
     public void saveUser(Context context, String url, String nick, String phone, String email, String sex) {
-        Userinfo newInfo = new Userinfo();
-        newInfo.setUrl(url);
-        newInfo.setNick(nick);
+        _User newInfo = new _User();
+        newInfo.setProfile(url);
+        newInfo.setNickname(nick);
         newInfo.setMobilePhoneNumber(phone);
         newInfo.setEmail(email);
-        newInfo.setSex(sex);
-        Userinfo oldInfo = (Userinfo) Userinfo.getCurrentUser(context);
+        newInfo.setGender(sex);
+        _User oldInfo = (_User) _User.getCurrentUser(context);
         oldInfo.update(context, oldInfo.getObjectId(), new UpdateListener() {
             @Override
             public void onSuccess() {

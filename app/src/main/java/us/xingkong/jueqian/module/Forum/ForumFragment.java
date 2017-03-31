@@ -17,16 +17,17 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import cn.bmob.v3.BmobUser;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.adapter.ForumRecyclerViewAdapter;
 import us.xingkong.jueqian.base.BaseFragment;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
+import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
 import us.xingkong.jueqian.data.RepositData.ForumRepository;
 import us.xingkong.jueqian.module.Forum.NewPage.NewActivity;
-import us.xingkong.jueqian.module.Forum.QuestionPage.QuestionActivity;
+import us.xingkong.jueqian.module.Login.LoginActivity;
 import us.xingkong.jueqian.module.main.MainActivity;
 
-import static us.xingkong.jueqian.base.Constants.REQUEST_INTENT_TO_QUESTIONPAGE;
 import static us.xingkong.jueqian.base.Constants.REQUEST_REFRESH;
 
 
@@ -48,7 +49,6 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
     private ForumRecyclerViewAdapter recyclerViewAdapter;
     private static final String PAGE_COUNT = "page_count";
     ArrayList<Question> questions = new ArrayList<>();
-
 
     public static ForumFragment getInstance(int page_count) {
         ForumFragment fra = new ForumFragment();
@@ -112,8 +112,16 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
 
     @OnClick(R.id.fab_forum_main)
     public void onClick() {
-        Intent intent = new Intent(getContext(), NewActivity.class);
-        startActivity(intent);
+        _User user = BmobUser.getCurrentUser(getContext(),_User.class);
+        if (user==null) {
+            showToast("请先登录");
+            Intent intent=new Intent(getContext(), LoginActivity.class);
+            startActivity(intent);
+
+        }else {
+            Intent intent = new Intent(getContext(), NewActivity.class);
+            startActivity(intent);
+        }
     }
 
     private void initRecyclerview() {
@@ -166,10 +174,10 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
                     mPresenter.getBmobQuestion(getContext(),questions,mHandler);
                     swipeRefreshLayout.setRefreshing(false);
                     break;
-                case REQUEST_INTENT_TO_QUESTIONPAGE:
-                    Intent intent = new Intent(getContext(), QuestionActivity.class);
-                    startActivity(intent);
-                    break;
+//                case REQUEST_INTENT_TO_QUESTIONPAGE:
+//                    Intent intent = new Intent(getContext(), QuestionActivity.class);
+//                    startActivity(intent);
+//                    break;
                 case 3:
                     recyclerViewAdapter.notifyDataSetChanged();
                     break;

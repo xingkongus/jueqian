@@ -5,7 +5,7 @@ import android.widget.Toast;
 
 import cn.bmob.v3.listener.UpdateListener;
 import us.xingkong.jueqian.base.BasePresenterImpl;
-import us.xingkong.jueqian.bean.LoginRegistBean.Userinfo;
+import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
 
 /**
  * Created by lenovo on 2017/1/12.
@@ -20,7 +20,7 @@ public class ChangePWPresenter extends BasePresenterImpl implements ChangePWCont
 
     @Override
     public void checkpd(final Context context, String repd, String nowpd) {
-        Userinfo.updateCurrentUserPassword(context, repd, nowpd, new UpdateListener() {
+        _User.updateCurrentUserPassword(context, repd, nowpd, new UpdateListener() {
             @Override
             public void onSuccess() {
                 Toast.makeText(context, "修改密码成功", Toast.LENGTH_SHORT).show();

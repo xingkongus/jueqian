@@ -42,11 +42,12 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
     private ArrayList<ArrayList> answerSetsArr;
     private Handler mHandler;
     private Context mContext;
-//    @BindView(R.id.question_tab)
-//    RadioGroup tab;
-//    @BindView(R.id.tab_huida)
-//    RadioButton huida;
 
+    @BindView(R.id.question_tab)
+    RadioGroup tab;
+    @BindView(R.id.tab_huida)
+    RadioButton huida;
+    String questionID;
 
     @Override
     protected QuestionContract.Presenter createPresenter() {
@@ -61,6 +62,10 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
     @Override
     protected void prepareData() {
         mContext = this;
+
+        Intent intent=getIntent();
+        Bundle bundle=intent.getExtras();
+        questionID=bundle.getString("questionid");
 
         questionSets = new ArrayList();
         questionSets.add("header");
@@ -102,6 +107,10 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                 }
             }
         };
+
+
+
+
     }
 
     @Override
@@ -128,11 +137,13 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-//                if(dy>0){
-//                    tab.setVisibility(View.GONE);
-//                }else if(dy<0){
-//                    tab.setVisibility(View.VISIBLE);
-//                }
+
+                if(dy>0){
+                    tab.setVisibility(View.GONE);
+                }else if(dy<0){
+                    tab.setVisibility(View.VISIBLE);
+                }
+
             }
         });
 
@@ -147,13 +158,15 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
 
     @Override
     protected void initEvent() {
-//        huida.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent=new Intent(mContext, NewAnswerActivity.class);
-//                startActivity(intent);
-//            }
-//        });
+        huida.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(mContext, NewAnswerActivity.class);
+                intent.putExtra("questionObjectid",questionID);
+                startActivity(intent);
+            }
+        });
+
 
     }
 

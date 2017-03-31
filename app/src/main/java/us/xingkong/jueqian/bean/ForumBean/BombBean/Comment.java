@@ -1,8 +1,6 @@
 package us.xingkong.jueqian.bean.ForumBean.BombBean;
 
 import cn.bmob.v3.BmobObject;
-import us.xingkong.jueqian.bean.LoginRegistBean.Userinfo;
-import cn.bmob.v3.datatype.BmobPointer;
 import cn.bmob.v3.datatype.BmobRelation;
 
 
@@ -27,14 +25,6 @@ public class Comment extends BmobObject {
 
     public void setMcontent(String mcontent) {
         this.mcontent = mcontent;
-    }
-
-    public Integer getState() {
-        return state;
-    }
-
-    public void setState(Integer state) {
-        this.state = state;
     }
 
     public Question getQuestion() {

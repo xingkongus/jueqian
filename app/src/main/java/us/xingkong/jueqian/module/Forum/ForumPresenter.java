@@ -60,11 +60,12 @@ public class ForumPresenter extends BasePresenterImpl implements ForumContract.P
             @Override
             public void onSuccess(List<Question> list) {
                 for(Question question:list){
+                    question.getObjectId();
                     question.getMtitle();
                     question.getMcontent();
                     question.getTAG1_ID();
                     question.getTAG2_ID();
-//                    question.getAnswer_count();
+
                     question.getUser();
                     questions.add(question);
 

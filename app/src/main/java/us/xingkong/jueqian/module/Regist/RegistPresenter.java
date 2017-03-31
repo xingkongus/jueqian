@@ -10,7 +10,7 @@ import android.widget.EditText;
 
 import cn.bmob.v3.listener.SaveListener;
 import us.xingkong.jueqian.base.BasePresenterImpl;
-import us.xingkong.jueqian.bean.LoginRegistBean.Userinfo;
+import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
 import us.xingkong.jueqian.module.Login.LoginActivity;
 
 
@@ -27,7 +27,7 @@ public class RegistPresenter extends BasePresenterImpl implements RegistContract
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                Userinfo bu = new Userinfo();
+                _User bu = new _User();
                 bu.setUsername(username);
                 bu.setPassword(password);
                 bu.signUp(context, new SaveListener() {

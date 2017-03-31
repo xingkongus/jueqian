@@ -1,6 +1,7 @@
 package us.xingkong.jueqian.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
@@ -19,9 +20,7 @@ import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.base.Constants;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
 import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
-import us.xingkong.jueqian.bean.LoginRegistBean.Userinfo;
-
-import static us.xingkong.jueqian.base.Constants.REQUEST_INTENT_TO_QUESTIONPAGE;
+import us.xingkong.jueqian.module.Forum.QuestionPage.QuestionActivity;
 
 /**
  * Created by Garfield on 1/9/17.
@@ -31,6 +30,7 @@ public class ForumRecyclerViewAdapter extends RecyclerView.Adapter<ForumRecycler
     List<Question> infoSets;
     Handler mHandler;
     Context mContext;
+    String questionID;
 
     public ForumRecyclerViewAdapter(List<Question> infoSets, Handler handler, Context mContext) {
         this.infoSets = infoSets;
@@ -47,29 +47,27 @@ public class ForumRecyclerViewAdapter extends RecyclerView.Adapter<ForumRecycler
     public void onBindViewHolder(final VH holder, final int position) {
         holder.linearLayout.setOnClickListener(this);
         holder.title.setText(infoSets.get(position).getMtitle());
-//        holder.count_answer.setText(String.valueOf(infoSets.get(position).getAnswer_count()));
         holder.tag1.setText(infoSets.get(position).getTAG1_ID());
         holder.tag2.setText(infoSets.get(position).getTAG2_ID());
         String a = infoSets.get(position).getUser().getObjectId();
+        questionID = infoSets.get(position).getObjectId();
         BmobQuery<_User> query = new BmobQuery<>();
-        query.getObject(mContext, a, new GetListener<_User>() {
-            @Override
-            public void onSuccess(_User user) {
-                holder.username.setText(user.getUsername());
-            }
+        if (!a.isEmpty()){
+            query.getObject(mContext, a, new GetListener<_User>() {
+                @Override
+                public void onSuccess(_User user) {
+                    holder.username.setText(user.getUsername());
+                }
 
-            @Override
-            public void onFailure(int i, String s) {
+                @Override
+                public void onFailure(int i, String s) {
 
-            }
-        });
+                }
+            });
+    }else{
 
-//        holder.profile
-//        Glide.with(mContext)
-//                .load(infoSets.get(position).getProfileURL())
-//                .placeholder(R.drawable.loading_spinner)
-//                .crossFade()
-//                .into(holder.profile);
+        }
+
         if (infoSets.get(position).getState() == Constants.STATE_MEMBER) {
             holder.userState.setBackgroundColor(Color.BLACK);
         } else if (infoSets.get(position).getState() == Constants.STATE_MEMBER) {
@@ -86,7 +84,9 @@ public class ForumRecyclerViewAdapter extends RecyclerView.Adapter<ForumRecycler
 
     @Override
     public void onClick(View view) {
-        mHandler.sendEmptyMessage(REQUEST_INTENT_TO_QUESTIONPAGE);
+        Intent intent = new Intent(mContext, QuestionActivity.class);
+        intent.putExtra("questionid",questionID);
+        mContext.startActivity(intent);
     }
 
     class VH extends RecyclerView.ViewHolder {
