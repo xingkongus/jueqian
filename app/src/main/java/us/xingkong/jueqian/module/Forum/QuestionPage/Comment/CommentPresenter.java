@@ -1,5 +1,8 @@
 package us.xingkong.jueqian.module.Forum.QuestionPage.Comment;
 
+import android.content.Context;
+import android.os.Handler;
+
 import us.xingkong.jueqian.base.BasePresenterImpl;
 
 /**
@@ -16,4 +19,8 @@ public class CommentPresenter extends BasePresenterImpl implements CommentContra
     }
 
 
+    @Override
+    public void setComment(Context context, Handler handler) {
+
+    }
 }

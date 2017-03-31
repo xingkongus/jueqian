@@ -23,10 +23,8 @@ import us.xingkong.jueqian.base.BaseFragment;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
 import us.xingkong.jueqian.data.RepositData.ForumRepository;
 import us.xingkong.jueqian.module.Forum.NewPage.NewActivity;
-import us.xingkong.jueqian.module.Forum.QuestionPage.QuestionActivity;
 import us.xingkong.jueqian.module.main.MainActivity;
 
-import static us.xingkong.jueqian.base.Constants.REQUEST_INTENT_TO_QUESTIONPAGE;
 import static us.xingkong.jueqian.base.Constants.REQUEST_REFRESH;
 
 
@@ -167,10 +165,10 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
                     mPresenter.getBmobQuestion(getContext(),questions,mHandler);
                     swipeRefreshLayout.setRefreshing(false);
                     break;
-                case REQUEST_INTENT_TO_QUESTIONPAGE:
-                    Intent intent = new Intent(getContext(), QuestionActivity.class);
-                    startActivity(intent);
-                    break;
+//                case REQUEST_INTENT_TO_QUESTIONPAGE:
+//                    Intent intent = new Intent(getContext(), QuestionActivity.class);
+//                    startActivity(intent);
+//                    break;
                 case 3:
                     recyclerViewAdapter.notifyDataSetChanged();
                     break;

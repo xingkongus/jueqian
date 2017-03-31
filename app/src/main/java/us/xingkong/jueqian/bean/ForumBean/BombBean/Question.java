@@ -2,7 +2,6 @@ package us.xingkong.jueqian.bean.ForumBean.BombBean;
 
 import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.datatype.BmobRelation;
-import us.xingkong.jueqian.bean.LoginRegistBean.Userinfo;
 
 
 /**
@@ -16,74 +15,27 @@ public class Question extends BmobObject {
     private Integer state;/*问题的状态，-1既是封掉的问题，1为正常问题*/
     private String TAG1_ID;/*第一个Tag的id*/
     private String TAG2_ID;/*第二个Tag的id*/
-    private Integer good_count;/*点赞的数量*/
-    private Integer answer_count;/*回答的数量*/
-    private Userinfo userinfo;//提问题的用户
-    private BmobRelation star;//收藏问题的用户
+    private _User user;//提问题的用户
+    private Integer focus;/*关注的数量*/
+    private BmobRelation answer;
+    private BmobRelation likepeople;
+    private BmobRelation collectpeople;/*收藏的人的列表*/
+    private BmobRelation focuspeople;/*关注的人的列表*/
 
-    public BmobRelation getStar() {
-        return star;
+    public Integer getFocus() {
+        return focus;
     }
 
-    public void setStar(BmobRelation star) {
-        this.star = star;
+    public void setFocus(Integer focus) {
+        this.focus = focus;
     }
 
-    public Userinfo getUserinfo() {
-        return userinfo;
+    public BmobRelation getAnswer() {
+        return answer;
     }
 
-    public void setUserinfo(Userinfo userinfo) {
-        this.userinfo = userinfo;
-    }
-
-    public Integer getAnswer_count() {
-        return answer_count;
-    }
-
-    public void setAnswer_count(Integer answer_count) {
-        this.answer_count = answer_count;
-    }
-
-
-    public String getMtitle() {
-        return mtitle;
-    }
-
-    public void setMtitle(String mtitle) {
-        this.mtitle = mtitle;
-    }
-
-    public String getMcontent() {
-        return mcontent;
-    }
-
-    public void setMcontent(String mcontent) {
-        this.mcontent = mcontent;
-    }
-
-    public Integer getState() {
-        return state;
-    }
-
-    public void setState(Integer state) {
-        this.state = state;
-    }
-
-    public _User getUser() {
-        return user;
-    }
-
-    public void setUser(_User user) {
-        this.user = user;
-    }
-
-    public BmobRelation getAnswers() {
-        return answers;
-    }
-
-    public void setAnswers(BmobRelation answers) {
-        this.answers = answers;
+    public void setAnswer(BmobRelation answer) {
+        this.answer = answer;
     }
 
     public BmobRelation getLikepeople() {
@@ -109,4 +61,57 @@ public class Question extends BmobObject {
     public void setFocuspeople(BmobRelation focuspeople) {
         this.focuspeople = focuspeople;
     }
+
+    public _User getUser() {
+        return user;
+    }
+
+    public void setUser(_User user) {
+        this.user = user;
+    }
+
+
+    public String getMtitle() {
+        return mtitle;
+    }
+
+    public void setMtitle(String mtitle) {
+        this.mtitle = mtitle;
+    }
+
+
+    public String getMcontent() {
+        return mcontent;
+    }
+
+    public void setMcontent(String mcontent) {
+        this.mcontent = mcontent;
+    }
+
+
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
+    }
+
+    public String getTAG1_ID() {
+        return TAG1_ID;
+    }
+
+    public void setTAG1_ID(String TAG1_ID) {
+        this.TAG1_ID = TAG1_ID;
+    }
+
+    public String getTAG2_ID() {
+        return TAG2_ID;
+    }
+
+    public void setTAG2_ID(String TAG2_ID) {
+        this.TAG2_ID = TAG2_ID;
+    }
+
+
 }

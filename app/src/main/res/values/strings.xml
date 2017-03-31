@@ -20,7 +20,6 @@
 
     <string-array name="tab_title">
         <item>论坛</item>
-        <item>发现</item>
         <item>干货</item>
         <item>我</item>
     </string-array>

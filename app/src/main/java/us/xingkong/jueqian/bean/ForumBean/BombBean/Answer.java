@@ -1,8 +1,6 @@
 package us.xingkong.jueqian.bean.ForumBean.BombBean;
 
 import cn.bmob.v3.BmobObject;
-
-import cn.bmob.v3.datatype.BmobPointer;
 import cn.bmob.v3.datatype.BmobRelation;
 
 
@@ -16,25 +14,9 @@ public class Answer extends BmobObject {
     private Integer state;/*问题的状态，-1为举报成功的问题，1为正常问*/
     private Integer ups;/*赞同数*/
     private _User user;/*回答者*/
-    private BmobPointer question;/*所回答的问题*/
+    private Question question;/*所回答的问题*/
     private BmobRelation comments;/*回答的评论列表*/
     private BmobRelation likepeople;/*点赞的人的列表*/
-
-    public String getMcontent() {
-        return mcontent;
-    }
-
-    public void setMcontent(String mcontent) {
-        this.mcontent = mcontent;
-    }
-
-    public Integer getState() {
-        return state;
-    }
-
-    public void setState(Integer state) {
-        this.state = state;
-    }
 
     public Integer getUps() {
         return ups;
@@ -52,11 +34,11 @@ public class Answer extends BmobObject {
         this.user = user;
     }
 
-    public BmobPointer getQuestion() {
+    public Question getQuestion() {
         return question;
     }
 
-    public void setQuestion(BmobPointer question) {
+    public void setQuestion(Question question) {
         this.question = question;
     }
 
@@ -75,4 +57,23 @@ public class Answer extends BmobObject {
     public void setLikepeople(BmobRelation likepeople) {
         this.likepeople = likepeople;
     }
+
+    public String getMcontent() {
+        return mcontent;
+    }
+
+    public void setMcontent(String mcontent) {
+        this.mcontent = mcontent;
+    }
+
+
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
+    }
+
+
 }

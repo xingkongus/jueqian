@@ -36,7 +36,7 @@
             android:text="提问正文：" />
 
         <EditText
-            android:id="@+id/addcontent_new"
+            android:id="@+id/new_answercontent"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="@android:drawable/edit_text"

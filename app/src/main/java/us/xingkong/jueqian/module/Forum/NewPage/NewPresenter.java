@@ -6,7 +6,7 @@ import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.listener.SaveListener;
 import us.xingkong.jueqian.base.BasePresenterImpl;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
-import us.xingkong.jueqian.bean.LoginRegistBean.Userinfo;
+import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
 
 /**
  * Created by boluoxiaomo
@@ -23,10 +23,10 @@ public class NewPresenter extends BasePresenterImpl implements NewContract.Prese
 
     @Override
     public void addQuestion(final Context context, String title, final String content, String tag1, String tag2) {
-        Userinfo user= BmobUser.getCurrentUser(context,Userinfo.class);
+        _User user= BmobUser.getCurrentUser(context,_User.class);
         if(user!=null){
             Question question=new Question();
-            question.setUserinfo(user);
+            question.setUser(user);
             question.setMcontent(content);
             question.setMtitle(title);
             question.setTAG1_ID(tag1);

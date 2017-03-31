@@ -88,89 +88,92 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
         me_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(getContext(),EditUserActivity.class);
-        toMyQusetions();
-    }
-
-    private void toEditInfo() {
-        mCardView_editinfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(), LoginActivity.class);
-                startActivity(intent);
-            }
-        });
-    }
-
-    private void toMyQusetions() {
-        mLinerlayout_myquestions.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(), MyQuestionsAcitivity.class);
-                startActivity(intent);
-            }
-        });
-    }
-
-    private void toMyMessage() {
-        mLinerlayout_mymessage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(), MyMessageActivity.class);
-                startActivity(intent);
-            }
-        });
-    }
-
-    private void toMyCollection() {
-        mLinerlayout_mycollection.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(), MyCollectionActivity.class);
-                startActivity(intent);
-            }
-        });
-    }
-
-    private void toMyAnswer() {
-        mLinerlayout_myanswer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(), MyAnswerActivity.class);
-                startActivity(intent);
-            }
-        });
-    }
-
-    private void toMyRecentLook() {
-        mLinerlayout_myrecentlook.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(), MyRecentLookActivity.class);
-                startActivity(intent);
-            }
-        });
-    }
-
-    private void toMySettings() {
-        mLinerlayout_mysettings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(), MySettingsActivity.class);
-                startActivity(intent);
-            }
-        });
-    }
-
-
-    @Override
-    protected void initEvent() {
-        me_layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
                 Intent intent = new Intent(getContext(), EditUserActivity.class);
-                startActivity(intent);
+                toMyQusetions();
             }
         });
     }
-}
+
+            private void toEditInfo() {
+                mCardView_editinfo.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getContext(), LoginActivity.class);
+                        startActivity(intent);
+                    }
+                });
+            }
+
+            private void toMyQusetions() {
+                mLinerlayout_myquestions.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getContext(), MyQuestionsAcitivity.class);
+                        startActivity(intent);
+                    }
+                });
+            }
+
+            private void toMyMessage() {
+                mLinerlayout_mymessage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getContext(), MyMessageActivity.class);
+                        startActivity(intent);
+                    }
+                });
+            }
+
+            private void toMyCollection() {
+                mLinerlayout_mycollection.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getContext(), MyCollectionActivity.class);
+                        startActivity(intent);
+                    }
+                });
+            }
+
+            private void toMyAnswer() {
+                mLinerlayout_myanswer.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getContext(), MyAnswerActivity.class);
+                        startActivity(intent);
+                    }
+                });
+            }
+
+            private void toMyRecentLook() {
+                mLinerlayout_myrecentlook.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getContext(), MyRecentLookActivity.class);
+                        startActivity(intent);
+                    }
+                });
+            }
+
+            private void toMySettings() {
+                mLinerlayout_mysettings.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getContext(), MySettingsActivity.class);
+                        startActivity(intent);
+                    }
+                });
+            }
+
+
+            @Override
+            protected void initEvent() {
+                me_layout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getContext(), EditUserActivity.class);
+                        startActivity(intent);
+                    }
+                });
+            }
+
+        }
