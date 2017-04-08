@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.Handler;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
@@ -46,10 +45,6 @@ public class ForumPresenter extends BasePresenterImpl implements ForumContract.P
 
 
 
-    @Override
-    public void getForumListFromBmob(boolean isNewest, Date date, int num) {
-
-    }
 
     @Override
     public List<Question> getBmobQuestion(Context context, final ArrayList<Question> questions, final Handler handler) {

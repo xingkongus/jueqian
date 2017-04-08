@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Handler;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import us.xingkong.jueqian.base.BasePresenter;
@@ -22,7 +21,6 @@ public interface ForumContract {
     }
 
     interface Presenter extends BasePresenter {
-        void getForumListFromBmob(boolean isNewest, Date date, int num);
         List<Question> getBmobQuestion(Context context, ArrayList<Question> questions, Handler handler);
     }
 }

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,14 +18,15 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.adapter.QuestionRecyclerViewAdapter;
 import us.xingkong.jueqian.base.BaseActivity;
+import us.xingkong.jueqian.bean.ForumBean.BombBean.Answer;
+import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
 import us.xingkong.jueqian.module.Forum.NewAnswer.NewAnswerActivity;
-import us.xingkong.jueqian.module.Forum.QuestionPage.AnwserPage.AnswerActivity;
-import us.xingkong.jueqian.module.Forum.QuestionPage.Comment.CommentActivity;
 
 
 /**
@@ -38,15 +40,54 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
     @BindView(R.id.recyclerview_questionpage)
     RecyclerView recyclerviewQuestionpage;
     private QuestionRecyclerViewAdapter recyclerViewAdapter;
-    private ArrayList questionSets;
-    private ArrayList<ArrayList> answerSetsArr;
-    private Handler mHandler;
     private Context mContext;
     @BindView(R.id.question_tab)
     RadioGroup tab;
     @BindView(R.id.tab_huida)
     RadioButton huida;
     String questionID;
+    Question getQuestion;
+     List<Answer> answers;
+    @BindView(R.id.refreshLayout_question)
+    SwipeRefreshLayout refreshLayout;
+
+    public Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch(msg.what){
+                case 0:
+                    finish();
+                    break;
+                case 1:
+                    getQuestion= (Question) msg.obj;
+                    break;
+                case 2:
+                    answers= (ArrayList<Answer>) msg.obj;
+                    handler.sendEmptyMessage(3);
+                    break;
+                case 3:
+                    initRecyClerView();
+                    break;
+                case 4:
+                    new MaterialDialog.Builder(mContext)
+                            .items(R.array.option_head)
+                            .itemsCallback(new MaterialDialog.ListCallback() {
+                                @Override
+                                public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                                    Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+                                }
+                            })
+                            .show();
+                    break;
+                case 5:  //刷新数据
+                    answers.clear();
+                    mPresenter.getQuestionAnswer(mContext,handler,questionID);
+                    recyclerViewAdapter.notifyDataSetChanged();
+                    refreshLayout.setRefreshing(false);
+            }
+        }
+    };
 
     @Override
     protected QuestionContract.Presenter createPresenter() {
@@ -61,61 +102,49 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
     @Override
     protected void prepareData() {
         mContext = this;
+            Intent intent = getIntent();
+            Bundle bundle = intent.getExtras();
+            questionID = bundle.getString("questionid");
+        mPresenter.getQuestion(mContext,questionID,handler);
+        mPresenter.getQuestionAnswer(mContext,handler,questionID);
 
-        Intent intent=getIntent();
-        Bundle bundle=intent.getExtras();
-        questionID=bundle.getString("questionid");
-
-        questionSets = new ArrayList();
-        questionSets.add("header");
-        answerSetsArr = new ArrayList();
-        for (int i = 0; i < 30; ++i) {
-            ArrayList answerSets = new ArrayList();
-            answerSets.add("position " + i);
-            answerSetsArr.add(answerSets);
-        }
-
-        mHandler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                super.handleMessage(msg);
-                switch (msg.what) {
-                    case 1:
-                        break;
-                    case 2:
-                        Intent intent = new Intent(getApplicationContext(), CommentActivity.class);
-                        startActivity(intent);
-                        break;
-                    case 3:
-                        Intent intent2 = new Intent(getApplicationContext(), AnswerActivity.class);
-                        startActivity(intent2);
-                        break;
-                    case 4:
-                        new MaterialDialog.Builder(mContext)
-                                .items(R.array.option_head)
-                                .itemsCallback(new MaterialDialog.ListCallback() {
-                                    @Override
-                                    public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                                        Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
-                                    }
-                                })
-                                .show();
-                        break;
-                    default:
-                        break;
-                }
-            }
-        };
-
-
-
-
+//        mHandler = new Handler() {
+//            @Override
+//            public void handleMessage(Message msg) {
+//                super.handleMessage(msg);
+//                switch (msg.what) {
+//                    case 1:
+//                        break;
+//                    case 2:
+//                        Intent intent = new Intent(getApplicationContext(), CommentActivity.class);
+//                        startActivity(intent);
+//                        break;
+//                    case 3:
+//                        Intent intent2 = new Intent(getApplicationContext(), AnswerActivity.class);
+//                        startActivity(intent2);
+//                        break;
+//                    default:
+//                        break;
+//                }
+//            }
+//        };
     }
+
+    private void initSwipeRefreshLayout() {
+        refreshLayout.setColorSchemeResources(R.color.colorPrimary);
+        refreshLayout.setSize(SwipeRefreshLayout.DEFAULT);
+        refreshLayout.setProgressViewEndTarget(true, 200);
+    }
+
 
     @Override
     protected void initView() {
         setToolbarBackEnable("问题详情");
-        recyclerViewAdapter = new QuestionRecyclerViewAdapter(questionSets, answerSetsArr, mHandler);
+        initSwipeRefreshLayout();
+    }
+
+    private void initRecyClerView() {
+        recyclerViewAdapter = new QuestionRecyclerViewAdapter(mContext,getQuestion, answers, handler);
         recyclerviewQuestionpage.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
         recyclerviewQuestionpage.setAdapter(recyclerViewAdapter);
         recyclerviewQuestionpage.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
@@ -125,10 +154,13 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     if (!recyclerView.canScrollVertically(1)) {
-                        Toast.makeText(getApplicationContext(), "到底啦", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getApplicationContext(), "到底啦", Toast.LENGTH_SHORT).show();
                     }
                     if (!recyclerView.canScrollVertically(-1)) {
-                        Toast.makeText(getApplicationContext(), "到头啦", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "刷新", Toast.LENGTH_SHORT).show();
+//                        refreshLayout.setRefreshing(true);
+//                        handler.sendEmptyMessage(5);
+
                     }
                 }
             }
@@ -137,14 +169,12 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 if(dy>0){
-                    tab.setVisibility(View.GONE);
+                    tab.setVisibility(View.GONE);//底部的tab隐藏和出现
                 }else if(dy<0){
                     tab.setVisibility(View.VISIBLE);
                 }
             }
         });
-
-
     }
 
 
@@ -158,7 +188,7 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
         huida.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(mContext, NewAnswerActivity.class);
+                Intent intent=new Intent(mContext, NewAnswerActivity.class);// 把这个问题的objectid传过去
                 intent.putExtra("questionObjectid",questionID);
                 startActivity(intent);
             }

@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -26,7 +27,7 @@ import us.xingkong.jueqian.module.Forum.QuestionPage.QuestionActivity;
  * Created by Garfield on 1/9/17.
  */
 
-public class ForumRecyclerViewAdapter extends RecyclerView.Adapter<ForumRecyclerViewAdapter.VH> implements View.OnClickListener {
+public class ForumRecyclerViewAdapter extends RecyclerView.Adapter<ForumRecyclerViewAdapter.VH> {
     List<Question> infoSets;
     Handler mHandler;
     Context mContext;
@@ -45,12 +46,12 @@ public class ForumRecyclerViewAdapter extends RecyclerView.Adapter<ForumRecycler
 
     @Override
     public void onBindViewHolder(final VH holder, final int position) {
-        holder.linearLayout.setOnClickListener(this);
+//        holder.linearLayout.setOnClickListener(this);
         holder.title.setText(infoSets.get(position).getMtitle());
         holder.tag1.setText(infoSets.get(position).getTAG1_ID());
         holder.tag2.setText(infoSets.get(position).getTAG2_ID());
         String a = infoSets.get(position).getUser().getObjectId();
-        questionID = infoSets.get(position).getObjectId();
+
         BmobQuery<_User> query = new BmobQuery<>();
         if (!a.isEmpty()){
             query.getObject(mContext, a, new GetListener<_User>() {
@@ -65,8 +66,18 @@ public class ForumRecyclerViewAdapter extends RecyclerView.Adapter<ForumRecycler
                 }
             });
     }else{
-
+            holder.username.setText("");
+            Toast.makeText(mContext,"网络连接错误",Toast.LENGTH_SHORT).show();
         }
+        holder.linearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                questionID = infoSets.get(position).getObjectId();
+                Intent intent = new Intent(mContext, QuestionActivity.class);
+                intent.putExtra("questionid",questionID);
+                mContext.startActivity(intent);
+            }
+        });
 
         if (infoSets.get(position).getState() == Constants.STATE_MEMBER) {
             holder.userState.setBackgroundColor(Color.BLACK);
@@ -82,12 +93,17 @@ public class ForumRecyclerViewAdapter extends RecyclerView.Adapter<ForumRecycler
         return infoSets.size();
     }
 
-    @Override
-    public void onClick(View view) {
-        Intent intent = new Intent(mContext, QuestionActivity.class);
-        intent.putExtra("questionid",questionID);
-        mContext.startActivity(intent);
-    }
+//    @Override
+//    public void onClick(View view) {
+//        switch (view.getId()){
+//            case R.id.item_forum:
+//                Intent intent = new Intent(mContext, QuestionActivity.class);
+//                intent.putExtra("questionid",questionID);
+//                mContext.startActivity(intent);
+//                break;
+//        }
+//
+//    }
 
     class VH extends RecyclerView.ViewHolder {
         LinearLayout linearLayout;
