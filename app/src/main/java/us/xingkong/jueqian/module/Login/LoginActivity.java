@@ -87,22 +87,6 @@ public class LoginActivity extends BaseActivity<LoginContract.Presenter> impleme
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
                 }
-
-//                username=username_edit.getText().toString();
-//                password=password_edit.getText().toString();
-//                if (!CheckUtils.checkPassword(username)) {
-//                    username_layout.setError("Not a valid username!");
-//                }
-//                else if (!CheckUtils.checkPassword(password)) {
-//                    password_layout.setError("Not a valid password!");
-//                }
-//                else {
-//                    username_layout.setErrorEnabled(false);
-//                    password_layout.setErrorEnabled(false);
-//                    mPresenter.login(con,username,password);
-//                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-//                }
             }
         });
         registButton.setOnClickListener(new View.OnClickListener() {

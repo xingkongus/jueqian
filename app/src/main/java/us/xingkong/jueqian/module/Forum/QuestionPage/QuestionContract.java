@@ -3,8 +3,11 @@ package us.xingkong.jueqian.module.Forum.QuestionPage;
 import android.content.Context;
 import android.os.Handler;
 
+import java.util.ArrayList;
+
 import us.xingkong.jueqian.base.BasePresenter;
 import us.xingkong.jueqian.base.BaseView;
+import us.xingkong.jueqian.bean.ForumBean.BombBean.Answer;
 
 /**
  * Created by boluoxiaomo
@@ -18,6 +21,6 @@ public interface QuestionContract {
 
     interface Presenter extends BasePresenter {
         void getQuestion(Context context,String questionID,Handler handler);
-        void getQuestionAnswer(Context context, Handler handler, String questionID);
+        void getQuestionAnswer(Context context, Handler handler, String questionID,ArrayList<Answer> answers);
     }
 }

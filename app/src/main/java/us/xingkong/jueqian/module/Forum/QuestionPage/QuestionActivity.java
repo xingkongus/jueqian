@@ -18,7 +18,6 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import us.xingkong.jueqian.R;
@@ -47,25 +46,25 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
     @BindView(R.id.tab_huida)
     RadioButton huida;
     String questionID;
-    Question getQuestion;
-     List<Answer> answers;
+    Question getQuestion=new Question();
+    ArrayList<Answer> answers = new ArrayList<>();
     @BindView(R.id.refreshLayout_question)
     SwipeRefreshLayout refreshLayout;
 
-    public Handler handler = new Handler() {
+    Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            switch(msg.what){
+            switch (msg.what) {
                 case 0:
                     finish();
                     break;
                 case 1:
-                    getQuestion= (Question) msg.obj;
+                    getQuestion = (Question) msg.obj;
+                    handler.sendEmptyMessage(3);
                     break;
                 case 2:
-                    answers= (ArrayList<Answer>) msg.obj;
-                    handler.sendEmptyMessage(3);
+                    answers = (ArrayList<Answer>) msg.obj;
                     break;
                 case 3:
                     initRecyClerView();
@@ -83,12 +82,13 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                     break;
                 case 5:  //刷新数据
                     answers.clear();
-                    mPresenter.getQuestionAnswer(mContext,handler,questionID);
+                    mPresenter.getQuestionAnswer(mContext, handler, questionID, answers);
                     recyclerViewAdapter.notifyDataSetChanged();
                     refreshLayout.setRefreshing(false);
             }
         }
     };
+
 
     @Override
     protected QuestionContract.Presenter createPresenter() {
@@ -102,12 +102,15 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
 
     @Override
     protected void prepareData() {
+
         mContext = this;
-            Intent intent = getIntent();
-            Bundle bundle = intent.getExtras();
-            questionID = bundle.getString("questionid");
-        mPresenter.getQuestion(mContext,questionID,handler);
-        mPresenter.getQuestionAnswer(mContext,handler,questionID);
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        questionID = bundle.getString("questionid");
+        refreshLayout.setRefreshing(true);
+        mPresenter.getQuestionAnswer(mContext, handler, questionID, answers);
+        mPresenter.getQuestion(mContext, questionID, handler);
+        refreshLayout.setRefreshing(false);
 
 //        mHandler = new Handler() {
 //            @Override
@@ -142,10 +145,11 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
     protected void initView() {
         setToolbarBackEnable("问题详情");
         initSwipeRefreshLayout();
+//        initRecyClerView();
     }
 
     private void initRecyClerView() {
-        recyclerViewAdapter = new QuestionRecyclerViewAdapter(mContext,getQuestion, answers, handler);
+        recyclerViewAdapter = new QuestionRecyclerViewAdapter(mContext, getQuestion, answers, handler);
         recyclerviewQuestionpage.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
         recyclerviewQuestionpage.setAdapter(recyclerViewAdapter);
         recyclerviewQuestionpage.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
@@ -159,8 +163,8 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                     }
                     if (!recyclerView.canScrollVertically(-1)) {
                         Toast.makeText(getApplicationContext(), "刷新", Toast.LENGTH_SHORT).show();
-//                        refreshLayout.setRefreshing(true);
-//                        handler.sendEmptyMessage(5);
+                        refreshLayout.setRefreshing(true);
+                        handler.sendEmptyMessage(5);
 
                     }
                 }
@@ -170,9 +174,9 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
-                if(dy>0){
+                if (dy > 0) {
                     tab.setVisibility(View.GONE);//底部的tab隐藏和出现
-                }else if(dy<0){
+                } else if (dy < 0) {
                     tab.setVisibility(View.VISIBLE);
                 }
 
@@ -191,8 +195,8 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
         huida.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(mContext, NewAnswerActivity.class);// 把这个问题的objectid传过去
-                intent.putExtra("questionObjectid",questionID);
+                Intent intent = new Intent(mContext, NewAnswerActivity.class);// 把这个问题的objectid传过去
+                intent.putExtra("questionObjectid", questionID);
                 startActivity(intent);
             }
         });
@@ -208,4 +212,6 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 }

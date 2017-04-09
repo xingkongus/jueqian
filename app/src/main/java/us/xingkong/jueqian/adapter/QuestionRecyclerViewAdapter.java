@@ -71,6 +71,7 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
             holder.tag1.setText(getQuestion.getTAG1_ID());
             holder.tag2.setText(getQuestion.getTAG2_ID());
             holder.time.setText(getQuestion.getUpdatedAt());
+//            holder.username.setText("作者名字:"+getQuestion.getUser().getUsername());
             String userID=getQuestion.getUser().getObjectId();
             BmobQuery<_User> query = new BmobQuery<>();
             if (!userID.isEmpty()){

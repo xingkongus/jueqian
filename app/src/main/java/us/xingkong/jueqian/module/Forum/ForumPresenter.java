@@ -60,7 +60,6 @@ public class ForumPresenter extends BasePresenterImpl implements ForumContract.P
                     question.getMcontent();
                     question.getTAG1_ID();
                     question.getTAG2_ID();
-
                     question.getUser();
                     questions.add(question);
 
