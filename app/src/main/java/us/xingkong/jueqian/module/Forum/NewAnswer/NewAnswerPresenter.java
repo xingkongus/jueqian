@@ -1,5 +1,6 @@
 package us.xingkong.jueqian.module.Forum.NewAnswer;
 
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
@@ -12,6 +13,7 @@ import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
 import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
 import us.xingkong.jueqian.module.Forum.QuestionPage.QuestionActivity;
 
+
 /**
  * Created by lenovo on 2017/3/30.
  */
@@ -19,10 +21,12 @@ import us.xingkong.jueqian.module.Forum.QuestionPage.QuestionActivity;
 public class NewAnswerPresenter extends BasePresenterImpl implements NewAnswerContract.Presenter {
 
     private final NewAnswerContract.View mView;
+
     public NewAnswerPresenter(NewAnswerContract.View view) {
         mView = view;
         this.mView.setPresenter(this);
     }
+
 
     @Override
     public void addNewAnswer(final Context context, String newAnswer, final String questionID, final Handler handler) {
@@ -51,4 +55,5 @@ public class NewAnswerPresenter extends BasePresenterImpl implements NewAnswerCo
             }
         });
     }
+
 }

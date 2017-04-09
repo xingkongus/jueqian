@@ -33,7 +33,6 @@
             android:text="@string/text_homepage" />
         <!--android:drawableTop="@drawable/tab_homepager"-->
 
-
         <RadioButton
             android:id="@+id/tab_ganhuo"
             style="@style/main_tab_bottom"

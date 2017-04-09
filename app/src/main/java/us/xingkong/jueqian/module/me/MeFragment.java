@@ -11,7 +11,6 @@ import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.base.BaseFragment;
 import us.xingkong.jueqian.module.EditUser.EditUserActivity;
 import us.xingkong.jueqian.module.Login.LoginActivity;
-
 import us.xingkong.jueqian.module.me.myanswer.MyAnswerActivity;
 import us.xingkong.jueqian.module.me.mycollection.MyCollectionActivity;
 import us.xingkong.jueqian.module.me.mymessage.MyMessageActivity;
@@ -82,10 +81,11 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
         toMyRecentLook();
         toMySettings();
         toMyInfo();
+        toMyQusetions();
     }
 
-    private void toMyInfo() {
-        me_layout.setOnClickListener(new View.OnClickListener() {
+    private void toMyCollection() {
+        mLinerlayout_mycollection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), EditUserActivity.class);
@@ -104,6 +104,7 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
                 });
             }
 
+
             private void toMyQusetions() {
                 mLinerlayout_myquestions.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -112,6 +113,7 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
                         startActivity(intent);
                     }
                 });
+
             }
 
             private void toMyMessage() {
@@ -122,6 +124,7 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
                         startActivity(intent);
                     }
                 });
+
             }
 
             private void toMyCollection() {
@@ -132,7 +135,9 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
                         startActivity(intent);
                     }
                 });
+
             }
+
 
             private void toMyAnswer() {
                 mLinerlayout_myanswer.setOnClickListener(new View.OnClickListener() {
@@ -142,6 +147,7 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
                         startActivity(intent);
                     }
                 });
+
             }
 
             private void toMyRecentLook() {
@@ -162,8 +168,8 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
                         startActivity(intent);
                     }
                 });
-            }
 
+            }
 
             @Override
             protected void initEvent() {
@@ -177,3 +183,4 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
             }
 
         }
+

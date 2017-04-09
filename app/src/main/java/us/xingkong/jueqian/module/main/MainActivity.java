@@ -18,6 +18,7 @@ import us.xingkong.jueqian.JueQianAPP;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.adapter.MainPagerAdapter;
 import us.xingkong.jueqian.base.BaseActivity;
+import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
 import us.xingkong.jueqian.module.Forum.ForumFragment;
 import us.xingkong.jueqian.module.RealS.RealSFragment;
 import us.xingkong.jueqian.module.me.MeFragment;
