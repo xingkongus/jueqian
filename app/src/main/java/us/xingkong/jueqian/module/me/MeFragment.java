@@ -84,7 +84,7 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
         toMyQusetions();
     }
 
-    private void toMyCollection() {
+    private void toMyInfo() {
         mLinerlayout_mycollection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

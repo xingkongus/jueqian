@@ -85,7 +85,7 @@ public class MainActivity extends BaseActivity<MainContract.Presenter> implement
         List<Fragment> fragments = new ArrayList<>();
         addFragmentList(fragments);
 
-        mViewPager.setOffscreenPageLimit(4);
+        mViewPager.setOffscreenPageLimit(3);
         MainPagerAdapter pagerAdapter = new MainPagerAdapter(
                 getSupportFragmentManager(),
                 fragments,

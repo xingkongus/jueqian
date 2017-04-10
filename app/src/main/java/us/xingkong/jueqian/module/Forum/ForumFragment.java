@@ -172,14 +172,10 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
                 case REQUEST_REFRESH:
                     questions.clear();
                     mPresenter.getBmobQuestion(getContext(),questions,mHandler);
-                    swipeRefreshLayout.setRefreshing(false);
                     break;
-//                case REQUEST_INTENT_TO_QUESTIONPAGE:
-//                    Intent intent = new Intent(getContext(), QuestionActivity.class);
-//                    startActivity(intent);
-//                    break;
                 case 3:
                     recyclerViewAdapter.notifyDataSetChanged();
+                    swipeRefreshLayout.setRefreshing(false);
                     break;
             }
         }
