@@ -16,7 +16,6 @@ import java.io.File;
 import java.util.List;
 
 import butterknife.BindView;
-import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
@@ -88,7 +87,8 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
 
                         @Override
                         public void onFailure(int i, String s) {
-                            showToast("下载头像失败");
+                            showToast("下载头像失败"+s);
+                            System.out.println("22222222222222222"+"下载头像失败"+s);
                         }
                     });
                     break;
