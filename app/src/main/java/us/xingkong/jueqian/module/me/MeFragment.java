@@ -71,6 +71,11 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
             super.handleMessage(msg);
             switch (msg.what) {
                 case 1:
+                    if(bmobFile==null){
+                        showToast("当前用户无头像");
+                        break;
+                    }
+                    System.out.println("uuuuuuuuuuuuuuuuuuuuu"+bmobFile);
                     bmobFile.download(JueQianAPP.getAppContext(), new DownloadFileListener() {
                         @Override
                         public void onSuccess(String s) {

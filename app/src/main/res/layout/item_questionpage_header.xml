@@ -6,6 +6,8 @@
     android:padding="16dp">
 
     <TextView
+        android:textColor="@color/title_color"
+        android:textSize="@dimen/sp_18"
         android:id="@+id/title_questionpage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -33,6 +35,8 @@
     </LinearLayout>
 
     <TextView
+        android:textColor="@color/content_color"
+        android:textSize="@dimen/sp_14"
         android:id="@+id/content_question"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -48,6 +52,7 @@
             android:id="@+id/username_question"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="#000"
             android:text="作者名字" />
 
         <TextView
@@ -56,7 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:text="发表于:xxxx-xx-xx xx:xx" />
+            android:text="" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -70,7 +75,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="赞同：999999" />
+            android:text="" />
         <TextView
             android:id="@+id/comment_questionpage1"
             android:layout_marginLeft="16dp"
@@ -78,7 +83,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="评论：999999"
+            android:text=""
             android:layout_toRightOf="@+id/like_questionpage1" />
 
         <ImageButton

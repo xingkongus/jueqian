@@ -35,19 +35,28 @@ public class MyAnswerActivity extends BaseActivity<MyAnswerContract.Presenter> i
     @BindView(R.id.recyclerview)
     RecyclerView mRecyclerView;
 
-    List<Answer> answers=new ArrayList<>();
+
+   private List<Answer> answers=new ArrayList<>();
+    private List<Question> questions=new ArrayList<>();
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 1:
+                    for(Answer answer:answers){
+                        Question q=answer.getQuestion();
+                        questions.add(q);
+                        System.out.println("qqqqqqqqqqqqqqqqqqqqqqqqqqqqq "+q.getObjectId());
+                    }
                     initRecyclerView();
                     break;
             }
 
         }
     };
+
+    private MyAnswerAdapter myAnswerAdapter;
 
     @Override
     protected MyAnswerContract.Presenter createPresenter() {
@@ -82,12 +91,13 @@ public class MyAnswerActivity extends BaseActivity<MyAnswerContract.Presenter> i
     @Override
     protected void initView() {
         setToolbar();
-        //initRecyclerView();
+       initRecyclerView();
     }
 
     private void initRecyclerView() {
+        myAnswerAdapter=new MyAnswerAdapter(questions);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setAdapter(new MyAnswerAdapter(mHandler,answers));
+        mRecyclerView.setAdapter(myAnswerAdapter);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(MyAnswerActivity.this, DividerItemDecoration.VERTICAL));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
     }

@@ -78,7 +78,7 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
                 query.getObject(context, userID, new GetListener<_User>() {
                     @Override
                     public void onSuccess(_User user) {
-                        holder.username.setText("作者名字:"+user.getUsername());
+                        holder.username.setText(user.getUsername());
                     }
 
                     @Override

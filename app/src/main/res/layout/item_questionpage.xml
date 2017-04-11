@@ -35,11 +35,12 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
-            android:text="XXXX-XX-XX XX:XX" />
+            android:text="" />
 
     </LinearLayout>
 
     <TextView
+        android:textColor="@color/content_color"
         android:id="@+id/content_questionpage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -59,7 +60,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="赞同：999999" />
+            android:text="" />
 
         <TextView
             android:id="@+id/comment_questionpage"
@@ -69,7 +70,8 @@
             android:layout_marginLeft="16dp"
             android:layout_toEndOf="@+id/like_questionpage_item"
             android:layout_toRightOf="@+id/like_questionpage_item"
-            android:text="评论：999999" />
+            android:text=""
+            />
 
         <ImageButton
             android:id="@+id/more_questionpage"
