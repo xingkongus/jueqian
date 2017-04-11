@@ -72,12 +72,6 @@ public class MainActivity extends BaseActivity<MainContract.Presenter> implement
 
     @Override
     protected int bindLayout() {
-        _User user = BmobUser.getCurrentUser(getApplicationContext(),_User.class);
-        if (user==null) {
-            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-            startActivity(intent);
-            finish();
-        }
         return R.layout.activity_main;
     }
 

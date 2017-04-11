@@ -57,38 +57,6 @@ public class MySettingsActivity extends BaseActivity<MySettingsContract.Presente
         mRelativeLayout_clean.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Question u = new Question();
-
-                Answer answer = new Answer();
-                answer.setState(1);
-                answer.setMcontent("这是回答");
-                answer.setUps(2);
-                answer.save(getApplicationContext(), new SaveListener() {
-                    @Override
-                    public void onSuccess() {
-                        showToast("YES1!");
-                    }
-
-                    @Override
-                    public void onFailure(int i, String s) {
-                        showToast("NO1!" + s);
-                    }
-                });
-
-                BmobRelation bmobRelation = new BmobRelation();
-                bmobRelation.add(answer);
-                u.setAnswers(bmobRelation);
-                u.save(getApplicationContext(), new SaveListener() {
-                    @Override
-                    public void onSuccess() {
-                        showToast("YES2!");
-                    }
-
-                    @Override
-                    public void onFailure(int i, String s) {
-                        showToast("NO2!" + s);
-                    }
-                });
 
             }
         });

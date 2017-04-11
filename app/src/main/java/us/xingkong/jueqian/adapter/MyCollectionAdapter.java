@@ -2,13 +2,19 @@ package us.xingkong.jueqian.adapter;
 
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import cn.bmob.v3.Bmob;
+import cn.bmob.v3.BmobUser;
+import us.xingkong.jueqian.JueQianAPP;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
 
@@ -19,13 +25,10 @@ import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
 public class MyCollectionAdapter extends RecyclerView.Adapter<MyCollectionAdapter.MyViewHolder> {
     private Handler mHandler;
     private List<Question> questions;
-//    private ArrayList<String> mArrayList;
 
     public MyCollectionAdapter(Handler mHandler, List<Question> questions) {
         this.mHandler = mHandler;
         this.questions = questions;
-//        this.mArrayList = mArrayList;
-
     }
 
 
@@ -36,7 +39,6 @@ public class MyCollectionAdapter extends RecyclerView.Adapter<MyCollectionAdapte
 
     @Override
     public void onBindViewHolder(MyCollectionAdapter.MyViewHolder holder, int position) {
-//        holder.tv_questiontitle.setText(questions.get(position).getMtitle());
         holder.tv_questiontitle.setText(questions.get(position).getMtitle());
     }
 
