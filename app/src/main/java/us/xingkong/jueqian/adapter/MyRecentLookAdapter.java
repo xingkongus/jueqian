@@ -8,20 +8,22 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import us.xingkong.jueqian.R;
+import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
 
 /**
  * Created by PERFECTLIN on 2017/1/11 0011.
  */
 
 public class MyRecentLookAdapter extends RecyclerView.Adapter<MyRecentLookAdapter.MyViewHolder> {
-    private ArrayList<String> mArrayList;
     private Handler mHandler;
+    private List<Question> questions;
 
-    public MyRecentLookAdapter(ArrayList<String> mArrayList, Handler mHandler) {
-        this.mArrayList = mArrayList;
+    public MyRecentLookAdapter(Handler mHandler, List<Question> questions) {
         this.mHandler = mHandler;
+        this.questions = questions;
     }
 
 
@@ -32,13 +34,13 @@ public class MyRecentLookAdapter extends RecyclerView.Adapter<MyRecentLookAdapte
 
     @Override
     public void onBindViewHolder(MyRecentLookAdapter.MyViewHolder holder, int position) {
-        holder.tv_questiontitle.setText(mArrayList.get(position));
+        holder.tv_questiontitle.setText(questions.get(position).getMtitle());
 
     }
 
     @Override
     public int getItemCount() {
-        return mArrayList.size();
+        return questions.size();
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {

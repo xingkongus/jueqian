@@ -112,13 +112,13 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
 
     @OnClick(R.id.fab_forum_main)
     public void onClick() {
-        _User user = BmobUser.getCurrentUser(getContext(),_User.class);
-        if (user==null) {
+        _User user = BmobUser.getCurrentUser(getContext(), _User.class);
+        if (user == null) {
             showToast("请先登录");
-            Intent intent=new Intent(getContext(), LoginActivity.class);
+            Intent intent = new Intent(getContext(), LoginActivity.class);
             startActivity(intent);
 
-        }else {
+        } else {
             Intent intent = new Intent(getContext(), NewActivity.class);
             startActivity(intent);
         }
@@ -142,8 +142,8 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
                     }
                     if (!recyclerView.canScrollVertically(-1)) {
                         Toast.makeText(getContext(), "刷新", Toast.LENGTH_SHORT).show();
-                            swipeRefreshLayout.setRefreshing(true);
-                            mHandler.sendEmptyMessage(REQUEST_REFRESH);
+                        swipeRefreshLayout.setRefreshing(true);
+                        mHandler.sendEmptyMessage(REQUEST_REFRESH);
 
                     }
                 }
@@ -171,7 +171,7 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
             switch (msg.what) {
                 case REQUEST_REFRESH:
                     questions.clear();
-                    mPresenter.getBmobQuestion(getContext(),questions,mHandler);
+                    mPresenter.getBmobQuestion(getContext(), questions, mHandler);
                     break;
                 case 3:
                     recyclerViewAdapter.notifyDataSetChanged();

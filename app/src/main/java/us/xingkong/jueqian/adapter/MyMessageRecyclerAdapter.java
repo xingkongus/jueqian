@@ -10,9 +10,12 @@ import android.widget.TextView;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import us.xingkong.jueqian.R;
+import us.xingkong.jueqian.bean.ForumBean.BombBean.Answer;
+import us.xingkong.jueqian.bean.ForumBean.BombBean.Comment;
 
 /**
  * Created by PERFECTLIN on 2017/1/11 0011.
@@ -21,11 +24,11 @@ import us.xingkong.jueqian.R;
 public class MyMessageRecyclerAdapter extends RecyclerView.Adapter<MyMessageRecyclerAdapter.MyViewHolder> {
 
     private Handler mHandler;
-    private ArrayList<String> mArrayList;
+    private List<Comment> answers;
 
-    public MyMessageRecyclerAdapter(ArrayList<String> mArrayList, Handler mHandler) {
-        this.mArrayList = mArrayList;
+    public MyMessageRecyclerAdapter(Handler mHandler, List<Comment> answers) {
         this.mHandler = mHandler;
+        this.answers = answers;
     }
 
 
@@ -36,12 +39,14 @@ public class MyMessageRecyclerAdapter extends RecyclerView.Adapter<MyMessageRecy
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        holder.tv_content.setText(mArrayList.get(position));
+        holder.tv_content.setText(answers.get(position).getMcontent());
+        holder.tv_username.setText(answers.get(position).getUser().getUsername());
+        holder.tv_time.setText(answers.get(position).getCreatedAt());
     }
 
     @Override
     public int getItemCount() {
-        return mArrayList.size();
+        return answers.size();
     }
 
 

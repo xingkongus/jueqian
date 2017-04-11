@@ -106,6 +106,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/buttonshape"
+            android:textColor="@color/text_white"
             android:text="注册" />
     </RelativeLayout>
 </LinearLayout>

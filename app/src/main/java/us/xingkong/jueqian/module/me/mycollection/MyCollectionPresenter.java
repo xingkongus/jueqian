@@ -1,8 +1,13 @@
 package us.xingkong.jueqian.module.me.mycollection;
 
+import android.os.Handler;
+import android.util.Log;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobPointer;
 import cn.bmob.v3.listener.FindListener;
 import us.xingkong.jueqian.JueQianAPP;
@@ -16,47 +21,56 @@ import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
 
 public class MyCollectionPresenter extends BasePresenterImpl implements MyCollectionContract.Presenter {
     private final MyCollectionContract.View mView;
-    private List<Question> questions;
+    static List<Question> questions;
+    private Handler mHandler;
 
-    public MyCollectionPresenter(MyCollectionContract.View mView) {
+    public MyCollectionPresenter(MyCollectionContract.View mView, Handler mHandler) {
         this.mView = mView;
+        this.mHandler = mHandler;
         this.mView.setPresenter(this);
+        Log.i("1", "~~~~~~~~~~~~~~~~~~~~~~~" + mHandler);
     }
 
     public List<Question> getCollections() {
-        BmobQuery<Question> query = new BmobQuery<Question>();
-        _User user = new _User();
-        user.setObjectId("1mdf000N");
-        query.addWhereRelatedTo("recentlooks", new BmobPointer(user));
-        System.out.println("---------------------------------------");
-        query.findObjects(JueQianAPP.getAppContext(), new FindListener<Question>() {
-            @Override
-            public void onSuccess(List<Question> list) {
-                questions = list;
-                mView.showToast("获取收藏表失败成功");
-                for (Question question : list) {
-                    System.out.println("ssssssssssssssssssssssss" + question.getMtitle());
-                }
-            }
+//        BmobUser bmobUser = BmobUser.getCurrentUser(JueQianAPP.getAppContext());
+//        Log.i("1", "---------------------------------1"+bmobUser);
+//        final BmobQuery<Question> query = new BmobQuery<Question>();
+//        query.addWhereRelatedTo("collections", new BmobPointer(bmobUser));
+//        query.findObjects(JueQianAPP.getAppContext(), new FindListener<Question>() {
+//                    @Override
+//                    public void onSuccess(List<Question> list) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onError(int i, String s) {
+//
+//                    }
+//                });
+//
+//                Log.i("1", "++++++++++++++++++++++++++++++++++:" + questions);
+//        return questions;
 
-            @Override
-            public void onError(int i, String s) {
-                mView.showToast("获取收藏表失败");
-                System.out.println("ffffffffffffffffffffffffffffffffff" + s);
-            }
-        });
-//        query.findObjects(new FindListener<Question>() {
+//        BmobQuery<_User> query=new BmobQuery<>();
+//        String username=BmobUser.getCurrentUser(JueQianAPP.getAppContext()).getUsername();
+//        query.addWhereEqualTo("username",username);
+//        query.setLimit(20);
+//        query.order("-createdAt");
+//        query.findObjects(JueQianAPP.getAppContext(), new FindListener<_User>() {
 //            @Override
-//            public void done(List<Question> list, BmobException e) {
+//            public void onSuccess(List<_User> list) {
+//                questions= (List<Question>) list.get(0).getCollections();
+//                mHandler.sendEmptyMessage(1);
 //                mView.showToast("获取收藏列表成功");
-//                questions = list;
-//                for (Question question : list) {
-//                    System.out.println("sssssssssssssss" + question.getMtitle());
-//                }
+//            }
+//
+//            @Override
+//            public void onError(int i, String s) {
+//                mView.showToast("获取收藏列表失败");
 //            }
 //        });
-
-
-        return questions;
+//
+//        return questions;
+        return null;
     }
 }

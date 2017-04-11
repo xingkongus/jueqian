@@ -19,7 +19,7 @@ public class EditUserPresenter extends BasePresenterImpl implements EditUserCont
     @Override
     public void saveUser(Context context, String url, String nick, String phone, String email, String sex) {
         _User newInfo = new _User();
-        newInfo.setProfile(url);
+//        newInfo.setProfile(url);
         newInfo.setNickname(nick);
         newInfo.setMobilePhoneNumber(phone);
         newInfo.setEmail(email);
