@@ -22,5 +22,7 @@ public interface QuestionContract {
     interface Presenter extends BasePresenter {
         void getQuestion(Context context,String questionID,Handler handler);
         void getQuestionAnswer(Context context, Handler handler, String questionID,ArrayList<Answer> answers);
+        void zan(Context context,Handler handler,String questionID);
+        void shoucan(Context context,Handler handler,String questionID);
     }
 }

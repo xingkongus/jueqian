@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -46,10 +47,14 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
     @BindView(R.id.tab_huida)
     RadioButton huida;
     String questionID;
-    Question getQuestion=new Question();
+    Question getQuestion = new Question();
     ArrayList<Answer> answers = new ArrayList<>();
     @BindView(R.id.refreshLayout_question)
     SwipeRefreshLayout refreshLayout;
+    @BindView(R.id.tab_shoucan)
+    Button shoucan;
+    @BindView(R.id.tab_zan)
+    Button zan;
 
     Handler handler = new Handler() {
         @Override
@@ -201,6 +206,18 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
             }
         });
 
+        zan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPresenter.zan(mContext, handler, questionID);
+            }
+        });
+        shoucan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPresenter.shoucan(mContext,handler,questionID);
+            }
+        });
 
     }
 

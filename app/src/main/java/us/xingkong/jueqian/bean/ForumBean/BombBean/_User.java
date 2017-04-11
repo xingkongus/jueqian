@@ -1,6 +1,7 @@
 package us.xingkong.jueqian.bean.ForumBean.BombBean;
 
 import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.datatype.BmobRelation;
 
 /**
@@ -11,7 +12,7 @@ public class _User extends BmobUser {
     private String nickname; //昵称
     private String selfsign;//个性签名
     private String gender;//性别
-    private String profile;//头像
+    private BmobFile profile;//头像
     private Integer state;//用户状态
     private BmobRelation collections;//我的收藏列表
     private BmobRelation questions;//我的问题列表
@@ -76,11 +77,11 @@ public class _User extends BmobUser {
         this.state = state;
     }
 
-    public String getProfile() {
+    public BmobFile getProfile() {
         return profile;
     }
 
-    public void setProfile(String profile) {
+    public void setProfile(BmobFile profile) {
         this.profile = profile;
     }
 

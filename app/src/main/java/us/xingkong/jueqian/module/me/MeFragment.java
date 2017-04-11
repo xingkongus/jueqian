@@ -16,7 +16,6 @@ import java.io.File;
 import java.util.List;
 
 import butterknife.BindView;
-import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
@@ -65,32 +64,37 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
     private int mPageCount;
     private static final String PAGE_COUNT = "page_count";
     private boolean isLogin;
-    private BmobFile bmobFile;
+    private BmobFile bmobFile=new BmobFile();
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 1:
-                    bmobFile.download(JueQianAPP.getAppContext(), new DownloadFileListener() {
-                        @Override
-                        public void onSuccess(String s) {
-                            showToast("下载头像成功");
-                            File file = new File(s);
-                            if (file.exists()) {
-                                Bitmap bm = BitmapFactory.decodeFile(s);
-                                //将图片显示到ImageView中
-                                mCircleImageView_profile.setImageBitmap(bm);
-                            } else {
-                                showToast("获取头像路径失败");
+                    if(bmobFile==null) {
+                        showToast("当前用户没有设置头像");
+                        break;
+                    }
+                        bmobFile.download(JueQianAPP.getAppContext(), new DownloadFileListener() {
+                            @Override
+                            public void onSuccess(String s) {
+                                showToast("下载头像成功");
+                                File file = new File(s);
+                                if (file.exists()) {
+                                    Bitmap bm = BitmapFactory.decodeFile(s);
+                                    //将图片显示到ImageView中
+                                    mCircleImageView_profile.setImageBitmap(bm);
+                                } else {
+                                    showToast("获取头像路径失败");
+                                }
                             }
-                        }
 
-                        @Override
-                        public void onFailure(int i, String s) {
-                            showToast("下载头像失败");
-                        }
-                    });
+                            @Override
+                            public void onFailure(int i, String s) {
+                                showToast("下载头像失败");
+                            }
+                        });
+
                     break;
             }
 
