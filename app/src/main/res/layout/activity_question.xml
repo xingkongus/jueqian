@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
@@ -7,15 +8,51 @@
     android:orientation="vertical"
     tools:context=".module.Forum.QuestionPage.QuestionActivity">
 
-    <include layout="@layout/view_toolbar" />
+    <include
+        android:id="@+id/include"
+        layout="@layout/view_toolbar" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerview_questionpage"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:layout_below="@+id/include"
+        android:id="@+id/refreshLayout_question"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
+        android:layout_height="match_parent"
+        android:overScrollMode="ifContentScrolls">
 
-    </android.support.v7.widget.RecyclerView>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerview_questionpage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            ></android.support.v7.widget.RecyclerView>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <RadioGroup
+        android:id="@+id/question_tab"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/white"
+        android:orientation="horizontal"
+        app:layout_behavior="@string/bye_burger_bottom_behavior">
+
+        <RadioButton
+            android:id="@+id/tab_zan"
+            style="@style/main_tab_bottom"
+            android:text="赞" />
+        <!--android:checked="true"-->
+        <RadioButton
+            android:id="@+id/tab_shoucan"
+            style="@style/main_tab_bottom"
+            android:text="收藏" />
+
+        <RadioButton
+            android:id="@+id/tab_huida"
+            style="@style/main_tab_bottom"
+            android:text="回答" />
+    </RadioGroup>
 
 
-</LinearLayout>
+</RelativeLayout>

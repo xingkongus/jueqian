@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
-            android:text="菠萝小莫" />
+            android:text="admin" />
 
         <ImageView
             android:layout_width="16dp"

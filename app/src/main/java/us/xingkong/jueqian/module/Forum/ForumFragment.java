@@ -25,11 +25,9 @@ import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
 import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
 import us.xingkong.jueqian.data.RepositData.ForumRepository;
 import us.xingkong.jueqian.module.Forum.NewPage.NewActivity;
-import us.xingkong.jueqian.module.Forum.QuestionPage.QuestionActivity;
 import us.xingkong.jueqian.module.Login.LoginActivity;
 import us.xingkong.jueqian.module.main.MainActivity;
 
-import static us.xingkong.jueqian.base.Constants.REQUEST_INTENT_TO_QUESTIONPAGE;
 import static us.xingkong.jueqian.base.Constants.REQUEST_REFRESH;
 
 
@@ -51,7 +49,6 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
     private ForumRecyclerViewAdapter recyclerViewAdapter;
     private static final String PAGE_COUNT = "page_count";
     ArrayList<Question> questions = new ArrayList<>();
-
 
     public static ForumFragment getInstance(int page_count) {
         ForumFragment fra = new ForumFragment();
@@ -115,14 +112,16 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
 
     @OnClick(R.id.fab_forum_main)
     public void onClick() {
-        _User user = BmobUser.getCurrentUser(getContext(), _User.class);
-        if (user == null) {
-            showToast("请先登陆");
-        } else {
+        _User user = BmobUser.getCurrentUser(getContext(),_User.class);
+        if (user==null) {
+            showToast("请先登录");
+            Intent intent=new Intent(getContext(), LoginActivity.class);
+            startActivity(intent);
+
+        }else {
             Intent intent = new Intent(getContext(), NewActivity.class);
             startActivity(intent);
         }
-
     }
 
     private void initRecyclerview() {
@@ -143,8 +142,8 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
                     }
                     if (!recyclerView.canScrollVertically(-1)) {
                         Toast.makeText(getContext(), "刷新", Toast.LENGTH_SHORT).show();
-                        swipeRefreshLayout.setRefreshing(true);
-                        mHandler.sendEmptyMessage(REQUEST_REFRESH);
+                            swipeRefreshLayout.setRefreshing(true);
+                            mHandler.sendEmptyMessage(REQUEST_REFRESH);
 
                     }
                 }
@@ -172,15 +171,11 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
             switch (msg.what) {
                 case REQUEST_REFRESH:
                     questions.clear();
-                    mPresenter.getBmobQuestion(getContext(), questions, mHandler);
-                    swipeRefreshLayout.setRefreshing(false);
-                    break;
-                case REQUEST_INTENT_TO_QUESTIONPAGE:
-                    Intent intent = new Intent(getContext(), QuestionActivity.class);
-                    startActivity(intent);
+                    mPresenter.getBmobQuestion(getContext(),questions,mHandler);
                     break;
                 case 3:
                     recyclerViewAdapter.notifyDataSetChanged();
+                    swipeRefreshLayout.setRefreshing(false);
                     break;
             }
         }

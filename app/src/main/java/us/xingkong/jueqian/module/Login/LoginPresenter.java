@@ -10,7 +10,7 @@ import android.widget.EditText;
 
 import cn.bmob.v3.listener.SaveListener;
 import us.xingkong.jueqian.base.BasePresenterImpl;
-import us.xingkong.jueqian.bean.LoginRegistBean.Userinfo;
+import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
 import us.xingkong.jueqian.module.main.MainActivity;
 
 
@@ -29,13 +29,12 @@ public class LoginPresenter extends BasePresenterImpl implements LoginContract.P
         new Thread(new Runnable() {
             @Override
             public void run() {
-                Userinfo bu = new Userinfo();
+                _User bu = new _User();
                 bu.setUsername(username);
                 bu.setPassword(password);
                 bu.login(context, new SaveListener() {
                     @Override
                     public void onSuccess() {
-
                         Intent intent = new Intent(context, MainActivity.class);
                         context.startActivity(intent);
                         handler.sendEmptyMessage(0);

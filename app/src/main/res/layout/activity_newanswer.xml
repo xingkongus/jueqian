@@ -26,13 +26,4 @@
         android:minLines="8"
         android:scrollbars="vertical"></EditText>
 
-    <Button
-        android:id="@+id/new_huida"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:layout_margin="10dp"
-        android:background="@drawable/buttonshape"
-        android:text="提交" />
-
 </LinearLayout>
