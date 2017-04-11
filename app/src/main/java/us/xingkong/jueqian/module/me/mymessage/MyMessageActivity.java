@@ -13,12 +13,21 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.datatype.BmobPointer;
 import cn.bmob.v3.datatype.BmobRelation;
+import cn.bmob.v3.listener.FindListener;
+import us.xingkong.jueqian.JueQianAPP;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.adapter.MyMessageRecyclerAdapter;
 import us.xingkong.jueqian.base.BaseActivity;
+import us.xingkong.jueqian.bean.ForumBean.BombBean.Answer;
+import us.xingkong.jueqian.bean.ForumBean.BombBean.Comment;
+import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
 
 /**
  * Created by PERFECTLIN on 2017/1/10 0010.
@@ -31,7 +40,7 @@ public class MyMessageActivity extends BaseActivity<MyMessageContract.Presenter>
     @BindView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout mSwipeRefreshLayout;
 
-    private ArrayList<String> mArrayList;
+    List<Comment> answers = new ArrayList<>();
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -39,7 +48,9 @@ public class MyMessageActivity extends BaseActivity<MyMessageContract.Presenter>
             switch (msg.what) {
                 case 1:
                     mSwipeRefreshLayout.setRefreshing(false);
-//                    Toast.makeText(getApplicationContext(), "刷新成功", Toast.LENGTH_SHORT).show();
+                    break;
+                case 2:
+                    initRecyclerView();
                     break;
             }
         }
@@ -57,15 +68,24 @@ public class MyMessageActivity extends BaseActivity<MyMessageContract.Presenter>
 
     @Override
     protected void prepareData() {
-        if (mArrayList != null) {
-            mArrayList.clear();
-        }
-        mArrayList = new ArrayList<>();
-        for (int i = 0; i < 15; i++) {
-//            ArrayList arrayList = new ArrayList();
-//            arrayList.add("我是消息" + i);
-            mArrayList.add("我是消息" + i);
-        }
+        BmobUser bmobUser = BmobUser.getCurrentUser(JueQianAPP.getAppContext());
+        BmobQuery<Comment> query = new BmobQuery<>();
+        query.addWhereRelatedTo("comments", new BmobPointer(bmobUser));
+        query.findObjects(JueQianAPP.getAppContext(), new FindListener<Comment>() {
+            @Override
+            public void onSuccess(List<Comment> list) {
+                System.out.println("555555555555555555555555"+list.size());
+                answers = list;
+                showToast("获取我的消息列表成功");
+                System.out.println("555555555555555555555555"+answers.size());
+                mHandler.sendEmptyMessage(2);
+            }
+
+            @Override
+            public void onError(int i, String s) {
+                showToast("获取我的消息列表失败");
+            }
+        });
     }
 
     @Override
@@ -76,7 +96,7 @@ public class MyMessageActivity extends BaseActivity<MyMessageContract.Presenter>
 
     private void initRecyclerView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setAdapter(new MyMessageRecyclerAdapter(mArrayList, mHandler));
+        mRecyclerView.setAdapter(new MyMessageRecyclerAdapter(mHandler, answers));
         mRecyclerView.addItemDecoration(new DividerItemDecoration(MyMessageActivity.this, DividerItemDecoration.VERTICAL));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 

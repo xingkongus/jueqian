@@ -10,12 +10,15 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import butterknife.BindView;
+import us.xingkong.jueqian.JueQianAPP;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.base.BaseActivity;
 import us.xingkong.jueqian.module.Login.LoginActivity;
+import us.xingkong.jueqian.module.main.MainActivity;
 import us.xingkong.jueqian.utils.CheckUtils;
 
 
@@ -41,6 +44,8 @@ public class RegistActivity extends BaseActivity<RegistContract.Presenter> imple
     TextInputLayout passwordAgainWrapper;
     @BindView(R.id.regist_passwordAgain)
     EditText passwordAgain;
+    @BindView(R.id.close)
+    ImageView close;
 
     @Override
     protected RegistContract.Presenter createPresenter() {
@@ -69,6 +74,15 @@ public class RegistActivity extends BaseActivity<RegistContract.Presenter> imple
         mPresenter.setEditText(regist_username);
         mPresenter.setEditText(regist_password);
         mPresenter.setEditText(passwordAgain);
+
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                Intent intent=new Intent(JueQianAPP.getAppContext(),MainActivity.class);
+//                startActivity(intent);
+                finish();
+            }
+        });
 
     }
 

@@ -8,20 +8,23 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import us.xingkong.jueqian.R;
+import us.xingkong.jueqian.bean.ForumBean.BombBean.Answer;
+import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
 
 /**
  * Created by PERFECTLIN on 2017/1/11 0011.
  */
 
 public class MyAnswerAdapter extends RecyclerView.Adapter<MyAnswerAdapter.MyViewHolder> {
-    private ArrayList<String> mArrayList;
     private Handler mHandler;
+    private List<Answer> answers;
 
-    public MyAnswerAdapter(ArrayList<String> mArrayList, Handler mHandler) {
-        this.mArrayList = mArrayList;
+    public MyAnswerAdapter(Handler mHandler, List<Answer> answers) {
         this.mHandler = mHandler;
+        this.answers = answers;
     }
 
 
@@ -32,13 +35,14 @@ public class MyAnswerAdapter extends RecyclerView.Adapter<MyAnswerAdapter.MyView
 
     @Override
     public void onBindViewHolder(MyAnswerAdapter.MyViewHolder holder, int position) {
-        holder.tv_questiontitle.setText(mArrayList.get(position));
+        holder.tv_questiontitle.setText(answers.get(position).getQuestion().getMtitle());
 
     }
 
     @Override
     public int getItemCount() {
-        return mArrayList.size();
+        System.out.println("ssssssssssssssssssssssss"+answers.size());
+        return answers.size();
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {

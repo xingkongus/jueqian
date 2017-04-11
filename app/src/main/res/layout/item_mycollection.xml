@@ -1,34 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/dp_8"
-    app:cardElevation="@dimen/dp_4">
+    android:padding="@dimen/dp_16">
 
-    <RelativeLayout
+    <TextView
+        android:id="@+id/item_mycollection_tv_questiontitle"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="@dimen/dp_16">
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:text="你为什么是一个傻逼？你为什么是一个傻逼？"
+        android:textColor="#000000"
+        android:textSize="@dimen/sp_18" />
 
 
-        <ImageView
-            android:id="@+id/item_mycollection_iv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/dp_16"
-            android:src="@drawable/iv_mycollection_answer" />
-
-        <TextView
-            android:id="@+id/item_mycollection_tv_questiontitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/item_mycollection_iv"
-            android:text="你为什么是一个傻逼？"
-            android:textColor="#000000"
-            android:textSize="@dimen/sp_16" />
-
-
-    </RelativeLayout>
-</android.support.v7.widget.CardView>
+</RelativeLayout>

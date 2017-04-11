@@ -8,20 +8,22 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import us.xingkong.jueqian.R;
+import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
 
 /**
  * Created by PERFECTLIN on 2017/1/14 0014.
  */
 
 public class MyQuestionsAdapter extends RecyclerView.Adapter<MyQuestionsAdapter.MyViewHolder> {
-    private Handler mHander;
-    private ArrayList<String> mArrayList;
+    private Handler mHandler;
+    private List<Question> questions;
 
-    public MyQuestionsAdapter(Handler mHander, ArrayList<String> mArrayList) {
-        this.mHander = mHander;
-        this.mArrayList = mArrayList;
+    public MyQuestionsAdapter(Handler mHandler, List<Question> questions) {
+        this.mHandler = mHandler;
+        this.questions = questions;
     }
 
     @Override
@@ -31,12 +33,12 @@ public class MyQuestionsAdapter extends RecyclerView.Adapter<MyQuestionsAdapter.
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        holder.tv_title.setText(mArrayList.get(position));
+        holder.tv_title.setText(questions.get(position).getMtitle());
     }
 
     @Override
     public int getItemCount() {
-        return mArrayList.size();
+        return questions.size();
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
