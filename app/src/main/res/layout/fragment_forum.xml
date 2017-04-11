@@ -33,7 +33,7 @@
             android:layout_marginBottom="@dimen/dp_72"
             android:layout_marginRight="@dimen/dp_16"
             android:clickable="true"
-            android:src="@mipmap/ic_launcher"
+            android:src="@drawable/add"
             app:layout_anchor="@+id/recyclerview_forum_main"
             app:layout_anchorGravity="right|bottom"
             app:layout_behavior="@string/bye_burger_float_behavior" />

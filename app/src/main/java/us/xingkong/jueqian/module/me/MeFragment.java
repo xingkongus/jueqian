@@ -120,7 +120,7 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
         _User user = BmobUser.getCurrentUser(JueQianAPP.getAppContext(), _User.class);
         if (user == null) {
         } else {
-            mTextView_nickname.setText(user.getNickname());
+            mTextView_nickname.setText(user.getUsername());
         }
     }
 

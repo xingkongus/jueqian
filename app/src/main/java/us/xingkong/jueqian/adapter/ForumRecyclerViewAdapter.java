@@ -2,7 +2,6 @@ package us.xingkong.jueqian.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,7 +17,6 @@ import java.util.List;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.listener.GetListener;
 import us.xingkong.jueqian.R;
-import us.xingkong.jueqian.base.Constants;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
 import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
 import us.xingkong.jueqian.module.Forum.QuestionPage.QuestionActivity;
@@ -79,11 +77,11 @@ public class ForumRecyclerViewAdapter extends RecyclerView.Adapter<ForumRecycler
             }
         });
 
-        if (infoSets.get(position).getState() == Constants.STATE_MEMBER) {
-            holder.userState.setBackgroundColor(Color.BLACK);
-        } else if (infoSets.get(position).getState() == Constants.STATE_MEMBER) {
-            holder.userState.setBackgroundColor(Color.CYAN);
-        }
+//        if (infoSets.get(position).getState() == Constants.STATE_MEMBER) {
+//            holder.userState.setBackgroundColor(Color.BLACK);
+//        } else if (infoSets.get(position).getState() == Constants.STATE_MEMBER) {
+//            holder.userState.setBackgroundColor(Color.CYAN);
+//        }
 
     }
 
