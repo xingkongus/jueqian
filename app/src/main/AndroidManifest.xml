@@ -29,6 +29,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".module.me.myquestions.MyQuestionsAcitivity"/>
         <activity android:name=".module.Forum.NewAnswer.NewAnswerActivity"></activity>
         <activity android:name=".module.EditUser.EditUserActivity"></activity>
         <activity android:name=".module.Login.LoginActivity"></activity>

@@ -11,7 +11,7 @@
         android:id="@+id/title_questionpage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="我是题目我是题目我是题目我是题目我是题目我是题目我是题目我是题目我是题目" />
+        android:text="我是题目" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -20,12 +20,14 @@
         android:orientation="horizontal">
 
         <TextView
+            android:textSize="@dimen/sp_16"
             android:id="@+id/tag1_questionpage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="TAG1" />
 
         <TextView
+            android:textSize="@dimen/sp_16"
             android:id="@+id/tag2_questionpage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -35,8 +37,8 @@
     </LinearLayout>
 
     <TextView
+        android:textSize="@dimen/sp_16"
         android:textColor="@color/content_color"
-        android:textSize="@dimen/sp_14"
         android:id="@+id/content_question"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -49,10 +51,10 @@
         android:layout_marginTop="8dp">
 
         <TextView
+            android:textColor="#000"
             android:id="@+id/username_question"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#000"
             android:text="作者名字" />
 
         <TextView
@@ -61,7 +63,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:text="" />
+            android:text="发表于:xxxx-xx-xx xx:xx" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -75,16 +77,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="" />
-        <TextView
-            android:id="@+id/comment_questionpage1"
-            android:layout_marginLeft="16dp"
-            android:layout_toEndOf="@+id/like_questionpage1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:text=""
-            android:layout_toRightOf="@+id/like_questionpage1" />
+            android:text=" " />
+
+        <!--<TextView-->
+            <!--android:id="@+id/comment_questionpage1"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_marginLeft="16dp"-->
+            <!--android:layout_toEndOf="@+id/like_questionpage1"-->
+            <!--android:layout_toRightOf="@+id/like_questionpage1"-->
+            <!--android:text="评论：999999" />-->
 
         <ImageButton
             android:id="@+id/more_questionpage"
@@ -92,8 +95,8 @@
             android:layout_height="24dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:src="@drawable/ic_more_vert_black_24dp"
-            android:background="#00ffffff"/>
+            android:background="#00ffffff"
+            android:src="@drawable/ic_more_vert_black_24dp" />
     </RelativeLayout>
 
 
