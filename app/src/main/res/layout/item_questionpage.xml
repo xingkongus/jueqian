@@ -15,7 +15,7 @@
             android:id="@+id/user_icon_questionpage"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:background="@mipmap/ic_launcher" />
+            android:background="#916a" />
 
         <TextView
             android:id="@+id/username_questionpage"
@@ -28,15 +28,14 @@
         <ImageView
             android:layout_width="16dp"
             android:layout_height="16dp"
-            android:background="@mipmap/teacher" />
+            android:background="#6a7e" />
 
         <TextView
-            android:id="@+id/question_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
-            android:text="XXXX-XX-XX XX:XX" />
+            android:text="X" />
 
     </LinearLayout>
 
@@ -47,7 +46,7 @@
         android:layout_marginTop="16dp"
         android:ellipsize="end"
         android:maxLines="2"
-        android:text="" />
+        android:text="我是回答的正文我是回答的正文我是回答的正文我是回答的正文我是回答的正文我是回答的正文我是回答的正文我是回答的正文我是回答的正文" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -62,15 +61,15 @@
             android:layout_centerVertical="true"
             android:text="" />
 
-        <!--<TextView-->
-        <!--android:id="@+id/comment_questionpage"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_centerVertical="true"-->
-        <!--android:layout_marginLeft="16dp"-->
-        <!--android:layout_toEndOf="@+id/like_questionpage_item"-->
-        <!--android:layout_toRightOf="@+id/like_questionpage_item"-->
-        <!--android:text="评论：999999" />-->
+        <TextView
+            android:id="@+id/comment_questionpage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="16dp"
+            android:layout_toEndOf="@+id/like_questionpage_item"
+            android:layout_toRightOf="@+id/like_questionpage_item"
+            android:text="" />
 
         <ImageButton
             android:id="@+id/more_questionpage"
@@ -78,8 +77,8 @@
             android:layout_height="24dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:background="#00ffffff"
-            android:src="@drawable/ic_more_vert_black_24dp" />
+            android:src="@drawable/ic_more_vert_black_24dp"
+            android:background="#00ffffff"/>
     </RelativeLayout>
 
 

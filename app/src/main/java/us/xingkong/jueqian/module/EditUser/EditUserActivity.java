@@ -66,7 +66,7 @@ public class EditUserActivity extends BaseActivity<EditUserContract.Presenter> i
     @Override
     protected int bindLayout() {
 
-        return R.layout.activity_edit_user;
+        return R.layout.activity_mymainpage;
     }
 
     @Override

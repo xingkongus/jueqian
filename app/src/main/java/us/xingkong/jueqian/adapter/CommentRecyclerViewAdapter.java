@@ -48,7 +48,7 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<CommentRecy
 
         public VH(View itemView) {
             super(itemView);
-            imageButton = (ImageButton) itemView.findViewById(R.id.more_commentpage);
+//            imageButton = (ImageButton) itemView.findViewById(R.id.more_commentpage);
         }
     }
 }

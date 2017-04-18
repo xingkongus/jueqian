@@ -15,4 +15,5 @@
     <color name="text_white">#ffffff</color>
     <color name="title_color">#000</color>
     <color name="content_color">#000</color>
+    <color name="text_username">#000</color>
 </resources>

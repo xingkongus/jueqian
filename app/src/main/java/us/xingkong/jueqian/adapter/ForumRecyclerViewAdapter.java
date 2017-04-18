@@ -117,9 +117,9 @@ public class ForumRecyclerViewAdapter extends RecyclerView.Adapter<ForumRecycler
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.title_forum);
             linearLayout = (LinearLayout) itemView.findViewById(R.id.item_forum);
-            profile = (ImageView) itemView.findViewById(R.id.user_icon_forum);
+//            profile = (ImageView) itemView.findViewById(R.id.user_icon_forum);
             username = (TextView) itemView.findViewById(R.id.username_forum);
-            userState = (ImageView) itemView.findViewById(R.id.user_state_forum);
+//            userState = (ImageView) itemView.findViewById(R.id.user_state_forum);
             count_answer = (TextView) itemView.findViewById(R.id.count_answer_forum);
             tag1 = (TextView) itemView.findViewById(R.id.TAG1_forum);
             tag2 = (TextView) itemView.findViewById(R.id.TAG2_forum);

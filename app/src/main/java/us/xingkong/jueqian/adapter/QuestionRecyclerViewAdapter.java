@@ -97,7 +97,7 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
             holder.content.setText(answers.get(position-1).getMcontent());
             holder.username_answer.setText(answers.get(position-1).getUser().getUsername());
             holder.like.setText("赞同:"+answers.get(position-1).getUps());
-            holder.question_time.setText(answers.get(position-1).getUpdatedAt());
+//            holder.question_time.setText(answers.get(position-1).getUpdatedAt());
 //            holder.like.setOnClickListener(this);
                 holder.like.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -161,7 +161,7 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
         TextView question_time;
         public VH(View itemView) {
             super(itemView);
-            question_time= (TextView) itemView.findViewById(R.id.question_time);
+//            question_time= (TextView) itemView.findViewById(R.id.question_time);
             like= (TextView) itemView.findViewById(R.id.like_questionpage_item);
             username_answer= (TextView) itemView.findViewById(R.id.username_questionpage);
             content = (TextView) itemView.findViewById(R.id.content_questionpage);

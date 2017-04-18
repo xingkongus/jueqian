@@ -60,27 +60,30 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
     CardView mCardView_signout;
     @BindView(R.id.me_profile)
     CircleImageView mCircleImageView_profile;
+    @BindView(R.id.redpoint)
+    CircleImageView mCircleImageView_redpoint;
+
 
     private int mPageCount;
     private static final String PAGE_COUNT = "page_count";
     private boolean isLogin;
     private BmobFile bmobFile;
+    private static File file;
+    private static String filename = ""; //用来储存下载到头像的名字
+    private static String profileURL; //头像的缓存路径
+    private static String matchProfileString = ""; //由 当前用户名+filename 组成的头像匹配字符串 用于判断当前用户是否缓存有头像
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 1:
-                    if(bmobFile==null){
-                        showToast("当前用户无头像");
-                        break;
-                    }
-                    System.out.println("uuuuuuuuuuuuuuuuuuuuu"+bmobFile);
                     bmobFile.download(JueQianAPP.getAppContext(), new DownloadFileListener() {
                         @Override
                         public void onSuccess(String s) {
-                            showToast("下载头像成功");
-                            File file = new File(s);
+                            profileURL = s;
+                            showToast("下载头像成功" + s);
+                            file = new File(s);
                             if (file.exists()) {
                                 Bitmap bm = BitmapFactory.decodeFile(s);
                                 //将图片显示到ImageView中
@@ -92,8 +95,8 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
 
                         @Override
                         public void onFailure(int i, String s) {
-                            showToast("下载头像失败"+s);
-                            System.out.println("22222222222222222"+"下载头像失败"+s);
+                            showToast("下载头像失败" + s);
+                            System.out.println("22222222222222222" + "下载头像失败" + s);
                         }
                     });
                     break;
@@ -121,7 +124,7 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
         _User user = BmobUser.getCurrentUser(JueQianAPP.getAppContext(), _User.class);
         if (user == null) {
         } else {
-            mTextView_nickname.setText(user.getNickname());
+            mTextView_nickname.setText(user.getUsername());
         }
     }
 
@@ -232,6 +235,7 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
     }
 
     private void toMyMessage() {
+        if (isLogin == false) mCircleImageView_redpoint.setVisibility(View.INVISIBLE);
         mLinerlayout_mymessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -279,27 +283,39 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
     }
 
     private void getProfile() {
+        BmobUser u = BmobUser.getCurrentUser(JueQianAPP.getAppContext());
+        if (matchProfileString.equals(u.getUsername() + filename)) {
+            Bitmap bm = BitmapFactory.decodeFile(profileURL);
+            //将图片显示到ImageView中
+            mCircleImageView_profile.setImageBitmap(bm);
+        } else {
+            final BmobUser user = BmobUser.getCurrentUser(JueQianAPP.getAppContext());
+            BmobQuery<_User> query = new BmobQuery<>();
+            query.addWhereEqualTo("objectId", user.getObjectId());
+            query.addQueryKeys("profile");
+            query.findObjects(JueQianAPP.getAppContext(), new FindListener<_User>() {
+                @Override
+                public void onSuccess(List<_User> list) {
+                    bmobFile = list.get(0).getProfile();
+                    if (bmobFile == null) {
+                        showToast("当前用户无头像");
+                    }
+                    else {
+                        filename = bmobFile.getFilename();
+                        matchProfileString = user.getUsername() + bmobFile.getFilename();
+                        showToast("获取头像成功" + bmobFile.getFilename());
+                        mHandler.sendEmptyMessage(1);
+                    }
+                }
 
-        BmobUser user = BmobUser.getCurrentUser(JueQianAPP.getAppContext());
-        BmobQuery<_User> query = new BmobQuery<>();
-        query.addWhereEqualTo("objectId", user.getObjectId());
-        query.addQueryKeys("profile");
-        query.findObjects(JueQianAPP.getAppContext(), new FindListener<_User>() {
-            @Override
-            public void onSuccess(List<_User> list) {
-                bmobFile = list.get(0).getProfile();
-                showToast("获取头像成功");
-                showToast("B:" + bmobFile);
-                mHandler.sendEmptyMessage(1);
+                @Override
+                public void onError(int i, String s) {
+                    showToast("获取头像失败");
+                }
+            });
+            if (bmobFile == null) return;
 
-            }
-
-            @Override
-            public void onError(int i, String s) {
-                showToast("获取头像失败");
-            }
-        });
-        if (bmobFile == null) return;
+        }
 
 
     }
