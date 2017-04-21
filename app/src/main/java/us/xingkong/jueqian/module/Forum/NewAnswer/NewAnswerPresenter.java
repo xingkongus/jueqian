@@ -42,7 +42,6 @@ public class NewAnswerPresenter extends BasePresenterImpl implements NewAnswerCo
         answer.save(context, new SaveListener() {
             @Override
             public void onSuccess() {
-                mView.showToast("save successful");
                 Intent intent=new Intent(context, QuestionActivity.class);
                 intent.putExtra("questionid",questionID);
                 context.startActivity(intent);

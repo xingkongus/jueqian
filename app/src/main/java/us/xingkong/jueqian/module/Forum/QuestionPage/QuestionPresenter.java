@@ -68,7 +68,6 @@ public class QuestionPresenter extends BasePresenterImpl implements QuestionCont
         query.addWhereEqualTo("question", new BmobPointer(question));
         query.include("user,question.user");
         query.order("-createdAt");
-//        final List<Answer> answers = new ArrayList<>();
         query.findObjects(context, new FindListener<Answer>() {
             @Override
             public void onSuccess(List<Answer> list) {
@@ -80,11 +79,6 @@ public class QuestionPresenter extends BasePresenterImpl implements QuestionCont
                     answer.getObjectId();
                     answers.add(answer);
                 }
-//                Message msg=new Message();
-//                msg.obj=answers;
-//                msg.what=2;
-//                handler.sendMessage(msg);
-//                handler.sendEmptyMessage(3);
 
             }
 

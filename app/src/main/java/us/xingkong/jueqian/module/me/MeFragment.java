@@ -64,37 +64,38 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
     private int mPageCount;
     private static final String PAGE_COUNT = "page_count";
     private boolean isLogin;
-    private BmobFile bmobFile=new BmobFile();
+    private BmobFile bmobFile;
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 1:
-                    if(bmobFile==null) {
-                        showToast("当前用户没有设置头像");
+                    if(bmobFile==null){
+                        showToast("当前用户无头像");
                         break;
                     }
-                        bmobFile.download(JueQianAPP.getAppContext(), new DownloadFileListener() {
-                            @Override
-                            public void onSuccess(String s) {
-                                showToast("下载头像成功");
-                                File file = new File(s);
-                                if (file.exists()) {
-                                    Bitmap bm = BitmapFactory.decodeFile(s);
-                                    //将图片显示到ImageView中
-                                    mCircleImageView_profile.setImageBitmap(bm);
-                                } else {
-                                    showToast("获取头像路径失败");
-                                }
+                    System.out.println("uuuuuuuuuuuuuuuuuuuuu"+bmobFile);
+                    bmobFile.download(JueQianAPP.getAppContext(), new DownloadFileListener() {
+                        @Override
+                        public void onSuccess(String s) {
+                            showToast("下载头像成功");
+                            File file = new File(s);
+                            if (file.exists()) {
+                                Bitmap bm = BitmapFactory.decodeFile(s);
+                                //将图片显示到ImageView中
+                                mCircleImageView_profile.setImageBitmap(bm);
+                            } else {
+                                showToast("获取头像路径失败");
                             }
+                        }
 
-                            @Override
-                            public void onFailure(int i, String s) {
-                                showToast("下载头像失败");
-                            }
-                        });
-
+                        @Override
+                        public void onFailure(int i, String s) {
+                            showToast("下载头像失败"+s);
+                            System.out.println("22222222222222222"+"下载头像失败"+s);
+                        }
+                    });
                     break;
             }
 
@@ -120,7 +121,7 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
         _User user = BmobUser.getCurrentUser(JueQianAPP.getAppContext(), _User.class);
         if (user == null) {
         } else {
-            mTextView_nickname.setText(user.getUsername());
+            mTextView_nickname.setText(user.getNickname());
         }
     }
 

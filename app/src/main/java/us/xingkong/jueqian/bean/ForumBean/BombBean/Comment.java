@@ -19,6 +19,14 @@ public class Comment extends BmobObject {
     private Comment comments;/*该评论的评论*/
     private BmobRelation likepeople;/*点赞的用户*/
 
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
+    }
+
     public String getMcontent() {
         return mcontent;
     }

@@ -14,7 +14,6 @@ public class Question extends BmobObject {
     private String mcontent;/*问题的内容*/
     private String TAG1_ID;/*第一个Tag的id*/
     private String TAG2_ID;/*第二个Tag的id*/
-
     private _User user;//提问题的用户
     private Integer focus;/*关注的数量*/
     private BmobRelation answers;
