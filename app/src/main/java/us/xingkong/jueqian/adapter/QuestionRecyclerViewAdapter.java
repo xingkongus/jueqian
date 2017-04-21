@@ -63,9 +63,6 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
         if (position == 0) {
             return HEADER;
         }
-//        else if (position == answers.size() + 1) {
-//            return FOOTER;
-//        }
         else {
             return CONTENT;
         }

@@ -62,7 +62,6 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof VH_head) {
             final VH_head head = (VH_head) holder;
-//            head.username.setText(answer.getUser().getUsername());
             head.content.setText(answer.getMcontent());
             String userid=answer.getUser().getObjectId();
             BmobQuery<_User> query = new BmobQuery<>();

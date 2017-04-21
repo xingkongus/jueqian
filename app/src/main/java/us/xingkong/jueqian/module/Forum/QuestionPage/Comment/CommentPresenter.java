@@ -66,7 +66,6 @@ public class CommentPresenter extends BasePresenterImpl implements CommentContra
             public void onSuccess(List<Comment> list) {
                 for (Comment comment:list){
                     comment.getUser().getUsername();
-//                    comment.getUpdatedAt()
                     comment.getMcontent();
                     comments.add(comment);
                 }

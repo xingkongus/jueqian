@@ -149,20 +149,6 @@ public class CommentActivity extends BaseActivity<CommentContract.Presenter> imp
         recyclerviewCommentpage.setAdapter(recyclerViewAdapter);
         recyclerviewCommentpage.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         recyclerviewCommentpage.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-//                super.onScrollStateChanged(recyclerView, newState);
-//                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-//                    if (!recyclerView.canScrollVertically(1)) {
-////                        Toast.makeText(getApplicationContext(), "到底啦", Toast.LENGTH_SHORT).show();
-//                    }
-//                    if (!recyclerView.canScrollVertically(-1)) {
-//                        Toast.makeText(getApplicationContext(), "刷新", Toast.LENGTH_SHORT).show();
-//                        refreshLayout.setRefreshing(true);
-//                        handler.sendEmptyMessage(3);
-//                    }
-//                }
-//            }
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
