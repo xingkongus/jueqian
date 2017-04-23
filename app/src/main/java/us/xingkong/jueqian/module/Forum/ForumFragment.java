@@ -7,7 +7,6 @@ import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -31,10 +30,6 @@ import us.xingkong.jueqian.module.main.MainActivity;
 import static us.xingkong.jueqian.base.Constants.REQUEST_REFRESH;
 
 
-/**
- * Created by boluoxiaomo
- * Date: 17/1/9
- */
 
 public class ForumFragment extends BaseFragment<ForumContract.Presenter> implements ForumContract.View {
 
@@ -85,19 +80,6 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         swipeRefreshLayout.setSize(SwipeRefreshLayout.DEFAULT);
         swipeRefreshLayout.setProgressViewEndTarget(true, 200);
-//        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-//            @Override
-//            public void onRefresh() {
-//                new Thread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                            mHandler.sendEmptyMessage(REQUEST_REFRESH);
-//
-//
-//                    }
-//                }).start();
-//            }
-//        });
     }
 
     @Override
@@ -117,7 +99,6 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
             showToast("请先登录");
             Intent intent=new Intent(getContext(), LoginActivity.class);
             startActivity(intent);
-
         }else {
             Intent intent = new Intent(getContext(), NewActivity.class);
             startActivity(intent);
@@ -128,7 +109,7 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
         recyclerViewAdapter = new ForumRecyclerViewAdapter(questions, mHandler, getContext());
         mLayoutManager = new LinearLayoutManager(getContext());
         recyclerview.setLayoutManager(mLayoutManager);
-        recyclerview.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
+//        recyclerview.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         recyclerview.setItemAnimator(new DefaultItemAnimator());
         recyclerview.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -137,7 +118,6 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
 
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     if (!recyclerView.canScrollVertically(1)) {
-
 
                     }
                     if (!recyclerView.canScrollVertically(-1)) {

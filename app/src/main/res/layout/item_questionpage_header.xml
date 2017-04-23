@@ -3,8 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:layout_marginTop="5dp"
+    android:background="#ffffff">
 
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp">
     <TextView
         android:textColor="@color/title_color"
         android:textSize="@dimen/sp_18"
@@ -98,6 +104,5 @@
             android:background="#00ffffff"
             android:src="@drawable/ic_more_vert_black_24dp" />
     </RelativeLayout>
-
-
+    </LinearLayout>
 </LinearLayout>

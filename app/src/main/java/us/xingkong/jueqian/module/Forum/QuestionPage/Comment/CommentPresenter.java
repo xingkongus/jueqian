@@ -33,6 +33,7 @@ public class CommentPresenter extends BasePresenterImpl implements CommentContra
     @Override
     public void getAnswer(final Context context, String answerID, final Handler handler) {
         BmobQuery<Answer> query=new BmobQuery<>();
+        query.include("user");
         query.getObject(context, answerID, new GetListener<Answer>() {
             @Override
             public void onSuccess(Answer answer) {
@@ -59,7 +60,7 @@ public class CommentPresenter extends BasePresenterImpl implements CommentContra
         Answer answer=new Answer();
         answer.setObjectId(answerID);
         query.addWhereEqualTo("answer",new BmobPointer(answer));
-        query.include("user,answer.user");
+        query.include("user");
         query.order("-createdAt");
         query.findObjects(context, new FindListener<Comment>() {
             @Override

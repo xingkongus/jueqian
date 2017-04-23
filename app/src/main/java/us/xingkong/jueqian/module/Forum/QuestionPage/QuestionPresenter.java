@@ -36,6 +36,7 @@ public class QuestionPresenter extends BasePresenterImpl implements QuestionCont
     public void getQuestion(Context context, final String questionID, final Handler handler) {
 
         BmobQuery<Question> query=new BmobQuery<>();
+        query.include("user");
         query.getObject(context, questionID, new GetListener<Question>() {
             @Override
             public void onSuccess(Question question) {
@@ -63,10 +64,11 @@ public class QuestionPresenter extends BasePresenterImpl implements QuestionCont
     @Override
     public void getQuestionAnswer(Context context, final Handler handler, String questionID,final ArrayList<Answer> answers) {
         BmobQuery<Answer> query=new BmobQuery<>();
+        query.include("user");
         Question question=new Question();
         question.setObjectId(questionID);
         query.addWhereEqualTo("question", new BmobPointer(question));
-        query.include("user,question.user");
+//        query.include("user,question.user");
         query.order("-createdAt");
         query.findObjects(context, new FindListener<Answer>() {
             @Override

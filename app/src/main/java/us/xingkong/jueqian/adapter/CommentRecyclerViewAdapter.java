@@ -11,16 +11,12 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import cn.bmob.v3.BmobQuery;
-import cn.bmob.v3.listener.GetListener;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Answer;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Comment;
-import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
 
 
 public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -63,24 +59,7 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         if (holder instanceof VH_head) {
             final VH_head head = (VH_head) holder;
             head.content.setText(answer.getMcontent());
-            String userid=answer.getUser().getObjectId();
-            BmobQuery<_User> query = new BmobQuery<>();
-            try{
-                query.getObject(context, userid, new GetListener<_User>() {
-                    @Override
-                    public void onSuccess(_User user) {
-                        head.username.setText(user.getUsername());
-                    }
-
-                    @Override
-                    public void onFailure(int i, String s) {
-                        Toast.makeText(context,"网络连接错误", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }catch (Exception e){
-                head.username.setText("");
-                Toast.makeText(context,"网络连接错误", Toast.LENGTH_SHORT).show();
-            }
+            head.username.setText(answer.getUser().getUsername());
         }
         if (holder instanceof VH_comment) {
             VH_comment vh_comment = (VH_comment) holder;

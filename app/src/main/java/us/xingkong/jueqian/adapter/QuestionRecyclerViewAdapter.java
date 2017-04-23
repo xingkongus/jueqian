@@ -12,20 +12,16 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.util.List;
 
-import cn.bmob.v3.BmobQuery;
-import cn.bmob.v3.listener.GetListener;
 import cn.bmob.v3.listener.UpdateListener;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Answer;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
-import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
 
 
 /**
@@ -77,25 +73,7 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
             holder.tag1.setText(getQuestion.getTAG1_ID());
             holder.tag2.setText(getQuestion.getTAG2_ID());
             holder.time.setText(getQuestion.getUpdatedAt());
-            String userID=getQuestion.getUser().getObjectId();
-            BmobQuery<_User> query = new BmobQuery<>();
-            if (!userID.isEmpty()){
-                query.getObject(context, userID, new GetListener<_User>() {
-                    @Override
-                    public void onSuccess(_User user) {
-                        holder.username.setText(user.getUsername());
-                    }
-
-                    @Override
-                    public void onFailure(int i, String s) {
-
-                    }
-                });
-            }else{
-                holder.username.setText("");
-                Toast.makeText(context,"网络连接错误",Toast.LENGTH_SHORT).show();
-            }
-
+            holder.username.setText(getQuestion.getUser().getUsername());
         }
 
         if (position != 0) {

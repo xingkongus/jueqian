@@ -51,6 +51,7 @@ public class ForumPresenter extends BasePresenterImpl implements ForumContract.P
         BmobQuery<Question> query=new BmobQuery<>();
         query.setLimit(20);
         query.order("-createdAt");
+        query.include("user");
         query.findObjects(context, new FindListener<Question>() {
             @Override
             public void onSuccess(List<Question> list) {

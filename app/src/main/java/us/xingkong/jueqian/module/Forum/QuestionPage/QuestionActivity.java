@@ -26,13 +26,16 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import java.util.ArrayList;
 
 import butterknife.BindView;
+import cn.bmob.v3.BmobUser;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.adapter.QuestionRecyclerViewAdapter;
 import us.xingkong.jueqian.base.BaseActivity;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Answer;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
+import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
 import us.xingkong.jueqian.module.Forum.NewAnswer.NewAnswerActivity;
 import us.xingkong.jueqian.module.Forum.QuestionPage.Comment.CommentActivity;
+import us.xingkong.jueqian.module.Login.LoginActivity;
 
 
 /**
@@ -62,7 +65,6 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
     @BindView(R.id.tab_zan)
     Button zan;
     PopupWindow mpopupWindow;
-
     Button popupwindow_huida;
     Handler handler = new Handler() {
         @Override
@@ -130,11 +132,18 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                     popupwindow_huida.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Intent intent = new Intent(mContext, CommentActivity.class);
-                            intent.putExtra("answerID", answerID);
-                            intent.putExtra("questionID", questionID);
-                            startActivity(intent);
-                            mpopupWindow.dismiss();
+                            _User user = BmobUser.getCurrentUser(mContext,_User.class);
+                            if (user==null) {
+                                showToast("请先登录");
+                                Intent intent=new Intent(mContext, LoginActivity.class);
+                                startActivity(intent);
+                            }else {
+                                Intent intent = new Intent(mContext, CommentActivity.class);
+                                intent.putExtra("answerID", answerID);
+                                intent.putExtra("questionID", questionID);
+                                startActivity(intent);
+                                mpopupWindow.dismiss();
+                            }
                         }
                     });
                     break;
@@ -174,27 +183,6 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
         mPresenter.getQuestionAnswer(mContext, handler, questionID, answers);
         mPresenter.getQuestion(mContext, questionID, handler);
         refreshLayout.setRefreshing(false);
-
-//        mHandler = new Handler() {
-//            @Override
-//            public void handleMessage(Message msg) {
-//                super.handleMessage(msg);
-//                switch (msg.what) {
-//                    case 1:
-//                        break;
-//                    case 2:
-//                        Intent intent = new Intent(getApplicationContext(), CommentActivity.class);
-//                        startActivity(intent);
-//                        break;
-//                    case 3:
-//                        Intent intent2 = new Intent(getApplicationContext(), AnswerActivity.class);
-//                        startActivity(intent2);
-//                        break;
-//                    default:
-//                        break;
-//                }
-//            }
-//        };
     }
 
     private void initSwipeRefreshLayout() {
@@ -264,22 +252,43 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
         huida.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, NewAnswerActivity.class);// 把这个问题的objectid传过去
-                intent.putExtra("questionObjectid", questionID);
-                startActivity(intent);
+                _User user = BmobUser.getCurrentUser(mContext,_User.class);
+                if (user==null) {
+                    showToast("请先登录");
+                    Intent intent=new Intent(mContext, LoginActivity.class);
+                    startActivity(intent);
+                }else {
+                    Intent intent = new Intent(mContext, NewAnswerActivity.class);// 把这个问题的objectid传过去
+                    intent.putExtra("questionObjectid", questionID);
+                    startActivity(intent);
+                }
             }
         });
 
         zan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPresenter.zan(mContext, handler, questionID);
+                _User user = BmobUser.getCurrentUser(mContext,_User.class);
+                if (user==null) {
+                    showToast("请先登录");
+                    Intent intent=new Intent(mContext, LoginActivity.class);
+                    startActivity(intent);
+                }else {
+                    mPresenter.zan(mContext, handler, questionID);
+                }
             }
         });
         shoucan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPresenter.shoucan(mContext, handler, questionID);
+                _User user = BmobUser.getCurrentUser(mContext,_User.class);
+                if (user==null) {
+                    showToast("请先登录");
+                    Intent intent=new Intent(mContext, LoginActivity.class);
+                    startActivity(intent);
+                }else {
+                    mPresenter.shoucan(mContext, handler, questionID);
+                }
             }
         });
 
