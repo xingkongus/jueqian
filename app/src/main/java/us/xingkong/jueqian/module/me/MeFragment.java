@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.CardView;
@@ -12,6 +13,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+
 import java.io.File;
 import java.util.List;
 
@@ -19,17 +22,16 @@ import butterknife.BindView;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
-import cn.bmob.v3.listener.DownloadFileListener;
 import cn.bmob.v3.listener.FindListener;
 import de.hdodenhof.circleimageview.CircleImageView;
 import us.xingkong.jueqian.JueQianAPP;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.base.BaseFragment;
 import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
-import us.xingkong.jueqian.module.EditUser.EditUserActivity;
 import us.xingkong.jueqian.module.Login.LoginActivity;
 import us.xingkong.jueqian.module.me.myanswer.MyAnswerActivity;
 import us.xingkong.jueqian.module.me.mycollection.MyCollectionActivity;
+import us.xingkong.jueqian.module.me.mymainpage.MyMainPageAcitivity;
 import us.xingkong.jueqian.module.me.mymessage.MyMessageActivity;
 import us.xingkong.jueqian.module.me.myquestions.MyQuestionsAcitivity;
 import us.xingkong.jueqian.module.me.myrecentlook.MyRecentLookActivity;
@@ -63,48 +65,21 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
     @BindView(R.id.redpoint)
     CircleImageView mCircleImageView_redpoint;
 
-
-    private int mPageCount;
     private static final String PAGE_COUNT = "page_count";
     private boolean isLogin;
+    private _User user; //当前用户
     private BmobFile bmobFile;
-    private static File file;
-    private static String filename = ""; //用来储存下载到头像的名字
-    private static String profileURL; //头像的缓存路径
-    private static String matchProfileString = ""; //由 当前用户名+filename 组成的头像匹配字符串 用于判断当前用户是否缓存有头像
+    private static String profileURL = null; //头像URL
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 1:
-                    bmobFile.download(JueQianAPP.getAppContext(), new DownloadFileListener() {
-                        @Override
-                        public void onSuccess(String s) {
-                            profileURL = s;
-                            showToast("下载头像成功" + s);
-                            file = new File(s);
-                            if (file.exists()) {
-                                Bitmap bm = BitmapFactory.decodeFile(s);
-                                //将图片显示到ImageView中
-                                mCircleImageView_profile.setImageBitmap(bm);
-                            } else {
-                                showToast("获取头像路径失败");
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(int i, String s) {
-                            showToast("下载头像失败" + s);
-                            System.out.println("22222222222222222" + "下载头像失败" + s);
-                        }
-                    });
                     break;
             }
-
         }
     };
-
 
     public static MeFragment getInstance(int page_count) {
         MeFragment fra = new MeFragment();
@@ -121,7 +96,7 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
 
     @Override
     protected void prepareData(Bundle savedInstanceState) {
-        _User user = BmobUser.getCurrentUser(JueQianAPP.getAppContext(), _User.class);
+        user = BmobUser.getCurrentUser(JueQianAPP.getAppContext(), _User.class);
         if (user == null) {
         } else {
             mTextView_nickname.setText(user.getUsername());
@@ -149,7 +124,7 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
         toMySettings();
         toMyQusetions();
         toSignOut();
-        if (isLogin) getProfile();
+        getProfile();
     }
 
     private void toSignOut() {
@@ -275,7 +250,7 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
                     Intent intent = new Intent(getContext(), LoginActivity.class);
                     startActivity(intent);
                 } else {
-                    Intent intent = new Intent(getContext(), EditUserActivity.class);
+                    Intent intent = new Intent(getContext(), MyMainPageAcitivity.class);
                     startActivity(intent);
                 }
             }
@@ -283,13 +258,7 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
     }
 
     private void getProfile() {
-        BmobUser u = BmobUser.getCurrentUser(JueQianAPP.getAppContext());
-        if (matchProfileString.equals(u.getUsername() + filename)) {
-            Bitmap bm = BitmapFactory.decodeFile(profileURL);
-            //将图片显示到ImageView中
-            mCircleImageView_profile.setImageBitmap(bm);
-        } else {
-            final BmobUser user = BmobUser.getCurrentUser(JueQianAPP.getAppContext());
+        if (isLogin) {
             BmobQuery<_User> query = new BmobQuery<>();
             query.addWhereEqualTo("objectId", user.getObjectId());
             query.addQueryKeys("profile");
@@ -299,13 +268,10 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
                     bmobFile = list.get(0).getProfile();
                     if (bmobFile == null) {
                         showToast("当前用户无头像");
+                        return;
                     }
-                    else {
-                        filename = bmobFile.getFilename();
-                        matchProfileString = user.getUsername() + bmobFile.getFilename();
-                        showToast("获取头像成功" + bmobFile.getFilename());
-                        mHandler.sendEmptyMessage(1);
-                    }
+                    profileURL = bmobFile.getUrl();
+                    Glide.with(JueQianAPP.getAppContext()).load(profileURL).into(mCircleImageView_profile);
                 }
 
                 @Override
@@ -313,10 +279,7 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
                     showToast("获取头像失败");
                 }
             });
-            if (bmobFile == null) return;
-
         }
-
 
     }
 

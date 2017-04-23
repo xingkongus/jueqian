@@ -1,6 +1,7 @@
 package us.xingkong.jueqian.adapter;
 
 import android.os.Handler;
+import android.os.Message;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Answer;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Comment;
+import us.xingkong.jueqian.bean.ForumBean.BombBean.NewMessage;
 
 /**
  * Created by PERFECTLIN on 2017/1/11 0011.
@@ -24,11 +26,11 @@ import us.xingkong.jueqian.bean.ForumBean.BombBean.Comment;
 public class MyMessageRecyclerAdapter extends RecyclerView.Adapter<MyMessageRecyclerAdapter.MyViewHolder> {
 
     private Handler mHandler;
-    private List<Comment> answers;
+    private List<NewMessage> messages;
 
-    public MyMessageRecyclerAdapter(Handler mHandler, List<Comment> answers) {
+    public MyMessageRecyclerAdapter(Handler mHandler, List<NewMessage> messages) {
         this.mHandler = mHandler;
-        this.answers = answers;
+        this.messages = messages;
     }
 
 
@@ -39,14 +41,15 @@ public class MyMessageRecyclerAdapter extends RecyclerView.Adapter<MyMessageRecy
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        holder.tv_content.setText(answers.get(position).getMcontent());
-        holder.tv_username.setText(answers.get(position).getUser().getUsername());
-        holder.tv_time.setText(answers.get(position).getCreatedAt());
+        holder.tv_content.setText(messages.get(position).getContent());
+//        System.out.println("SENDER:"+messages.get(position).getSender()+"   USERNAME:"+messages.get(position).getSender().getUsername());
+//        holder.tv_username.setText(messages.get(position).getSender().getUsername());
+        holder.tv_time.setText(messages.get(position).getCreatedAt());
     }
 
     @Override
     public int getItemCount() {
-        return answers.size();
+        return messages.size();
     }
 
 
