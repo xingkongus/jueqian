@@ -7,10 +7,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.bumptech.glide.Glide;
+
 import butterknife.BindView;
 import cn.bmob.v3.datatype.BmobRelation;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
+import us.xingkong.jueqian.JueQianAPP;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.base.BaseActivity;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Answer;
@@ -54,7 +57,9 @@ public class MySettingsActivity extends BaseActivity<MySettingsContract.Presente
         mRelativeLayout_clean.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Glide.get(JueQianAPP.getAppContext()).clearMemory();
+//                Glide.get(JueQianAPP.getAppContext()).clearDiskCache();
+                showToast("清理缓存完成");
             }
         });
     }

@@ -7,10 +7,19 @@ import cn.bmob.v3.BmobObject;
  */
 
 public class NewMessage extends BmobObject {
+    private Question question;//评论或者回答指向的问题
     private _User sender;//发送新消息的用户
     private _User receiver;//接收新消息的用户
     private String content;//新消息内容
     private Integer TYPE;//新消息类型 1为回答 2为评论
+
+    public Question getQuestion() {
+        return question;
+    }
+
+    public void setQuestion(Question question) {
+        this.question = question;
+    }
 
     public _User getSender() {
         return sender;

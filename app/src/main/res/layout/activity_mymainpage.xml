@@ -26,10 +26,10 @@
             android:id="@+id/mainpage_username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/mainpage_touxiang"
             android:layout_marginLeft="@dimen/dp_16"
             android:layout_toRightOf="@id/mainpage_touxiang"
             android:text="我是用户名"
-            android:layout_alignBottom="@id/mainpage_touxiang"
             android:textColor="@color/text_username"
             android:textSize="@dimen/sp_16" />
 
@@ -40,7 +40,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/dp_8"
-            android:background="@drawable/buttonshape"
+            android:background="@drawable/editshape"
             android:text="编辑" />
 
         <RelativeLayout

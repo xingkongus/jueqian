@@ -63,7 +63,7 @@ public class MyRecentLookAdapter extends RecyclerView.Adapter<MyRecentLookAdapte
         public MyViewHolder(View itemView) {
             super(itemView);
             tv_questiontitle = (TextView) itemView.findViewById(R.id.item_myrecentlook_tv_questiontitle);
-            layout = (RelativeLayout) itemView.findViewById(R.id.item);
+            layout = (RelativeLayout) itemView.findViewById(R.id.myrecentlook_item);
         }
     }
 }
