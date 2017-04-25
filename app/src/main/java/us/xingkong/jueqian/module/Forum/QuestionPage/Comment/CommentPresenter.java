@@ -55,7 +55,7 @@ public class CommentPresenter extends BasePresenterImpl implements CommentContra
     }
 
     @Override
-    public void getAnswerComments(Context context, Handler handler, String answerID, final ArrayList<Comment> comments) {
+    public void getAnswerComments(Context context, final Handler handler, String answerID, final ArrayList<Comment> comments) {
         BmobQuery<Comment>query=new BmobQuery<>();
         Answer answer=new Answer();
         answer.setObjectId(answerID);
@@ -70,6 +70,7 @@ public class CommentPresenter extends BasePresenterImpl implements CommentContra
                     comment.getMcontent();
                     comments.add(comment);
                 }
+                handler.sendEmptyMessage(2);
             }
 
             @Override

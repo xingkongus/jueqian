@@ -16,7 +16,7 @@ import us.xingkong.jueqian.bean.ForumBean.BombBean.Comment;
 
 public interface CommentContract {
     interface View extends BaseView<Presenter> {
-
+        void setRecyclewViewBug();
     }
 
     interface Presenter extends BasePresenter {

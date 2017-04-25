@@ -62,7 +62,7 @@ public class QuestionPresenter extends BasePresenterImpl implements QuestionCont
     }
 
     @Override
-    public void getQuestionAnswer(Context context, final Handler handler, String questionID,final ArrayList<Answer> answers) {
+    public ArrayList<Answer> getQuestionAnswer(Context context, final Handler handler, String questionID,final ArrayList<Answer> answers) {
         BmobQuery<Answer> query=new BmobQuery<>();
         query.include("user");
         Question question=new Question();
@@ -81,6 +81,7 @@ public class QuestionPresenter extends BasePresenterImpl implements QuestionCont
                     answer.getObjectId();
                     answers.add(answer);
                 }
+                handler.sendEmptyMessage(3);
 
             }
 
@@ -89,6 +90,7 @@ public class QuestionPresenter extends BasePresenterImpl implements QuestionCont
 
             }
         });
+        return answers;
     }
 
     @Override

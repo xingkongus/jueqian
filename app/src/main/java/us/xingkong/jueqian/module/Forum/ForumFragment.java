@@ -9,6 +9,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
@@ -30,7 +31,6 @@ import us.xingkong.jueqian.module.main.MainActivity;
 import static us.xingkong.jueqian.base.Constants.REQUEST_REFRESH;
 
 
-
 public class ForumFragment extends BaseFragment<ForumContract.Presenter> implements ForumContract.View {
 
 
@@ -44,6 +44,7 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
     private ForumRecyclerViewAdapter recyclerViewAdapter;
     private static final String PAGE_COUNT = "page_count";
     ArrayList<Question> questions = new ArrayList<>();
+    Boolean isRolling = false;
 
     public static ForumFragment getInstance(int page_count) {
         ForumFragment fra = new ForumFragment();
@@ -66,6 +67,7 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
     @Override
     protected void prepareData(Bundle savedInstanceState) {
         questions = (ArrayList<Question>) mPresenter.getBmobQuestion(getContext(), questions, mHandler);
+
     }
 
     @Override
@@ -94,12 +96,12 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
 
     @OnClick(R.id.fab_forum_main)
     public void onClick() {
-        _User user = BmobUser.getCurrentUser(getContext(),_User.class);
-        if (user==null) {
+        _User user = BmobUser.getCurrentUser(getContext(), _User.class);
+        if (user == null) {
             showToast("请先登录");
-            Intent intent=new Intent(getContext(), LoginActivity.class);
+            Intent intent = new Intent(getContext(), LoginActivity.class);
             startActivity(intent);
-        }else {
+        } else {
             Intent intent = new Intent(getContext(), NewActivity.class);
             startActivity(intent);
         }
@@ -122,8 +124,8 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
                     }
                     if (!recyclerView.canScrollVertically(-1)) {
                         Toast.makeText(getContext(), "刷新", Toast.LENGTH_SHORT).show();
-                            swipeRefreshLayout.setRefreshing(true);
-                            mHandler.sendEmptyMessage(REQUEST_REFRESH);
+                        swipeRefreshLayout.setRefreshing(true);
+                        mHandler.sendEmptyMessage(REQUEST_REFRESH);
 
                     }
                 }
@@ -151,13 +153,31 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
             switch (msg.what) {
                 case REQUEST_REFRESH:
                     questions.clear();
-                    mPresenter.getBmobQuestion(getContext(),questions,mHandler);
+                    isRolling = true;
+                    setRecyclewViewBug();
+                    mPresenter.getBmobQuestion(getContext(), questions, mHandler);
                     break;
                 case 3:
                     recyclerViewAdapter.notifyDataSetChanged();
                     swipeRefreshLayout.setRefreshing(false);
+                    isRolling = false;
+                    setRecyclewViewBug();
                     break;
             }
         }
     };
+
+    @Override
+    public void setRecyclewViewBug() {
+        recyclerview.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (isRolling) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        });
+    }
 }

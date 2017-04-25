@@ -66,7 +66,6 @@ public class ForumPresenter extends BasePresenterImpl implements ForumContract.P
 
                 }
                 handler.sendEmptyMessage(3);
-                mView.showToast("获取列表成功"+questions.size());
             }
 
             @Override
