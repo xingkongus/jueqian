@@ -73,7 +73,6 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
     public void onBindViewHolder(final VH holder, final int position) {
         if(position==0){
             if(getQuestion.getMtitle()!=null) {
-                System.out.println("----------jin进来了");
                 holder.title_question.setText(getQuestion.getMtitle());
                 holder.content_question.setText(getQuestion.getMcontent());
                 holder.tag1.setText(getQuestion.getTAG1_ID());

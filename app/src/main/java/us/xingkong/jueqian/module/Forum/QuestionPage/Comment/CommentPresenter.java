@@ -3,7 +3,6 @@ package us.xingkong.jueqian.module.Forum.QuestionPage.Comment;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +38,6 @@ public class CommentPresenter extends BasePresenterImpl implements CommentContra
             public void onSuccess(Answer answer) {
                 answer.getUser().getUsername();
                 answer.getMcontent();
-//                answer.getUpdatedAt();
 
                 Message msg=new Message();
                 msg.obj=answer;
@@ -49,13 +47,13 @@ public class CommentPresenter extends BasePresenterImpl implements CommentContra
 
             @Override
             public void onFailure(int i, String s) {
-                Toast.makeText(context,"网络连接错误",Toast.LENGTH_SHORT).show();
+                mView.showToast("网络连接错误");
             }
         });
     }
 
     @Override
-    public void getAnswerComments(Context context, final Handler handler, String answerID, final ArrayList<Comment> comments) {
+    public void getAnswerComments(final Context context, final Handler handler, String answerID, final ArrayList<Comment> comments) {
         BmobQuery<Comment>query=new BmobQuery<>();
         Answer answer=new Answer();
         answer.setObjectId(answerID);
@@ -75,7 +73,7 @@ public class CommentPresenter extends BasePresenterImpl implements CommentContra
 
             @Override
             public void onError(int i, String s) {
-
+                mView.showToast("网络连接错误");
             }
         });
     }
@@ -102,7 +100,7 @@ public class CommentPresenter extends BasePresenterImpl implements CommentContra
 
             @Override
             public void onFailure(int i, String s) {
-
+                mView.showToast("网络连接错误");
             }
         });
         return comment;
