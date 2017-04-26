@@ -33,7 +33,7 @@ import static us.xingkong.jueqian.base.Constants.REQUEST_REFRESH;
 
 public class ForumFragment extends BaseFragment<ForumContract.Presenter> implements ForumContract.View {
 
-
+    //
     @BindView(R.id.recyclerview_forum_main)
     RecyclerView recyclerview;
     @BindView(R.id.swipeRefreshLayout)
