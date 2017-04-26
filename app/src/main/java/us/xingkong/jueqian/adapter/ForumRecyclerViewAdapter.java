@@ -10,15 +10,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
-import cn.bmob.v3.BmobQuery;
-import cn.bmob.v3.listener.GetListener;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
-import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
 import us.xingkong.jueqian.module.Forum.QuestionPage.QuestionActivity;
 
 /**
@@ -44,29 +40,29 @@ public class ForumRecyclerViewAdapter extends RecyclerView.Adapter<ForumRecycler
 
     @Override
     public void onBindViewHolder(final VH holder, final int position) {
-//        holder.linearLayout.setOnClickListener(this);
         holder.title.setText(infoSets.get(position).getMtitle());
         holder.tag1.setText(infoSets.get(position).getTAG1_ID());
         holder.tag2.setText(infoSets.get(position).getTAG2_ID());
-        String a = infoSets.get(position).getUser().getObjectId();
+        holder.username.setText(infoSets.get(position).getUser().getUsername());
 
-        BmobQuery<_User> query = new BmobQuery<>();
-        if (!a.isEmpty()){
-            query.getObject(mContext, a, new GetListener<_User>() {
-                @Override
-                public void onSuccess(_User user) {
-                    holder.username.setText(user.getUsername());
-                }
-
-                @Override
-                public void onFailure(int i, String s) {
-
-                }
-            });
-    }else{
-            holder.username.setText("");
-            Toast.makeText(mContext,"网络连接错误",Toast.LENGTH_SHORT).show();
-        }
+//        String a = infoSets.get(position).getUser().getObjectId();
+//        BmobQuery<_User> query = new BmobQuery<>();
+//        if (!a.isEmpty()){
+//            query.getObject(mContext, a, new GetListener<_User>() {
+//                @Override
+//                public void onSuccess(_User user) {
+//                    holder.username.setText(user.getUsername());
+//                }
+//
+//                @Override
+//                public void onFailure(int i, String s) {
+//
+//                }
+//            });
+//    }else{
+//            holder.username.setText("");
+//            Toast.makeText(mContext,"网络连接错误",Toast.LENGTH_SHORT).show();
+//        }
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

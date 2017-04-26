@@ -21,4 +21,8 @@
         <item name="android:singleLine">true</item>
         <item name="android:layout_weight">1</item>
     </style>
+    <style name="anim_menu">
+        <item name="android:windowEnterAnimation">@anim/popupwindow_in</item>
+        <item name="android:windowExitAnimation">@anim/popupwindow_out</item>
+    </style>
 </resources>

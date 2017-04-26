@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#ffffff"
+    android:layout_marginBottom="5dp">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:padding="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            >
+
+            <LinearLayout
+                android:id="@+id/layout_comment_head"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/usericon_comment_head"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@mipmap/ic_launcher" />
+
+            <TextView
+                android:id="@+id/username_comment_head"
+                android:layout_width="56dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:text="admin" />
+
+            <ImageView
+                android:id="@+id/lebal_head"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:background="@mipmap/teacher" />
+
+            <!--<TextView-->
+                <!--android:id="@+id/time_comment_head"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginLeft="16dp"-->
+                <!--android:layout_marginStart="16dp"-->
+                <!--android:text="XXXX-XX-XX XX:XX" />-->
+            </LinearLayout>
+
+            <TextView
+                android:paddingTop="10dp"
+                android:layout_below="@+id/layout_comment_head"
+                android:text="testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/answer_content_comment_head"/>
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>

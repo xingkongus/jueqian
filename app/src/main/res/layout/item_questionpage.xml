@@ -1,85 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/item_question"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="#ffffff"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:layout_marginTop="8dp">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/user_icon_questionpage"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:background="#916a" />
-
-        <TextView
-            android:id="@+id/username_questionpage"
-            android:layout_width="56dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            android:text="admin" />
-
-        <ImageView
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:background="#6a7e" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
-            android:text="X" />
-
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/content_questionpage"
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:ellipsize="end"
-        android:maxLines="2"
-        android:text="我是回答的正文我是回答的正文我是回答的正文我是回答的正文我是回答的正文我是回答的正文我是回答的正文我是回答的正文我是回答的正文" />
+        app:cardElevation="0dp"
+        android:background="#ffffff"
+        app:cardCornerRadius="5dp">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/like_questionpage_item"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_margin="12dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:text="" />
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/comment_questionpage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="16dp"
-            android:layout_toEndOf="@+id/like_questionpage_item"
-            android:layout_toRightOf="@+id/like_questionpage_item"
-            android:text="" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-        <ImageButton
-            android:id="@+id/more_questionpage"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:src="@drawable/ic_more_vert_black_24dp"
-            android:background="#00ffffff"/>
-    </RelativeLayout>
+                <ImageView
+                    android:id="@+id/user_icon_questionpage"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:background="@mipmap/ic_launcher" />
 
+                <TextView
+                    android:id="@+id/username_questionpage"
+                    android:layout_width="56dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
+                    android:text="admin" />
 
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:background="@mipmap/teacher" />
+
+                <TextView
+                    android:id="@+id/question_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginStart="16dp"
+                    android:text="XXXX-XX-XX XX:XX" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/content_questionpage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="000" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/zan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="赞"
+                    android:textSize="@dimen/sp_16" />
+
+                <TextView
+                    android:id="@+id/like_questionpage_item"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@+id/zan"
+                    android:text="" />
+
+                <!--<TextView-->
+                <!--android:id="@+id/comment_questionpage"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:layout_marginLeft="16dp"-->
+                <!--android:layout_toEndOf="@+id/like_questionpage_item"-->
+                <!--android:layout_toRightOf="@+id/like_questionpage_item"-->
+                <!--android:text="评论：999999" />-->
+
+                <ImageButton
+                    android:id="@+id/more_questionpage"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:background="#00ffffff"
+                    android:src="@drawable/ic_more_vert_black_24dp" />
+            </RelativeLayout>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
 </LinearLayout>
