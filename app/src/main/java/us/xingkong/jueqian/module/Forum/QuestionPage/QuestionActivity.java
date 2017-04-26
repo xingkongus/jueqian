@@ -14,6 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.PopupWindow;
@@ -38,11 +39,6 @@ import us.xingkong.jueqian.module.Forum.QuestionPage.Comment.CommentActivity;
 import us.xingkong.jueqian.module.Login.LoginActivity;
 
 
-/**
- * Created by boluoxiaomo
- * Date: 17/1/9
- */
-
 public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> implements QuestionContract.View {
 
 
@@ -66,6 +62,8 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
     Button zan;
     PopupWindow mpopupWindow;
     Button popupwindow_huida;
+    private Boolean isRolling = false;
+
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -76,13 +74,10 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                     break;
                 case 1:
                     getQuestion = (Question) msg.obj;
-                    handler.sendEmptyMessage(3);
-                    break;
-//                case 2:
-//                    answers = (ArrayList<Answer>) msg.obj;
-//                    break;
-                case 3:
                     initRecyClerView();
+                    break;
+                case 3:
+                    recyclerViewAdapter.notifyDataSetChanged();
                     break;
                 case 4:
                     new MaterialDialog.Builder(mContext)
@@ -98,8 +93,12 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                 case 5:  //刷新数据
                     answers.clear();
                     mPresenter.getQuestionAnswer(mContext, handler, questionID, answers);
+                    isRolling = true;
+                    setRecyclewViewBug();
                     recyclerViewAdapter.notifyDataSetChanged();
                     refreshLayout.setRefreshing(false);
+                    isRolling = false;
+                    setRecyclewViewBug();
                     break;
                 case 6:
                     final String answerID = msg.getData().getString("answerID");
@@ -132,12 +131,12 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                     popupwindow_huida.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            _User user = BmobUser.getCurrentUser(mContext,_User.class);
-                            if (user==null) {
+                            _User user = BmobUser.getCurrentUser(mContext, _User.class);
+                            if (user == null) {
                                 showToast("请先登录");
-                                Intent intent=new Intent(mContext, LoginActivity.class);
+                                Intent intent = new Intent(mContext, LoginActivity.class);
                                 startActivity(intent);
-                            }else {
+                            } else {
                                 Intent intent = new Intent(mContext, CommentActivity.class);
                                 intent.putExtra("answerID", answerID);
                                 intent.putExtra("questionID", questionID);
@@ -179,10 +178,6 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         questionID = bundle.getString("questionid");
-        refreshLayout.setRefreshing(true);
-        mPresenter.getQuestionAnswer(mContext, handler, questionID, answers);
-        mPresenter.getQuestion(mContext, questionID, handler);
-        refreshLayout.setRefreshing(false);
     }
 
     private void initSwipeRefreshLayout() {
@@ -207,8 +202,7 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
 
     private void initRecyClerView() {
         recyclerViewAdapter = new QuestionRecyclerViewAdapter(mContext, getQuestion, answers, handler);
-        recyclerviewQuestionpage.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
-        recyclerviewQuestionpage.setAdapter(recyclerViewAdapter);
+        recyclerviewQuestionpage.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
         recyclerviewQuestionpage.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         recyclerviewQuestionpage.addOnScrollListener(new RecyclerView.OnScrollListener() {
 //            @Override
@@ -230,7 +224,6 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-
                 if (dy > 0) {
                     tab.setVisibility(View.GONE);//底部的tab隐藏和出现
                 } else if (dy < 0) {
@@ -239,12 +232,14 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
 
             }
         });
+        recyclerviewQuestionpage.setAdapter(recyclerViewAdapter);
     }
 
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-
+        mPresenter.getQuestion(mContext, questionID, handler);
+        mPresenter.getQuestionAnswer(mContext, handler, questionID, answers);
     }
 
     @Override
@@ -252,12 +247,12 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
         huida.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                _User user = BmobUser.getCurrentUser(mContext,_User.class);
-                if (user==null) {
+                _User user = BmobUser.getCurrentUser(mContext, _User.class);
+                if (user == null) {
                     showToast("请先登录");
-                    Intent intent=new Intent(mContext, LoginActivity.class);
+                    Intent intent = new Intent(mContext, LoginActivity.class);
                     startActivity(intent);
-                }else {
+                } else {
                     Intent intent = new Intent(mContext, NewAnswerActivity.class);// 把这个问题的objectid传过去
                     intent.putExtra("questionObjectid", questionID);
                     startActivity(intent);
@@ -268,12 +263,12 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
         zan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                _User user = BmobUser.getCurrentUser(mContext,_User.class);
-                if (user==null) {
+                _User user = BmobUser.getCurrentUser(mContext, _User.class);
+                if (user == null) {
                     showToast("请先登录");
-                    Intent intent=new Intent(mContext, LoginActivity.class);
+                    Intent intent = new Intent(mContext, LoginActivity.class);
                     startActivity(intent);
-                }else {
+                } else {
                     mPresenter.zan(mContext, handler, questionID);
                 }
             }
@@ -281,12 +276,12 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
         shoucan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                _User user = BmobUser.getCurrentUser(mContext,_User.class);
-                if (user==null) {
+                _User user = BmobUser.getCurrentUser(mContext, _User.class);
+                if (user == null) {
                     showToast("请先登录");
-                    Intent intent=new Intent(mContext, LoginActivity.class);
+                    Intent intent = new Intent(mContext, LoginActivity.class);
                     startActivity(intent);
-                }else {
+                } else {
                     mPresenter.shoucan(mContext, handler, questionID);
                 }
             }
@@ -304,4 +299,17 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
     }
 
 
+    @Override
+    public void setRecyclewViewBug() {
+        recyclerviewQuestionpage.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (isRolling) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        });
+    }
 }

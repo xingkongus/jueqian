@@ -9,14 +9,10 @@ import us.xingkong.jueqian.base.BasePresenter;
 import us.xingkong.jueqian.base.BaseView;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Comment;
 
-/**
- * Created by boluoxiaomo
- * Date: 17/1/9
- */
 
 public interface CommentContract {
     interface View extends BaseView<Presenter> {
-
+        void setRecyclewViewBug();
     }
 
     interface Presenter extends BasePresenter {

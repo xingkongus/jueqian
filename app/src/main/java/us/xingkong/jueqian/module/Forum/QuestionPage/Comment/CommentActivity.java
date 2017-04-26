@@ -6,14 +6,17 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -45,6 +48,7 @@ public class CommentActivity extends BaseActivity<CommentContract.Presenter> imp
     LinearLayout tab;
     @BindView(R.id.refreshLayout_comment)
     SwipeRefreshLayout refreshLayout;
+    private Boolean isRolling=false;
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -55,17 +59,21 @@ public class CommentActivity extends BaseActivity<CommentContract.Presenter> imp
                     break;
                 case 1:
                     answer = (Answer) msg.obj;
-                    handler.sendEmptyMessage(2);
+                   initRecyclerView();
                     break;
                 case 2:
-                    initRecyclerView();
+                   recyclerViewAdapter.notifyDataSetChanged();
                     break;
-//                case 3: //刷新数据
-//                    comments.clear();
-//                    mPresenter.getAnswerComments(mContext, handler, answerID, comments);
-//                    recyclerViewAdapter.notifyDataSetChanged();
-//                    refreshLayout.setRefreshing(false);
-//                    break;
+                case 3: //刷新数据
+                    isRolling=true;
+                    setRecyclewViewBug();
+                    comments.clear();
+                    mPresenter.getAnswerComments(mContext, handler, answerID, comments);
+                    recyclerViewAdapter.notifyDataSetChanged();
+                    isRolling=false;
+                    setRecyclewViewBug();
+                    refreshLayout.setRefreshing(false);
+                    break;
                 case 4:
                     int position = (int) msg.obj;
                     recyclerViewAdapter.notifyDataSetChanged();
@@ -93,10 +101,7 @@ public class CommentActivity extends BaseActivity<CommentContract.Presenter> imp
         Bundle bundle = intent.getExtras();
         answerID = bundle.getString("answerID");
         questionID = bundle.getString("questionID");
-        refreshLayout.setRefreshing(true);
-        mPresenter.getAnswerComments(mContext, handler, answerID, comments);
-        mPresenter.getAnswer(mContext, answerID, handler);
-        refreshLayout.setRefreshing(false);
+
 //        mHandler = new Handler(getMainLooper()){
 //            @Override
 //            public void handleMessage(Message msg) {
@@ -129,9 +134,8 @@ public class CommentActivity extends BaseActivity<CommentContract.Presenter> imp
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-//                Toast.makeText(getApplicationContext(), "刷新", Toast.LENGTH_SHORT).show();
-//                handler.sendEmptyMessage(3);
-                refreshLayout.setRefreshing(false);
+                Toast.makeText(getApplicationContext(), "刷新", Toast.LENGTH_SHORT).show();
+                handler.sendEmptyMessage(3);
             }
         });
     }
@@ -148,6 +152,7 @@ public class CommentActivity extends BaseActivity<CommentContract.Presenter> imp
         recyclerviewCommentpage.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
         recyclerviewCommentpage.setAdapter(recyclerViewAdapter);
         recyclerviewCommentpage.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        recyclerviewCommentpage.setItemAnimator(new DefaultItemAnimator());
         recyclerviewCommentpage.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
             @Override
@@ -165,7 +170,10 @@ public class CommentActivity extends BaseActivity<CommentContract.Presenter> imp
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-
+        refreshLayout.setRefreshing(true);
+        mPresenter.getAnswer(mContext, answerID, handler);
+        mPresenter.getAnswerComments(mContext, handler, answerID, comments);
+        refreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -180,6 +188,7 @@ public class CommentActivity extends BaseActivity<CommentContract.Presenter> imp
                     Comment comment;
                     comment = mPresenter.addNewComment(mContext, handler, comment_content, answerID, questionID);
                     recyclerViewAdapter.addItem(0, comment);
+                    recyclerviewCommentpage.scrollToPosition(1);
                     edit_comment.setText("");
                 }
             }
@@ -195,4 +204,17 @@ public class CommentActivity extends BaseActivity<CommentContract.Presenter> imp
     }
 
 
+    @Override
+    public void setRecyclewViewBug() {
+        recyclerviewCommentpage.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (isRolling) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        });
+    }
 }

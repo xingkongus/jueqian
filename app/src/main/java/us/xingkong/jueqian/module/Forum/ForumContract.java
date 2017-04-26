@@ -10,14 +10,10 @@ import us.xingkong.jueqian.base.BasePresenter;
 import us.xingkong.jueqian.base.BaseView;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
 
-/**
- * Created by boluoxiaomo
- * Date: 17/1/8 15:33
- */
 
 public interface ForumContract {
     interface View extends BaseView<Presenter> {
-
+        void setRecyclewViewBug();
     }
 
     interface Presenter extends BasePresenter {

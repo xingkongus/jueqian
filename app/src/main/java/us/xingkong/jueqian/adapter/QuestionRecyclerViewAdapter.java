@@ -64,16 +64,22 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
         }
 
     }
+//    @Override
+//    public void onBindViewHolder(final VH holder, final int position, List<Object> payloads){
+//
+//    }
 
     @Override
     public void onBindViewHolder(final VH holder, final int position) {
         if(position==0){
-            holder.title_question.setText(getQuestion.getMtitle());
-            holder.content_question.setText(getQuestion.getMcontent());
-            holder.tag1.setText(getQuestion.getTAG1_ID());
-            holder.tag2.setText(getQuestion.getTAG2_ID());
-            holder.time.setText(getQuestion.getUpdatedAt());
-            holder.username.setText(getQuestion.getUser().getUsername());
+            if(getQuestion.getMtitle()!=null) {
+                holder.title_question.setText(getQuestion.getMtitle());
+                holder.content_question.setText(getQuestion.getMcontent());
+                holder.tag1.setText(getQuestion.getTAG1_ID());
+                holder.tag2.setText(getQuestion.getTAG2_ID());
+                holder.time.setText(getQuestion.getUpdatedAt());
+                holder.username.setText(getQuestion.getUser().getUsername());
+            }
         }
 
         if (position != 0) {

@@ -19,10 +19,6 @@ import us.xingkong.jueqian.bean.ForumBean.BombBean.Answer;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
 import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
 
-/**
- * Created by boluoxiaomo
- * Date: 17/1/9
- */
 
 public class QuestionPresenter extends BasePresenterImpl implements QuestionContract.Presenter {
 
@@ -54,7 +50,7 @@ public class QuestionPresenter extends BasePresenterImpl implements QuestionCont
 
             @Override
             public void onFailure(int i, String s) {
-                mView.showToast("加载失败");
+                mView.showToast("网络连接错误");
             }
         });
 
@@ -62,7 +58,7 @@ public class QuestionPresenter extends BasePresenterImpl implements QuestionCont
     }
 
     @Override
-    public void getQuestionAnswer(Context context, final Handler handler, String questionID,final ArrayList<Answer> answers) {
+    public ArrayList<Answer> getQuestionAnswer(Context context, final Handler handler, String questionID,final ArrayList<Answer> answers) {
         BmobQuery<Answer> query=new BmobQuery<>();
         query.include("user");
         Question question=new Question();
@@ -81,14 +77,16 @@ public class QuestionPresenter extends BasePresenterImpl implements QuestionCont
                     answer.getObjectId();
                     answers.add(answer);
                 }
+                handler.sendEmptyMessage(3);
 
             }
 
             @Override
             public void onError(int i, String s) {
-
+                mView.showToast("网络连接错误");
             }
         });
+        return answers;
     }
 
     @Override
@@ -107,7 +105,7 @@ public class QuestionPresenter extends BasePresenterImpl implements QuestionCont
 
             @Override
             public void onFailure(int i, String s) {
-
+                mView.showToast("网络连接错误");
             }
         });
 
@@ -129,7 +127,7 @@ public class QuestionPresenter extends BasePresenterImpl implements QuestionCont
 
             @Override
             public void onFailure(int i, String s) {
-
+                mView.showToast("网络连接错误");
             }
         });
     }
