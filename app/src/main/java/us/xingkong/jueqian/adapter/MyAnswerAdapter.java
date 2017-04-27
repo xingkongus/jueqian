@@ -14,6 +14,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.listener.GetListener;
 import us.xingkong.jueqian.JueQianAPP;
@@ -42,21 +44,7 @@ public class MyAnswerAdapter extends RecyclerView.Adapter<MyAnswerAdapter.MyView
 
     @Override
     public void onBindViewHolder(final MyAnswerAdapter.MyViewHolder holder, final int position) {
-//        final BmobQuery<Question> query = new BmobQuery<>();
-//        query.getObject(JueQianAPP.getAppContext(), questionID, new GetListener<Question>() {
-//            @Override
-//            public void onSuccess(Question question) {
-//                title = question.getMtitle();
-//                Toast.makeText(JueQianAPP.getAppContext(), "获取问题标题成功" + title, Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onFailure(int i, String s) {
-//                Toast.makeText(JueQianAPP.getAppContext(), "获取问题标题失败 case by:" + s, Toast.LENGTH_SHORT).show();
-//            }
-//        });
         holder.tv_questiontitle.setText(questions.get(position).getMtitle());
-
 
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,13 +65,14 @@ public class MyAnswerAdapter extends RecyclerView.Adapter<MyAnswerAdapter.MyView
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
-        private TextView tv_questiontitle;
-        private RelativeLayout layout;
+        @BindView(R.id.item_myanswer_tv_questiontitle)
+        TextView tv_questiontitle;
+        @BindView(R.id.item)
+        RelativeLayout layout;
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            tv_questiontitle = (TextView) itemView.findViewById(R.id.item_myanswer_tv_questiontitle);
-            layout = (RelativeLayout) itemView.findViewById(R.id.item);
+            ButterKnife.bind(this, itemView);
         }
     }
 }

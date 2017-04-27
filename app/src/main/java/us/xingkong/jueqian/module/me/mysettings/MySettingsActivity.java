@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import com.bumptech.glide.Glide;
 
 import butterknife.BindView;
+import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.datatype.BmobRelation;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
@@ -59,6 +60,7 @@ public class MySettingsActivity extends BaseActivity<MySettingsContract.Presente
             public void onClick(View view) {
                 Glide.get(JueQianAPP.getAppContext()).clearMemory();
 //                Glide.get(JueQianAPP.getAppContext()).clearDiskCache();
+                BmobQuery.clearAllCachedResults(JueQianAPP.getAppContext());
                 showToast("清理缓存完成");
             }
         });

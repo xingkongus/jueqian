@@ -36,18 +36,18 @@ public class MyAnswerActivity extends BaseActivity<MyAnswerContract.Presenter> i
     RecyclerView mRecyclerView;
 
 
-   private List<Answer> answers=new ArrayList<>();
-    private List<Question> questions=new ArrayList<>();
+    private List<Answer> answers = new ArrayList<>();
+    private List<Question> questions = new ArrayList<>();
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 1:
-                    for(Answer answer:answers){
-                        Question q=answer.getQuestion();
+                    for (Answer answer : answers) {
+                        Question q = answer.getQuestion();
                         questions.add(q);
-                        System.out.println("qqqqqqqqqqqqqqqqqqqqqqqqqqqqq "+q.getObjectId());
+                        System.out.println("qqqqqqqqqqqqqqqqqqqqqqqqqqqqq " + q.getObjectId());
                     }
                     initRecyclerView();
                     break;
@@ -73,6 +73,8 @@ public class MyAnswerActivity extends BaseActivity<MyAnswerContract.Presenter> i
         BmobUser bmobUser = BmobUser.getCurrentUser(JueQianAPP.getAppContext());
         BmobQuery<Answer> query = new BmobQuery<Answer>();
         query.addWhereRelatedTo("answers", new BmobPointer(bmobUser));
+        query.include("question");
+        query.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
         query.findObjects(JueQianAPP.getAppContext(), new FindListener<Answer>() {
             @Override
             public void onSuccess(List<Answer> list) {
@@ -91,11 +93,11 @@ public class MyAnswerActivity extends BaseActivity<MyAnswerContract.Presenter> i
     @Override
     protected void initView() {
         setToolbar();
-       initRecyclerView();
+//        initRecyclerView();
     }
 
     private void initRecyclerView() {
-        myAnswerAdapter=new MyAnswerAdapter(questions);
+        myAnswerAdapter = new MyAnswerAdapter(questions);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(myAnswerAdapter);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(MyAnswerActivity.this, DividerItemDecoration.VERTICAL));

@@ -29,7 +29,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".module.me.myquestions.MyQuestionsAcitivity"/>
+        <activity android:name=".module.me.myquestions.MyQuestionsAcitivity" />
         <activity android:name=".module.Forum.NewAnswer.NewAnswerActivity"></activity>
         <activity android:name=".module.EditUser.EditUserActivity"></activity>
         <activity android:name=".module.Login.LoginActivity"></activity>
@@ -48,10 +48,10 @@
         <activity android:name=".module.me.myanswer.MyAnswerActivity" />
         <activity android:name=".module.me.myrecentlook.MyRecentLookActivity" />
         <activity android:name=".module.me.mysettings.MySettingsActivity" />
+        <activity android:name=".module.me.mymainpage.editinfo.EditInfoActivity" />
+        <activity android:name=".module.me.mymainpage.MyMainPageAcitivity" />
 
-        <activity android:name=".module.me.mymainpage.MyMainPageAcitivity"/>
-
-        <activity android:name=".module.me.mysettings.aboutme.AboutMeActivity"/>
+        <activity android:name=".module.me.mysettings.aboutme.AboutMeActivity" />
         <activity android:name=".module.common.WebActivity" />
 
     </application>

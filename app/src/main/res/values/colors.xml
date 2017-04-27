@@ -6,6 +6,7 @@
 
     <color name="tab_bgcolor">#ffeeeeee</color>
     <color name="tab_text">#ff797979</color>
+    <color name="bg_color">#ff797979</color>
 
 
     <color name="text_color">#ffffffff</color>
