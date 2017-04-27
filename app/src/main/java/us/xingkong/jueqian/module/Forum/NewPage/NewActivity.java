@@ -105,15 +105,14 @@ public class NewActivity extends BaseActivity<NewContract.Presenter> implements 
                                 }else{
                                     showToast("内容没有填写完整");
                                 }
-
                             }
                         })
-                        .onNegative(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                showToast("已取消");
-                            }
-                        }).show();
+                         .onNegative(new MaterialDialog.SingleButtonCallback() {
+                             @Override
+                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                 showToast("已取消");
+                             }
+                         }).show();
                 break;
 
         }

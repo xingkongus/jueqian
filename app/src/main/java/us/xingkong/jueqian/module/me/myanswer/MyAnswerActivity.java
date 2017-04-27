@@ -49,6 +49,10 @@ public class MyAnswerActivity extends BaseActivity<MyAnswerContract.Presenter> i
                         questions.add(q);
                         System.out.println("qqqqqqqqqqqqqqqqqqqqqqqqqqqqq " + q.getObjectId());
                     }
+                    if (questions == null) {
+                        showToast("回答列表为空");
+                        break;
+                    }
                     initRecyclerView();
                     break;
             }
@@ -79,6 +83,10 @@ public class MyAnswerActivity extends BaseActivity<MyAnswerContract.Presenter> i
             @Override
             public void onSuccess(List<Answer> list) {
                 answers = list;
+                if (answers == null) {
+                    showToast("回答列表为空");
+                    return;
+                }
                 showToast("获取我的回答列表成功");
                 mHandler.sendEmptyMessage(1);
             }

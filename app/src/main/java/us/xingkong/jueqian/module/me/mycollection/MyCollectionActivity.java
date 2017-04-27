@@ -31,7 +31,9 @@ import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
 public class MyCollectionActivity extends BaseActivity<MyCollectionContract.Presenter> implements MyCollectionContract.View {
     @BindView(R.id.recyclerview)
     RecyclerView mRecyclerView;
-    List<Question> questions = new ArrayList<>();
+
+    private List<Question> questions = new ArrayList<>();
+
 
     private Handler mHandler = new Handler() {
         @Override
@@ -40,11 +42,14 @@ public class MyCollectionActivity extends BaseActivity<MyCollectionContract.Pres
             switch (msg.what) {
                 case 1:
                     initRecyclerView();
+                case 2:
+                    myCollectionAdapter.notifyDataSetChanged();
                     break;
             }
-
         }
     };
+
+    MyCollectionAdapter myCollectionAdapter;
 
     @Override
     protected MyCollectionContract.Presenter createPresenter() {
@@ -66,7 +71,6 @@ public class MyCollectionActivity extends BaseActivity<MyCollectionContract.Pres
             @Override
             public void onSuccess(List<Question> list) {
                 questions = list;
-                showToast("获取收藏表成功");
                 mHandler.sendEmptyMessage(1);
             }
 
@@ -85,8 +89,9 @@ public class MyCollectionActivity extends BaseActivity<MyCollectionContract.Pres
     }
 
     private void initRecyclerView() {
+        myCollectionAdapter = new MyCollectionAdapter(mHandler, questions);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setAdapter(new MyCollectionAdapter(mHandler, questions));
+        mRecyclerView.setAdapter(myCollectionAdapter);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(MyCollectionActivity.this, DividerItemDecoration.VERTICAL));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 

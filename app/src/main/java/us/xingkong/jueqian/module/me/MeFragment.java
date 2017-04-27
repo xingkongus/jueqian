@@ -251,6 +251,7 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
                     startActivity(intent);
                 } else {
                     Intent intent = new Intent(getContext(), MyMainPageAcitivity.class);
+                    intent.putExtra("profileURL", profileURL);
                     startActivity(intent);
                 }
             }
@@ -283,5 +284,9 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
 
     }
 
-
+    @Override
+    public void onStart() {
+        super.onStart();
+        getProfile();
+    }
 }

@@ -3,15 +3,31 @@ package us.xingkong.jueqian.module.me.mymainpage;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.CardView;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+
+import java.util.List;
 
 import butterknife.BindView;
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.datatype.BmobFile;
+import cn.bmob.v3.datatype.BmobPointer;
+import cn.bmob.v3.listener.FindListener;
+import de.hdodenhof.circleimageview.CircleImageView;
 import us.xingkong.jueqian.JueQianAPP;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.base.BaseActivity;
+import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
+import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
+import us.xingkong.jueqian.module.me.mycollection.MyCollectionActivity;
 import us.xingkong.jueqian.module.me.mymainpage.editinfo.EditInfoActivity;
+import us.xingkong.jueqian.module.me.myrecentlook.MyRecentLookActivity;
 
 /**
  * Created by PERFECTLIN on 2017/4/19 0019.
@@ -20,6 +36,20 @@ import us.xingkong.jueqian.module.me.mymainpage.editinfo.EditInfoActivity;
 public class MyMainPageAcitivity extends BaseActivity<MyMainPageContract.Presenter> implements MyMainPageContract.View {
     @BindView(R.id.mainpage_bt_edit)
     Button bt_edit;
+    @BindView(R.id.mainpage_username)
+    TextView tv_username;
+    @BindView(R.id.following)
+    TextView tv_following;
+    @BindView(R.id.followers)
+    TextView tv_followers;
+    @BindView(R.id.mainpage_touxiang)
+    CircleImageView iv_touxiang;
+    @BindView(R.id.collections)
+    CardView collections;
+    @BindView(R.id.recentlooks)
+    CardView rencentlooks;
+    @BindView(R.id.collectioncount)
+    TextView tv_collectioncount;
 
     @Override
     protected MyMainPageContract.Presenter createPresenter() {
@@ -40,7 +70,69 @@ public class MyMainPageAcitivity extends BaseActivity<MyMainPageContract.Present
     protected void initView() {
         setToolbar();
         setEditButton();
+        setProfile();
+        setCollection();
+        setRencentLooks();
+    }
 
+    private void setRencentLooks() {
+        rencentlooks.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(JueQianAPP.getAppContext(), MyRecentLookActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void setCollection() {
+        BmobUser bmobUser = BmobUser.getCurrentUser(JueQianAPP.getAppContext());
+        BmobQuery<Question> query = new BmobQuery<Question>();
+        query.addWhereRelatedTo("collections", new BmobPointer(bmobUser));
+        query.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
+        query.findObjects(JueQianAPP.getAppContext(), new FindListener<Question>() {
+            @Override
+            public void onSuccess(List<Question> list) {
+                tv_collectioncount.setText("" + list.size());
+            }
+
+            @Override
+            public void onError(int i, String s) {
+                showToast("获取收藏表失败");
+            }
+        });
+        collections.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(JueQianAPP.getAppContext(), MyCollectionActivity.class);
+                startActivity(intent);
+            }
+        });
+
+    }
+
+    private void setProfile() {
+        BmobQuery<_User> query = new BmobQuery<>();
+        query.addWhereEqualTo("objectId", BmobUser.getCurrentUser(JueQianAPP.getAppContext()).getObjectId());
+        query.addQueryKeys("profile");
+        query.findObjects(JueQianAPP.getAppContext(), new FindListener<_User>() {
+            @Override
+            public void onSuccess(List<_User> list) {
+
+                BmobFile bmobFile = list.get(0).getProfile();
+                if (bmobFile == null) {
+                    showToast("当前用户无头像");
+                    return;
+                }
+                String profileURL = bmobFile.getUrl();
+                Glide.with(JueQianAPP.getAppContext()).load(profileURL).into(iv_touxiang);
+            }
+
+            @Override
+            public void onError(int i, String s) {
+                showToast("获取头像失败");
+            }
+        });
     }
 
     private void setEditButton() {
@@ -78,5 +170,12 @@ public class MyMainPageAcitivity extends BaseActivity<MyMainPageContract.Present
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        setProfile();
+        setCollection();
     }
 }
