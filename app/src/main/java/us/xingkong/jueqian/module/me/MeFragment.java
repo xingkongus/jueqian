@@ -7,12 +7,15 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 
 import java.io.File;
@@ -22,11 +25,13 @@ import butterknife.BindView;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
+import cn.bmob.v3.listener.DeleteListener;
 import cn.bmob.v3.listener.FindListener;
 import de.hdodenhof.circleimageview.CircleImageView;
 import us.xingkong.jueqian.JueQianAPP;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.base.BaseFragment;
+import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
 import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
 import us.xingkong.jueqian.module.Login.LoginActivity;
 import us.xingkong.jueqian.module.me.myanswer.MyAnswerActivity;
@@ -134,11 +139,27 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
         mCardView_signout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BmobUser.logOut(JueQianAPP.getAppContext());   //清除缓存用户对象
-                BmobUser currentUser = BmobUser.getCurrentUser(JueQianAPP.getAppContext()); // 现在的currentUser是null了
-                Intent intent = new Intent(JueQianAPP.getAppContext(), LoginActivity.class);
-                startActivity(intent);
-                getActivity().finish();
+                new MaterialDialog.Builder(view.getContext())
+                        .title("提示")
+                        .content("确认注销？")
+                        .negativeText("取消")
+                        .positiveText("确认")
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                BmobUser.logOut(JueQianAPP.getAppContext());   //清除缓存用户对象
+                                BmobUser currentUser = BmobUser.getCurrentUser(JueQianAPP.getAppContext()); // 现在的currentUser是null了
+                                Intent intent = new Intent(JueQianAPP.getAppContext(), LoginActivity.class);
+                                startActivity(intent);
+                                getActivity().finish();
+                            }
+                        })
+                        .onNegative(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            }
+                        }).show();
+
             }
         });
     }

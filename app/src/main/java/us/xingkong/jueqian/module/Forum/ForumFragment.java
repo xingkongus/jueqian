@@ -180,4 +180,10 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
             }
         });
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        recyclerViewAdapter.notifyDataSetChanged();
+    }
 }

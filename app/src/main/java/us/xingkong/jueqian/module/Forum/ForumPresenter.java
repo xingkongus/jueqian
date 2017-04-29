@@ -33,7 +33,7 @@ public class ForumPresenter extends BasePresenterImpl implements ForumContract.P
         query.setLimit(20);
         query.order("-createdAt");
         query.include("user");
-        query.setCachePolicy(BmobQuery.CachePolicy.CACHE_THEN_NETWORK);
+        query.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
         query.findObjects(context, new FindListener<Question>() {
             @Override
             public void onSuccess(List<Question> list) {
@@ -52,7 +52,7 @@ public class ForumPresenter extends BasePresenterImpl implements ForumContract.P
 
             @Override
             public void onError(int i, String s) {
-                mView.showToast("网络连接错误");
+                mView.showToast("网络连接错误"+s);
             }
         });
 
