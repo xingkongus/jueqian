@@ -16,10 +16,14 @@ import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.util.List;
 
+import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.datatype.BmobRelation;
 import cn.bmob.v3.listener.DeleteListener;
+import cn.bmob.v3.listener.UpdateListener;
 import us.xingkong.jueqian.JueQianAPP;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
+import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
 import us.xingkong.jueqian.module.Forum.QuestionPage.QuestionActivity;
 
 /**
@@ -61,29 +65,35 @@ public class MyCollectionAdapter extends RecyclerView.Adapter<MyCollectionAdapte
             public boolean onLongClick(View view) {
                 new MaterialDialog.Builder(view.getContext())
                         .title("提示")
-                        .content("是否删除？")
+                        .content("是否从收藏列表中删除？")
                         .negativeText("取消")
                         .positiveText("确认")
                         .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                _User user = new _User();
+                                user.setObjectId(BmobUser.getCurrentUser(JueQianAPP.getAppContext()).getObjectId());
                                 final Question question = new Question();
                                 question.setObjectId(questions.get(position).getObjectId());
-                                question.delete(JueQianAPP.getAppContext(), new DeleteListener() {
+                                BmobRelation bmobRelation = new BmobRelation();
+                                bmobRelation.remove(question);
+                                user.setCollections(bmobRelation);
+                                user.update(JueQianAPP.getAppContext(), new UpdateListener() {
                                     @Override
                                     public void onSuccess() {
                                         questions.remove(position);
                                         notifyItemRemoved(position);
                                         notifyItemRangeChanged(position, questions.size());
-                                        Toast.makeText(JueQianAPP.getAppContext(), "删除成功", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(JueQianAPP.getAppContext(), "删除收藏成功", Toast.LENGTH_SHORT).show();
                                         mHandler.sendEmptyMessage(2);
                                     }
 
                                     @Override
                                     public void onFailure(int i, String s) {
-                                        Toast.makeText(JueQianAPP.getAppContext(), "删除失败", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(JueQianAPP.getAppContext(), "取消收藏删除失败CASE:" + s, Toast.LENGTH_SHORT).show();
                                     }
                                 });
+
                             }
                         })
                         .onNegative(new MaterialDialog.SingleButtonCallback() {
