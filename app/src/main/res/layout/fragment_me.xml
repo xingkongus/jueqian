@@ -93,6 +93,7 @@
                     android:textSize="@dimen/sp_16" />
 
                 <de.hdodenhof.circleimageview.CircleImageView
+                    android:visibility="gone"
                     android:id="@+id/redpoint"
                     android:layout_width="5dp"
                     android:layout_height="5dp"

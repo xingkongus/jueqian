@@ -18,17 +18,22 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.util.List;
 
 import butterknife.BindView;
 import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.BmobRealTimeData;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.listener.DeleteListener;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.GetListener;
+import cn.bmob.v3.listener.ValueEventListener;
 import de.hdodenhof.circleimageview.CircleImageView;
 import us.xingkong.jueqian.JueQianAPP;
 import us.xingkong.jueqian.R;
@@ -76,6 +81,7 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
     private boolean isLogin;
     private _User user; //当前用户
     private BmobFile bmobFile;
+    private BmobRealTimeData rtd;
     private static String profileURL = null; //头像URL
     private Handler mHandler = new Handler() {
         @Override
@@ -122,6 +128,7 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
         initNickName();
         toEditInfo();
         toMyMessage();
+        initRedPoint();
         toMyCollection();
         toMyAnswer();
         toMyRecentLook();
@@ -129,6 +136,50 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
         toMyQusetions();
         toSignOut();
         getProfile();
+    }
+
+    private void initRedPoint() {
+        //开始监听数据库
+        rtd = new BmobRealTimeData();
+        rtd.start(JueQianAPP.getAppContext(), new ValueEventListener() {
+            @Override
+            public void onConnectCompleted() {
+                if (rtd.isConnected()) {
+                    rtd.subTableUpdate("NewMessage");
+                } else showToast("链接异常");
+            }
+
+            @Override
+            public void onDataChange(JSONObject jsonObject) {
+                try {
+                    JSONObject dataObject = jsonObject.getJSONObject("data");
+                    JSONObject receiverObj = dataObject.getJSONObject("receiver");
+                    JSONObject senderObj = dataObject.getJSONObject("sender");
+                    String s1 = receiverObj.getString("objectId");
+                    String s2 = senderObj.getString("objectId");
+                    if (s1.equals(BmobUser.getCurrentUser(JueQianAPP.getAppContext()).getObjectId())) {
+                        mCircleImageView_redpoint.setVisibility(View.VISIBLE);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+//        String j = " {\"appKey\":\"0f9a062b723b72b09a2543f2c6b81090\",\"tableName\":\"NewMessage\",\"objectId\":\"\",\"action\":\"updateTable\",\"data\":{\"TYPE\":1,\"content\":\"new 1\",\"createdAt\":\"2017-05-01 16:33:29\",\"objectId\":\"Xjoe999R\",\"receiver\":{\"__type\":\"Pointer\",\"className\":\"_User\",\"objectId\":\"7xl30002\"},\"sender\":{\"__type\":\"Pointer\",\"className\":\"_User\",\"objectId\":\"89b961ad57\"},\"updatedAt\":\"2017-05-01 16:33:52\"}}";
+
+//        try {
+//            JSONObject jsonObject = new JSONObject(j);
+//            JSONObject dataObject = jsonObject.getJSONObject("data");
+//            JSONObject receiverObj = dataObject.getJSONObject("receiver");
+//            JSONObject senderObj = dataObject.getJSONObject("sender");
+//            String s1 = receiverObj.getString("objectId");
+//            String s2 = senderObj.getString("objectId");
+//            System.out.println("RRRRRRRRRRRRRRRRRRRRRR:  S1:"+s1);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+
     }
 
     private void initNickName() {
@@ -148,9 +199,6 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
     }
 
     private void toSignOut() {
-        if (isLogin == false) {
-            mCardView_signout.setVisibility(View.INVISIBLE);
-        }
         mCardView_signout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -246,15 +294,15 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
     }
 
     private void toMyMessage() {
-        if (isLogin == false) mCircleImageView_redpoint.setVisibility(View.INVISIBLE);
+
         mLinerlayout_mymessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (isLogin) {
                     Intent intent = new Intent(getContext(), MyMessageActivity.class);
                     startActivity(intent);
+                    mCircleImageView_redpoint.setVisibility(View.INVISIBLE);
                 } else {
-
                     Toast.makeText(JueQianAPP.getAppContext(), "请先登录", Toast.LENGTH_SHORT).show();
                 }
 

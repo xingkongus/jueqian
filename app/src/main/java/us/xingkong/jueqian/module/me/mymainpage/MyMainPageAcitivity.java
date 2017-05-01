@@ -90,12 +90,16 @@ public class MyMainPageAcitivity extends BaseActivity<MyMainPageContract.Present
             @Override
             public void onSuccess(_User user) {
                 showToast("更新用户昵称成功");
+                if (user.getNickname()==null){
+                    showToast("昵称为空");
+                    tv_nickname.setText("请前往设置你的昵称..");
+                }
                 tv_nickname.setText(user.getNickname());
             }
 
             @Override
             public void onFailure(int i, String s) {
-                showToast("更新用户昵称失败CASE:" + s);
+                showToast("更新昵称失败CASE:" + s);
             }
         });
     }
