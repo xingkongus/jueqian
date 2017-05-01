@@ -48,7 +48,7 @@ public class CommentActivity extends BaseActivity<CommentContract.Presenter> imp
     LinearLayout tab;
     @BindView(R.id.refreshLayout_comment)
     SwipeRefreshLayout refreshLayout;
-    private Boolean isRolling=false;
+    private Boolean isRolling = false;
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -59,18 +59,18 @@ public class CommentActivity extends BaseActivity<CommentContract.Presenter> imp
                     break;
                 case 1:
                     answer = (Answer) msg.obj;
-                   initRecyclerView();
+                    initRecyclerView();
                     break;
                 case 2:
-                   recyclerViewAdapter.notifyDataSetChanged();
+                    recyclerViewAdapter.notifyDataSetChanged();
                     break;
                 case 3: //刷新数据
-                    isRolling=true;
+                    isRolling = true;
                     setRecyclewViewBug();
                     comments.clear();
                     mPresenter.getAnswerComments(mContext, handler, answerID, comments);
                     recyclerViewAdapter.notifyDataSetChanged();
-                    isRolling=false;
+                    isRolling = false;
                     setRecyclewViewBug();
                     refreshLayout.setRefreshing(false);
                     break;
@@ -78,7 +78,17 @@ public class CommentActivity extends BaseActivity<CommentContract.Presenter> imp
                     int position = (int) msg.obj;
                     recyclerViewAdapter.notifyDataSetChanged();
                     recyclerViewAdapter.notifyItemInserted(position);
+                    break;
+                case 5:
+                    String newCommentID = (String) msg.obj;
+                    mPresenter.getNewComment(mContext, handler, newCommentID);
 
+                    break;
+                case 6:
+                    Comment comment;
+                    comment = (Comment) msg.obj;
+                    recyclerViewAdapter.addItem(0, comment);
+                    recyclerviewCommentpage.scrollToPosition(1);
                     break;
             }
         }
@@ -185,10 +195,7 @@ public class CommentActivity extends BaseActivity<CommentContract.Presenter> imp
                 if (comment_content.isEmpty()) {
                     showToast("评论内容不能为空");
                 } else {
-                    Comment comment;
-                    comment = mPresenter.addNewComment(mContext, handler, comment_content, answerID, questionID);
-                    recyclerViewAdapter.addItem(0, comment);
-                    recyclerviewCommentpage.scrollToPosition(1);
+                    mPresenter.addNewComment(mContext, handler, comment_content, answerID, questionID);
                     edit_comment.setText("");
                 }
             }

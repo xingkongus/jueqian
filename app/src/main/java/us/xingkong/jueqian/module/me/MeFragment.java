@@ -72,28 +72,28 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
             switch (msg.what) {
                 case 1:
                     if(bmobFile==null){
-                        showToast("当前用户无头像");
+//                        showToast("当前用户无头像");
                         break;
                     }
-                    System.out.println("uuuuuuuuuuuuuuuuuuuuu"+bmobFile);
+//                    System.out.println("uuuuuuuuuuuuuuuuuuuuu"+bmobFile);
                     bmobFile.download(JueQianAPP.getAppContext(), new DownloadFileListener() {
                         @Override
                         public void onSuccess(String s) {
-                            showToast("下载头像成功");
+//                            showToast("下载头像成功");
                             File file = new File(s);
                             if (file.exists()) {
                                 Bitmap bm = BitmapFactory.decodeFile(s);
                                 //将图片显示到ImageView中
                                 mCircleImageView_profile.setImageBitmap(bm);
                             } else {
-                                showToast("获取头像路径失败");
+//                                showToast("获取头像路径失败");
                             }
                         }
 
                         @Override
                         public void onFailure(int i, String s) {
-                            showToast("下载头像失败"+s);
-                            System.out.println("22222222222222222"+"下载头像失败"+s);
+//                            showToast("下载头像失败"+s);
+//                            System.out.println("22222222222222222"+"下载头像失败"+s);
                         }
                     });
                     break;
@@ -288,7 +288,7 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
             @Override
             public void onSuccess(List<_User> list) {
                 bmobFile = list.get(0).getProfile();
-                showToast("获取头像成功");
+//                showToast("获取头像成功");
                 showToast("B:" + bmobFile);
                 mHandler.sendEmptyMessage(1);
 

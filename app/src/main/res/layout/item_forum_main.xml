@@ -37,7 +37,7 @@
 
             <TextView
                 android:id="@+id/username_forum"
-                android:layout_width="56dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:layout_marginStart="8dp"
@@ -75,6 +75,7 @@
                 android:text="30 回答" />
 
             <TextView
+                android:textColor="@color/colorPrimary"
                 android:id="@+id/TAG1_forum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -83,6 +84,7 @@
                 android:text="android" />
 
             <TextView
+                android:textColor="@color/colorPrimary"
                 android:id="@+id/TAG2_forum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -15,8 +15,10 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import butterknife.BindView;
+import cn.bmob.v3.listener.UpdateListener;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.base.BaseActivity;
+import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
 
 /**
  * Created by lenovo on 2017/3/30.
@@ -38,6 +40,18 @@ public class NewAnswerActivity extends BaseActivity<NewAnswerContract.Presenter>
             super.handleMessage(msg);
             switch(msg.what){
                 case 0:
+                    Question question=new Question();
+                    question.increment("answer_count");
+                    question.update(context, questionID, new UpdateListener() {
+                        @Override
+                        public void onSuccess() {
+
+                        }
+
+                        @Override
+                        public void onFailure(int i, String s) {
+                        }
+                    });
                     finish();
                     break;
             }

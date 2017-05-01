@@ -19,5 +19,6 @@ public interface CommentContract {
         void getAnswer(Context context,String answerID,Handler handler);
         void getAnswerComments(Context context, Handler handler, String answerID, ArrayList<Comment> comments);
         Comment addNewComment(Context context,Handler handler,String comment,String answerID,String questionID);
+        void getNewComment(Context context,Handler handler,String newCommentID);
     }
 }

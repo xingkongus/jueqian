@@ -28,12 +28,21 @@ public class ForumPresenter extends BasePresenterImpl implements ForumContract.P
 
 
     @Override
-    public List<Question> getBmobQuestion(Context context, final ArrayList<Question> questions, final Handler handler) {
+    public List<Question> getBmobQuestion(Context context, final ArrayList<Question> questions, final Handler handler, int flag) {
         BmobQuery<Question> query = new BmobQuery<>();
         query.setLimit(20);
         query.order("-createdAt");
         query.include("user");
-        query.setCachePolicy(BmobQuery.CachePolicy.CACHE_THEN_NETWORK);
+        if (flag == 1) {
+            Boolean isInCache = query.hasCachedResult(context, Question.class);
+            if (isInCache) {
+                query.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
+            } else {
+                query.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ONLY);
+            }
+        }else if(flag==2){
+            query.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ONLY);
+        }
         query.findObjects(context, new FindListener<Question>() {
             @Override
             public void onSuccess(List<Question> list) {
@@ -44,6 +53,8 @@ public class ForumPresenter extends BasePresenterImpl implements ForumContract.P
                     question.getTAG1_ID();
                     question.getTAG2_ID();
                     question.getUser();
+                    question.getAnswer_count();
+                    question.getState();
                     questions.add(question);
 
                 }
@@ -52,7 +63,8 @@ public class ForumPresenter extends BasePresenterImpl implements ForumContract.P
 
             @Override
             public void onError(int i, String s) {
-                mView.showToast("网络连接错误");
+                mView.showToast("网络连接超时");
+                handler.sendEmptyMessage(4);
             }
         });
 

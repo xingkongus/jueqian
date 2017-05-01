@@ -26,6 +26,7 @@
         android:orientation="horizontal">
 
         <TextView
+            android:textColor="@color/colorPrimary"
             android:textSize="@dimen/sp_16"
             android:id="@+id/tag1_questionpage"
             android:layout_width="wrap_content"
@@ -33,6 +34,7 @@
             android:text="TAG1" />
 
         <TextView
+            android:textColor="@color/colorPrimary"
             android:textSize="@dimen/sp_16"
             android:id="@+id/tag2_questionpage"
             android:layout_width="wrap_content"
@@ -57,6 +59,7 @@
         android:layout_marginTop="8dp">
 
         <TextView
+            android:layout_alignParentRight="true"
             android:textColor="#000"
             android:id="@+id/username_question"
             android:layout_width="wrap_content"
@@ -64,6 +67,8 @@
             android:text="作者名字" />
 
         <TextView
+            android:paddingTop="3dp"
+            android:layout_below="@+id/username_question"
             android:id="@+id/time_question"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

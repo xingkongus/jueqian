@@ -21,6 +21,15 @@ public class Question extends BmobObject {
     private BmobRelation collectpeople;/*收藏的人的列表*/
     private BmobRelation focuspeople;/*关注的人的列表*/
     private Integer state;
+    private Integer answer_count;//回答问题的数量
+
+    public Integer getAnswer_count() {
+        return answer_count;
+    }
+
+    public void setAnswer_count(Integer answer_count) {
+        this.answer_count = answer_count;
+    }
 
     public Integer getState() {
         return state;

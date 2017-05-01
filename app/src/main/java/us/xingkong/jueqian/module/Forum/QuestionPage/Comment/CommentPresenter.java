@@ -36,9 +36,9 @@ public class CommentPresenter extends BasePresenterImpl implements CommentContra
         query.getObject(context, answerID, new GetListener<Answer>() {
             @Override
             public void onSuccess(Answer answer) {
-                answer.getUser().getUsername();
+                answer.getState();
+                answer.getUser();
                 answer.getMcontent();
-
                 Message msg=new Message();
                 msg.obj=answer;
                 msg.what=1;
@@ -47,7 +47,7 @@ public class CommentPresenter extends BasePresenterImpl implements CommentContra
 
             @Override
             public void onFailure(int i, String s) {
-                mView.showToast("网络连接错误");
+                mView.showToast("网络连接超时");
             }
         });
     }
@@ -64,7 +64,8 @@ public class CommentPresenter extends BasePresenterImpl implements CommentContra
             @Override
             public void onSuccess(List<Comment> list) {
                 for (Comment comment:list){
-                    comment.getUser().getUsername();
+                    comment.getState();
+                    comment.getUser();
                     comment.getMcontent();
                     comments.add(comment);
                 }
@@ -73,19 +74,19 @@ public class CommentPresenter extends BasePresenterImpl implements CommentContra
 
             @Override
             public void onError(int i, String s) {
-                mView.showToast("网络连接错误");
+                mView.showToast("网络连接超时");
             }
         });
     }
 
     @Override
-    public Comment addNewComment(Context context, Handler handler, String comment_content, String answerID,String questionID) {
+    public Comment addNewComment(Context context, final Handler handler, String comment_content, String answerID, String questionID) {
         _User user= BmobUser.getCurrentUser(context,_User.class);
         Answer answer=new Answer();
         answer.setObjectId(answerID);
         Question question=new Question();
         question.setObjectId(questionID);
-        Comment comment=new Comment();
+        final Comment comment=new Comment();
         comment.setUser(user);
         comment.setQuestion(question);
         comment.setAnswer(answer);
@@ -96,13 +97,40 @@ public class CommentPresenter extends BasePresenterImpl implements CommentContra
             @Override
             public void onSuccess() {
                 mView.showToast("添加评论成功");
+                Message msg=new Message();
+                msg.obj=comment.getObjectId();
+                msg.what=5;
+                handler.sendMessage(msg);
             }
 
             @Override
             public void onFailure(int i, String s) {
-                mView.showToast("网络连接错误");
+                mView.showToast("网络连接超时");
             }
         });
         return comment;
+    }
+
+    @Override
+    public void getNewComment(Context context, final Handler handler, String newCommentID) {
+        BmobQuery<Comment> query=new BmobQuery<>();
+        query.include("user");
+        query.getObject(context, newCommentID, new GetListener<Comment>() {
+            @Override
+            public void onSuccess(Comment comment) {
+                comment.getUser();
+                comment.getMcontent();
+                Message msg=new Message();
+                msg.obj=comment;
+                msg.what=6;
+                handler.sendMessage(msg);
+            }
+
+            @Override
+            public void onFailure(int i, String s) {
+
+            }
+        });
+
     }
 }

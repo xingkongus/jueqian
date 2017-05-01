@@ -17,6 +17,6 @@ public interface ForumContract {
     }
 
     interface Presenter extends BasePresenter {
-        List<Question> getBmobQuestion(Context context, ArrayList<Question> questions, Handler handler);
+        List<Question> getBmobQuestion(Context context, ArrayList<Question> questions, Handler handler,int flag);
     }
 }
