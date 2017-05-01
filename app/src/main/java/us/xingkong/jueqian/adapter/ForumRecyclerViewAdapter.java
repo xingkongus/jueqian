@@ -13,9 +13,12 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import us.xingkong.jueqian.JueQianAPP;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
 import us.xingkong.jueqian.module.Forum.QuestionPage.QuestionActivity;
+import us.xingkong.jueqian.module.me.mainpage.MainPageAcitivity;
+import us.xingkong.jueqian.module.me.mymainpage.MyMainPageAcitivity;
 
 /**
  * Created by Garfield on 1/9/17.
@@ -68,7 +71,15 @@ public class ForumRecyclerViewAdapter extends RecyclerView.Adapter<ForumRecycler
             public void onClick(View v) {
                 questionID = infoSets.get(position).getObjectId();
                 Intent intent = new Intent(mContext, QuestionActivity.class);
-                intent.putExtra("questionid",questionID);
+                intent.putExtra("questionid", questionID);
+                mContext.startActivity(intent);
+            }
+        });
+        holder.userInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(JueQianAPP.getAppContext(), MainPageAcitivity.class);
+                intent.putExtra("intentUserID", infoSets.get(position).getObjectId());
                 mContext.startActivity(intent);
             }
         });
@@ -100,6 +111,7 @@ public class ForumRecyclerViewAdapter extends RecyclerView.Adapter<ForumRecycler
 //    }
 
     class VH extends RecyclerView.ViewHolder {
+        LinearLayout userInfo;
         LinearLayout linearLayout;
         TextView title;
         TextView username;
@@ -119,6 +131,8 @@ public class ForumRecyclerViewAdapter extends RecyclerView.Adapter<ForumRecycler
             count_answer = (TextView) itemView.findViewById(R.id.count_answer_forum);
             tag1 = (TextView) itemView.findViewById(R.id.TAG1_forum);
             tag2 = (TextView) itemView.findViewById(R.id.TAG2_forum);
+
+            userInfo = (LinearLayout) itemView.findViewById(R.id.l1);
         }
     }
 }

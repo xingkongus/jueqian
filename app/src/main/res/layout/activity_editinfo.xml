@@ -40,6 +40,7 @@
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
+        android:id="@+id/layout_nickname"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_72"
         android:layout_marginBottom="1dp"
@@ -61,7 +62,7 @@
                 android:textSize="@dimen/sp_18" />
 
             <TextView
-                android:id="@+id/iv_nickname"
+                android:id="@+id/tv_nickname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -73,6 +74,7 @@
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
+        android:id="@+id/layout_selfintro"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_72"
         android:layout_marginBottom="1dp"
@@ -84,7 +86,6 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/text_selfintro"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -94,7 +95,7 @@
                 android:textSize="@dimen/sp_18" />
 
             <TextView
-                android:id="@+id/selfintro"
+                android:id="@+id/tv_selfintro"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -106,6 +107,7 @@
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
+        android:id="@+id/layout_blog"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_72"
         android:layout_marginBottom="1dp"
@@ -127,7 +129,7 @@
                 android:textSize="@dimen/sp_18" />
 
             <TextView
-                android:id="@+id/blog"
+                android:id="@+id/tv_blog"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"

@@ -22,11 +22,13 @@ import java.io.File;
 import java.util.List;
 
 import butterknife.BindView;
+import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.listener.DeleteListener;
 import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.GetListener;
 import de.hdodenhof.circleimageview.CircleImageView;
 import us.xingkong.jueqian.JueQianAPP;
 import us.xingkong.jueqian.R;
@@ -101,11 +103,7 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
 
     @Override
     protected void prepareData(Bundle savedInstanceState) {
-        user = BmobUser.getCurrentUser(JueQianAPP.getAppContext(), _User.class);
-        if (user == null) {
-        } else {
-            mTextView_nickname.setText(user.getUsername());
-        }
+
     }
 
     @Override
@@ -121,6 +119,7 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
     @Override
     protected void initView(View rootView) {
         judgeLogin();
+        initNickName();
         toEditInfo();
         toMyMessage();
         toMyCollection();
@@ -130,6 +129,22 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
         toMyQusetions();
         toSignOut();
         getProfile();
+    }
+
+    private void initNickName() {
+        BmobQuery<_User> bmobQuery = new BmobQuery<>();
+        bmobQuery.getObject(JueQianAPP.getAppContext(), BmobUser.getCurrentUser(JueQianAPP.getAppContext()).getObjectId(), new GetListener<_User>() {
+            @Override
+            public void onSuccess(_User user) {
+                showToast("更新用户昵称成功");
+                mTextView_nickname.setText(user.getNickname());
+            }
+
+            @Override
+            public void onFailure(int i, String s) {
+                showToast("更新用户昵称失败CASE:" + s);
+            }
+        });
     }
 
     private void toSignOut() {
@@ -282,11 +297,15 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
     private void getProfile() {
         if (isLogin) {
             BmobQuery<_User> query = new BmobQuery<>();
-            query.addWhereEqualTo("objectId", user.getObjectId());
+            query.addWhereEqualTo("objectId", BmobUser.getCurrentUser(JueQianAPP.getAppContext()).getObjectId());
             query.addQueryKeys("profile");
             query.findObjects(JueQianAPP.getAppContext(), new FindListener<_User>() {
                 @Override
                 public void onSuccess(List<_User> list) {
+                    if (list.size() == 0) {
+                        showToast("当前用户无头像");
+                        return;
+                    }
                     bmobFile = list.get(0).getProfile();
                     if (bmobFile == null) {
                         showToast("当前用户无头像");
@@ -309,5 +328,6 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
     public void onStart() {
         super.onStart();
         getProfile();
+        initNickName();
     }
 }

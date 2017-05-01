@@ -12,6 +12,7 @@ public class _User extends BmobUser {
     private String nickname; //昵称
     private String selfsign;//个性签名
     private String gender;//性别
+    private String blog;//网站
     private BmobFile profile;//头像
     private Integer state;//用户状态
     private BmobRelation collections;//我的收藏列表
@@ -41,6 +42,14 @@ public class _User extends BmobUser {
 
     public BmobRelation getRecentlooks() {
         return recentlooks;
+    }
+
+    public String getBlog() {
+        return blog;
+    }
+
+    public void setBlog(String blog) {
+        this.blog = blog;
     }
 
     public void setRecentlooks(BmobRelation recentlooks) {

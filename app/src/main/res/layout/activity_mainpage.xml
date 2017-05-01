@@ -15,7 +15,7 @@
         android:padding="@dimen/dp_8">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/mymainpage_touxiang"
+            android:id="@+id/mainpage_touxiang"
             android:layout_width="65dp"
             android:layout_height="65dp"
             android:layout_marginLeft="@dimen/dp_16"
@@ -23,31 +23,32 @@
             android:src="@mipmap/touxiang" />
 
         <TextView
-            android:id="@+id/mymainpage_username"
+            android:id="@+id/mainpage_username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/mymainpage_touxiang"
+            android:layout_alignBottom="@id/mainpage_touxiang"
             android:layout_marginLeft="@dimen/dp_16"
-            android:layout_toRightOf="@id/mymainpage_touxiang"
+            android:layout_toRightOf="@id/mainpage_touxiang"
             android:text="我是用户名"
             android:textColor="@color/text_username"
             android:textSize="@dimen/sp_18" />
 
         <Button
-            android:id="@+id/mymainpage_bt_edit"
+            android:id="@+id/mainpage_bt_edit"
             android:layout_width="@dimen/dp_72"
             android:layout_height="@dimen/dp_36"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/dp_8"
-            android:background="@drawable/editshape"
-            android:text="编辑" />
+            android:background="@color/colorPrimary"
+            android:text="关注 +"
+            android:textColor="@color/text_white" />
 
         <RelativeLayout
             android:id="@+id/ry_follow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/mymainpage_touxiang"
+            android:layout_below="@id/mainpage_touxiang"
             android:layout_marginTop="@dimen/dp_16">
 
             <TextView
@@ -74,7 +75,7 @@
             android:id="@+id/ry_follower"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/mymainpage_touxiang"
+            android:layout_below="@id/mainpage_touxiang"
             android:layout_marginTop="@dimen/dp_16"
             android:layout_toRightOf="@id/ry_follow">
 

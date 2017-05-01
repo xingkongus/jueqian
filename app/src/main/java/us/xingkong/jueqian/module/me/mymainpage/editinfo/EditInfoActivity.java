@@ -8,11 +8,17 @@ import android.graphics.Matrix;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.CardView;
+import android.text.InputType;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.FutureTarget;
 
@@ -27,6 +33,7 @@ import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.GetListener;
 import cn.bmob.v3.listener.UpdateListener;
 import cn.bmob.v3.listener.UploadFileListener;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -35,6 +42,7 @@ import us.xingkong.jueqian.JueQianAPP;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.base.BaseActivity;
 import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
+import us.xingkong.jueqian.module.Login.LoginActivity;
 
 /**
  * Created by PERFECTLIN on 2017/4/20 0020.
@@ -43,11 +51,29 @@ import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
 public class EditInfoActivity extends BaseActivity<EditInfoContract.Presenter> implements EditInfoContract.View {
     @BindView(R.id.layout_touxiang)
     CardView touxiang;
+    @BindView(R.id.layout_nickname)
+    CardView nickname;
+    @BindView(R.id.layout_selfintro)
+    CardView selfintro;
+    @BindView(R.id.layout_blog)
+    CardView blog;
     @BindView(R.id.iv_touxiang)
     CircleImageView iv_touxiang;
+    @BindView(R.id.tv_nickname)
+    TextView tv_nickname;
+    @BindView(R.id.tv_selfintro)
+    TextView tv_selfintro;
+    @BindView(R.id.tv_blog)
+    TextView tv_blog;
+
+
     private Activity activity = this;
     private BmobFile bmobFile;
     private File profile;
+    private String inputNickName;
+    private String inputSelfIntro;
+    private String inputBlog;
+    private _User update_user;
 
     Handler handler = new Handler() {
         @Override
@@ -56,8 +82,8 @@ public class EditInfoActivity extends BaseActivity<EditInfoContract.Presenter> i
             switch (msg.what) {
                 case 1:
                     _User user = new _User();
-                    user.setValue("profile", bmobFile);
-                    user.update(JueQianAPP.getAppContext(), "7xl30002", new UpdateListener() {
+                    user.setProfile(bmobFile);
+                    user.update(JueQianAPP.getAppContext(), BmobUser.getCurrentUser(JueQianAPP.getAppContext()).getObjectId(), new UpdateListener() {
                         @Override
                         public void onSuccess() {
                             showToast("上传头像成功");
@@ -67,6 +93,60 @@ public class EditInfoActivity extends BaseActivity<EditInfoContract.Presenter> i
                         @Override
                         public void onFailure(int i, String s) {
                             showToast("上传头像失败" + s);
+                        }
+                    });
+                    break;
+                case 2:
+                    prepareData();
+                    break;
+                case 3:
+                    _User u = new _User();
+                    u.setNickname(inputNickName);
+                    u.update(JueQianAPP.getAppContext(), BmobUser.getCurrentUser(JueQianAPP.getAppContext()).getObjectId(), new UpdateListener() {
+                        @Override
+                        public void onSuccess() {
+                            String nickname = BmobUser.getCurrentUser(JueQianAPP.getAppContext(), _User.class).getNickname();
+                            showToast("修改昵称成功");
+                            handler.sendEmptyMessage(2);
+                        }
+
+                        @Override
+                        public void onFailure(int i, String s) {
+                            showToast("修改昵称失败CASE:" + s);
+                        }
+                    });
+                    break;
+                case 4:
+                    _User u1 = new _User();
+                    u1.setSelfsign(inputSelfIntro);
+                    u1.update(JueQianAPP.getAppContext(), BmobUser.getCurrentUser(JueQianAPP.getAppContext()).getObjectId(), new UpdateListener() {
+                        @Override
+                        public void onSuccess() {
+                            String nickname = BmobUser.getCurrentUser(JueQianAPP.getAppContext(), _User.class).getNickname();
+                            showToast("修改简介成功");
+                            handler.sendEmptyMessage(2);
+                        }
+
+                        @Override
+                        public void onFailure(int i, String s) {
+                            showToast("修改简介失败CASE:" + s);
+                        }
+                    });
+                    break;
+                case 5:
+                    _User u2 = new _User();
+                    u2.setBlog(inputBlog);
+                    u2.update(JueQianAPP.getAppContext(), BmobUser.getCurrentUser(JueQianAPP.getAppContext()).getObjectId(), new UpdateListener() {
+                        @Override
+                        public void onSuccess() {
+                            String nickname = BmobUser.getCurrentUser(JueQianAPP.getAppContext(), _User.class).getNickname();
+                            showToast("修改blog成功");
+                            handler.sendEmptyMessage(2);
+                        }
+
+                        @Override
+                        public void onFailure(int i, String s) {
+                            showToast("修改blog失败CASE:" + s);
                         }
                     });
                     break;
@@ -87,7 +167,23 @@ public class EditInfoActivity extends BaseActivity<EditInfoContract.Presenter> i
 
     @Override
     protected void prepareData() {
+        BmobQuery<_User> bmobQuery = new BmobQuery<>();
+        bmobQuery.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
+        bmobQuery.getObject(JueQianAPP.getAppContext(), BmobUser.getCurrentUser(JueQianAPP.getAppContext()).getObjectId(), new GetListener<_User>() {
+            @Override
+            public void onSuccess(_User user) {
+                update_user = user;
+                showToast("更新用户成功");
+                tv_nickname.setText(user.getNickname());
+                tv_selfintro.setText(user.getSelfsign());
+                tv_blog.setText(user.getBlog());
+            }
 
+            @Override
+            public void onFailure(int i, String s) {
+                showToast("更新用户失败CASE:" + s);
+            }
+        });
     }
 
     @Override
@@ -95,19 +191,106 @@ public class EditInfoActivity extends BaseActivity<EditInfoContract.Presenter> i
         setToolbar();
         setProfile();
         setPhotoPick();
+        setNickName();
+        setSelfIntro();
+        setBlog();
+    }
+
+    private void setBlog() {
+        blog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new MaterialDialog.Builder(view.getContext())
+                        .title("修改网站")
+                        .input("", "", new MaterialDialog.InputCallback() {
+                            @Override
+                            public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+                                inputBlog = input.toString();
+                            }
+                        }).onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+
+                    }
+                }).onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        handler.sendEmptyMessage(5);
+                    }
+                }).show();
+            }
+        });
+    }
+
+    private void setSelfIntro() {
+        selfintro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new MaterialDialog.Builder(view.getContext())
+                        .title("修改简介")
+                        .input("", "", new MaterialDialog.InputCallback() {
+                            @Override
+                            public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+                                inputSelfIntro = input.toString();
+                            }
+                        }).onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+
+                    }
+                }).onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        handler.sendEmptyMessage(4);
+                    }
+                }).show();
+            }
+        });
+    }
+
+    private void setNickName() {
+        nickname.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new MaterialDialog.Builder(view.getContext())
+                        .title("修改昵称")
+                        .negativeText("取消")
+                        .positiveText("确认")
+                        .input("", "", new MaterialDialog.InputCallback() {
+                            @Override
+                            public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+                                inputNickName = input.toString();
+                            }
+                        }).onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+
+                    }
+                }).onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        handler.sendEmptyMessage(3);
+                    }
+                }).show();
+            }
+        });
     }
 
     private void setProfile() {
         BmobQuery<_User> query = new BmobQuery<>();
         query.addWhereEqualTo("objectId", BmobUser.getCurrentUser(JueQianAPP.getAppContext()).getObjectId());
         query.addQueryKeys("profile");
+        query.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
         query.findObjects(JueQianAPP.getAppContext(), new FindListener<_User>() {
             @Override
             public void onSuccess(List<_User> list) {
-
+                if (list.size() == 0) {
+                    showToast("当前用户无头像");
+                    return;
+                }
                 BmobFile bmobFile = list.get(0).getProfile();
                 if (bmobFile == null) {
-                    showToast("当前用户无头像");
+                    showToast("bmobfile is null");
                     return;
                 }
                 String profileURL = bmobFile.getUrl();
@@ -122,7 +305,6 @@ public class EditInfoActivity extends BaseActivity<EditInfoContract.Presenter> i
     }
 
     private void setPhotoPick() {
-
         touxiang.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -134,7 +316,6 @@ public class EditInfoActivity extends BaseActivity<EditInfoContract.Presenter> i
                         .start(activity, PhotoPicker.REQUEST_CODE);
             }
         });
-
     }
 
     private void setToolbar() {

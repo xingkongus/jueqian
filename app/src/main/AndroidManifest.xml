@@ -48,6 +48,7 @@
         <activity android:name=".module.me.mysettings.MySettingsActivity" />
         <activity android:name=".module.me.mymainpage.editinfo.EditInfoActivity" />
         <activity android:name=".module.me.mymainpage.MyMainPageAcitivity" />
+        <activity android:name=".module.me.mainpage.MainPageAcitivity" />
         <activity android:name=".module.me.mysettings.aboutme.AboutMeActivity" />
         <activity android:name=".module.common.WebActivity" />
         <activity

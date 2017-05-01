@@ -18,7 +18,10 @@ import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.datatype.BmobPointer;
+import cn.bmob.v3.datatype.BmobRelation;
 import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.GetListener;
+import cn.bmob.v3.listener.UpdateListener;
 import de.hdodenhof.circleimageview.CircleImageView;
 import us.xingkong.jueqian.JueQianAPP;
 import us.xingkong.jueqian.R;
@@ -34,15 +37,15 @@ import us.xingkong.jueqian.module.me.myrecentlook.MyRecentLookActivity;
  */
 
 public class MyMainPageAcitivity extends BaseActivity<MyMainPageContract.Presenter> implements MyMainPageContract.View {
-    @BindView(R.id.mainpage_bt_edit)
+    @BindView(R.id.mymainpage_bt_edit)
     Button bt_edit;
-    @BindView(R.id.mainpage_username)
+    @BindView(R.id.mymainpage_username)
     TextView tv_username;
     @BindView(R.id.following)
     TextView tv_following;
     @BindView(R.id.followers)
     TextView tv_followers;
-    @BindView(R.id.mainpage_touxiang)
+    @BindView(R.id.mymainpage_touxiang)
     CircleImageView iv_touxiang;
     @BindView(R.id.collections)
     CardView collections;
@@ -50,6 +53,10 @@ public class MyMainPageAcitivity extends BaseActivity<MyMainPageContract.Present
     CardView rencentlooks;
     @BindView(R.id.collectioncount)
     TextView tv_collectioncount;
+
+    private String intentUserID = null;
+    private _User follow_user;
+    private _User befollowed_user;
 
     @Override
     protected MyMainPageContract.Presenter createPresenter() {
@@ -69,10 +76,28 @@ public class MyMainPageAcitivity extends BaseActivity<MyMainPageContract.Present
     @Override
     protected void initView() {
         setToolbar();
+        initNickName();
         setEditButton();
-        setProfile();
         setCollection();
         setRencentLooks();
+        setProfile();
+    }
+
+    private void initNickName() {
+        BmobQuery<_User> bmobQuery = new BmobQuery<>();
+        bmobQuery.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
+        bmobQuery.getObject(JueQianAPP.getAppContext(), BmobUser.getCurrentUser(JueQianAPP.getAppContext()).getObjectId(), new GetListener<_User>() {
+            @Override
+            public void onSuccess(_User user) {
+                showToast("更新用户昵称成功");
+                tv_username.setText(user.getNickname());
+            }
+
+            @Override
+            public void onFailure(int i, String s) {
+                showToast("更新用户昵称失败CASE:" + s);
+            }
+        });
     }
 
     private void setRencentLooks() {
@@ -112,13 +137,17 @@ public class MyMainPageAcitivity extends BaseActivity<MyMainPageContract.Present
     }
 
     private void setProfile() {
+
         BmobQuery<_User> query = new BmobQuery<>();
         query.addWhereEqualTo("objectId", BmobUser.getCurrentUser(JueQianAPP.getAppContext()).getObjectId());
         query.addQueryKeys("profile");
         query.findObjects(JueQianAPP.getAppContext(), new FindListener<_User>() {
             @Override
             public void onSuccess(List<_User> list) {
-
+                if (list.size() == 0) {
+                    showToast("当前用户无头像");
+                    return;
+                }
                 BmobFile bmobFile = list.get(0).getProfile();
                 if (bmobFile == null) {
                     showToast("当前用户无头像");
@@ -130,7 +159,7 @@ public class MyMainPageAcitivity extends BaseActivity<MyMainPageContract.Present
 
             @Override
             public void onError(int i, String s) {
-                showToast("获取头像失败");
+                showToast("获取头像失败CASE:" + s);
             }
         });
     }
@@ -177,5 +206,6 @@ public class MyMainPageAcitivity extends BaseActivity<MyMainPageContract.Present
         super.onStart();
         setProfile();
         setCollection();
+        initNickName();
     }
 }
