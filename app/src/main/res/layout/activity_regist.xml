@@ -22,8 +22,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
+            android:layout_margin="@dimen/dp_16"
             android:gravity="center"
-            android:padding="15dp"
             android:text="觉浅"
             android:textColor="@color/tab_text"
             android:textSize="40sp" />

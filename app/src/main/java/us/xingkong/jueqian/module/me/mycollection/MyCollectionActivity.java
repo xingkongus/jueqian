@@ -8,7 +8,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.MenuItem;
 
 import java.util.ArrayList;
@@ -24,7 +23,6 @@ import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.adapter.MyCollectionAdapter;
 import us.xingkong.jueqian.base.BaseActivity;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
-import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
 
 /**
  * Created by PERFECTLIN on 2017/1/10 0010.
@@ -33,7 +31,9 @@ import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
 public class MyCollectionActivity extends BaseActivity<MyCollectionContract.Presenter> implements MyCollectionContract.View {
     @BindView(R.id.recyclerview)
     RecyclerView mRecyclerView;
-    List<Question> questions=new ArrayList<>();
+
+    private List<Question> questions = new ArrayList<>();
+
 
     private Handler mHandler = new Handler() {
         @Override
@@ -42,11 +42,14 @@ public class MyCollectionActivity extends BaseActivity<MyCollectionContract.Pres
             switch (msg.what) {
                 case 1:
                     initRecyclerView();
+                case 2:
+                    myCollectionAdapter.notifyDataSetChanged();
                     break;
             }
-
         }
     };
+
+    MyCollectionAdapter myCollectionAdapter;
 
     @Override
     protected MyCollectionContract.Presenter createPresenter() {
@@ -61,13 +64,13 @@ public class MyCollectionActivity extends BaseActivity<MyCollectionContract.Pres
     @Override
     protected void prepareData() {
         BmobUser bmobUser = BmobUser.getCurrentUser(JueQianAPP.getAppContext());
-        BmobQuery<Question> query = new BmobQuery<Question>();;
+        BmobQuery<Question> query = new BmobQuery<Question>();
         query.addWhereRelatedTo("collections", new BmobPointer(bmobUser));
+        query.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
         query.findObjects(JueQianAPP.getAppContext(), new FindListener<Question>() {
             @Override
             public void onSuccess(List<Question> list) {
                 questions = list;
-                showToast("获取收藏表成功");
                 mHandler.sendEmptyMessage(1);
             }
 
@@ -86,8 +89,9 @@ public class MyCollectionActivity extends BaseActivity<MyCollectionContract.Pres
     }
 
     private void initRecyclerView() {
+        myCollectionAdapter = new MyCollectionAdapter(mHandler, questions);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setAdapter(new MyCollectionAdapter(mHandler,questions));
+        mRecyclerView.setAdapter(myCollectionAdapter);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(MyCollectionActivity.this, DividerItemDecoration.VERTICAL));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 

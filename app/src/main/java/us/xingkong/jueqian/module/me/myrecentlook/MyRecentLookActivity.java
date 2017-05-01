@@ -64,6 +64,7 @@ public class MyRecentLookActivity extends BaseActivity<MyRecentLookContract.Pres
         BmobUser bmobUser = BmobUser.getCurrentUser(JueQianAPP.getAppContext());
         BmobQuery<Question> query = new BmobQuery<Question>();
         query.addWhereRelatedTo("recentlooks", new BmobPointer(bmobUser));
+        query.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
         query.findObjects(JueQianAPP.getAppContext(), new FindListener<Question>() {
             @Override
             public void onSuccess(List<Question> list) {

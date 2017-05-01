@@ -27,11 +27,17 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <ImageView
+                <!--<ImageView-->
+                <!--android:id="@+id/user_icon_questionpage"-->
+                <!--android:layout_width="24dp"-->
+                <!--android:layout_height="24dp"-->
+                <!--android:background="@mipmap/ic_launcher" />-->
+
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/user_icon_questionpage"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:background="@mipmap/ic_launcher" />
+                    android:src="@mipmap/ic_launcher"/>
 
                 <TextView
                     android:id="@+id/username_questionpage"
@@ -78,8 +84,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:orientation="horizontal"
-                    android:layout_marginRight="5dp">
+                    android:layout_marginRight="5dp"
+                    android:orientation="horizontal">
 
                     <ImageButton
                         android:id="@+id/good_question_item"

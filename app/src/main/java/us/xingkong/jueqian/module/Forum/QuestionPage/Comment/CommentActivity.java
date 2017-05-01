@@ -21,11 +21,15 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import butterknife.BindView;
+import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.listener.SaveListener;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.adapter.CommentRecyclerViewAdapter;
 import us.xingkong.jueqian.base.BaseActivity;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Answer;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Comment;
+import us.xingkong.jueqian.bean.ForumBean.BombBean.NewMessage;
+import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
 
 
 public class CommentActivity extends BaseActivity<CommentContract.Presenter> implements CommentContract.View {
@@ -49,6 +53,7 @@ public class CommentActivity extends BaseActivity<CommentContract.Presenter> imp
     @BindView(R.id.refreshLayout_comment)
     SwipeRefreshLayout refreshLayout;
     private Boolean isRolling = false;
+    private String answer_userID;
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -76,19 +81,40 @@ public class CommentActivity extends BaseActivity<CommentContract.Presenter> imp
                     break;
                 case 4:
                     int position = (int) msg.obj;
+                    recyclerviewCommentpage.scrollToPosition(1);
+                    recyclerViewAdapter.notifyItemInserted(1);
                     recyclerViewAdapter.notifyDataSetChanged();
-                    recyclerViewAdapter.notifyItemInserted(position);
+                    _User user = BmobUser.getCurrentUser(mContext, _User.class);
+                    if(!user.getObjectId().equals(answer_userID)) {
+                        Comment comment1 = (Comment) msg.obj;
+                        NewMessage message = new NewMessage();
+                        message.setSender(user);
+                        _User receiver = new _User();
+                        receiver.setObjectId(answer_userID);
+                        message.setTYPE(1);
+                        message.setMessComment(comment1);
+                        message.save(mContext, new SaveListener() {
+                            @Override
+                            public void onSuccess() {
+
+                            }
+
+                            @Override
+                            public void onFailure(int i, String s) {
+
+                            }
+                        });
+                    }
                     break;
                 case 5:
-                    String newCommentID = (String) msg.obj;
+                    String newCommentID = msg.getData().getString("new_commentID");
                     mPresenter.getNewComment(mContext, handler, newCommentID);
-
                     break;
                 case 6:
                     Comment comment;
                     comment = (Comment) msg.obj;
                     recyclerViewAdapter.addItem(0, comment);
-                    recyclerviewCommentpage.scrollToPosition(1);
+
                     break;
             }
         }
@@ -111,6 +137,7 @@ public class CommentActivity extends BaseActivity<CommentContract.Presenter> imp
         Bundle bundle = intent.getExtras();
         answerID = bundle.getString("answerID");
         questionID = bundle.getString("questionID");
+        answer_userID=bundle.getString("answer_userID");
 
 //        mHandler = new Handler(getMainLooper()){
 //            @Override
@@ -195,7 +222,7 @@ public class CommentActivity extends BaseActivity<CommentContract.Presenter> imp
                 if (comment_content.isEmpty()) {
                     showToast("评论内容不能为空");
                 } else {
-                    mPresenter.addNewComment(mContext, handler, comment_content, answerID, questionID);
+                    mPresenter.addNewComment(mContext, handler, comment_content, answerID, questionID,answer_userID);
                     edit_comment.setText("");
                 }
             }

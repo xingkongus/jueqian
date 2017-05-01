@@ -19,6 +19,7 @@ import java.util.List;
 
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.listener.DownloadFileListener;
+import de.hdodenhof.circleimageview.CircleImageView;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
 import us.xingkong.jueqian.module.Forum.QuestionPage.QuestionActivity;
@@ -72,7 +73,8 @@ public class ForumRecyclerViewAdapter extends RecyclerView.Adapter<ForumRecycler
                     });
                 }
             }).start();
-
+        }else{
+            holder.profile.setBackgroundResource(R.mipmap.ic_launcher);
         }
         holder.title.setText(infoSets.get(position).getMtitle());
         holder.tag1.setText(infoSets.get(position).getTAG1_ID());
@@ -114,13 +116,13 @@ public class ForumRecyclerViewAdapter extends RecyclerView.Adapter<ForumRecycler
         TextView count_answer;
         TextView tag1;
         TextView tag2;
-        ImageView profile;
+        CircleImageView profile;
         ImageView userState;
         public VH(View itemView) {
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.title_forum);
             linearLayout = (LinearLayout) itemView.findViewById(R.id.item_forum);
-            profile = (ImageView) itemView.findViewById(R.id.user_icon_forum);
+            profile = (CircleImageView) itemView.findViewById(R.id.user_icon_forum);
             username = (TextView) itemView.findViewById(R.id.username_forum);
             userState = (ImageView) itemView.findViewById(R.id.user_state_forum);
             count_answer = (TextView) itemView.findViewById(R.id.count_answer_forum);

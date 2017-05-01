@@ -15,10 +15,15 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import butterknife.BindView;
+import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.base.BaseActivity;
+import us.xingkong.jueqian.bean.ForumBean.BombBean.Answer;
+import us.xingkong.jueqian.bean.ForumBean.BombBean.NewMessage;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
+import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
 
 /**
  * Created by lenovo on 2017/3/30.
@@ -31,8 +36,8 @@ public class NewAnswerActivity extends BaseActivity<NewAnswerContract.Presenter>
     @BindView(R.id.new_huidacontent)
     EditText new_huidacontent;
     Context context;
-    String questionID;
-
+    private String questionID;
+    private String question_userID;
 
     private Handler handler = new Handler() {
         @Override
@@ -52,6 +57,29 @@ public class NewAnswerActivity extends BaseActivity<NewAnswerContract.Presenter>
                         public void onFailure(int i, String s) {
                         }
                     });
+                    _User user= BmobUser.getCurrentUser(context,_User.class);
+                    if (!user.getObjectId().equals(question_userID)) {
+                        Answer answer;
+                        answer = (Answer) msg.obj;
+                        NewMessage message = new NewMessage();
+                        _User receiver = new _User();
+                        message.setSender(user);
+                        receiver.setObjectId(question_userID);
+                        message.setReceiver(receiver);
+                        message.setTYPE(2);
+                        message.setMessAnswer(answer);
+                        message.save(context, new SaveListener() {
+                            @Override
+                            public void onSuccess() {
+
+                            }
+
+                            @Override
+                            public void onFailure(int i, String s) {
+
+                            }
+                        });
+                    }
                     finish();
                     break;
             }
@@ -73,6 +101,7 @@ public class NewAnswerActivity extends BaseActivity<NewAnswerContract.Presenter>
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         questionID = bundle.getString("questionObjectid");
+        question_userID=bundle.getString("question_userID");
     }
 
     @Override
@@ -112,7 +141,7 @@ public class NewAnswerActivity extends BaseActivity<NewAnswerContract.Presenter>
                                     if (newAnswer.isEmpty()) {
                                         showToast("回答不能为空");
                                     } else {
-                                        mPresenter.addNewAnswer(context, newAnswer, questionID, handler);
+                                        mPresenter.addNewAnswer(context, newAnswer, questionID, handler,question_userID);
                                     }
                                 }
                             })

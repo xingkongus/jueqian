@@ -18,7 +18,7 @@ public interface CommentContract {
     interface Presenter extends BasePresenter {
         void getAnswer(Context context,String answerID,Handler handler);
         void getAnswerComments(Context context, Handler handler, String answerID, ArrayList<Comment> comments);
-        Comment addNewComment(Context context,Handler handler,String comment,String answerID,String questionID);
+        void addNewComment(Context context,Handler handler,String comment,String answerID,String questionID,String answer_userID);
         void getNewComment(Context context,Handler handler,String newCommentID);
     }
 }

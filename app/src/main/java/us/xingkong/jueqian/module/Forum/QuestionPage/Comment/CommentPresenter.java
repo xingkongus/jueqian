@@ -1,6 +1,7 @@
 package us.xingkong.jueqian.module.Forum.QuestionPage.Comment;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 
@@ -23,6 +24,7 @@ import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
 public class CommentPresenter extends BasePresenterImpl implements CommentContract.Presenter {
 
     private final CommentContract.View mView;
+
     public CommentPresenter(CommentContract.View view) {
         mView = view;
         this.mView.setPresenter(this);
@@ -31,7 +33,7 @@ public class CommentPresenter extends BasePresenterImpl implements CommentContra
 
     @Override
     public void getAnswer(final Context context, String answerID, final Handler handler) {
-        BmobQuery<Answer> query=new BmobQuery<>();
+        BmobQuery<Answer> query = new BmobQuery<>();
         query.include("user");
         query.getObject(context, answerID, new GetListener<Answer>() {
             @Override
@@ -39,9 +41,9 @@ public class CommentPresenter extends BasePresenterImpl implements CommentContra
                 answer.getState();
                 answer.getUser();
                 answer.getMcontent();
-                Message msg=new Message();
-                msg.obj=answer;
-                msg.what=1;
+                Message msg = new Message();
+                msg.obj = answer;
+                msg.what = 1;
                 handler.sendMessage(msg);
             }
 
@@ -54,16 +56,16 @@ public class CommentPresenter extends BasePresenterImpl implements CommentContra
 
     @Override
     public void getAnswerComments(final Context context, final Handler handler, String answerID, final ArrayList<Comment> comments) {
-        BmobQuery<Comment>query=new BmobQuery<>();
-        Answer answer=new Answer();
+        BmobQuery<Comment> query = new BmobQuery<>();
+        Answer answer = new Answer();
         answer.setObjectId(answerID);
-        query.addWhereEqualTo("answer",new BmobPointer(answer));
+        query.addWhereEqualTo("answer", new BmobPointer(answer));
         query.include("user");
         query.order("-createdAt");
         query.findObjects(context, new FindListener<Comment>() {
             @Override
             public void onSuccess(List<Comment> list) {
-                for (Comment comment:list){
+                for (Comment comment : list) {
                     comment.getState();
                     comment.getUser();
                     comment.getMcontent();
@@ -80,13 +82,13 @@ public class CommentPresenter extends BasePresenterImpl implements CommentContra
     }
 
     @Override
-    public Comment addNewComment(Context context, final Handler handler, String comment_content, String answerID, String questionID) {
-        _User user= BmobUser.getCurrentUser(context,_User.class);
-        Answer answer=new Answer();
+    public void addNewComment(Context context, final Handler handler, String comment_content, String answerID, String questionID, String answer_userID) {
+        _User user = BmobUser.getCurrentUser(context, _User.class);
+        Answer answer = new Answer();
         answer.setObjectId(answerID);
-        Question question=new Question();
+        Question question = new Question();
         question.setObjectId(questionID);
-        final Comment comment=new Comment();
+        final Comment comment = new Comment();
         comment.setUser(user);
         comment.setQuestion(question);
         comment.setAnswer(answer);
@@ -97,9 +99,11 @@ public class CommentPresenter extends BasePresenterImpl implements CommentContra
             @Override
             public void onSuccess() {
                 mView.showToast("添加评论成功");
-                Message msg=new Message();
-                msg.obj=comment.getObjectId();
-                msg.what=5;
+                Message msg = new Message();
+                Bundle bundle=new Bundle();
+                bundle.putString("new_commentID",comment.getObjectId());
+                msg.obj = comment;
+                msg.what = 5;
                 handler.sendMessage(msg);
             }
 
@@ -108,21 +112,23 @@ public class CommentPresenter extends BasePresenterImpl implements CommentContra
                 mView.showToast("网络连接超时");
             }
         });
-        return comment;
+
+
+
     }
 
     @Override
     public void getNewComment(Context context, final Handler handler, String newCommentID) {
-        BmobQuery<Comment> query=new BmobQuery<>();
+        BmobQuery<Comment> query = new BmobQuery<>();
         query.include("user");
         query.getObject(context, newCommentID, new GetListener<Comment>() {
             @Override
             public void onSuccess(Comment comment) {
                 comment.getUser();
                 comment.getMcontent();
-                Message msg=new Message();
-                msg.obj=comment;
-                msg.what=6;
+                Message msg = new Message();
+                msg.obj = comment;
+                msg.what = 6;
                 handler.sendMessage(msg);
             }
 

@@ -51,6 +51,7 @@ public class LoginActivity extends BaseActivity<LoginContract.Presenter> impleme
 
         return R.layout.activity_login;
     }
+
     @Override
     protected void prepareData() {
 
@@ -114,6 +115,7 @@ public class LoginActivity extends BaseActivity<LoginContract.Presenter> impleme
             super.handleMessage(msg);
             switch (msg.what) {
                 case 0:
+                    showToast("登陆成功");
                     finish();
                     break;
             }

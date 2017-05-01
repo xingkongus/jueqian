@@ -22,12 +22,13 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:gravity="center"
-            android:padding="15dp"
+            android:layout_margin="@dimen/dp_16"
             android:text="觉浅"
             android:textColor="@color/tab_text"
-            android:textSize="40sp" />
+            android:textSize="40sp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
 
         <TextView
             android:id="@+id/registButton"
@@ -94,12 +95,5 @@
             android:padding="8dp"
             android:text="登录" />
 
-        <ImageView
-            android:id="@+id/QQlogin"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:layout_margin="30dp"
-            android:background="@mipmap/qq_icon" />
     </LinearLayout>
 </LinearLayout>
