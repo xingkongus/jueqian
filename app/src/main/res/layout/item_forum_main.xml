@@ -23,7 +23,7 @@
         android:layout_height="wrap_content">
 
         <LinearLayout
-            android:id="@+id/userinfo"
+            android:id="@+id/l1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
@@ -33,7 +33,8 @@
                 android:id="@+id/user_icon_forum"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:background="@mipmap/ic_launcher" />
+                android:background="#ffffff"
+                android:src="@mipmap/ic_launcher"/>
 
             <TextView
                 android:id="@+id/username_forum"

@@ -107,6 +107,7 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                 case 6:
                     backgroundAlpha(0.5f);
                     final String answerID = msg.getData().getString("answerID");
+                    final String answer_userID=msg.getData().getString("answer_userID");
                     View v = (View) msg.obj;
                     View contentview = getLayoutInflater().inflate(R.layout.activity_popupwindow, null);
                     contentview.setFocusableInTouchMode(true);
@@ -148,6 +149,7 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                                 Intent intent = new Intent(mContext, CommentActivity.class);
                                 intent.putExtra("answerID", answerID);
                                 intent.putExtra("questionID", questionID);
+                                intent.putExtra("answer_userID",answer_userID);
                                 startActivity(intent);
                                 mpopupWindow.dismiss();
                             }
@@ -297,6 +299,7 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                 } else {
                     Intent intent = new Intent(mContext, NewAnswerActivity.class);// 把这个问题的objectid传过去
                     intent.putExtra("questionObjectid", questionID);
+                    intent.putExtra("question_userID",question_userID);
                     startActivity(intent);
                 }
             }

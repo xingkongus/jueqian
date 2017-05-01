@@ -4,6 +4,7 @@ package us.xingkong.jueqian.module.Forum.NewAnswer;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
+import android.os.Message;
 
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.listener.SaveListener;
@@ -29,11 +30,11 @@ public class NewAnswerPresenter extends BasePresenterImpl implements NewAnswerCo
 
 
     @Override
-    public void addNewAnswer(final Context context, String newAnswer, final String questionID, final Handler handler) {
+    public void addNewAnswer(final Context context, String newAnswer, final String questionID, final Handler handler,String question_userID) {
         _User user= BmobUser.getCurrentUser(context,_User.class);
         Question question=new Question();
         question.setObjectId(questionID);
-        Answer answer=new Answer();
+        final Answer answer=new Answer();
         answer.setUser(user);
         answer.setQuestion(question);
         answer.setMcontent(newAnswer);
@@ -45,7 +46,10 @@ public class NewAnswerPresenter extends BasePresenterImpl implements NewAnswerCo
                 Intent intent=new Intent(context, QuestionActivity.class);
                 intent.putExtra("questionid",questionID);
                 context.startActivity(intent);
-                handler.sendEmptyMessage(0);
+                Message msg=new Message();
+                msg.obj=answer;
+                msg.what=0;
+                handler.sendMessage(msg);
             }
 
             @Override
@@ -53,6 +57,7 @@ public class NewAnswerPresenter extends BasePresenterImpl implements NewAnswerCo
                 mView.showToast("网络连接超时");
             }
         });
+
     }
 
 }

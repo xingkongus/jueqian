@@ -89,6 +89,8 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                         });
                     }
                 }).start();
+            }else{
+                head.icon_head.setBackgroundResource(R.mipmap.ic_launcher);
             }
             head.content.setText(answer.getMcontent());
             head.username.setText(answer.getUser().getUsername());
@@ -124,6 +126,9 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                         });
                     }
                 }).start();
+            }
+            else{
+                vh_comment.usericon_answer.setBackgroundResource(R.mipmap.ic_launcher);
             }
             vh_comment.username.setText(comments.get(position-1).getUser().getUsername());
             vh_comment.content.setText(comments.get(position-1).getMcontent());

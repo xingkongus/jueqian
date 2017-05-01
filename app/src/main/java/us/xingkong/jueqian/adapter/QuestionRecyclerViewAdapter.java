@@ -113,6 +113,8 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
                         });
                     }
                 }).start();
+            }else{
+                holder.answer_icon.setBackgroundResource(R.mipmap.ic_launcher);
             }
             holder.content.setText(answers.get(position - 1).getMcontent());
             holder.username_answer.setText(answers.get(position - 1).getUser().getUsername());
@@ -185,6 +187,7 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
                     Message msg = new Message();
                     Bundle bundle = new Bundle();
                     bundle.putString("answerID", answers.get(position - 1).getObjectId());
+                    bundle.putString("answer_userID",answers.get(position-1).getUser().getObjectId());
                     msg.setData(bundle);
                     msg.obj = v;
                     msg.what = 6;
