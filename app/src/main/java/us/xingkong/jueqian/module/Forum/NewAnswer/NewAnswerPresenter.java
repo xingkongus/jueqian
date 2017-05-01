@@ -50,7 +50,7 @@ public class NewAnswerPresenter extends BasePresenterImpl implements NewAnswerCo
 
             @Override
             public void onFailure(int i, String s) {
-                mView.showToast("save fail");
+                mView.showToast("网络连接超时");
             }
         });
     }

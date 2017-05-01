@@ -32,15 +32,16 @@ public class NewPresenter extends BasePresenterImpl implements NewContract.Prese
             question.setTAG1_ID(tag1);
             question.setTAG2_ID(tag2);
             question.setState(1);
+            question.setAnswer_count(0);
             question.save(context, new SaveListener() {
                 @Override
                 public void onSuccess() {
-                    mView.showToast("save success");
+                    mView.showToast("添加成功");
                 }
 
                 @Override
                 public void onFailure(int i, String s) {
-
+                    mView.showToast("网络连接超时");
                 }
             });
         }

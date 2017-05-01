@@ -1,20 +1,16 @@
-package us.xingkong.jueqian.module.me.mymainpage.editinfo;
-
-import java.util.List;
+package us.xingkong.jueqian.module.me.mymainpage;
 
 import us.xingkong.jueqian.base.BasePresenter;
 import us.xingkong.jueqian.base.BaseView;
-import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
 
 /**
- * Created by PERFECTLIN on 2017/4/20 0020.
+ * Created by PERFECTLIN on 2017/4/30 0030.
  */
 
-public class EditInfoContract {
-    interface View extends BaseView<EditInfoContract.Presenter> {
+public class MyMainPageContract {
+    interface View extends BaseView<MyMainPageContract.Presenter> {
     }
 
     interface Presenter extends BasePresenter {
-        List<Question> getCollections();
     }
 }

@@ -1,15 +1,15 @@
-package us.xingkong.jueqian.module.me.mymainpage;
+package us.xingkong.jueqian.module.me.mainpage;
 
 import us.xingkong.jueqian.base.BasePresenterImpl;
 
 /**
- * Created by PERFECTLIN on 2017/4/19 0019.
+ * Created by PERFECTLIN on 2017/4/30 0030.
  */
 
-public class MyMainPagePresenter extends BasePresenterImpl implements MyMainPageContract.Presenter {
-    private final MyMainPageContract.View mView;
+public class MainPagePresenter extends BasePresenterImpl implements MainPageContract.Presenter {
+    private final MainPageContract.View mView;
 
-    public MyMainPagePresenter(MyMainPageContract.View view) {
+    public MainPagePresenter(MainPageContract.View view) {
         mView = view;
         this.mView.setPresenter(this);
     }

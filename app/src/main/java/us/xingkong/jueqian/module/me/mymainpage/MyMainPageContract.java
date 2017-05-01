@@ -1,15 +1,16 @@
-package us.xingkong.jueqian.module.me.mymainpage;
+package us.xingkong.jueqian.module.me.mainpage;
 
 import us.xingkong.jueqian.base.BasePresenter;
 import us.xingkong.jueqian.base.BaseView;
 
 /**
- * Created by PERFECTLIN on 2017/4/19 0019.
+ * Created by PERFECTLIN on 2017/4/30 0030.
  */
 
-public class MyMainPageContract {
-    interface View extends BaseView<MyMainPageContract.Presenter> {
+public class MainPageContract {
+    interface View extends BaseView<MainPageContract.Presenter> {
     }
+
     interface Presenter extends BasePresenter {
     }
 }

@@ -1,24 +1,17 @@
-package us.xingkong.jueqian.module.me.mymainpage.editinfo;
-
-import java.util.List;
+package us.xingkong.jueqian.module.me.mymainpage;
 
 import us.xingkong.jueqian.base.BasePresenterImpl;
-import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
+import us.xingkong.jueqian.module.me.mainpage.MainPageContract;
 
 /**
- * Created by PERFECTLIN on 2017/4/20 0020.
+ * Created by PERFECTLIN on 2017/4/30 0030.
  */
-public class EditInfoPresenter extends BasePresenterImpl implements EditInfoContract.Presenter {
-    private final EditInfoContract.View mView;
-    static List<Question> questions;
 
-    public EditInfoPresenter(EditInfoContract.View mView) {
-        this.mView = mView;
+public class MyMainPagePresenter extends BasePresenterImpl implements MyMainPageContract.Presenter {
+    private final MyMainPageContract.View mView;
+
+    public MyMainPagePresenter(MyMainPageContract.View view) {
+        mView = view;
         this.mView.setPresenter(this);
-    }
-
-    @Override
-    public List<Question> getCollections() {
-        return null;
     }
 }

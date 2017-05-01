@@ -40,7 +40,7 @@ public class QuestionPresenter extends BasePresenterImpl implements QuestionCont
                 question.getTAG2_ID();
                 question.getMcontent();
                 question.getMtitle();
-                question.getUser().getObjectId();
+                question.getUser();
                 question.getFocus();
                 Message msg=new Message();
                 msg.what=1;
@@ -50,7 +50,7 @@ public class QuestionPresenter extends BasePresenterImpl implements QuestionCont
 
             @Override
             public void onFailure(int i, String s) {
-                mView.showToast("网络连接错误");
+                mView.showToast("网络连接超时");
             }
         });
 
@@ -70,7 +70,7 @@ public class QuestionPresenter extends BasePresenterImpl implements QuestionCont
             @Override
             public void onSuccess(List<Answer> list) {
                 for(Answer answer:list){
-                    answer.getUser().getUsername();
+                    answer.getUser();
                     answer.getMcontent();
                     answer.getUps();
                     answer.getState();
@@ -83,7 +83,7 @@ public class QuestionPresenter extends BasePresenterImpl implements QuestionCont
 
             @Override
             public void onError(int i, String s) {
-                mView.showToast("网络连接错误");
+                mView.showToast("网络连接超时");
             }
         });
         return answers;
@@ -105,7 +105,7 @@ public class QuestionPresenter extends BasePresenterImpl implements QuestionCont
 
             @Override
             public void onFailure(int i, String s) {
-                mView.showToast("网络连接错误");
+                mView.showToast("网络连接超时");
             }
         });
 
@@ -122,12 +122,75 @@ public class QuestionPresenter extends BasePresenterImpl implements QuestionCont
         user.update(context, new UpdateListener() {
             @Override
             public void onSuccess() {
-                mView.showToast("收藏成功");
+                mView.showToast("已收藏");
             }
 
             @Override
             public void onFailure(int i, String s) {
-                mView.showToast("网络连接错误");
+                mView.showToast("网络连接超时");
+            }
+        });
+    }
+
+    @Override
+    public void addRecentlook(Context context, String questionID,String question_userID,_User user) {
+        if (!question_userID.equals(user.getObjectId())) {
+            Question question = new Question();
+            question.setObjectId(questionID);
+            BmobRelation bmobRelation=new BmobRelation();
+            bmobRelation.add(question);
+            user.setRecentlooks(bmobRelation);
+            user.update(context, new UpdateListener() {
+                @Override
+                public void onSuccess() {
+
+                }
+
+                @Override
+                public void onFailure(int i, String s) {
+                }
+            });
+    }
+    }
+
+    @Override
+    public void quxiaoZan(Context context, String questionID) {
+        _User user=BmobUser.getCurrentUser(context,_User.class);
+        Question question=new Question();
+        question.setObjectId(questionID);
+        BmobRelation bmobRelation=new BmobRelation();
+        bmobRelation.remove(user);
+        question.setLikepeople(bmobRelation);
+        question.update(context, new UpdateListener() {
+            @Override
+            public void onSuccess() {
+                mView.showToast("已取消赞");
+            }
+
+            @Override
+            public void onFailure(int i, String s) {
+                mView.showToast("网络连接超时");
+            }
+        });
+    }
+
+    @Override
+    public void quxiaoShouzan(Context context, String questionID) {
+        _User user=BmobUser.getCurrentUser(context,_User.class);
+        Question question=new Question();
+        question.setObjectId(questionID);
+        BmobRelation bmobRelation=new BmobRelation();
+        bmobRelation.remove(question);
+        user.setCollections(bmobRelation);
+        user.update(context, new UpdateListener() {
+            @Override
+            public void onSuccess() {
+                mView.showToast("已取消收藏");
+            }
+
+            @Override
+            public void onFailure(int i, String s) {
+                mView.showToast("网络连接超时");
             }
         });
     }

@@ -4,93 +4,94 @@
     android:id="@+id/item_forum"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="8dp"
     android:background="?attr/selectableItemBackground"
     android:clickable="true"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_marginTop="8dp">
 
     <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#ffffff"
+        app:cardElevation="0dp"
         app:cardCornerRadius="5dp"
-        app:cardElevation="0dp">
+        android:background="#ffffff"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_margin="12dp"
+        android:orientation="vertical"
+        android:layout_marginBottom="6dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:id="@+id/l1"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="12dp"
-            android:layout_marginBottom="6dp"
-            android:orientation="vertical">
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-            <LinearLayout
-                android:id="@+id/l1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/user_icon_forum"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:background="@mipmap/ic_launcher" />
-
-                <TextView
-                    android:id="@+id/username_forum"
-                    android:layout_width="56dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginStart="8dp"
-                    android:text="菠萝小莫" />
-
-                <ImageView
-                    android:id="@+id/user_state_forum"
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:scaleType="fitXY"
-                    android:src="@mipmap/teacher" />
-            </LinearLayout>
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/user_icon_forum"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@mipmap/ic_launcher" />
 
             <TextView
-                android:id="@+id/title_forum"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="5"
-                android:paddingTop="6dp"
-                android:text="问题标题问题标题问题标题问题标题问题标题问题标题问题标题问题标题问题标题问题标题问题标题问题标题"
-                android:textSize="16dp"
-                android:textStyle="bold" />
-
-            <LinearLayout
+                android:id="@+id/username_forum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:orientation="horizontal">
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:text="菠萝小莫s" />
 
-                <TextView
-                    android:id="@+id/count_answer_forum"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="30 回答" />
-
-                <TextView
-                    android:id="@+id/TAG1_forum"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginStart="8dp"
-                    android:text="android" />
-
-                <TextView
-                    android:id="@+id/TAG2_forum"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginStart="8dp"
-                    android:text="移动开发" />
-            </LinearLayout>
+            <ImageView
+                android:id="@+id/user_state_forum"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:scaleType="fitXY"
+                android:src="@mipmap/teacher" />
         </LinearLayout>
+
+        <TextView
+            android:paddingTop="6dp"
+            android:id="@+id/title_forum"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="5"
+            android:text="问题标题问题标题问题标题问题标题问题标题问题标题问题标题问题标题问题标题问题标题问题标题问题标题"
+            android:textSize="16dp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/count_answer_forum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="30 回答" />
+
+            <TextView
+                android:textColor="@color/colorPrimary"
+                android:id="@+id/TAG1_forum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:text="android" />
+
+            <TextView
+                android:textColor="@color/colorPrimary"
+                android:id="@+id/TAG2_forum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:text="移动开发" />
+        </LinearLayout>
+    </LinearLayout>
     </android.support.v7.widget.CardView>
 </LinearLayout>

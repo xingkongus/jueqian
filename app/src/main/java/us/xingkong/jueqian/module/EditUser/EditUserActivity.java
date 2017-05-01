@@ -32,7 +32,31 @@ import us.xingkong.jueqian.base.BaseActivity;
 
 public class EditUserActivity extends BaseActivity<EditUserContract.Presenter> implements EditUserContract.View {
 
-
+    @BindView(R.id.edit_touxiang)
+    ImageView touxiang;
+    @BindView(R.id.nick_layout)
+    TextInputLayout nick_layout;
+    @BindView(R.id.phone_layout)
+    TextInputLayout phone_layout;
+    @BindView(R.id.email_layout)
+    TextInputLayout email_layout;
+    @BindView(R.id.edit_nick)
+    EditText nick_edit;
+    @BindView(R.id.edit_phone)
+    EditText phone_edit;
+    @BindView(R.id.edit_email)
+    EditText email_edit;
+    @BindView(R.id.save)
+    Button save;
+    @BindView(R.id.radiogroup)
+    RadioGroup radioGroup;
+    String nick;
+    String phone;
+    String email;
+    String sex;
+    Context context;
+    Bitmap bmp;
+    Uri outputFileUri;
 
     @Override
     protected EditUserContract.Presenter createPresenter() {
@@ -42,7 +66,7 @@ public class EditUserActivity extends BaseActivity<EditUserContract.Presenter> i
     @Override
     protected int bindLayout() {
 
-        return R.layout.activity_mymainpage;
+        return R.layout.activity_edit_user;
     }
 
     @Override
@@ -53,6 +77,10 @@ public class EditUserActivity extends BaseActivity<EditUserContract.Presenter> i
     @Override
     protected void initView() {
         setToolbarBackEnable("编辑");
+        nick_layout.setHint("昵称");
+        phone_layout.setHint("手机号");
+        email_layout.setHint("邮箱");
+        context = this;
 
     }
 
@@ -63,77 +91,77 @@ public class EditUserActivity extends BaseActivity<EditUserContract.Presenter> i
 
     @Override
     protected void initEvent() {
-//        save.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                nick = nick_edit.getText().toString();
-//                phone = phone_edit.getText().toString();
-//                email = email_edit.getText().toString();
-//                Uri uri = Uri.parse(MediaStore.Images.Media.insertImage(getContentResolver(), bmp, null, null));
-//                try {
-//                    String url = URLDecoder.decode(String.valueOf(uri), "UTF-8");
-//                    mPresenter.saveUser(context, url, nick, phone, email, sex);
-//                } catch (UnsupportedEncodingException e) {
-//                    e.printStackTrace();
-//                }
-//
-//
-//            }
-//        });
-//        touxiang.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                CharSequence[] items = {"相册", "相机"};
-//                new AlertDialog.Builder(context).setTitle("选择图片来源").setItems(items, new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        if (which == 0) {
-//                            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-//                            intent.setAction(Intent.ACTION_GET_CONTENT);
-//                            intent.setType("image/*");
-//                            startActivityForResult(Intent.createChooser(intent, "选择图片"), 1000);
-//                        } else {
-//
-//                            File file = new File(Environment.getExternalStorageDirectory() + "/juexian", "testphoto.jpg");
-//                            outputFileUri = Uri.fromFile(file);
-//
-//                            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                            startActivityForResult(intent, 1001);
-//                        }
-//                    }
-//                }).create().show();
-//            }
-//        });
-//        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(RadioGroup group, int checkedId) {
-//                int radioButtonId = group.getCheckedRadioButtonId();
-//                RadioButton rb = (RadioButton) EditUserActivity.this.findViewById(radioButtonId);
-//                sex = rb.getText().toString();
-//            }
-//        });
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nick = nick_edit.getText().toString();
+                phone = phone_edit.getText().toString();
+                email = email_edit.getText().toString();
+                Uri uri = Uri.parse(MediaStore.Images.Media.insertImage(getContentResolver(), bmp, null, null));
+                try {
+                    String url = URLDecoder.decode(String.valueOf(uri), "UTF-8");
+                    mPresenter.saveUser(context, url, nick, phone, email, sex);
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        });
+        touxiang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CharSequence[] items = {"相册", "相机"};
+                new AlertDialog.Builder(context).setTitle("选择图片来源").setItems(items, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (which == 0) {
+                            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                            intent.setAction(Intent.ACTION_GET_CONTENT);
+                            intent.setType("image/*");
+                            startActivityForResult(Intent.createChooser(intent, "选择图片"), 1000);
+                        } else {
+
+                            File file = new File(Environment.getExternalStorageDirectory() + "/juexian", "testphoto.jpg");
+                            outputFileUri = Uri.fromFile(file);
+
+                            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            startActivityForResult(intent, 1001);
+                        }
+                    }
+                }).create().show();
+            }
+        });
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                int radioButtonId = group.getCheckedRadioButtonId();
+                RadioButton rb = (RadioButton) EditUserActivity.this.findViewById(radioButtonId);
+                sex = rb.getText().toString();
+            }
+        });
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == 1000) {
-//
-//            if (data == null) {
-//                return;
-//            } else {
-//                Uri uri = data.getData();
-//                ContentResolver cr = this.getContentResolver();
-//                try {
-//                    bmp = BitmapFactory.decodeStream(cr.openInputStream(uri));
-//                    touxiang.setImageBitmap(bmp);
-//                } catch (FileNotFoundException e) {
-//                    e.printStackTrace();
-//                }
-//
-//            }
-//        } else if (requestCode == 1001) {
-//            bmp = (Bitmap) data.getExtras().get("data");
-//            touxiang.setImageBitmap(bmp);
-//        }
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1000) {
+
+            if (data == null) {
+                return;
+            } else {
+                Uri uri = data.getData();
+                ContentResolver cr = this.getContentResolver();
+                try {
+                    bmp = BitmapFactory.decodeStream(cr.openInputStream(uri));
+                    touxiang.setImageBitmap(bmp);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        } else if (requestCode == 1001) {
+            bmp = (Bitmap) data.getExtras().get("data");
+            touxiang.setImageBitmap(bmp);
+        }
     }
 
     @Override

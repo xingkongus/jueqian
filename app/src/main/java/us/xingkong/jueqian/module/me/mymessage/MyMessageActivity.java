@@ -27,7 +27,6 @@ import us.xingkong.jueqian.adapter.MyMessageRecyclerAdapter;
 import us.xingkong.jueqian.base.BaseActivity;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Answer;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Comment;
-import us.xingkong.jueqian.bean.ForumBean.BombBean.NewMessage;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
 
 /**
@@ -41,7 +40,7 @@ public class MyMessageActivity extends BaseActivity<MyMessageContract.Presenter>
     @BindView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout mSwipeRefreshLayout;
 
-    List<NewMessage> messages = new ArrayList<>();
+    List<Comment> answers = new ArrayList<>();
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -70,14 +69,15 @@ public class MyMessageActivity extends BaseActivity<MyMessageContract.Presenter>
     @Override
     protected void prepareData() {
         BmobUser bmobUser = BmobUser.getCurrentUser(JueQianAPP.getAppContext());
-        BmobQuery<NewMessage> query = new BmobQuery<>();
-        query.addWhereRelatedTo("messages", new BmobPointer(bmobUser));
-        query.include("sender.username");
-        query.findObjects(JueQianAPP.getAppContext(), new FindListener<NewMessage>() {
+        BmobQuery<Comment> query = new BmobQuery<>();
+        query.addWhereRelatedTo("comments", new BmobPointer(bmobUser));
+        query.findObjects(JueQianAPP.getAppContext(), new FindListener<Comment>() {
             @Override
-            public void onSuccess(List<NewMessage> list) {
-                messages = list;
+            public void onSuccess(List<Comment> list) {
+                System.out.println("555555555555555555555555"+list.size());
+                answers = list;
                 showToast("获取我的消息列表成功");
+                System.out.println("555555555555555555555555"+answers.size());
                 mHandler.sendEmptyMessage(2);
             }
 
@@ -96,7 +96,7 @@ public class MyMessageActivity extends BaseActivity<MyMessageContract.Presenter>
 
     private void initRecyclerView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setAdapter(new MyMessageRecyclerAdapter(mHandler, messages));
+        mRecyclerView.setAdapter(new MyMessageRecyclerAdapter(mHandler, answers));
         mRecyclerView.addItemDecoration(new DividerItemDecoration(MyMessageActivity.this, DividerItemDecoration.VERTICAL));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
