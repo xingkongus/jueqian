@@ -40,8 +40,9 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/dp_8"
-            android:background="@drawable/editshape"
-            android:text="编辑" />
+            android:background="@color/colorPrimary"
+            android:text="编辑"
+            android:textColor="@color/text_white" />
 
         <RelativeLayout
             android:id="@+id/ry_follow"

@@ -6,7 +6,7 @@
 
     <color name="tab_bgcolor">#ffeeeeee</color>
     <color name="tab_text">#ff797979</color>
-    <color name="bg_color">#ff797979</color>
+    <!--<color name="bg_color">#ff797979</color>-->
 
 
     <color name="text_color">#ffffffff</color>
@@ -14,6 +14,7 @@
     <color name="text_secondary">#87000000</color>
     <color name="text_red">#fa0202</color>
     <color name="text_white">#ffffff</color>
+    <color name="text_username">#000</color>
     <color name="title_color">#000</color>
     <color name="content_color">#000</color>
     <color name="bg_color">#F5F5F5</color>

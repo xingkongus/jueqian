@@ -1,16 +1,16 @@
-package us.xingkong.jueqian.module.me.mymainpage;
+package us.xingkong.jueqian.module.me.mymainpage.editinfo;
 
 import us.xingkong.jueqian.base.BasePresenterImpl;
-import us.xingkong.jueqian.module.me.mainpage.MainPageContract;
+import us.xingkong.jueqian.module.me.mymainpage.MyMainPageContract;
 
 /**
  * Created by PERFECTLIN on 2017/4/30 0030.
  */
 
-public class MyMainPagePresenter extends BasePresenterImpl implements MyMainPageContract.Presenter {
-    private final MyMainPageContract.View mView;
+public class EditInfoPresenter extends BasePresenterImpl implements EditInfoContract.Presenter {
+    private final EditInfoContract.View mView;
 
-    public MyMainPagePresenter(MyMainPageContract.View view) {
+    public EditInfoPresenter(EditInfoContract.View view) {
         mView = view;
         this.mView.setPresenter(this);
     }

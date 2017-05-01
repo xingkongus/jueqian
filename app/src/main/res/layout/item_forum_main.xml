@@ -23,7 +23,7 @@
         android:layout_height="wrap_content">
 
         <LinearLayout
-            android:id="@+id/l1"
+            android:id="@+id/userinfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"

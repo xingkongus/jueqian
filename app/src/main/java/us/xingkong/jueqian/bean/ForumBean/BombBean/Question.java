@@ -118,4 +118,5 @@ public class Question extends BmobObject {
     public void setCollectpeople(BmobRelation collectpeople) {
         this.collectpeople = collectpeople;
     }
+
 }

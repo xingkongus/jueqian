@@ -9,11 +9,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 import butterknife.BindView;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.datatype.BmobPointer;
 import cn.bmob.v3.datatype.BmobRelation;
 import cn.bmob.v3.listener.FindListener;
@@ -24,7 +27,6 @@ import us.xingkong.jueqian.JueQianAPP;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.base.BaseActivity;
 import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
-import us.xingkong.jueqian.module.me.mymainpage.MyMainPagePresenter;
 import us.xingkong.jueqian.module.me.mymainpage.editinfo.EditInfoActivity;
 
 /**
@@ -67,6 +69,7 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
     protected void prepareData() {
         Intent intent = getIntent();
         intentUserID = intent.getStringExtra("intentUserID");
+
     }
 
     @Override
@@ -74,13 +77,43 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
         setToolbar();
         initNickName();
         setFocusButton();
+        setProfile();
 
+    }
+
+    private void setProfile() {
+        BmobQuery<_User> query = new BmobQuery<>();
+        query.addWhereEqualTo("objectId", intentUserID);
+        showToast(intentUserID);
+        query.addQueryKeys("profile");
+        query.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
+        query.findObjects(JueQianAPP.getAppContext(), new FindListener<_User>() {
+            @Override
+            public void onSuccess(List<_User> list) {
+                if (list.size() == 0) {
+                    showToast("当前用户无头像");
+                    return;
+                }
+                BmobFile bmobFile = list.get(0).getProfile();
+                if (bmobFile == null) {
+                    showToast("当前用户无头像");
+                    return;
+                }
+                String profileURL = bmobFile.getUrl();
+                Glide.with(JueQianAPP.getAppContext()).load(profileURL).into(iv_touxiang);
+            }
+
+            @Override
+            public void onError(int i, String s) {
+                showToast("获取头像失败CASE:" + s);
+            }
+        });
     }
 
     private void initNickName() {
         BmobQuery<_User> bmobQuery = new BmobQuery<>();
         bmobQuery.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
-        bmobQuery.getObject(JueQianAPP.getAppContext(), BmobUser.getCurrentUser(JueQianAPP.getAppContext()).getObjectId(), new GetListener<_User>() {
+        bmobQuery.getObject(JueQianAPP.getAppContext(), intentUserID, new GetListener<_User>() {
             @Override
             public void onSuccess(_User user) {
                 showToast("更新用户昵称成功");

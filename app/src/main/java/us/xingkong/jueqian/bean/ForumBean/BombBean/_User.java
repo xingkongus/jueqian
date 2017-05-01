@@ -15,6 +15,8 @@ public class _User extends BmobUser {
     private String blog;//网站
     private BmobFile profile;//头像
     private Integer state;//用户状态
+    private BmobRelation following;
+    private BmobRelation Followers;
     private BmobRelation collections;//我的收藏列表
     private BmobRelation questions;//我的问题列表
     private BmobRelation answers;//我的回答列表
@@ -27,6 +29,22 @@ public class _User extends BmobUser {
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
+    }
+
+    public BmobRelation getFollowing() {
+        return following;
+    }
+
+    public void setFollowing(BmobRelation following) {
+        this.following = following;
+    }
+
+    public BmobRelation getFollowers() {
+        return Followers;
+    }
+
+    public void setFollowers(BmobRelation followers) {
+        Followers = followers;
     }
 
     public BmobRelation getComments() {

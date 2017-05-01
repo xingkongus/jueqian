@@ -6,7 +6,6 @@ import android.view.MenuItem;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.base.BaseActivity;
 
-
 public class AnswerActivity extends BaseActivity<AnswerContract.Presenter> implements AnswerContract.View {
 
 
