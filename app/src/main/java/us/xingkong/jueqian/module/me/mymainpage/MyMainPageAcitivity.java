@@ -39,8 +39,8 @@ import us.xingkong.jueqian.module.me.myrecentlook.MyRecentLookActivity;
 public class MyMainPageAcitivity extends BaseActivity<MyMainPageContract.Presenter> implements MyMainPageContract.View {
     @BindView(R.id.mymainpage_bt_edit)
     Button bt_edit;
-    @BindView(R.id.mymainpage_username)
-    TextView tv_username;
+    @BindView(R.id.mymainpage_nickname)
+    TextView tv_nickname;
     @BindView(R.id.following)
     TextView tv_following;
     @BindView(R.id.followers)
@@ -90,7 +90,7 @@ public class MyMainPageAcitivity extends BaseActivity<MyMainPageContract.Present
             @Override
             public void onSuccess(_User user) {
                 showToast("更新用户昵称成功");
-                tv_username.setText(user.getNickname());
+                tv_nickname.setText(user.getNickname());
             }
 
             @Override

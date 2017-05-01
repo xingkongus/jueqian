@@ -17,6 +17,7 @@ import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobPointer;
 import cn.bmob.v3.datatype.BmobRelation;
 import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.GetListener;
 import cn.bmob.v3.listener.UpdateListener;
 import de.hdodenhof.circleimageview.CircleImageView;
 import us.xingkong.jueqian.JueQianAPP;
@@ -33,8 +34,8 @@ import us.xingkong.jueqian.module.me.mymainpage.editinfo.EditInfoActivity;
 public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> implements MainPageContract.View {
     @BindView(R.id.mainpage_bt_edit)
     Button bt_edit;
-    @BindView(R.id.mainpage_username)
-    TextView tv_username;
+    @BindView(R.id.mainpage_nickname)
+    TextView tv_nickname;
     @BindView(R.id.following)
     TextView tv_following;
     @BindView(R.id.followers)
@@ -71,7 +72,26 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
     @Override
     protected void initView() {
         setToolbar();
+        initNickName();
         setFocusButton();
+
+    }
+
+    private void initNickName() {
+        BmobQuery<_User> bmobQuery = new BmobQuery<>();
+        bmobQuery.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
+        bmobQuery.getObject(JueQianAPP.getAppContext(), BmobUser.getCurrentUser(JueQianAPP.getAppContext()).getObjectId(), new GetListener<_User>() {
+            @Override
+            public void onSuccess(_User user) {
+                showToast("更新用户昵称成功");
+                tv_nickname.setText(user.getNickname());
+            }
+
+            @Override
+            public void onFailure(int i, String s) {
+                showToast("更新用户昵称失败CASE:" + s);
+            }
+        });
     }
 
     private void setToolbar() {
@@ -207,5 +227,11 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        initNickName();
     }
 }

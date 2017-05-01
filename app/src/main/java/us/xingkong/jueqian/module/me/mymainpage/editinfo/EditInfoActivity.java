@@ -37,6 +37,7 @@ import cn.bmob.v3.listener.GetListener;
 import cn.bmob.v3.listener.UpdateListener;
 import cn.bmob.v3.listener.UploadFileListener;
 import de.hdodenhof.circleimageview.CircleImageView;
+import id.zelory.compressor.Compressor;
 import me.iwf.photopicker.PhotoPicker;
 import us.xingkong.jueqian.JueQianAPP;
 import us.xingkong.jueqian.R;
@@ -351,7 +352,9 @@ public class EditInfoActivity extends BaseActivity<EditInfoContract.Presenter> i
             if (data != null) {
                 ArrayList<String> photos = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
                 String photo = photos.get(0);
-                bmobFile = new BmobFile(new File(photo));
+                File file=new File(photo);
+                File zipFile= Compressor.getDefault(JueQianAPP.getAppContext()).compressToFile(file);
+                bmobFile = new BmobFile(zipFile);
                 bmobFile.uploadblock(JueQianAPP.getAppContext(), new UploadFileListener() {
                     @Override
                     public void onSuccess() {
