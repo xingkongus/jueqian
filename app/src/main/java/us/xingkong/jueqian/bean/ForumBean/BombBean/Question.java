@@ -20,8 +20,17 @@ public class Question extends BmobObject {
     private BmobRelation likepeople;
     private BmobRelation collectpeople;/*收藏的人的列表*/
     private BmobRelation focuspeople;/*关注的人的列表*/
-    private Integer state;
+    private Integer state;//0没赞，1已赞
     private Integer answer_count;//回答问题的数量
+    private Integer shouzanFlag;//1已经收藏，0没有收藏
+
+    public Integer getShouzanFlag() {
+        return shouzanFlag;
+    }
+
+    public void setShouzanFlag(Integer shouzanFlag) {
+        this.shouzanFlag = shouzanFlag;
+    }
 
     public Integer getAnswer_count() {
         return answer_count;

@@ -38,7 +38,7 @@ public class NewAnswerPresenter extends BasePresenterImpl implements NewAnswerCo
         answer.setUser(user);
         answer.setQuestion(question);
         answer.setMcontent(newAnswer);
-        answer.setState(1);//用户状态
+        answer.setState(0);//用户状态
         answer.setUps(0);//点赞数
         answer.save(context, new SaveListener() {
             @Override

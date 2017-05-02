@@ -30,7 +30,6 @@ import cn.bmob.v3.listener.UpdateListener;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Answer;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
-import us.xingkong.jueqian.utils.Key;
 
 
 /**
@@ -134,8 +133,8 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
                             .onNegative(new MaterialDialog.SingleButtonCallback() {
                                 @Override
                                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                    if(Key.flag==1) {
-                                        Answer answer = new Answer();
+                                    if(answers.get(position-1).getState()==0) {
+                                        final Answer answer = new Answer();
                                         answer.increment("ups");
                                         answer.update(context, answers.get(position - 1).getObjectId(), new UpdateListener() {
                                             @Override
@@ -143,7 +142,14 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
                                                 String a = (String) holder.like.getText();
                                                 holder.like.setText(String.valueOf((Integer.parseInt(a)) + 1));
                                                 holder.like.setTextColor(Color.parseColor("#303F9F"));
-                                                Key.flag=0;
+                                                Message message=new Message();
+                                                Bundle bundle=new Bundle();
+                                                bundle.putString("answerID",answers.get(position-1).getObjectId());
+                                                bundle.putInt("flag",0);
+                                                message.setData(bundle);
+                                                message.what=7;
+                                                mHandler.sendMessage(message);
+                                                answers.get(position-1).setState(1);
                                             }
 
                                             @Override
@@ -158,7 +164,7 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
                             }).onPositive(new MaterialDialog.SingleButtonCallback() {
                         @Override
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            if(Key.flag==0) {
+                            if(answers.get(position-1).getState()==1) {
                                 Answer answer = new Answer();
                                 answer.increment("ups", -1);
                                 answer.update(context, answers.get(position - 1).getObjectId(), new UpdateListener() {
@@ -167,7 +173,14 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
                                         String a = (String) holder.like.getText();
                                         holder.like.setText(String.valueOf((Integer.parseInt(a)) - 1));
                                         holder.like.setTextColor(Color.parseColor("#000000"));
-                                        Key.flag=1;
+                                        Message message=new Message();
+                                        Bundle bundle=new Bundle();
+                                        bundle.putString("answerID",answers.get(position-1).getObjectId());
+                                        bundle.putInt("flag",1);
+                                        message.setData(bundle);
+                                        message.what=7;
+                                        mHandler.sendMessage(message);
+                                        answers.get(position-1).setState(0);
                                     }
 
                                     @Override

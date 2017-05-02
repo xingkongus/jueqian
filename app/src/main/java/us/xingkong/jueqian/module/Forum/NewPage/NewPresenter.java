@@ -31,8 +31,9 @@ public class NewPresenter extends BasePresenterImpl implements NewContract.Prese
             question.setMtitle(title);
             question.setTAG1_ID(tag1);
             question.setTAG2_ID(tag2);
-            question.setState(1);
+            question.setState(0);
             question.setAnswer_count(0);
+            question.setShouzanFlag(0);
             question.save(context, new SaveListener() {
                 @Override
                 public void onSuccess() {
