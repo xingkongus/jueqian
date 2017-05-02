@@ -20,9 +20,8 @@ import cn.bmob.v3.datatype.BmobPointer;
 import cn.bmob.v3.listener.FindListener;
 import us.xingkong.jueqian.JueQianAPP;
 import us.xingkong.jueqian.R;
-import us.xingkong.jueqian.adapter.MyCollectionAdapter;
+import us.xingkong.jueqian.adapter.FollowingAdapter;
 import us.xingkong.jueqian.base.BaseActivity;
-import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
 import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
 
 /**
@@ -33,7 +32,7 @@ public class FollowingActivity extends BaseActivity<FollowingContract.Presenter>
     @BindView(R.id.recyclerview)
     RecyclerView mRecyclerView;
 
-    private List<Question> questions = new ArrayList<>();
+    private List<_User> followings = new ArrayList<>();
     private String intentUserID;
 
     private Handler mHandler = new Handler() {
@@ -44,13 +43,13 @@ public class FollowingActivity extends BaseActivity<FollowingContract.Presenter>
                 case 1:
                     initRecyclerView();
                 case 2:
-                    myCollectionAdapter.notifyDataSetChanged();
+                    followingAdapter.notifyDataSetChanged();
                     break;
             }
         }
     };
 
-    MyCollectionAdapter myCollectionAdapter;
+    private FollowingAdapter followingAdapter;
 
     @Override
     protected FollowingContract.Presenter createPresenter() {
@@ -68,19 +67,20 @@ public class FollowingActivity extends BaseActivity<FollowingContract.Presenter>
         intentUserID = intent.getStringExtra("intentUserID");
         _User user = new _User();
         user.setObjectId(intentUserID);
-        BmobQuery<Question> query = new BmobQuery<Question>();
-        query.addWhereRelatedTo("collections", new BmobPointer(user));
+        BmobQuery<_User> query = new BmobQuery<_User>();
+        query.addWhereRelatedTo("following", new BmobPointer(user));
         query.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
-        query.findObjects(JueQianAPP.getAppContext(), new FindListener<Question>() {
+        query.findObjects(JueQianAPP.getAppContext(), new FindListener<_User>() {
             @Override
-            public void onSuccess(List<Question> list) {
-                questions = list;
+            public void onSuccess(List<_User> list) {
+                showToast("获取关注的人成功");
+                followings = list;
                 mHandler.sendEmptyMessage(1);
             }
 
             @Override
             public void onError(int i, String s) {
-                showToast("获取收藏表失败");
+                showToast("获取关注的人失败" + s);
             }
         });
 
@@ -93,9 +93,9 @@ public class FollowingActivity extends BaseActivity<FollowingContract.Presenter>
     }
 
     private void initRecyclerView() {
-        myCollectionAdapter = new MyCollectionAdapter(mHandler, questions);
+        followingAdapter = new FollowingAdapter(mHandler, followings);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setAdapter(myCollectionAdapter);
+        mRecyclerView.setAdapter(followingAdapter);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(FollowingActivity.this, DividerItemDecoration.VERTICAL));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
@@ -104,7 +104,7 @@ public class FollowingActivity extends BaseActivity<FollowingContract.Presenter>
     private void setToolbar() {
         ActionBar acb = getSupportActionBar();
         acb.setDisplayHomeAsUpEnabled(true);
-        acb.setTitle("我的收藏");
+        acb.setTitle("关注的人");
     }
 
     @Override

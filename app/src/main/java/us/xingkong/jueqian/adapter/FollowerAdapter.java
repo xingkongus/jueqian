@@ -13,17 +13,20 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobRelation;
 import cn.bmob.v3.listener.UpdateListener;
+import de.hdodenhof.circleimageview.CircleImageView;
 import us.xingkong.jueqian.JueQianAPP;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
 import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
 import us.xingkong.jueqian.module.Forum.QuestionPage.QuestionActivity;
+import us.xingkong.jueqian.module.me.mainpage.MainPageAcitivity;
 
 /**
  * Created by PERFECTLIN on 2017/1/11 0011.
@@ -41,66 +44,20 @@ public class FollowerAdapter extends RecyclerView.Adapter<FollowerAdapter.MyView
 
     @Override
     public FollowerAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new FollowerAdapter.MyViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_mycollection, parent, false));
+        return new FollowerAdapter.MyViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_follower, parent, false));
     }
 
     @Override
     public void onBindViewHolder(FollowerAdapter.MyViewHolder holder, final int position) {
-//        holder.tv_questiontitle.setText(followers.get(position).getMtitle());
+        Glide.with(JueQianAPP.getAppContext()).load(followers.get(position).getProfile().getUrl()).into(holder.civ_touxiang);
+        holder.tv_nickname.setText(followers.get(position).getNickname());
 
-        holder.layout.setOnClickListener(new View.OnClickListener() {
+        holder.item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String questionID;
-                questionID = followers.get(position).getObjectId();
-                Intent intent = new Intent(JueQianAPP.getAppContext(), QuestionActivity.class);
-                intent.putExtra("questionid", questionID);
+                Intent intent = new Intent(JueQianAPP.getAppContext(), MainPageAcitivity.class);
+                intent.putExtra("intentUserID", followers.get(position).getObjectId());
                 JueQianAPP.getAppContext().startActivity(intent);
-            }
-        });
-        holder.layout.setLongClickable(true);
-        holder.layout.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                new MaterialDialog.Builder(view.getContext())
-                        .title("提示")
-                        .content("是否从收藏列表中删除？")
-                        .negativeText("取消")
-                        .positiveText("确认")
-                        .onPositive(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                _User user = new _User();
-                                user.setObjectId(BmobUser.getCurrentUser(JueQianAPP.getAppContext()).getObjectId());
-                                final Question question = new Question();
-                                question.setObjectId(followers.get(position).getObjectId());
-                                BmobRelation bmobRelation = new BmobRelation();
-                                bmobRelation.remove(question);
-                                user.setCollections(bmobRelation);
-                                user.update(JueQianAPP.getAppContext(), new UpdateListener() {
-                                    @Override
-                                    public void onSuccess() {
-                                        followers.remove(position);
-                                        notifyItemRemoved(position);
-                                        notifyItemRangeChanged(position, followers.size());
-                                        Toast.makeText(JueQianAPP.getAppContext(), "删除收藏成功", Toast.LENGTH_SHORT).show();
-                                        mHandler.sendEmptyMessage(2);
-                                    }
-
-                                    @Override
-                                    public void onFailure(int i, String s) {
-                                        Toast.makeText(JueQianAPP.getAppContext(), "取消收藏删除失败CASE:" + s, Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-
-                            }
-                        })
-                        .onNegative(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            }
-                        }).show();
-                return false;
             }
         });
 
@@ -118,13 +75,15 @@ public class FollowerAdapter extends RecyclerView.Adapter<FollowerAdapter.MyView
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
-        private TextView tv_questiontitle;
-        private RelativeLayout layout;
+        private TextView tv_nickname;
+        private RelativeLayout item;
+        private CircleImageView civ_touxiang;
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            tv_questiontitle = (TextView) itemView.findViewById(R.id.item_mycollection_tv_questiontitle);
-            layout = (RelativeLayout) itemView.findViewById(R.id.item);
+            tv_nickname = (TextView) itemView.findViewById(R.id.item_follower_tv_nickname);
+            item = (RelativeLayout) itemView.findViewById(R.id.item_follower);
+            civ_touxiang = (CircleImageView) itemView.findViewById(R.id.item_follower_civ_touxiang);
         }
     }
 }

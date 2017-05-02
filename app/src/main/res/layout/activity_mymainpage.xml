@@ -23,7 +23,7 @@
             android:src="@mipmap/ic_launcher" />
 
         <TextView
-            android:id="@+id/mymainpage_nickname"
+            android:id="@+id/mymainpage_tv_nickname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@id/mymainpage_touxiang"
@@ -52,7 +52,7 @@
             android:layout_marginTop="@dimen/dp_16">
 
             <TextView
-                android:id="@+id/mymainpage_following_num"
+                android:id="@+id/mymainpage_tv_following_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_16"
@@ -61,10 +61,10 @@
                 android:textSize="@dimen/sp_16" />
 
             <TextView
-                android:id="@+id/mymainpage_tv_followers"
+                android:id="@+id/mymainpage_tv_following"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/mymainpage_following_num"
+                android:layout_below="@id/mymainpage_tv_following_count"
                 android:layout_marginLeft="@dimen/dp_16"
                 android:layout_marginTop="@dimen/dp_4"
                 android:text="关注"
@@ -80,23 +80,23 @@
             android:layout_toRightOf="@id/mymainpage_ry_following">
 
             <TextView
-                android:id="@+id/mymainpage_follower_num"
+                android:id="@+id/mymainpage_tv_follower_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/follow"
+                android:layout_alignLeft="@+id/mymainpage_tv_follower"
                 android:layout_alignParentTop="true"
                 android:text="0"
                 android:textColor="@color/text_username"
                 android:textSize="@dimen/sp_16" />
 
             <TextView
-                android:id="@+id/follow"
+                android:id="@+id/mymainpage_tv_follower"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/mymainpage_follower_num"
+                android:layout_below="@id/mymainpage_tv_follower_count"
                 android:layout_marginLeft="@dimen/dp_16"
                 android:layout_marginTop="@dimen/dp_4"
-                android:text="关注者"
+                android:text="粉丝"
                 android:textSize="@dimen/sp_16" />
         </RelativeLayout>
 
@@ -117,6 +117,7 @@
             android:padding="@dimen/dp_12">
 
             <TextView
+                android:id="@+id/mymainpage_collection_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -129,7 +130,7 @@
                 android:textSize="@dimen/sp_16" />
 
             <TextView
-                android:id="@+id/mymainpage_collection_count"
+                android:id="@+id/collectioncount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"

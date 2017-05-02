@@ -1,19 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    android:id="@+id/item"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_following"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="@dimen/dp_16">
 
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/item_following_civ_touxiang"
+        android:layout_width="@dimen/dp_48"
+        android:layout_height="@dimen/dp_48"
+        android:src="@mipmap/ic_launcher" />
+
     <TextView
-        android:id="@+id/item_mycollection_tv_questiontitle"
+        android:id="@+id/item_following_tv_nickname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:text="你为什么是一个傻逼？你为什么是一个傻逼？"
+        android:layout_marginLeft="@dimen/dp_16"
+        android:layout_marginRight="@dimen/dp_16"
+        android:layout_toRightOf="@id/item_following_civ_touxiang"
+        android:gravity="center"
+        android:text="Lamyuk"
         android:textColor="#000000"
-        android:textSize="@dimen/sp_18" />
+        android:textSize="@dimen/sp_20" />
 
 
 </RelativeLayout>

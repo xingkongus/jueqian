@@ -34,7 +34,7 @@ public class FollowerActivity extends BaseActivity<FollowerContract.Presenter> i
     @BindView(R.id.recyclerview)
     RecyclerView mRecyclerView;
 
-    FollowerAdapter followerAdapter;
+    private FollowerAdapter followerAdapter;
     private List<_User> followers = new ArrayList<>();
     private String intentUserID;
 
@@ -70,18 +70,19 @@ public class FollowerActivity extends BaseActivity<FollowerContract.Presenter> i
         _User user = new _User();
         user.setObjectId(intentUserID);
         BmobQuery<_User> query = new BmobQuery<_User>();
-        query.addWhereRelatedTo("followers", new BmobPointer(user));
+        query.addWhereRelatedTo("following", new BmobPointer(user));
         query.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
         query.findObjects(JueQianAPP.getAppContext(), new FindListener<_User>() {
             @Override
             public void onSuccess(List<_User> list) {
+                showToast("获取粉丝成功");
                 followers = list;
                 mHandler.sendEmptyMessage(1);
             }
 
             @Override
             public void onError(int i, String s) {
-                showToast("获取收藏表失败");
+                showToast("获取粉丝失败CASE:" + s);
             }
         });
 

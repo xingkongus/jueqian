@@ -7,6 +7,7 @@ import android.support.v7.widget.CardView;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -28,6 +29,8 @@ import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.base.BaseActivity;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
 import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
+import us.xingkong.jueqian.module.me.follower.FollowerActivity;
+import us.xingkong.jueqian.module.me.following.FollowingActivity;
 import us.xingkong.jueqian.module.me.mycollection.MyCollectionActivity;
 import us.xingkong.jueqian.module.me.mymainpage.editinfo.EditInfoActivity;
 import us.xingkong.jueqian.module.me.myrecentlook.MyRecentLookActivity;
@@ -53,6 +56,10 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
     CardView rencentlooks;
     @BindView(R.id.collectioncount)
     TextView tv_collectioncount;
+    @BindView(R.id.mainpage_ry_following)
+    RelativeLayout ry_following;
+    @BindView(R.id.mainpage_ry_follower)
+    RelativeLayout ry_follower;
 
     private String intentUserID = null;
     private _User follow_user;
@@ -76,7 +83,7 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
         _User user = new _User();
         user.setObjectId(intentUserID);
         BmobQuery<_User> query_follower = new BmobQuery<_User>();
-        query_follower.addWhereRelatedTo("followes", new BmobPointer(user));
+        query_follower.addWhereRelatedTo("followers", new BmobPointer(user));
         query_follower.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
         query_follower.findObjects(JueQianAPP.getAppContext(), new FindListener<_User>() {
             @Override
@@ -117,6 +124,32 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
         setProfile();
         setCollection();
         setRecentLooks();
+        toFollowing();
+        toFollower();
+
+    }
+
+    private void toFollower() {
+        ry_follower.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(JueQianAPP.getAppContext(), FollowerActivity.class);
+                intent.putExtra("intentUserID", intentUserID);
+                startActivity(intent);
+            }
+        });
+
+    }
+
+    private void toFollowing() {
+        ry_following.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(JueQianAPP.getAppContext(), FollowingActivity.class);
+                intent.putExtra("intentUserID", intentUserID);
+                startActivity(intent);
+            }
+        });
 
     }
 
@@ -233,16 +266,16 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
             follow_user.setObjectId(BmobUser.getCurrentUser(JueQianAPP.getAppContext()).getObjectId());
             befollowed_user.setObjectId(intentUserID);
 
-            query.addWhereRelatedTo("following", new BmobPointer(befollowed_user));
+            query.addWhereEqualTo("following", new BmobPointer(befollowed_user));
+            query.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
             query.findObjects(JueQianAPP.getAppContext(), new FindListener<_User>() {
                 @Override
                 public void onSuccess(List<_User> list) {
                     if (list.size() == 0) {
-                        bt_edit.setText("关注+");
+                        bt_edit.setText("关注 +");
                         showToast("未关注此用户" + list.size());
                     } else if (list.size() == 1) {
                         bt_edit.setText("取消关注");
-                        bt_edit.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                         showToast("已关注此用户" + list.size());
                     }
 
@@ -264,9 +297,9 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
                         follow_user.update(JueQianAPP.getAppContext(), new UpdateListener() {
                             @Override
                             public void onSuccess() {
-                                bt_edit.setText("关注+");
-                                bt_edit.setTextColor(getResources().getColor(R.color.text_primary));
-                                bt_edit.setBackgroundColor(getResources().getColor(R.color.text_white));
+                                bt_edit.setText("关注 +");
+//                                bt_edit.setTextColor(getResources().getColor(R.color.text_primary));
+//                                bt_edit.setBackgroundColor(getResources().getColor(R.color.text_white));
                                 showToast("取消关注成功！");
                             }
 
@@ -276,8 +309,7 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
                             }
                         });
                     }
-                    if (bt_edit.getText().equals("关注+")) {
-                        showToast("befollowed_ID:" + befollowed_user.getObjectId() + "  follow_ID:" + follow_user.getObjectId());
+                    if (bt_edit.getText().equals("关注 +")) {
                         //添加关注者的多对多关联
                         BmobRelation bmobRelation1 = new BmobRelation();
                         bmobRelation1.add(befollowed_user);
@@ -286,8 +318,6 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
                             @Override
                             public void onSuccess() {
                                 bt_edit.setText("取消关注");
-                                bt_edit.setTextColor(getResources().getColor(R.color.text_white));
-                                bt_edit.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                                 showToast("关注成功");
                             }
 
@@ -296,6 +326,7 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
                                 showToast("关注失败CASE:" + s);
                             }
                         });
+
                         //添加被关注者的多对多关联
                         BmobRelation bmobRelation = new BmobRelation();
                         bmobRelation.add(follow_user);

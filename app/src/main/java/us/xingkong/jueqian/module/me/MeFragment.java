@@ -159,20 +159,6 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
             }
         });
 
-//        String j = " {\"appKey\":\"0f9a062b723b72b09a2543f2c6b81090\",\"tableName\":\"NewMessage\",\"objectId\":\"\",\"action\":\"updateTable\",\"data\":{\"TYPE\":1,\"content\":\"new 1\",\"createdAt\":\"2017-05-01 16:33:29\",\"objectId\":\"Xjoe999R\",\"receiver\":{\"__type\":\"Pointer\",\"className\":\"_User\",\"objectId\":\"7xl30002\"},\"sender\":{\"__type\":\"Pointer\",\"className\":\"_User\",\"objectId\":\"89b961ad57\"},\"updatedAt\":\"2017-05-01 16:33:52\"}}";
-
-//        try {
-//            JSONObject jsonObject = new JSONObject(j);
-//            JSONObject dataObject = jsonObject.getJSONObject("data");
-//            JSONObject receiverObj = dataObject.getJSONObject("receiver");
-//            JSONObject senderObj = dataObject.getJSONObject("sender");
-//            String s1 = receiverObj.getString("objectId");
-//            String s2 = senderObj.getString("objectId");
-//            System.out.println("RRRRRRRRRRRRRRRRRRRRRR:  S1:"+s1);
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-
     }
 
     private void initNickName() {

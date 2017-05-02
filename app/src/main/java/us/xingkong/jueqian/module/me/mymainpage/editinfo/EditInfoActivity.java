@@ -197,6 +197,8 @@ public class EditInfoActivity extends BaseActivity<EditInfoContract.Presenter> i
             public void onClick(View view) {
                 new MaterialDialog.Builder(view.getContext())
                         .title("修改网站")
+                        .negativeText("取消")
+                        .positiveText("确认")
                         .input("", "", new MaterialDialog.InputCallback() {
                             @Override
                             public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
@@ -223,6 +225,8 @@ public class EditInfoActivity extends BaseActivity<EditInfoContract.Presenter> i
             public void onClick(View view) {
                 new MaterialDialog.Builder(view.getContext())
                         .title("修改简介")
+                        .negativeText("取消")
+                        .positiveText("确认")
                         .input("", "", new MaterialDialog.InputCallback() {
                             @Override
                             public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
@@ -367,20 +371,6 @@ public class EditInfoActivity extends BaseActivity<EditInfoContract.Presenter> i
         }
     }
 
-    private Bitmap zipPic(String path) {
-        Bitmap zippic = BitmapFactory.decodeFile(path);
-        int width = zippic.getWidth();
-        int height = zippic.getHeight();
-        // 设置想要的大小
-        int newWidth = 50;
-        int newHeight = 50;
-        // 计算缩放比例
-        float scaleWidth = ((float) newWidth) / width;
-        float scaleHeight = ((float) newHeight) / height;
-        Matrix matrix = new Matrix();
-        matrix.postScale(scaleWidth, scaleHeight);
-        return Bitmap.createBitmap(zippic, 0, 0, width, height, matrix, true);
-    }
 
     @Override
     protected void onStart() {

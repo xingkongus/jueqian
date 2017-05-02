@@ -29,6 +29,8 @@ import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.base.BaseActivity;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
 import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
+import us.xingkong.jueqian.module.me.follower.FollowerActivity;
+import us.xingkong.jueqian.module.me.following.FollowingActivity;
 import us.xingkong.jueqian.module.me.mycollection.MyCollectionActivity;
 import us.xingkong.jueqian.module.me.mymainpage.editinfo.EditInfoActivity;
 import us.xingkong.jueqian.module.me.myrecentlook.MyRecentLookActivity;
@@ -40,11 +42,11 @@ import us.xingkong.jueqian.module.me.myrecentlook.MyRecentLookActivity;
 public class MyMainPageAcitivity extends BaseActivity<MyMainPageContract.Presenter> implements MyMainPageContract.View {
     @BindView(R.id.mymainpage_bt_edit)
     Button bt_edit;
-    @BindView(R.id.mymainpage_nickname)
+    @BindView(R.id.mymainpage_tv_nickname)
     TextView tv_nickname;
-    @BindView(R.id.mymainpage_following_num)
+    @BindView(R.id.mymainpage_tv_following_count)
     TextView tv_following;
-    @BindView(R.id.mymainpage_follower_num)
+    @BindView(R.id.mymainpage_tv_follower_count)
     TextView tv_followers;
     @BindView(R.id.mymainpage_touxiang)
     CircleImageView iv_touxiang;
@@ -81,13 +83,13 @@ public class MyMainPageAcitivity extends BaseActivity<MyMainPageContract.Present
         _User user = new _User();
         user.setObjectId(intentUserID);
         BmobQuery<_User> query_follower = new BmobQuery<_User>();
-        query_follower.addWhereRelatedTo("followes", new BmobPointer(user));
+        query_follower.addWhereRelatedTo("followers", new BmobPointer(user));
         query_follower.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
         query_follower.findObjects(JueQianAPP.getAppContext(), new FindListener<_User>() {
             @Override
             public void onSuccess(List<_User> list) {
-                showToast("获取粉丝成功"+list.size());
-                tv_followers.setText(""+list.size());
+                showToast("获取粉丝成功" + list.size());
+                tv_followers.setText("" + list.size());
             }
 
             @Override
@@ -102,8 +104,8 @@ public class MyMainPageAcitivity extends BaseActivity<MyMainPageContract.Present
         query_following.findObjects(JueQianAPP.getAppContext(), new FindListener<_User>() {
             @Override
             public void onSuccess(List<_User> list) {
-                showToast("获取关注的人成功"+list.size());
-                tv_following.setText(""+list.size());
+                showToast("获取关注的人成功" + list.size());
+                tv_following.setText("" + list.size());
             }
 
             @Override
@@ -121,6 +123,30 @@ public class MyMainPageAcitivity extends BaseActivity<MyMainPageContract.Present
         setCollection();
         setRencentLooks();
         setProfile();
+        toFollowing();
+        toFollower();
+    }
+
+    private void toFollower() {
+        ry_follower.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(JueQianAPP.getAppContext(), FollowerActivity.class);
+                intent.putExtra("intentUserID", intentUserID);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void toFollowing() {
+        ry_following.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(JueQianAPP.getAppContext(), FollowingActivity.class);
+                intent.putExtra("intentUserID", intentUserID);
+                startActivity(intent);
+            }
+        });
     }
 
     private void initNickName() {
@@ -175,6 +201,7 @@ public class MyMainPageAcitivity extends BaseActivity<MyMainPageContract.Present
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(JueQianAPP.getAppContext(), MyCollectionActivity.class);
+                intent.putExtra("intentUserID", intentUserID);
                 startActivity(intent);
             }
         });
