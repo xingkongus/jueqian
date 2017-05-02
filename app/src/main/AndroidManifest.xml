@@ -54,6 +54,8 @@
         <activity
             android:name="me.iwf.photopicker.PhotoPickerActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity android:name=".module.me.follower.FollowerActivity" />
+        <activity android:name=".module.me.following.FollowingActivity" />
 
         <activity
             android:name="me.iwf.photopicker.PhotoPagerActivity"

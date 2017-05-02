@@ -15,8 +15,6 @@ public class _User extends BmobUser {
     private String blog;//网站
     private BmobFile profile;//头像
     private Integer state;//用户状态
-    private BmobRelation following;
-    private BmobRelation Followers;
     private BmobRelation collections;//我的收藏列表
     private BmobRelation questions;//我的问题列表
     private BmobRelation answers;//我的回答列表
@@ -25,6 +23,94 @@ public class _User extends BmobUser {
     private BmobRelation following;//关注的人
     private BmobRelation followers;//关注者
     private BmobRelation messages;//新消息
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public String getSelfsign() {
+        return selfsign;
+    }
+
+    public void setSelfsign(String selfsign) {
+        this.selfsign = selfsign;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getBlog() {
+        return blog;
+    }
+
+    public void setBlog(String blog) {
+        this.blog = blog;
+    }
+
+    public BmobFile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(BmobFile profile) {
+        this.profile = profile;
+    }
+
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
+    }
+
+    public BmobRelation getCollections() {
+        return collections;
+    }
+
+    public void setCollections(BmobRelation collections) {
+        this.collections = collections;
+    }
+
+    public BmobRelation getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(BmobRelation questions) {
+        this.questions = questions;
+    }
+
+    public BmobRelation getAnswers() {
+        return answers;
+    }
+
+    public void setAnswers(BmobRelation answers) {
+        this.answers = answers;
+    }
+
+    public BmobRelation getRecentlooks() {
+        return recentlooks;
+    }
+
+    public void setRecentlooks(BmobRelation recentlooks) {
+        this.recentlooks = recentlooks;
+    }
+
+    public BmobRelation getComments() {
+        return comments;
+    }
+
+    public void setComments(BmobRelation comments) {
+        this.comments = comments;
+    }
 
     public BmobRelation getFollowing() {
         return following;
@@ -48,110 +134,5 @@ public class _User extends BmobUser {
 
     public void setMessages(BmobRelation messages) {
         this.messages = messages;
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
-
-    public BmobRelation getFollowing() {
-        return following;
-    }
-
-    public void setFollowing(BmobRelation following) {
-        this.following = following;
-    }
-
-    public BmobRelation getFollowers() {
-        return Followers;
-    }
-
-    public void setFollowers(BmobRelation followers) {
-        Followers = followers;
-    }
-
-    public BmobRelation getComments() {
-        return comments;
-    }
-
-    public void setComments(BmobRelation comments) {
-        this.comments = comments;
-    }
-
-    public BmobRelation getRecentlooks() {
-        return recentlooks;
-    }
-
-    public String getBlog() {
-        return blog;
-    }
-
-    public void setBlog(String blog) {
-        this.blog = blog;
-    }
-
-    public void setRecentlooks(BmobRelation recentlooks) {
-        this.recentlooks = recentlooks;
-
-    }
-
-    public BmobRelation getAnswers() {
-        return answers;
-    }
-
-    public void setAnswers(BmobRelation answers) {
-        this.answers = answers;
-    }
-
-    public BmobRelation getQuestions() {
-        return questions;
-    }
-
-    public void setQuestions(BmobRelation questions) {
-        this.questions = questions;
-    }
-
-    public BmobRelation getCollections() {
-        return collections;
-    }
-
-    public void setCollections(BmobRelation collections) {
-        this.collections = collections;
-    }
-
-    public Integer getState() {
-        return state;
-    }
-
-    public void setState(Integer state) {
-        this.state = state;
-    }
-
-    public BmobFile getProfile() {
-        return profile;
-    }
-
-    public void setProfile(BmobFile profile) {
-        this.profile = profile;
-    }
-
-    public String getSelfsign() {
-        return selfsign;
-    }
-
-    public void setSelfsign(String selfsign) {
-        this.selfsign = selfsign;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
     }
 }

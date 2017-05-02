@@ -184,6 +184,8 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
 
     private void initNickName() {
         BmobQuery<_User> bmobQuery = new BmobQuery<>();
+        _User bmobUser = BmobUser.getCurrentUser(JueQianAPP.getAppContext(), _User.class);
+        if (bmobUser == null) return;
         bmobQuery.getObject(JueQianAPP.getAppContext(), BmobUser.getCurrentUser(JueQianAPP.getAppContext()).getObjectId(), new GetListener<_User>() {
             @Override
             public void onSuccess(_User user) {
@@ -199,6 +201,7 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
     }
 
     private void toSignOut() {
+        if (!isLogin) mCardView_signout.setVisibility(View.INVISIBLE);
         mCardView_signout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -239,6 +242,7 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
             public void onClick(View view) {
                 if (isLogin) {
                     Intent intent = new Intent(getContext(), MyCollectionActivity.class);
+                    intent.putExtra("intentUserID", BmobUser.getCurrentUser(JueQianAPP.getAppContext()).getObjectId());
                     startActivity(intent);
                 } else {
                     Toast.makeText(JueQianAPP.getAppContext(), "请先登录", Toast.LENGTH_SHORT).show();
@@ -254,6 +258,7 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
             public void onClick(View view) {
                 if (isLogin) {
                     Intent intent = new Intent(getContext(), MyAnswerActivity.class);
+                    intent.putExtra("intentUserID", BmobUser.getCurrentUser(JueQianAPP.getAppContext()).getObjectId());
                     startActivity(intent);
                 } else {
                     Toast.makeText(JueQianAPP.getAppContext(), "请先登录", Toast.LENGTH_SHORT).show();
@@ -269,6 +274,7 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
             public void onClick(View view) {
                 if (isLogin) {
                     Intent intent = new Intent(getContext(), MyRecentLookActivity.class);
+                    intent.putExtra("intentUserID", BmobUser.getCurrentUser(JueQianAPP.getAppContext()).getObjectId());
                     startActivity(intent);
                 } else {
                     Toast.makeText(JueQianAPP.getAppContext(), "请先登录", Toast.LENGTH_SHORT).show();
@@ -335,6 +341,7 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
                     startActivity(intent);
                 } else {
                     Intent intent = new Intent(getContext(), MyMainPageAcitivity.class);
+                    intent.putExtra("intentUserID", BmobUser.getCurrentUser(JueQianAPP.getAppContext()).getObjectId());
                     intent.putExtra("profileURL", profileURL);
                     startActivity(intent);
                 }

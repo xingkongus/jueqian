@@ -20,7 +20,7 @@
             android:layout_height="65dp"
             android:layout_marginLeft="@dimen/dp_16"
             android:layout_marginTop="@dimen/dp_16"
-            android:src="@mipmap/touxiang" />
+            android:src="@mipmap/ic_launcher" />
 
         <TextView
             android:id="@+id/mainpage_nickname"
@@ -29,7 +29,7 @@
             android:layout_alignBottom="@id/mainpage_touxiang"
             android:layout_marginLeft="@dimen/dp_16"
             android:layout_toRightOf="@id/mainpage_touxiang"
-            android:text="我是用户名"
+            android:text="前往编辑你的昵称"
             android:textColor="@color/text_username"
             android:textSize="@dimen/sp_18" />
 
@@ -52,19 +52,19 @@
             android:layout_marginTop="@dimen/dp_16">
 
             <TextView
-                android:id="@+id/following"
+                android:id="@+id/mainpage_tv_following_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_16"
-                android:text="5"
+                android:text="0"
                 android:textColor="@color/text_username"
                 android:textSize="@dimen/sp_16" />
 
             <TextView
-                android:id="@+id/followers"
+                android:id="@+id/mainpage_tv_following"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/following"
+                android:layout_below="@id/mainpage_tv_following_count"
                 android:layout_marginLeft="@dimen/dp_16"
                 android:layout_marginTop="@dimen/dp_4"
                 android:text="关注"
@@ -72,7 +72,7 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/ry_follower"
+            android:id="@+id/mainpage_ry_follower"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/mainpage_touxiang"
@@ -80,21 +80,20 @@
             android:layout_toRightOf="@id/ry_follow">
 
             <TextView
-                android:id="@+id/follownum2"
+                android:id="@+id/mainpage_tv_follower_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/follow"
+                android:layout_alignLeft="@+id/mainpage_tv_follower"
                 android:layout_alignParentTop="true"
-                android:layout_alignStart="@+id/follow"
-                android:text="66"
+                android:text="00"
                 android:textColor="@color/text_username"
                 android:textSize="@dimen/sp_16" />
 
             <TextView
-                android:id="@+id/follow"
+                android:id="@+id/mainpage_tv_follower"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/follownum2"
+                android:layout_below="@id/mainpage_tv_follower_count"
                 android:layout_marginLeft="@dimen/dp_16"
                 android:layout_marginTop="@dimen/dp_4"
                 android:text="关注者"
@@ -144,7 +143,7 @@
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
-        android:id="@+id/recentlooks"
+        android:id="@+id/mainpage_recentlooks"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_16"

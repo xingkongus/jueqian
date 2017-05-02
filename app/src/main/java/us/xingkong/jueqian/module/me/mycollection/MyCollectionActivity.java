@@ -1,5 +1,6 @@
 package us.xingkong.jueqian.module.me.mycollection;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -23,6 +24,7 @@ import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.adapter.MyCollectionAdapter;
 import us.xingkong.jueqian.base.BaseActivity;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
+import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
 
 /**
  * Created by PERFECTLIN on 2017/1/10 0010.
@@ -33,7 +35,7 @@ public class MyCollectionActivity extends BaseActivity<MyCollectionContract.Pres
     RecyclerView mRecyclerView;
 
     private List<Question> questions = new ArrayList<>();
-
+    private String intentUserID;
 
     private Handler mHandler = new Handler() {
         @Override
@@ -63,9 +65,12 @@ public class MyCollectionActivity extends BaseActivity<MyCollectionContract.Pres
 
     @Override
     protected void prepareData() {
-        BmobUser bmobUser = BmobUser.getCurrentUser(JueQianAPP.getAppContext());
+        Intent intent = getIntent();
+        intentUserID = intent.getStringExtra("intentUserID");
+        _User user = new _User();
+        user.setObjectId(intentUserID);
         BmobQuery<Question> query = new BmobQuery<Question>();
-        query.addWhereRelatedTo("collections", new BmobPointer(bmobUser));
+        query.addWhereRelatedTo("collections", new BmobPointer(user));
         query.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
         query.findObjects(JueQianAPP.getAppContext(), new FindListener<Question>() {
             @Override

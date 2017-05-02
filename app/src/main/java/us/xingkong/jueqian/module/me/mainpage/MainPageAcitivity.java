@@ -26,8 +26,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import us.xingkong.jueqian.JueQianAPP;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.base.BaseActivity;
+import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
 import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
+import us.xingkong.jueqian.module.me.mycollection.MyCollectionActivity;
 import us.xingkong.jueqian.module.me.mymainpage.editinfo.EditInfoActivity;
+import us.xingkong.jueqian.module.me.myrecentlook.MyRecentLookActivity;
 
 /**
  * Created by PERFECTLIN on 2017/4/30 0030.
@@ -38,15 +41,15 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
     Button bt_edit;
     @BindView(R.id.mainpage_nickname)
     TextView tv_nickname;
-    @BindView(R.id.following)
+    @BindView(R.id.mainpage_tv_following_count)
     TextView tv_following;
-    @BindView(R.id.followers)
+    @BindView(R.id.mainpage_tv_follower_count)
     TextView tv_followers;
     @BindView(R.id.mainpage_touxiang)
     CircleImageView iv_touxiang;
     @BindView(R.id.collections)
     CardView collections;
-    @BindView(R.id.recentlooks)
+    @BindView(R.id.mainpage_recentlooks)
     CardView rencentlooks;
     @BindView(R.id.collectioncount)
     TextView tv_collectioncount;
@@ -70,6 +73,40 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
         Intent intent = getIntent();
         intentUserID = intent.getStringExtra("intentUserID");
 
+        _User user = new _User();
+        user.setObjectId(intentUserID);
+        BmobQuery<_User> query_follower = new BmobQuery<_User>();
+        query_follower.addWhereRelatedTo("followes", new BmobPointer(user));
+        query_follower.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
+        query_follower.findObjects(JueQianAPP.getAppContext(), new FindListener<_User>() {
+            @Override
+            public void onSuccess(List<_User> list) {
+                showToast("获取粉丝成功" + list.size());
+                tv_followers.setText("" + list.size());
+            }
+
+            @Override
+            public void onError(int i, String s) {
+                showToast("获取粉丝失败");
+            }
+        });
+
+        BmobQuery<_User> query_following = new BmobQuery<_User>();
+        query_following.addWhereRelatedTo("following", new BmobPointer(user));
+        query_following.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
+        query_following.findObjects(JueQianAPP.getAppContext(), new FindListener<_User>() {
+            @Override
+            public void onSuccess(List<_User> list) {
+                showToast("获取关注的人成功" + list.size());
+                tv_following.setText("" + list.size());
+            }
+
+            @Override
+            public void onError(int i, String s) {
+                showToast("获取关注的人失败");
+            }
+        });
+
     }
 
     @Override
@@ -78,7 +115,47 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
         initNickName();
         setFocusButton();
         setProfile();
+        setCollection();
+        setRecentLooks();
 
+    }
+
+    private void setRecentLooks() {
+        rencentlooks.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(JueQianAPP.getAppContext(), MyRecentLookActivity.class);
+                intent.putExtra("intentUserID", intentUserID);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void setCollection() {
+        _User u = new _User();
+        u.setObjectId(intentUserID);
+        BmobQuery<Question> query = new BmobQuery<Question>();
+        query.addWhereRelatedTo("collections", new BmobPointer(u));
+        query.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
+        query.findObjects(JueQianAPP.getAppContext(), new FindListener<Question>() {
+            @Override
+            public void onSuccess(List<Question> list) {
+                tv_collectioncount.setText("" + list.size());
+            }
+
+            @Override
+            public void onError(int i, String s) {
+                showToast("获取收藏表失败");
+            }
+        });
+        collections.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(JueQianAPP.getAppContext(), MyCollectionActivity.class);
+                intent.putExtra("intentUserID", intentUserID);
+                startActivity(intent);
+            }
+        });
     }
 
     private void setProfile() {

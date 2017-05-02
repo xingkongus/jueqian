@@ -1,4 +1,4 @@
-package us.xingkong.jueqian.module.me.myrecentlook;
+package us.xingkong.jueqian.module.me.follower;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,29 +16,28 @@ import java.util.List;
 
 import butterknife.BindView;
 import cn.bmob.v3.BmobQuery;
-import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobPointer;
 import cn.bmob.v3.listener.FindListener;
 import us.xingkong.jueqian.JueQianAPP;
 import us.xingkong.jueqian.R;
-import us.xingkong.jueqian.adapter.MyAnswerAdapter;
-import us.xingkong.jueqian.adapter.MyRecentLookAdapter;
+import us.xingkong.jueqian.adapter.FollowerAdapter;
+import us.xingkong.jueqian.adapter.MyCollectionAdapter;
 import us.xingkong.jueqian.base.BaseActivity;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
 import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
-import us.xingkong.jueqian.module.me.myanswer.MyAnswerActivity;
 
 /**
  * Created by PERFECTLIN on 2017/1/10 0010.
  */
 
-public class MyRecentLookActivity extends BaseActivity<MyRecentLookContract.Presenter> implements MyRecentLookContract.View {
-
+public class FollowerActivity extends BaseActivity<FollowerContract.Presenter> implements FollowerContract.View {
     @BindView(R.id.recyclerview)
     RecyclerView mRecyclerView;
 
+    FollowerAdapter followerAdapter;
+    private List<_User> followers = new ArrayList<>();
     private String intentUserID;
-    List<Question> questions = new ArrayList<>();
+
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -46,20 +45,22 @@ public class MyRecentLookActivity extends BaseActivity<MyRecentLookContract.Pres
             switch (msg.what) {
                 case 1:
                     initRecyclerView();
+                case 2:
+                    followerAdapter.notifyDataSetChanged();
                     break;
             }
-
         }
     };
 
+
     @Override
-    protected MyRecentLookContract.Presenter createPresenter() {
-        return new MyRecentLookPresenter(this);
+    protected FollowerContract.Presenter createPresenter() {
+        return new FollowerPresenter(this, mHandler);
     }
 
     @Override
     protected int bindLayout() {
-        return R.layout.activity_myrecentlook;
+        return R.layout.activity_follower;
     }
 
     @Override
@@ -68,22 +69,22 @@ public class MyRecentLookActivity extends BaseActivity<MyRecentLookContract.Pres
         intentUserID = intent.getStringExtra("intentUserID");
         _User user = new _User();
         user.setObjectId(intentUserID);
-        BmobQuery<Question> query = new BmobQuery<Question>();
-        query.addWhereRelatedTo("recentlooks", new BmobPointer(user));
+        BmobQuery<_User> query = new BmobQuery<_User>();
+        query.addWhereRelatedTo("followers", new BmobPointer(user));
         query.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
-        query.findObjects(JueQianAPP.getAppContext(), new FindListener<Question>() {
+        query.findObjects(JueQianAPP.getAppContext(), new FindListener<_User>() {
             @Override
-            public void onSuccess(List<Question> list) {
-                questions = list;
-                showToast("获取最近浏览列表成功");
+            public void onSuccess(List<_User> list) {
+                followers = list;
                 mHandler.sendEmptyMessage(1);
             }
 
             @Override
             public void onError(int i, String s) {
-                showToast("获取最近浏览列表失败");
+                showToast("获取收藏表失败");
             }
         });
+
     }
 
     @Override
@@ -93,20 +94,23 @@ public class MyRecentLookActivity extends BaseActivity<MyRecentLookContract.Pres
     }
 
     private void initRecyclerView() {
+        followerAdapter = new FollowerAdapter(mHandler, followers);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setAdapter(new MyRecentLookAdapter(mHandler, questions));
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(MyRecentLookActivity.this, DividerItemDecoration.VERTICAL));
+        mRecyclerView.setAdapter(followerAdapter);
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(FollowerActivity.this, DividerItemDecoration.VERTICAL));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
     }
 
     private void setToolbar() {
         ActionBar acb = getSupportActionBar();
         acb.setDisplayHomeAsUpEnabled(true);
-        acb.setTitle("最近浏览");
+        acb.setTitle("粉丝");
     }
 
     @Override
     protected void initData(Bundle savedInstanceState) {
+
 
     }
 

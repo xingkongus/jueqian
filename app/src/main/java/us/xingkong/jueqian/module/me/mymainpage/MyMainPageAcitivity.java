@@ -7,6 +7,7 @@ import android.support.v7.widget.CardView;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -41,18 +42,22 @@ public class MyMainPageAcitivity extends BaseActivity<MyMainPageContract.Present
     Button bt_edit;
     @BindView(R.id.mymainpage_nickname)
     TextView tv_nickname;
-    @BindView(R.id.following)
+    @BindView(R.id.mymainpage_following_num)
     TextView tv_following;
-    @BindView(R.id.followers)
+    @BindView(R.id.mymainpage_follower_num)
     TextView tv_followers;
     @BindView(R.id.mymainpage_touxiang)
     CircleImageView iv_touxiang;
-    @BindView(R.id.collections)
+    @BindView(R.id.mymainpage_collections)
     CardView collections;
-    @BindView(R.id.recentlooks)
+    @BindView(R.id.mymainpage_recentlooks)
     CardView rencentlooks;
-    @BindView(R.id.collectioncount)
+    @BindView(R.id.mymainpage_collection_count)
     TextView tv_collectioncount;
+    @BindView(R.id.mymainpage_ry_follower)
+    RelativeLayout ry_follower;
+    @BindView(R.id.mymainpage_ry_following)
+    RelativeLayout ry_following;
 
     private String intentUserID = null;
     private _User follow_user;
@@ -70,7 +75,42 @@ public class MyMainPageAcitivity extends BaseActivity<MyMainPageContract.Present
 
     @Override
     protected void prepareData() {
+        Intent intent = getIntent();
+        intentUserID = intent.getStringExtra("intentUserID");
 
+        _User user = new _User();
+        user.setObjectId(intentUserID);
+        BmobQuery<_User> query_follower = new BmobQuery<_User>();
+        query_follower.addWhereRelatedTo("followes", new BmobPointer(user));
+        query_follower.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
+        query_follower.findObjects(JueQianAPP.getAppContext(), new FindListener<_User>() {
+            @Override
+            public void onSuccess(List<_User> list) {
+                showToast("获取粉丝成功"+list.size());
+                tv_followers.setText(""+list.size());
+            }
+
+            @Override
+            public void onError(int i, String s) {
+                showToast("获取粉丝失败");
+            }
+        });
+
+        BmobQuery<_User> query_following = new BmobQuery<_User>();
+        query_following.addWhereRelatedTo("following", new BmobPointer(user));
+        query_following.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
+        query_following.findObjects(JueQianAPP.getAppContext(), new FindListener<_User>() {
+            @Override
+            public void onSuccess(List<_User> list) {
+                showToast("获取关注的人成功"+list.size());
+                tv_following.setText(""+list.size());
+            }
+
+            @Override
+            public void onError(int i, String s) {
+                showToast("获取关注的人失败");
+            }
+        });
     }
 
     @Override
@@ -90,7 +130,7 @@ public class MyMainPageAcitivity extends BaseActivity<MyMainPageContract.Present
             @Override
             public void onSuccess(_User user) {
                 showToast("更新用户昵称成功");
-                if (user.getNickname()==null){
+                if (user.getNickname() == null) {
                     showToast("昵称为空");
                     tv_nickname.setText("请前往设置你的昵称..");
                 }
@@ -109,6 +149,7 @@ public class MyMainPageAcitivity extends BaseActivity<MyMainPageContract.Present
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(JueQianAPP.getAppContext(), MyRecentLookActivity.class);
+                intent.putExtra("intentUserID", intentUserID);
                 startActivity(intent);
             }
         });

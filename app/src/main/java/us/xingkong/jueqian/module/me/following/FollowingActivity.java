@@ -1,4 +1,4 @@
-package us.xingkong.jueqian.module.me.myrecentlook;
+package us.xingkong.jueqian.module.me.following;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,29 +16,26 @@ import java.util.List;
 
 import butterknife.BindView;
 import cn.bmob.v3.BmobQuery;
-import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobPointer;
 import cn.bmob.v3.listener.FindListener;
 import us.xingkong.jueqian.JueQianAPP;
 import us.xingkong.jueqian.R;
-import us.xingkong.jueqian.adapter.MyAnswerAdapter;
-import us.xingkong.jueqian.adapter.MyRecentLookAdapter;
+import us.xingkong.jueqian.adapter.MyCollectionAdapter;
 import us.xingkong.jueqian.base.BaseActivity;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
 import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
-import us.xingkong.jueqian.module.me.myanswer.MyAnswerActivity;
 
 /**
  * Created by PERFECTLIN on 2017/1/10 0010.
  */
 
-public class MyRecentLookActivity extends BaseActivity<MyRecentLookContract.Presenter> implements MyRecentLookContract.View {
-
+public class FollowingActivity extends BaseActivity<FollowingContract.Presenter> implements FollowingContract.View {
     @BindView(R.id.recyclerview)
     RecyclerView mRecyclerView;
 
+    private List<Question> questions = new ArrayList<>();
     private String intentUserID;
-    List<Question> questions = new ArrayList<>();
+
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -46,20 +43,23 @@ public class MyRecentLookActivity extends BaseActivity<MyRecentLookContract.Pres
             switch (msg.what) {
                 case 1:
                     initRecyclerView();
+                case 2:
+                    myCollectionAdapter.notifyDataSetChanged();
                     break;
             }
-
         }
     };
 
+    MyCollectionAdapter myCollectionAdapter;
+
     @Override
-    protected MyRecentLookContract.Presenter createPresenter() {
-        return new MyRecentLookPresenter(this);
+    protected FollowingContract.Presenter createPresenter() {
+        return new FollowingPresenter(this, mHandler);
     }
 
     @Override
     protected int bindLayout() {
-        return R.layout.activity_myrecentlook;
+        return R.layout.activity_following;
     }
 
     @Override
@@ -69,21 +69,21 @@ public class MyRecentLookActivity extends BaseActivity<MyRecentLookContract.Pres
         _User user = new _User();
         user.setObjectId(intentUserID);
         BmobQuery<Question> query = new BmobQuery<Question>();
-        query.addWhereRelatedTo("recentlooks", new BmobPointer(user));
+        query.addWhereRelatedTo("collections", new BmobPointer(user));
         query.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
         query.findObjects(JueQianAPP.getAppContext(), new FindListener<Question>() {
             @Override
             public void onSuccess(List<Question> list) {
                 questions = list;
-                showToast("获取最近浏览列表成功");
                 mHandler.sendEmptyMessage(1);
             }
 
             @Override
             public void onError(int i, String s) {
-                showToast("获取最近浏览列表失败");
+                showToast("获取收藏表失败");
             }
         });
+
     }
 
     @Override
@@ -93,20 +93,23 @@ public class MyRecentLookActivity extends BaseActivity<MyRecentLookContract.Pres
     }
 
     private void initRecyclerView() {
+        myCollectionAdapter = new MyCollectionAdapter(mHandler, questions);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setAdapter(new MyRecentLookAdapter(mHandler, questions));
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(MyRecentLookActivity.this, DividerItemDecoration.VERTICAL));
+        mRecyclerView.setAdapter(myCollectionAdapter);
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(FollowingActivity.this, DividerItemDecoration.VERTICAL));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
     }
 
     private void setToolbar() {
         ActionBar acb = getSupportActionBar();
         acb.setDisplayHomeAsUpEnabled(true);
-        acb.setTitle("最近浏览");
+        acb.setTitle("我的收藏");
     }
 
     @Override
     protected void initData(Bundle savedInstanceState) {
+
 
     }
 

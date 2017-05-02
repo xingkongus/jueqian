@@ -20,7 +20,7 @@
             android:layout_height="65dp"
             android:layout_marginLeft="@dimen/dp_16"
             android:layout_marginTop="@dimen/dp_16"
-            android:src="@mipmap/touxiang" />
+            android:src="@mipmap/ic_launcher" />
 
         <TextView
             android:id="@+id/mymainpage_nickname"
@@ -29,7 +29,7 @@
             android:layout_alignBottom="@id/mymainpage_touxiang"
             android:layout_marginLeft="@dimen/dp_16"
             android:layout_toRightOf="@id/mymainpage_touxiang"
-            android:text="我是用户名"
+            android:text="前往编辑你的昵称"
             android:textColor="@color/text_username"
             android:textSize="@dimen/sp_18" />
 
@@ -45,26 +45,26 @@
             android:textColor="@color/text_white" />
 
         <RelativeLayout
-            android:id="@+id/ry_follow"
+            android:id="@+id/mymainpage_ry_following"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/mymainpage_touxiang"
             android:layout_marginTop="@dimen/dp_16">
 
             <TextView
-                android:id="@+id/following"
+                android:id="@+id/mymainpage_following_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_16"
-                android:text="5"
+                android:text="0"
                 android:textColor="@color/text_username"
                 android:textSize="@dimen/sp_16" />
 
             <TextView
-                android:id="@+id/followers"
+                android:id="@+id/mymainpage_tv_followers"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/following"
+                android:layout_below="@id/mymainpage_following_num"
                 android:layout_marginLeft="@dimen/dp_16"
                 android:layout_marginTop="@dimen/dp_4"
                 android:text="关注"
@@ -72,21 +72,20 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/ry_follower"
+            android:id="@+id/mymainpage_ry_follower"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/mymainpage_touxiang"
             android:layout_marginTop="@dimen/dp_16"
-            android:layout_toRightOf="@id/ry_follow">
+            android:layout_toRightOf="@id/mymainpage_ry_following">
 
             <TextView
-                android:id="@+id/follownum2"
+                android:id="@+id/mymainpage_follower_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@+id/follow"
                 android:layout_alignParentTop="true"
-                android:layout_alignStart="@+id/follow"
-                android:text="66"
+                android:text="0"
                 android:textColor="@color/text_username"
                 android:textSize="@dimen/sp_16" />
 
@@ -94,7 +93,7 @@
                 android:id="@+id/follow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/follownum2"
+                android:layout_below="@id/mymainpage_follower_num"
                 android:layout_marginLeft="@dimen/dp_16"
                 android:layout_marginTop="@dimen/dp_4"
                 android:text="关注者"
@@ -104,7 +103,7 @@
     </RelativeLayout>
 
     <android.support.v7.widget.CardView
-        android:id="@+id/collections"
+        android:id="@+id/mymainpage_collections"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_16"
@@ -130,7 +129,7 @@
                 android:textSize="@dimen/sp_16" />
 
             <TextView
-                android:id="@+id/collectioncount"
+                android:id="@+id/mymainpage_collection_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -144,7 +143,7 @@
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
-        android:id="@+id/recentlooks"
+        android:id="@+id/mymainpage_recentlooks"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_16"
