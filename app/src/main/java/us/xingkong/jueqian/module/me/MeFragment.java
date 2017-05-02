@@ -1,10 +1,7 @@
 package us.xingkong.jueqian.module.me;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
@@ -21,16 +18,13 @@ import com.bumptech.glide.Glide;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.util.List;
 
 import butterknife.BindView;
-import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobRealTimeData;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
-import cn.bmob.v3.listener.DeleteListener;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.GetListener;
 import cn.bmob.v3.listener.ValueEventListener;
@@ -38,7 +32,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import us.xingkong.jueqian.JueQianAPP;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.base.BaseFragment;
-import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
 import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
 import us.xingkong.jueqian.module.Login.LoginActivity;
 import us.xingkong.jueqian.module.me.myanswer.MyAnswerActivity;
@@ -183,6 +176,8 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
     }
 
     private void initNickName() {
+        _User user=BmobUser.getCurrentUser(JueQianAPP.getAppContext(),_User.class);
+        if (user==null)return;
         BmobQuery<_User> bmobQuery = new BmobQuery<>();
         _User bmobUser = BmobUser.getCurrentUser(JueQianAPP.getAppContext(), _User.class);
         if (bmobUser == null) return;
