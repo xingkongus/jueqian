@@ -27,7 +27,10 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import butterknife.BindView;
+import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.listener.GetListener;
+import cn.bmob.v3.listener.UpdateListener;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.adapter.QuestionRecyclerViewAdapter;
 import us.xingkong.jueqian.base.BaseActivity;
@@ -37,7 +40,6 @@ import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
 import us.xingkong.jueqian.module.Forum.NewAnswer.NewAnswerActivity;
 import us.xingkong.jueqian.module.Forum.QuestionPage.Comment.CommentActivity;
 import us.xingkong.jueqian.module.Login.LoginActivity;
-import us.xingkong.jueqian.utils.Key;
 
 
 public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> implements QuestionContract.View {
@@ -64,9 +66,9 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
     PopupWindow mpopupWindow;
     Button popupwindow_huida;
     private Boolean isRolling = false;
-//    @BindView(R.id.question_tab_top)
-//    TextView tab_top;
     private String question_userID;
+    private int zanFlag;
+    private int shouocanFlag;
 
     Handler handler = new Handler() {
         @Override
@@ -107,7 +109,7 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                 case 6:
                     backgroundAlpha(0.5f);
                     final String answerID = msg.getData().getString("answerID");
-                    final String answer_userID=msg.getData().getString("answer_userID");
+                    final String answer_userID = msg.getData().getString("answer_userID");
                     View v = (View) msg.obj;
                     View contentview = getLayoutInflater().inflate(R.layout.activity_popupwindow, null);
                     contentview.setFocusableInTouchMode(true);
@@ -149,12 +151,45 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                                 Intent intent = new Intent(mContext, CommentActivity.class);
                                 intent.putExtra("answerID", answerID);
                                 intent.putExtra("questionID", questionID);
-                                intent.putExtra("answer_userID",answer_userID);
+                                intent.putExtra("answer_userID", answer_userID);
                                 startActivity(intent);
                                 mpopupWindow.dismiss();
                             }
                         }
                     });
+                    break;
+                case 7:
+                    String answer_ID = msg.getData().getString("answerID");
+                    int zanFlag = msg.getData().getInt("flag");
+                    if (zanFlag == 0) {
+                        Question question = new Question();
+                        question.setState(1);
+                        question.update(mContext, answer_ID, new UpdateListener() {
+                            @Override
+                            public void onSuccess() {
+
+                            }
+
+                            @Override
+                            public void onFailure(int i, String s) {
+
+                            }
+                        });
+                    } else if (zanFlag == 1) {
+                        Question question = new Question();
+                        question.setState(0);
+                        question.update(mContext, answer_ID, new UpdateListener() {
+                            @Override
+                            public void onSuccess() {
+
+                            }
+
+                            @Override
+                            public void onFailure(int i, String s) {
+
+                            }
+                        });
+                    }
                     break;
             }
         }
@@ -203,11 +238,12 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         questionID = bundle.getString("questionid");
-        question_userID=bundle.getString("question_userID");
-        _User user=BmobUser.getCurrentUser(mContext,_User.class);
-        if (user != null&& questionID!=null && question_userID!=null) {
-            mPresenter.addRecentlook(mContext,questionID,question_userID,user);
+        question_userID = bundle.getString("question_userID");
+        _User user = BmobUser.getCurrentUser(mContext, _User.class);
+        if (user != null && questionID != null && question_userID != null) {
+            mPresenter.addRecentlook(mContext, questionID, question_userID, user);
         }
+
     }
 
     private void initSwipeRefreshLayout() {
@@ -232,15 +268,30 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
         mPresenter.getQuestion(mContext, questionID, handler);
         mPresenter.getQuestionAnswer(mContext, handler, questionID, answers);
         refreshLayout.setRefreshing(false);
-        if (Key.zanFlag == 0) {
-            zan.setBackgroundColor(Color.parseColor("#3CB371"));
-            zan.setTextColor(Color.parseColor("#ffffff"));
-        }
-        if (Key.shoucanFlag == 0) {
-            shoucan.setBackgroundColor(Color.parseColor("#3CB371"));
-            shoucan.setTextColor(Color.parseColor("#ffffff"));
-        }
-    }
+        BmobQuery<Question> query = new BmobQuery<>();
+        query.getObject(mContext, questionID, new GetListener<Question>() {
+            @Override
+            public void onSuccess(Question question) {
+                zanFlag = question.getState();
+                shouocanFlag = question.getShouzanFlag();
+                if (zanFlag == 1) {
+                    zan.setBackgroundColor(Color.parseColor("#3CB371"));
+                    zan.setTextColor(Color.parseColor("#ffffff"));
+                }
+                if (shouocanFlag == 1) {
+                    shoucan.setBackgroundColor(Color.parseColor("#3CB371"));
+                    shoucan.setTextColor(Color.parseColor("#ffffff"));
+                }
+            }
+
+            @Override
+            public void onFailure(int i, String s) {
+                showToast("网络连接超时");
+            }
+        });
+
+
+}
 
     private void initRecyClerView() {
         recyclerViewAdapter = new QuestionRecyclerViewAdapter(mContext, getQuestion, answers, handler);
@@ -267,10 +318,8 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 if (dy > 0) {
-//                    tab_top.setVisibility(View.GONE);
                     tab.setVisibility(View.GONE);//底部的tab隐藏和出现
                 } else if (dy < 0) {
-//                    tab_top.setVisibility(View.VISIBLE);
                     tab.setVisibility(View.VISIBLE);
                 }
 
@@ -299,7 +348,7 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                 } else {
                     Intent intent = new Intent(mContext, NewAnswerActivity.class);// 把这个问题的objectid传过去
                     intent.putExtra("questionObjectid", questionID);
-                    intent.putExtra("question_userID",question_userID);
+                    intent.putExtra("question_userID", question_userID);
                     startActivity(intent);
                 }
             }
@@ -314,17 +363,40 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                     Intent intent = new Intent(mContext, LoginActivity.class);
                     startActivity(intent);
                 } else {
-                    if(Key.zanFlag==1) {
-                        mPresenter.zan(mContext, handler, questionID);
-                        zan.setBackgroundColor(Color.parseColor("#3CB371"));
-                        zan.setTextColor(Color.parseColor("#ffffff"));
-                        Key.zanFlag=0;
-                    } else if (Key.zanFlag == 0) {
-                        mPresenter.quxiaoZan(mContext,questionID);
-                        zan.setBackgroundColor(Color.parseColor("#ffffff"));
-                        zan.setTextColor(Color.parseColor("#000000"));
-                        Key.zanFlag=1;
-                    }
+                    BmobQuery<Question> query = new BmobQuery<>();
+                    query.getObject(mContext, questionID, new GetListener<Question>() {
+                        @Override
+                        public void onSuccess(Question question) {
+                            int flag = question.getState();
+                            if (flag == 0) {
+                                zan.setBackgroundColor(Color.parseColor("#3CB371"));
+                                zan.setTextColor(Color.parseColor("#ffffff"));
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mPresenter.zan(mContext, handler, questionID);
+                                        mPresenter.zanStateChange(mContext, questionID, 0);
+                                    }
+                                }).start();
+
+                            } else if (flag == 1) {
+                                zan.setBackgroundColor(Color.parseColor("#ffffff"));
+                                zan.setTextColor(Color.parseColor("#000000"));
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mPresenter.quxiaoZan(mContext, questionID);
+                                        mPresenter.zanStateChange(mContext, questionID, 1);
+                                    }
+                                }).start();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(int i, String s) {
+                            showToast("网络连接超时");
+                        }
+                    });
                 }
             }
         });
@@ -337,17 +409,42 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                     Intent intent = new Intent(mContext, LoginActivity.class);
                     startActivity(intent);
                 } else {
-                    if (Key.shoucanFlag == 1) {
-                        mPresenter.shoucan(mContext, handler, questionID);
-                        shoucan.setBackgroundColor(Color.parseColor("#3CB371"));
-                        shoucan.setTextColor(Color.parseColor("#ffffff"));
-                        Key.shoucanFlag=0;
-                    } else if (Key.shoucanFlag == 0) {
-                        mPresenter.quxiaoShouzan(mContext,questionID);
-                        shoucan.setBackgroundColor(Color.parseColor("#ffffff"));
-                        shoucan.setTextColor(Color.parseColor("#000000"));
-                        Key.shoucanFlag=1;
-                    }
+                    BmobQuery<Question> query = new BmobQuery<>();
+                    query.getObject(mContext, questionID, new GetListener<Question>() {
+                        @Override
+                        public void onSuccess(Question question) {
+                            int flag=question.getShouzanFlag();
+                            if (flag== 0) {
+                                shoucan.setBackgroundColor(Color.parseColor("#3CB371"));
+                                shoucan.setTextColor(Color.parseColor("#ffffff"));
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mPresenter.shoucan(mContext, handler, questionID);
+                                        mPresenter.shouzanStateChange(mContext,questionID,0);
+                                    }
+                                }).start();
+
+                            } else if (flag == 1) {
+                                shoucan.setBackgroundColor(Color.parseColor("#ffffff"));
+                                shoucan.setTextColor(Color.parseColor("#000000"));
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mPresenter.quxiaoShouzan(mContext, questionID);
+                                        mPresenter.shouzanStateChange(mContext,questionID,1);
+                                    }
+                                }).start();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(int i, String s) {
+
+                        }
+                    });
+
+
                 }
             }
         });

@@ -194,4 +194,71 @@ public class QuestionPresenter extends BasePresenterImpl implements QuestionCont
             }
         });
     }
+
+    @Override
+    public void zanStateChange(Context context, String questionID,int flag) {
+        if (flag == 0) {
+            Question question=new Question();
+            question.setState(1);
+            question.update(context, questionID, new UpdateListener() {
+                @Override
+                public void onSuccess() {
+
+                }
+
+                @Override
+                public void onFailure(int i, String s) {
+
+                }
+            });
+        } else if (flag == 1) {
+            Question question=new Question();
+            question.setState(0);
+            question.update(context, questionID, new UpdateListener() {
+                @Override
+                public void onSuccess() {
+
+                }
+
+                @Override
+                public void onFailure(int i, String s) {
+
+                }
+            });
+        }
+
+    }
+
+    @Override
+    public void shouzanStateChange(Context context, String questionID,int flag) {
+        if (flag == 0) {
+            Question question=new Question();
+            question.setShouzanFlag(1);
+            question.update(context, questionID, new UpdateListener() {
+                @Override
+                public void onSuccess() {
+
+                }
+
+                @Override
+                public void onFailure(int i, String s) {
+
+                }
+            });
+        } else if (flag == 1) {
+            Question question=new Question();
+            question.setShouzanFlag(0);
+            question.update(context, questionID, new UpdateListener() {
+                @Override
+                public void onSuccess() {
+
+                }
+
+                @Override
+                public void onFailure(int i, String s) {
+
+                }
+            });
+        }
+    }
 }
