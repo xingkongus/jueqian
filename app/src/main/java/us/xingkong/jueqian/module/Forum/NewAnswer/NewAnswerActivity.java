@@ -16,6 +16,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 
 import butterknife.BindView;
 import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.datatype.BmobRelation;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 import us.xingkong.jueqian.R;
@@ -45,6 +46,7 @@ public class NewAnswerActivity extends BaseActivity<NewAnswerContract.Presenter>
             super.handleMessage(msg);
             switch(msg.what){
                 case 0:
+                    _User user= BmobUser.getCurrentUser(context,_User.class);
                     Question question=new Question();
                     question.increment("answer_count");
                     question.update(context, questionID, new UpdateListener() {
@@ -57,7 +59,6 @@ public class NewAnswerActivity extends BaseActivity<NewAnswerContract.Presenter>
                         public void onFailure(int i, String s) {
                         }
                     });
-                    _User user= BmobUser.getCurrentUser(context,_User.class);
                     if (!user.getObjectId().equals(question_userID)) {
                         Answer answer;
                         answer = (Answer) msg.obj;
@@ -80,6 +81,24 @@ public class NewAnswerActivity extends BaseActivity<NewAnswerContract.Presenter>
                             }
                         });
                     }
+                    Answer answer;
+                    answer= (Answer) msg.obj;
+                    answer.setObjectId(answer.getObjectId());
+                    System.out.println("--------------"+answer.getObjectId());
+                    BmobRelation bmobRelation=new BmobRelation();
+                    bmobRelation.add(answer);
+                    user.setAnswers(bmobRelation);
+                    user.update(context, new UpdateListener() {
+                        @Override
+                        public void onSuccess() {
+
+                        }
+
+                        @Override
+                        public void onFailure(int i, String s) {
+
+                        }
+                    });
                     finish();
                     break;
             }
