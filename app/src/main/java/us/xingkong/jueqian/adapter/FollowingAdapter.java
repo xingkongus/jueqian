@@ -1,5 +1,6 @@
 package us.xingkong.jueqian.adapter;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
@@ -26,10 +27,12 @@ import us.xingkong.jueqian.module.me.mainpage.MainPageAcitivity;
 public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.MyViewHolder> implements View.OnLongClickListener {
     private Handler mHandler;
     private List<Follow> follows;
+    private Context mContext;
 
-    public FollowingAdapter(Handler mHandler, List<Follow> follows) {
+    public FollowingAdapter(Handler mHandler, List<Follow> follows, Context mContext) {
         this.mHandler = mHandler;
         this.follows = follows;
+        this.mContext=mContext;
     }
 
 
@@ -48,7 +51,7 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.MyVi
             public void onClick(View view) {
                 Intent intent = new Intent(JueQianAPP.getAppContext(), MainPageAcitivity.class);
                 intent.putExtra("intentUserID", follows.get(position).getFollowedUser().getObjectId());
-                JueQianAPP.getAppContext().startActivity(intent);
+                mContext.startActivity(intent);
             }
         });
     }

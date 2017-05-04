@@ -45,8 +45,8 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     public void addItem(int position,Comment comment1){
         comments.add(position,comment1);
         Message msg=new Message();
-        msg.obj=position;
         msg.what=4;
+        msg.obj=comment1;
         mHandler.sendMessage(msg);
     }
 

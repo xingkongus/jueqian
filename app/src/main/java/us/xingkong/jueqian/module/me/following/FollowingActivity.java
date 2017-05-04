@@ -103,7 +103,7 @@ public class FollowingActivity extends BaseActivity<FollowingContract.Presenter>
     }
 
     private void initRecyclerView() {
-        followingAdapter = new FollowingAdapter(mHandler, follows);
+        followingAdapter = new FollowingAdapter(mHandler, follows,this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(followingAdapter);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(FollowingActivity.this, DividerItemDecoration.VERTICAL));

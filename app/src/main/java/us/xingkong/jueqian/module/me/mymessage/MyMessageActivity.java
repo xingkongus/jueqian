@@ -10,8 +10,6 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
-import android.widget.Switch;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,16 +18,12 @@ import butterknife.BindView;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobPointer;
-import cn.bmob.v3.datatype.BmobRelation;
 import cn.bmob.v3.listener.FindListener;
 import us.xingkong.jueqian.JueQianAPP;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.adapter.MyMessageRecyclerAdapter;
 import us.xingkong.jueqian.base.BaseActivity;
-import us.xingkong.jueqian.bean.ForumBean.BombBean.Answer;
-import us.xingkong.jueqian.bean.ForumBean.BombBean.Comment;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.NewMessage;
-import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
 import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
 
 /**
@@ -107,7 +101,7 @@ public class MyMessageActivity extends BaseActivity<MyMessageContract.Presenter>
 
     private void initRecyclerView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setAdapter(new MyMessageRecyclerAdapter(mHandler, messages));
+        mRecyclerView.setAdapter(new MyMessageRecyclerAdapter(mHandler, messages,this));
         mRecyclerView.addItemDecoration(new DividerItemDecoration(MyMessageActivity.this, DividerItemDecoration.VERTICAL));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 

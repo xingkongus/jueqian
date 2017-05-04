@@ -106,7 +106,7 @@ public class ForumRecyclerViewAdapter extends RecyclerView.Adapter<ForumRecycler
             public void onClick(View view) {
                 Intent intent = new Intent(JueQianAPP.getAppContext(), MainPageAcitivity.class);
                 intent.putExtra("intentUserID", infoSets.get(position).getUser().getObjectId());
-                JueQianAPP.getAppContext().startActivity(intent);
+                mContext.startActivity(intent);
             }
         });
 

@@ -1,5 +1,6 @@
 package us.xingkong.jueqian.adapter;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
@@ -12,20 +13,14 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
-import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.listener.FindListener;
 import de.hdodenhof.circleimageview.CircleImageView;
 import us.xingkong.jueqian.JueQianAPP;
 import us.xingkong.jueqian.R;
-import us.xingkong.jueqian.bean.ForumBean.BombBean.Answer;
-import us.xingkong.jueqian.bean.ForumBean.BombBean.Comment;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.NewMessage;
 import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
 import us.xingkong.jueqian.module.Forum.QuestionPage.Comment.CommentActivity;
@@ -39,10 +34,13 @@ public class MyMessageRecyclerAdapter extends RecyclerView.Adapter<MyMessageRecy
 
     private Handler mHandler;
     private List<NewMessage> messages;
+    private Context mContext;
 
-    public MyMessageRecyclerAdapter(Handler mHandler, List<NewMessage> messages) {
+    public MyMessageRecyclerAdapter(Handler mHandler, List<NewMessage> messages, Context mContext) {
         this.mHandler = mHandler;
         this.messages = messages;
+        this.mContext = mContext;
+
     }
 
 
@@ -111,7 +109,7 @@ public class MyMessageRecyclerAdapter extends RecyclerView.Adapter<MyMessageRecy
 //                        intent.putExtra("answerID", messages.get(position).getMessAnswer().getObjectId());
 //                        intent.putExtra("questionID", messages.get(position).getMessAnswer().getQuestion().getObjectId());
 //                        intent.putExtra("answer_userID",messages.get(position).getMessAnswer().getUser().getObjectId());
-                        JueQianAPP.getAppContext().startActivity(intent);
+                        mContext.startActivity(intent);
                     }
                 });
                 if (messages.get(position).getMessAnswer().getMcontent() == null || messages.get(position).getSender().getNickname() == null || messages.get(position).getCreatedAt() == null) {

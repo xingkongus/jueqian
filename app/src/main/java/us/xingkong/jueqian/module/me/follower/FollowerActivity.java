@@ -21,10 +21,8 @@ import cn.bmob.v3.listener.FindListener;
 import us.xingkong.jueqian.JueQianAPP;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.adapter.FollowerAdapter;
-import us.xingkong.jueqian.adapter.MyCollectionAdapter;
 import us.xingkong.jueqian.base.BaseActivity;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Follow;
-import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
 import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
 
 /**
@@ -103,7 +101,7 @@ public class FollowerActivity extends BaseActivity<FollowerContract.Presenter> i
     }
 
     private void initRecyclerView() {
-        followerAdapter = new FollowerAdapter(mHandler, followers);
+        followerAdapter = new FollowerAdapter(mHandler, followers,this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(followerAdapter);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(FollowerActivity.this, DividerItemDecoration.VERTICAL));

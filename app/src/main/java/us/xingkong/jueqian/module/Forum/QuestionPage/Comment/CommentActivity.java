@@ -80,7 +80,6 @@ public class CommentActivity extends BaseActivity<CommentContract.Presenter> imp
                     refreshLayout.setRefreshing(false);
                     break;
                 case 4:
-                    int position = (int) msg.obj;
                     recyclerviewCommentpage.scrollToPosition(1);
                     recyclerViewAdapter.notifyItemInserted(1);
                     recyclerViewAdapter.notifyDataSetChanged();
@@ -91,12 +90,12 @@ public class CommentActivity extends BaseActivity<CommentContract.Presenter> imp
                         message.setSender(user);
                         _User receiver = new _User();
                         receiver.setObjectId(answer_userID);
+                        message.setReceiver(receiver);
                         message.setTYPE(1);
                         message.setMessComment(comment1);
                         message.save(mContext, new SaveListener() {
                             @Override
                             public void onSuccess() {
-
                             }
 
                             @Override
@@ -106,15 +105,15 @@ public class CommentActivity extends BaseActivity<CommentContract.Presenter> imp
                         });
                     }
                     break;
-                case 5:
+                case 5://得到新评论内容
                     String newCommentID = msg.getData().getString("new_commentID");
+                    System.out.println("111111111qq"+newCommentID);
                     mPresenter.getNewComment(mContext, handler, newCommentID);
                     break;
                 case 6:
                     Comment comment;
                     comment = (Comment) msg.obj;
                     recyclerViewAdapter.addItem(0, comment);
-
                     break;
             }
         }

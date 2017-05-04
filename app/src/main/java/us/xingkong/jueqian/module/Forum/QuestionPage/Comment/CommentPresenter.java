@@ -102,6 +102,7 @@ public class CommentPresenter extends BasePresenterImpl implements CommentContra
                 Message msg = new Message();
                 Bundle bundle=new Bundle();
                 bundle.putString("new_commentID",comment.getObjectId());
+                msg.setData(bundle);
                 msg.obj = comment;
                 msg.what = 5;
                 handler.sendMessage(msg);
@@ -134,7 +135,6 @@ public class CommentPresenter extends BasePresenterImpl implements CommentContra
 
             @Override
             public void onFailure(int i, String s) {
-
             }
         });
 
