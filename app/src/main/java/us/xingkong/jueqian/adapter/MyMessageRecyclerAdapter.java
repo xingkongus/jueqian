@@ -59,8 +59,11 @@ public class MyMessageRecyclerAdapter extends RecyclerView.Adapter<MyMessageRecy
                     @Override
                     public void onClick(View view) {
                         Intent intent = new Intent(JueQianAPP.getAppContext(), CommentActivity.class);
-                        intent.putExtra("questionid", messages.get(position).getMessComment().getQuestion().getObjectId());
-                        intent.putExtra("question_userID", messages.get(position).getMessComment().getQuestion().getUser().getObjectId());
+//                        intent.putExtra("questionid", messages.get(position).getMessComment().getQuestion().getObjectId());
+//                        intent.putExtra("question_userID", messages.get(position).getMessComment().getQuestion().getUser().getObjectId());
+                        intent.putExtra("answerID", messages.get(position).getSender().getObjectId());
+                        intent.putExtra("questionID", messages.get(position).getMessComment().getQuestion().getObjectId());
+                        intent.putExtra("answer_userID", messages.get(position).getReceiver().getObjectId());
                         JueQianAPP.getAppContext().startActivity(intent);
                     }
                 });
@@ -103,9 +106,11 @@ public class MyMessageRecyclerAdapter extends RecyclerView.Adapter<MyMessageRecy
                     @Override
                     public void onClick(View view) {
                         Intent intent = new Intent(JueQianAPP.getAppContext(), QuestionActivity.class);
-                        intent.putExtra("answerID", messages.get(position).getMessAnswer().getObjectId());
-                        intent.putExtra("questionID", messages.get(position).getMessAnswer().getQuestion().getObjectId());
-                        intent.putExtra("answer_userID",messages.get(position).getMessAnswer().getUser().getObjectId());
+                        intent.putExtra("questionid", messages.get(position).getMessAnswer().getQuestion().getObjectId());
+                        intent.putExtra("question_userID", messages.get(position).getMessAnswer().getQuestion().getUser().getObjectId());
+//                        intent.putExtra("answerID", messages.get(position).getMessAnswer().getObjectId());
+//                        intent.putExtra("questionID", messages.get(position).getMessAnswer().getQuestion().getObjectId());
+//                        intent.putExtra("answer_userID",messages.get(position).getMessAnswer().getUser().getObjectId());
                         JueQianAPP.getAppContext().startActivity(intent);
                     }
                 });

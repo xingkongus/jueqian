@@ -19,14 +19,13 @@ import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.datatype.BmobPointer;
-import cn.bmob.v3.datatype.BmobRelation;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.GetListener;
-import cn.bmob.v3.listener.UpdateListener;
 import de.hdodenhof.circleimageview.CircleImageView;
 import us.xingkong.jueqian.JueQianAPP;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.base.BaseActivity;
+import us.xingkong.jueqian.bean.ForumBean.BombBean.Follow;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
 import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
 import us.xingkong.jueqian.module.me.follower.FollowerActivity;
@@ -62,8 +61,7 @@ public class MyMainPageAcitivity extends BaseActivity<MyMainPageContract.Present
     RelativeLayout ry_following;
 
     private String intentUserID = null;
-    private _User follow_user;
-    private _User befollowed_user;
+    private _User current_user;
 
     @Override
     protected MyMainPageContract.Presenter createPresenter() {
@@ -77,18 +75,43 @@ public class MyMainPageAcitivity extends BaseActivity<MyMainPageContract.Present
 
     @Override
     protected void prepareData() {
-        Intent intent = getIntent();
-        intentUserID = intent.getStringExtra("intentUserID");
+        current_user = BmobUser.getCurrentUser(JueQianAPP.getAppContext(), _User.class);
 
+        updateFans();
+        updateFollowing();
+    }
+
+    private void updateFollowing() {
+        //更新关注的人
+        BmobQuery<Follow> query_following = new BmobQuery<Follow>();
+        query_following.addWhereEqualTo("followUser", new BmobPointer(current_user));
+        query_following.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
+        query_following.findObjects(JueQianAPP.getAppContext(), new FindListener<Follow>() {
+            @Override
+            public void onSuccess(List<Follow> list) {
+//                showToast("获取关注的人成功" + list.size());
+                if (list.size() == 0) return;
+                tv_following.setText("" + list.size());
+            }
+
+            @Override
+            public void onError(int i, String s) {
+                showToast("获取关注的人失败CASE:" + s);
+            }
+        });
+    }
+
+    private void updateFans() {
+        //更新粉丝
         _User user = new _User();
         user.setObjectId(intentUserID);
-        BmobQuery<_User> query_follower = new BmobQuery<_User>();
-        query_follower.addWhereRelatedTo("followers", new BmobPointer(user));
+        BmobQuery<Follow> query_follower = new BmobQuery<Follow>();
+        query_follower.addWhereRelatedTo("followedUser", new BmobPointer(user));
         query_follower.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
-        query_follower.findObjects(JueQianAPP.getAppContext(), new FindListener<_User>() {
+        query_follower.findObjects(JueQianAPP.getAppContext(), new FindListener<Follow>() {
             @Override
-            public void onSuccess(List<_User> list) {
-                showToast("获取粉丝成功" + list.size());
+            public void onSuccess(List<Follow> list) {
+                if (list.size() == 0) return;
                 tv_followers.setText("" + list.size());
             }
 
@@ -97,32 +120,16 @@ public class MyMainPageAcitivity extends BaseActivity<MyMainPageContract.Present
                 showToast("获取粉丝失败");
             }
         });
-
-        BmobQuery<_User> query_following = new BmobQuery<_User>();
-        query_following.addWhereRelatedTo("following", new BmobPointer(user));
-        query_following.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
-        query_following.findObjects(JueQianAPP.getAppContext(), new FindListener<_User>() {
-            @Override
-            public void onSuccess(List<_User> list) {
-                showToast("获取关注的人成功" + list.size());
-                tv_following.setText("" + list.size());
-            }
-
-            @Override
-            public void onError(int i, String s) {
-                showToast("获取关注的人失败");
-            }
-        });
     }
 
     @Override
     protected void initView() {
-        setToolbar();
+        initToolbar();
         initNickName();
-        setEditButton();
-        setCollection();
-        setRencentLooks();
-        setProfile();
+        initEditButton();
+        initCollection();
+        initRencentLooks();
+        initProfile();
         toFollowing();
         toFollower();
     }
@@ -132,7 +139,7 @@ public class MyMainPageAcitivity extends BaseActivity<MyMainPageContract.Present
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(JueQianAPP.getAppContext(), FollowerActivity.class);
-                intent.putExtra("intentUserID", intentUserID);
+                intent.putExtra("intentUserID", current_user.getObjectId());
                 startActivity(intent);
             }
         });
@@ -143,7 +150,7 @@ public class MyMainPageAcitivity extends BaseActivity<MyMainPageContract.Present
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(JueQianAPP.getAppContext(), FollowingActivity.class);
-                intent.putExtra("intentUserID", intentUserID);
+                intent.putExtra("intentUserID", current_user.getObjectId());
                 startActivity(intent);
             }
         });
@@ -152,13 +159,14 @@ public class MyMainPageAcitivity extends BaseActivity<MyMainPageContract.Present
     private void initNickName() {
         BmobQuery<_User> bmobQuery = new BmobQuery<>();
         bmobQuery.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
-        bmobQuery.getObject(JueQianAPP.getAppContext(), BmobUser.getCurrentUser(JueQianAPP.getAppContext()).getObjectId(), new GetListener<_User>() {
+        bmobQuery.getObject(JueQianAPP.getAppContext(), current_user.getObjectId(), new GetListener<_User>() {
             @Override
             public void onSuccess(_User user) {
-                showToast("更新用户昵称成功");
+//                showToast("更新用户昵称成功");
                 if (user.getNickname() == null) {
                     showToast("昵称为空");
                     tv_nickname.setText("请前往设置你的昵称..");
+                    return;
                 }
                 tv_nickname.setText(user.getNickname());
             }
@@ -170,7 +178,7 @@ public class MyMainPageAcitivity extends BaseActivity<MyMainPageContract.Present
         });
     }
 
-    private void setRencentLooks() {
+    private void initRencentLooks() {
         rencentlooks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -181,10 +189,9 @@ public class MyMainPageAcitivity extends BaseActivity<MyMainPageContract.Present
         });
     }
 
-    private void setCollection() {
-        BmobUser bmobUser = BmobUser.getCurrentUser(JueQianAPP.getAppContext());
+    private void initCollection() {
         BmobQuery<Question> query = new BmobQuery<Question>();
-        query.addWhereRelatedTo("collections", new BmobPointer(bmobUser));
+        query.addWhereRelatedTo("collections", new BmobPointer(current_user));
         query.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
         query.findObjects(JueQianAPP.getAppContext(), new FindListener<Question>() {
             @Override
@@ -208,10 +215,10 @@ public class MyMainPageAcitivity extends BaseActivity<MyMainPageContract.Present
 
     }
 
-    private void setProfile() {
+    private void initProfile() {
 
         BmobQuery<_User> query = new BmobQuery<>();
-        query.addWhereEqualTo("objectId", BmobUser.getCurrentUser(JueQianAPP.getAppContext()).getObjectId());
+        query.addWhereEqualTo("objectId", current_user.getObjectId());
         query.addQueryKeys("profile");
         query.findObjects(JueQianAPP.getAppContext(), new FindListener<_User>() {
             @Override
@@ -222,7 +229,7 @@ public class MyMainPageAcitivity extends BaseActivity<MyMainPageContract.Present
                 }
                 BmobFile bmobFile = list.get(0).getProfile();
                 if (bmobFile == null) {
-                    showToast("当前用户无头像");
+                    showToast("获取头像异常");
                     return;
                 }
                 String profileURL = bmobFile.getUrl();
@@ -236,7 +243,7 @@ public class MyMainPageAcitivity extends BaseActivity<MyMainPageContract.Present
         });
     }
 
-    private void setEditButton() {
+    private void initEditButton() {
         bt_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -247,10 +254,10 @@ public class MyMainPageAcitivity extends BaseActivity<MyMainPageContract.Present
     }
 
 
-    private void setToolbar() {
+    private void initToolbar() {
         ActionBar acb = getSupportActionBar();
         acb.setDisplayHomeAsUpEnabled(true);
-        acb.setTitle("个人主页");
+        acb.setTitle("我的主页");
     }
 
     @Override
@@ -276,8 +283,10 @@ public class MyMainPageAcitivity extends BaseActivity<MyMainPageContract.Present
     @Override
     protected void onStart() {
         super.onStart();
-        setProfile();
-        setCollection();
+        initProfile();
+        initCollection();
         initNickName();
+        updateFans();
+        updateFollowing();
     }
 }

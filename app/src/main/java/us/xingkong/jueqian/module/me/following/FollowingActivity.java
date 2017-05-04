@@ -22,6 +22,7 @@ import us.xingkong.jueqian.JueQianAPP;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.adapter.FollowingAdapter;
 import us.xingkong.jueqian.base.BaseActivity;
+import us.xingkong.jueqian.bean.ForumBean.BombBean.Follow;
 import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
 
 /**
@@ -32,8 +33,10 @@ public class FollowingActivity extends BaseActivity<FollowingContract.Presenter>
     @BindView(R.id.recyclerview)
     RecyclerView mRecyclerView;
 
-    private List<_User> followings = new ArrayList<>();
+    private List<Follow> follows = new ArrayList<>();
     private String intentUserID;
+    private _User current_user;
+    private _User intentUser=new _User();
 
     private Handler mHandler = new Handler() {
         @Override
@@ -65,25 +68,32 @@ public class FollowingActivity extends BaseActivity<FollowingContract.Presenter>
     protected void prepareData() {
         Intent intent = getIntent();
         intentUserID = intent.getStringExtra("intentUserID");
-        _User user = new _User();
-        user.setObjectId(intentUserID);
-        BmobQuery<_User> query = new BmobQuery<_User>();
-        query.addWhereRelatedTo("following", new BmobPointer(user));
-        query.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
-        query.findObjects(JueQianAPP.getAppContext(), new FindListener<_User>() {
+        intentUser.setObjectId(intentUserID);
+
+        updateFollowing();
+
+    }
+
+    private void updateFollowing() {
+        //更新关注的人
+        BmobQuery<Follow> query_following = new BmobQuery<Follow>();
+        query_following.addWhereEqualTo("followUser", new BmobPointer(intentUser));
+        query_following.include("followedUser");
+        query_following.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
+        query_following.findObjects(JueQianAPP.getAppContext(), new FindListener<Follow>() {
             @Override
-            public void onSuccess(List<_User> list) {
-                showToast("获取关注的人成功");
-                followings = list;
+            public void onSuccess(List<Follow> list) {
+//                showToast("获取关注的人成功" + list.size());
+                if (list.size() == 0) return;
+                follows = list;
                 mHandler.sendEmptyMessage(1);
             }
 
             @Override
             public void onError(int i, String s) {
-                showToast("获取关注的人失败" + s);
+                showToast("获取关注的人失败CASE:" + s);
             }
         });
-
     }
 
     @Override
@@ -93,7 +103,7 @@ public class FollowingActivity extends BaseActivity<FollowingContract.Presenter>
     }
 
     private void initRecyclerView() {
-        followingAdapter = new FollowingAdapter(mHandler, followings);
+        followingAdapter = new FollowingAdapter(mHandler, follows);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(followingAdapter);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(FollowingActivity.this, DividerItemDecoration.VERTICAL));

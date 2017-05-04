@@ -2,6 +2,8 @@ package us.xingkong.jueqian.module.me.mainpage;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.CardView;
 import android.view.MenuItem;
@@ -12,6 +14,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -19,16 +22,18 @@ import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.datatype.BmobPointer;
-import cn.bmob.v3.datatype.BmobRelation;
+import cn.bmob.v3.listener.DeleteListener;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.GetListener;
-import cn.bmob.v3.listener.UpdateListener;
+import cn.bmob.v3.listener.SaveListener;
 import de.hdodenhof.circleimageview.CircleImageView;
 import us.xingkong.jueqian.JueQianAPP;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.base.BaseActivity;
+import us.xingkong.jueqian.bean.ForumBean.BombBean.Follow;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
 import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
+import us.xingkong.jueqian.module.main.MainActivity;
 import us.xingkong.jueqian.module.me.follower.FollowerActivity;
 import us.xingkong.jueqian.module.me.following.FollowingActivity;
 import us.xingkong.jueqian.module.me.mycollection.MyCollectionActivity;
@@ -61,9 +66,37 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
     @BindView(R.id.mainpage_ry_follower)
     RelativeLayout ry_follower;
 
-    private String intentUserID = null;
-    private _User follow_user;
-    private _User befollowed_user;
+    private String intentUserID;
+    private _User followedUser;
+    private _User current_user;
+    private _User intentUser = new _User();
+    private String followID;
+
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case 1:
+                    //删除关注关系
+                    Follow follow = new Follow();
+                    follow.setObjectId(followID);
+                    follow.delete(JueQianAPP.getAppContext(), new DeleteListener() {
+                        @Override
+                        public void onSuccess() {
+                            updateFans();
+                            bt_edit.setText("关注 +");
+                        }
+
+                        @Override
+                        public void onFailure(int i, String s) {
+                            showToast("取消关注失败CASE:" + s);
+                        }
+                    });
+                    break;
+            }
+        }
+    };
 
     @Override
     protected MainPageContract.Presenter createPresenter() {
@@ -77,18 +110,45 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
 
     @Override
     protected void prepareData() {
+        current_user = BmobUser.getCurrentUser(JueQianAPP.getAppContext(), _User.class);
         Intent intent = getIntent();
         intentUserID = intent.getStringExtra("intentUserID");
+        intentUser.setObjectId(intentUserID);
 
+        updateFans();
+        updateFollowing();
+    }
+
+    private void updateFollowing() {
+        //更新关注的人
+        BmobQuery<Follow> query_following = new BmobQuery<Follow>();
+        query_following.addWhereEqualTo("followUser", new BmobPointer(intentUser));
+        query_following.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
+        query_following.findObjects(JueQianAPP.getAppContext(), new FindListener<Follow>() {
+            @Override
+            public void onSuccess(List<Follow> list) {
+//                showToast("获取关注的人成功" + list.size());
+                if (list.size() == 0) return;
+                tv_following.setText("" + list.size());
+            }
+
+            @Override
+            public void onError(int i, String s) {
+                showToast("获取关注的人失败CASE:" + s);
+            }
+        });
+    }
+
+    private void updateFans() {
+        //更新粉丝
         _User user = new _User();
         user.setObjectId(intentUserID);
-        BmobQuery<_User> query_follower = new BmobQuery<_User>();
-        query_follower.addWhereRelatedTo("followers", new BmobPointer(user));
+        BmobQuery<Follow> query_follower = new BmobQuery<Follow>();
+        query_follower.addWhereEqualTo("followedUser", new BmobPointer(user));
         query_follower.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
-        query_follower.findObjects(JueQianAPP.getAppContext(), new FindListener<_User>() {
+        query_follower.findObjects(JueQianAPP.getAppContext(), new FindListener<Follow>() {
             @Override
-            public void onSuccess(List<_User> list) {
-                showToast("获取粉丝成功" + list.size());
+            public void onSuccess(List<Follow> list) {
                 tv_followers.setText("" + list.size());
             }
 
@@ -97,33 +157,16 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
                 showToast("获取粉丝失败");
             }
         });
-
-        BmobQuery<_User> query_following = new BmobQuery<_User>();
-        query_following.addWhereRelatedTo("following", new BmobPointer(user));
-        query_following.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
-        query_following.findObjects(JueQianAPP.getAppContext(), new FindListener<_User>() {
-            @Override
-            public void onSuccess(List<_User> list) {
-                showToast("获取关注的人成功" + list.size());
-                tv_following.setText("" + list.size());
-            }
-
-            @Override
-            public void onError(int i, String s) {
-                showToast("获取关注的人失败");
-            }
-        });
-
     }
 
     @Override
     protected void initView() {
-        setToolbar();
+        initToolbar();
         initNickName();
-        setFocusButton();
-        setProfile();
-        setCollection();
-        setRecentLooks();
+        initFocusButton();
+        initProfile();
+        initCollection();
+        initRecentLooks();
         toFollowing();
         toFollower();
 
@@ -153,7 +196,7 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
 
     }
 
-    private void setRecentLooks() {
+    private void initRecentLooks() {
         rencentlooks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -164,7 +207,7 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
         });
     }
 
-    private void setCollection() {
+    private void initCollection() {
         _User u = new _User();
         u.setObjectId(intentUserID);
         BmobQuery<Question> query = new BmobQuery<Question>();
@@ -191,10 +234,9 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
         });
     }
 
-    private void setProfile() {
+    private void initProfile() {
         BmobQuery<_User> query = new BmobQuery<>();
         query.addWhereEqualTo("objectId", intentUserID);
-        showToast(intentUserID);
         query.addQueryKeys("profile");
         query.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
         query.findObjects(JueQianAPP.getAppContext(), new FindListener<_User>() {
@@ -226,7 +268,7 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
         bmobQuery.getObject(JueQianAPP.getAppContext(), intentUserID, new GetListener<_User>() {
             @Override
             public void onSuccess(_User user) {
-                showToast("更新用户昵称成功");
+//                showToast("更新用户昵称成功");
                 tv_nickname.setText(user.getNickname());
             }
 
@@ -237,13 +279,13 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
         });
     }
 
-    private void setToolbar() {
+    private void initToolbar() {
         ActionBar acb = getSupportActionBar();
         acb.setDisplayHomeAsUpEnabled(true);
         acb.setTitle("个人主页");
     }
 
-    private void setFocusButton() {
+    private void initFocusButton() {
         if (BmobUser.getCurrentUser(JueQianAPP.getAppContext()) == null) {
             bt_edit.setVisibility(View.INVISIBLE);
             return;
@@ -259,66 +301,21 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
                 }
             });
         } else {
-            //判断当前用户是否存关注已经关注此用户
-            BmobQuery<_User> query = new BmobQuery<>();
-            follow_user = new _User();
-            befollowed_user = new _User();
-            follow_user.setObjectId(BmobUser.getCurrentUser(JueQianAPP.getAppContext()).getObjectId());
-            befollowed_user.setObjectId(intentUserID);
-
-            query.addWhereEqualTo("following", new BmobPointer(befollowed_user));
-            query.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
-            query.findObjects(JueQianAPP.getAppContext(), new FindListener<_User>() {
-                @Override
-                public void onSuccess(List<_User> list) {
-                    if (list.size() == 0) {
-                        bt_edit.setText("关注 +");
-                        showToast("未关注此用户" + list.size());
-                    } else if (list.size() == 1) {
-                        bt_edit.setText("取消关注");
-                        showToast("已关注此用户" + list.size());
-                    }
-
-                }
-
-                @Override
-                public void onError(int i, String s) {
-                    showToast("查询是否存在关注关系失败CASE:" + s);
-                }
-            });
-
+            isFocus();
             bt_edit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (bt_edit.getText().equals("取消关注")) {
-                        BmobRelation bmobRelation = new BmobRelation();
-                        bmobRelation.remove(befollowed_user);
-                        follow_user.setFollowing(bmobRelation);
-                        follow_user.update(JueQianAPP.getAppContext(), new UpdateListener() {
-                            @Override
-                            public void onSuccess() {
-                                bt_edit.setText("关注 +");
-//                                bt_edit.setTextColor(getResources().getColor(R.color.text_primary));
-//                                bt_edit.setBackgroundColor(getResources().getColor(R.color.text_white));
-                                showToast("取消关注成功！");
-                            }
 
-                            @Override
-                            public void onFailure(int i, String s) {
-                                showToast("取消关注失败！CASE:" + s);
-                            }
-                        });
-                    }
                     if (bt_edit.getText().equals("关注 +")) {
-                        //添加关注者的多对多关联
-                        BmobRelation bmobRelation1 = new BmobRelation();
-                        bmobRelation1.add(befollowed_user);
-                        follow_user.setFollowing(bmobRelation1);
-                        follow_user.update(JueQianAPP.getAppContext(), new UpdateListener() {
+                        //添加关注关系
+                        Follow follow = new Follow();
+                        follow.setFollowUser(current_user);
+                        follow.setFollowedUser(followedUser);
+                        follow.save(JueQianAPP.getAppContext(), new SaveListener() {
                             @Override
                             public void onSuccess() {
+                                updateFans();
                                 bt_edit.setText("取消关注");
-                                showToast("关注成功");
                             }
 
                             @Override
@@ -326,28 +323,85 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
                                 showToast("关注失败CASE:" + s);
                             }
                         });
+                    }
 
-                        //添加被关注者的多对多关联
-                        BmobRelation bmobRelation = new BmobRelation();
-                        bmobRelation.add(follow_user);
-                        befollowed_user.setFollowers(bmobRelation);
-                        befollowed_user.update(JueQianAPP.getAppContext(), new UpdateListener() {
+                    if (bt_edit.getText().equals("取消关注")) {
+
+                        //判断当前用户是否存关注已经关注此用户
+                        followedUser = new _User();
+                        followedUser.setObjectId(intentUserID);
+                        final BmobQuery<Follow> f1 = new BmobQuery<>();
+                        f1.addWhereEqualTo("followUser", new BmobPointer(current_user));
+                        BmobQuery<Follow> f2 = new BmobQuery<>();
+                        f2.addWhereEqualTo("followedUser", new BmobPointer(followedUser));
+                        List<BmobQuery<Follow>> queries = new ArrayList<>();
+                        queries.add(f1);
+                        queries.add(f2);
+                        BmobQuery<Follow> query = new BmobQuery<>();
+                        query.and(queries);
+                        query.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
+                        query.findObjects(JueQianAPP.getAppContext(), new FindListener<Follow>() {
                             @Override
-                            public void onSuccess() {
-                                showToast("添加被关注者的多对多关联成功");
+                            public void onSuccess(List<Follow> list) {
+                                if (list.size() == 0) {
+                                    bt_edit.setText("关注 +");
+                                } else if (list.size() == 1) {
+                                    if (list.get(0).getObjectId() != null) {
+                                        followID = list.get(0).getObjectId();
+                                        bt_edit.setText("取消关注");
+                                        handler.sendEmptyMessage(1);
+                                    }
+                                } else {
+                                    showToast("关注表数据异常");
+                                }
                             }
 
                             @Override
-                            public void onFailure(int i, String s) {
-                                showToast("添加被关注者的多对多关联失败CASE:" + s);
+                            public void onError(int i, String s) {
+                                showToast("查询是否存在关注关系失败CASE:" + s);
                             }
                         });
-
-
                     }
                 }
             });
         }
+    }
+
+    private void isFocus() {
+        //判断当前用户是否存关注已经关注此用户
+        followedUser = new _User();
+        followedUser.setObjectId(intentUserID);
+        final BmobQuery<Follow> f1 = new BmobQuery<>();
+        f1.addWhereEqualTo("followUser", new BmobPointer(current_user));
+        BmobQuery<Follow> f2 = new BmobQuery<>();
+        f2.addWhereEqualTo("followedUser", new BmobPointer(followedUser));
+        List<BmobQuery<Follow>> queries = new ArrayList<>();
+        queries.add(f1);
+        queries.add(f2);
+        BmobQuery<Follow> query = new BmobQuery<>();
+        query.and(queries);
+        query.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
+        query.findObjects(JueQianAPP.getAppContext(), new FindListener<Follow>() {
+            @Override
+            public void onSuccess(List<Follow> list) {
+//                    handler.sendEmptyMessage(1);
+                if (list.size() == 0) {
+                    bt_edit.setText("关注 +");
+                } else if (list.size() == 1) {
+                    if (list.get(0).getObjectId() != null) {
+                        followID = list.get(0).getObjectId();
+                        bt_edit.setText("取消关注");
+                    }
+                } else {
+                    showToast("关注表数据异常");
+                }
+            }
+
+            @Override
+            public void onError(int i, String s) {
+                showToast("查询是否存在关注关系失败CASE:" + s);
+            }
+        });
     }
 
     @Override

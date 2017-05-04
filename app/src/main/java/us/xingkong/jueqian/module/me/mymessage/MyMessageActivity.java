@@ -82,18 +82,18 @@ public class MyMessageActivity extends BaseActivity<MyMessageContract.Presenter>
             @Override
             public void onSuccess(List<NewMessage> list) {
                 if (list.size() == 0) {
-                    showToast("无消息");
+//                    showToast("无消息");
                     return;
                 }
 
                 messages = list;
-                showToast("获取我的消息列表成功");
+//                showToast("获取我的消息列表成功");
                 mHandler.sendEmptyMessage(2);
             }
 
             @Override
             public void onError(int i, String s) {
-                showToast("获取我的消息列表失败");
+                showToast("获取我的消息列表失败CASE:" + s);
             }
         });
 

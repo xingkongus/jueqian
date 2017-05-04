@@ -72,20 +72,10 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
 
     private static final String PAGE_COUNT = "page_count";
     private boolean isLogin;
-    private _User user; //当前用户
     private BmobFile bmobFile;
     private BmobRealTimeData rtd;
     private static String profileURL = null; //头像URL
-    private Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case 1:
-                    break;
-            }
-        }
-    };
+    private _User current_user;
 
     public static MeFragment getInstance(int page_count) {
         MeFragment fra = new MeFragment();
@@ -117,22 +107,23 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
 
     @Override
     protected void initView(View rootView) {
-        judgeLogin();
-        initNickName();
-        toEditInfo();
-        toMyMessage();
-        initRedPoint();
-        toMyCollection();
-        toMyAnswer();
-        toMyRecentLook();
-        toMySettings();
-        toMyQusetions();
-        toSignOut();
-        getProfile();
+        isSignIn(); //判断是否登陆
+        initNickName(); //初始化昵称
+        initRedPoint(); //初始化小红点
+        initSignOut(); //初始化注销按钮
+        initProfile();//初始化头像
+        toMyMainPage(); //前往个人主页
+        toMyMessage(); //前往我的消息
+        toMyCollection(); //前往我的收藏
+        toMyAnswer(); //前往我的回答
+        toMyRecentLook(); //前往最近浏览
+        toMySettings(); //前往我的设置
+        toMyQusetions();//前往我的宿舍
     }
 
     private void initRedPoint() {
         //开始监听数据库
+        if (!isLogin) return;
         rtd = new BmobRealTimeData();
         rtd.start(JueQianAPP.getAppContext(), new ValueEventListener() {
             @Override
@@ -148,9 +139,9 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
                     JSONObject dataObject = jsonObject.getJSONObject("data");
                     JSONObject receiverObj = dataObject.getJSONObject("receiver");
                     JSONObject senderObj = dataObject.getJSONObject("sender");
-                    String s1 = receiverObj.getString("objectId");
-                    String s2 = senderObj.getString("objectId");
-                    if (s1.equals(BmobUser.getCurrentUser(JueQianAPP.getAppContext()).getObjectId())) {
+                    String receiverID = receiverObj.getString("objectId");
+//                    String senderID = senderObj.getString("objectId");
+                    if (receiverID.equals(current_user.getObjectId())) {
                         mCircleImageView_redpoint.setVisibility(View.VISIBLE);
                     }
                 } catch (JSONException e) {
@@ -162,15 +153,12 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
     }
 
     private void initNickName() {
-        _User user=BmobUser.getCurrentUser(JueQianAPP.getAppContext(),_User.class);
-        if (user==null)return;
+        if (!isLogin) return;
         BmobQuery<_User> bmobQuery = new BmobQuery<>();
-        _User bmobUser = BmobUser.getCurrentUser(JueQianAPP.getAppContext(), _User.class);
-        if (bmobUser == null) return;
-        bmobQuery.getObject(JueQianAPP.getAppContext(), BmobUser.getCurrentUser(JueQianAPP.getAppContext()).getObjectId(), new GetListener<_User>() {
+        bmobQuery.getObject(JueQianAPP.getAppContext(), current_user.getObjectId(), new GetListener<_User>() {
             @Override
             public void onSuccess(_User user) {
-                showToast("更新用户昵称成功");
+//                showToast("更新用户昵称成功");
                 mTextView_nickname.setText(user.getNickname());
             }
 
@@ -181,7 +169,7 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
         });
     }
 
-    private void toSignOut() {
+    private void initSignOut() {
         if (!isLogin) mCardView_signout.setVisibility(View.INVISIBLE);
         mCardView_signout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -195,7 +183,7 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                 BmobUser.logOut(JueQianAPP.getAppContext());   //清除缓存用户对象
-                                BmobUser currentUser = BmobUser.getCurrentUser(JueQianAPP.getAppContext()); // 现在的currentUser是null了
+//                                BmobUser currentUser = BmobUser.getCurrentUser(JueQianAPP.getAppContext()); // 现在的currentUser是null了
                                 Intent intent = new Intent(JueQianAPP.getAppContext(), LoginActivity.class);
                                 startActivity(intent);
                                 getActivity().finish();
@@ -211,9 +199,10 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
         });
     }
 
-    private void judgeLogin() {
-        BmobUser bmobUser = BmobUser.getCurrentUser(JueQianAPP.getAppContext());
-        if (bmobUser == null) isLogin = false;
+    private void isSignIn() {
+//        _User bmobUser = BmobUser.getCurrentUser(JueQianAPP.getAppContext(), _User.class);
+        current_user = BmobUser.getCurrentUser(JueQianAPP.getAppContext(), _User.class);
+        if (current_user == null) isLogin = false;
         else isLogin = true;
     }
 
@@ -312,17 +301,17 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
         });
     }
 
-    private void toEditInfo() {
+    private void toMyMainPage() {
         mCardView_editinfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                _User user = BmobUser.getCurrentUser(JueQianAPP.getAppContext(), _User.class);
-                if (user == null) {
+//                _User user = BmobUser.getCurrentUser(JueQianAPP.getAppContext(), _User.class);
+                if (current_user == null) {
                     Intent intent = new Intent(getContext(), LoginActivity.class);
                     startActivity(intent);
                 } else {
                     Intent intent = new Intent(getContext(), MyMainPageAcitivity.class);
-                    intent.putExtra("intentUserID", BmobUser.getCurrentUser(JueQianAPP.getAppContext()).getObjectId());
+//                    intent.putExtra("intentUserID", current_user.getObjectId());
                     intent.putExtra("profileURL", profileURL);
                     startActivity(intent);
                 }
@@ -330,10 +319,10 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
         });
     }
 
-    private void getProfile() {
+    private void initProfile() {
         if (isLogin) {
             BmobQuery<_User> query = new BmobQuery<>();
-            query.addWhereEqualTo("objectId", BmobUser.getCurrentUser(JueQianAPP.getAppContext()).getObjectId());
+            query.addWhereEqualTo("objectId", current_user.getObjectId());
             query.addQueryKeys("profile");
             query.findObjects(JueQianAPP.getAppContext(), new FindListener<_User>() {
                 @Override
@@ -344,7 +333,7 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
                     }
                     bmobFile = list.get(0).getProfile();
                     if (bmobFile == null) {
-                        showToast("当前用户无头像");
+                        showToast("获取头像异常");
                         return;
                     }
                     profileURL = bmobFile.getUrl();
@@ -353,9 +342,11 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
 
                 @Override
                 public void onError(int i, String s) {
-                    showToast("获取头像失败");
+                    showToast("获取头像失败CASE:" + s);
                 }
             });
+        } else {
+            showToast("请先登录");
         }
 
     }
@@ -363,7 +354,7 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
     @Override
     public void onStart() {
         super.onStart();
-        getProfile();
+        initProfile();
         initNickName();
     }
 }

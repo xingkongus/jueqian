@@ -2,30 +2,21 @@ package us.xingkong.jueqian.adapter;
 
 import android.content.Intent;
 import android.os.Handler;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
 
-import cn.bmob.v3.BmobUser;
-import cn.bmob.v3.datatype.BmobRelation;
-import cn.bmob.v3.listener.UpdateListener;
 import de.hdodenhof.circleimageview.CircleImageView;
 import us.xingkong.jueqian.JueQianAPP;
 import us.xingkong.jueqian.R;
-import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
-import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
-import us.xingkong.jueqian.module.Forum.QuestionPage.QuestionActivity;
+import us.xingkong.jueqian.bean.ForumBean.BombBean.Follow;
 import us.xingkong.jueqian.module.me.mainpage.MainPageAcitivity;
 
 /**
@@ -34,11 +25,11 @@ import us.xingkong.jueqian.module.me.mainpage.MainPageAcitivity;
 
 public class FollowerAdapter extends RecyclerView.Adapter<FollowerAdapter.MyViewHolder> implements View.OnLongClickListener {
     private Handler mHandler;
-    private List<_User> followers;
+    private List<Follow> follows;
 
-    public FollowerAdapter(Handler mHandler, List<_User> followers) {
+    public FollowerAdapter(Handler mHandler, List<Follow> follows) {
         this.mHandler = mHandler;
-        this.followers = followers;
+        this.follows = follows;
     }
 
 
@@ -49,14 +40,14 @@ public class FollowerAdapter extends RecyclerView.Adapter<FollowerAdapter.MyView
 
     @Override
     public void onBindViewHolder(FollowerAdapter.MyViewHolder holder, final int position) {
-        Glide.with(JueQianAPP.getAppContext()).load(followers.get(position).getProfile().getUrl()).into(holder.civ_touxiang);
-        holder.tv_nickname.setText(followers.get(position).getNickname());
+        Glide.with(JueQianAPP.getAppContext()).load(follows.get(position).getFollowUser().getProfile().getUrl()).into(holder.civ_touxiang);
+        holder.tv_nickname.setText(follows.get(position).getFollowUser().getNickname());
 
         holder.item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(JueQianAPP.getAppContext(), MainPageAcitivity.class);
-                intent.putExtra("intentUserID", followers.get(position).getObjectId());
+                intent.putExtra("intentUserID", follows.get(position).getFollowUser().getObjectId());
                 JueQianAPP.getAppContext().startActivity(intent);
             }
         });
@@ -65,7 +56,7 @@ public class FollowerAdapter extends RecyclerView.Adapter<FollowerAdapter.MyView
 
     @Override
     public int getItemCount() {
-        return followers.size();
+        return follows.size();
     }
 
     @Override

@@ -23,6 +23,7 @@ import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.adapter.FollowerAdapter;
 import us.xingkong.jueqian.adapter.MyCollectionAdapter;
 import us.xingkong.jueqian.base.BaseActivity;
+import us.xingkong.jueqian.bean.ForumBean.BombBean.Follow;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
 import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
 
@@ -35,8 +36,9 @@ public class FollowerActivity extends BaseActivity<FollowerContract.Presenter> i
     RecyclerView mRecyclerView;
 
     private FollowerAdapter followerAdapter;
-    private List<_User> followers = new ArrayList<>();
+    private List<Follow> followers = new ArrayList<>();
     private String intentUserID;
+    private _User intentUser = new _User();
 
     private Handler mHandler = new Handler() {
         @Override
@@ -66,26 +68,32 @@ public class FollowerActivity extends BaseActivity<FollowerContract.Presenter> i
     @Override
     protected void prepareData() {
         Intent intent = getIntent();
-        intentUserID = intent.getStringExtra("intentUserID");
-        _User user = new _User();
-        user.setObjectId(intentUserID);
-        BmobQuery<_User> query = new BmobQuery<_User>();
-        query.addWhereRelatedTo("following", new BmobPointer(user));
-        query.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
-        query.findObjects(JueQianAPP.getAppContext(), new FindListener<_User>() {
+        Bundle bundle = intent.getExtras();
+        intentUserID = bundle.getString("intentUserID");
+        intentUser.setObjectId(intentUserID);
+
+        updateFans();
+    }
+
+    private void updateFans() {
+        //更新粉丝
+        BmobQuery<Follow> query_follower = new BmobQuery<Follow>();
+        query_follower.addWhereEqualTo("followedUser", new BmobPointer(intentUser));
+        query_follower.include("followUser");
+        query_follower.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
+        query_follower.findObjects(JueQianAPP.getAppContext(), new FindListener<Follow>() {
             @Override
-            public void onSuccess(List<_User> list) {
-                showToast("获取粉丝成功");
+            public void onSuccess(List<Follow> list) {
+                if (list.size() == 0) return;
                 followers = list;
                 mHandler.sendEmptyMessage(1);
             }
 
             @Override
             public void onError(int i, String s) {
-                showToast("获取粉丝失败CASE:" + s);
+                showToast("获取粉丝失败");
             }
         });
-
     }
 
     @Override
