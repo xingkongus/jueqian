@@ -60,11 +60,10 @@ public class QuestionPresenter extends BasePresenterImpl implements QuestionCont
     @Override
     public ArrayList<Answer> getQuestionAnswer(Context context, final Handler handler, String questionID,final ArrayList<Answer> answers) {
         BmobQuery<Answer> query=new BmobQuery<>();
-        query.include("user");
+        query.include("user,question.user");
         Question question=new Question();
         question.setObjectId(questionID);
         query.addWhereEqualTo("question", new BmobPointer(question));
-//        query.include("user,question.user");
         query.order("-createdAt");
         query.findObjects(context, new FindListener<Answer>() {
             @Override
@@ -127,7 +126,7 @@ public class QuestionPresenter extends BasePresenterImpl implements QuestionCont
 
             @Override
             public void onFailure(int i, String s) {
-                mView.showToast("网络连接超时");
+                mView.showToast("网络连接超时CASE:" + s);
             }
         });
     }
@@ -190,7 +189,7 @@ public class QuestionPresenter extends BasePresenterImpl implements QuestionCont
 
             @Override
             public void onFailure(int i, String s) {
-                mView.showToast("网络连接超时");
+                mView.showToast("网络连接超时"+s);
             }
         });
     }

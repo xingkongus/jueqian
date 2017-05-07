@@ -8,7 +8,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import java.util.ArrayList;
@@ -24,7 +23,6 @@ import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.adapter.MyQuestionsAdapter;
 import us.xingkong.jueqian.base.BaseActivity;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
-import us.xingkong.jueqian.module.me.mycollection.MyCollectionActivity;
 
 /**
  * Created by PERFECTLIN on 2017/1/13 0013.

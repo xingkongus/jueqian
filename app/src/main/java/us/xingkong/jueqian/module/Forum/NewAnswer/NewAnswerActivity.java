@@ -84,7 +84,6 @@ public class NewAnswerActivity extends BaseActivity<NewAnswerContract.Presenter>
                     Answer answer;
                     answer= (Answer) msg.obj;
                     answer.setObjectId(answer.getObjectId());
-                    System.out.println("--------------"+answer.getObjectId());
                     BmobRelation bmobRelation=new BmobRelation();
                     bmobRelation.add(answer);
                     user.setAnswers(bmobRelation);

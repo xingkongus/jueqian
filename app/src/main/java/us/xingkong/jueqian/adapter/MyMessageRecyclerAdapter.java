@@ -59,10 +59,10 @@ public class MyMessageRecyclerAdapter extends RecyclerView.Adapter<MyMessageRecy
                         Intent intent = new Intent(JueQianAPP.getAppContext(), CommentActivity.class);
 //                        intent.putExtra("questionid", messages.get(position).getMessComment().getQuestion().getObjectId());
 //                        intent.putExtra("question_userID", messages.get(position).getMessComment().getQuestion().getUser().getObjectId());
-                        intent.putExtra("answerID", messages.get(position).getSender().getObjectId());
+                        intent.putExtra("answerID", messages.get(position).getMessComment().getAnswer().getObjectId());
                         intent.putExtra("questionID", messages.get(position).getMessComment().getQuestion().getObjectId());
                         intent.putExtra("answer_userID", messages.get(position).getReceiver().getObjectId());
-                        JueQianAPP.getAppContext().startActivity(intent);
+                       mContext.startActivity(intent);
                     }
                 });
                 if (messages.get(position).getMessComment().getMcontent() == null || messages.get(position).getSender().getNickname() == null || messages.get(position).getCreatedAt() == null) {

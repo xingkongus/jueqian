@@ -35,7 +35,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/dp_16"
-                android:src="@mipmap/touxiang" />
+                android:src="@mipmap/ic_launcher" />
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 
@@ -68,7 +68,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/dp_16"
-                android:text="Lamyuk"
+                android:text=""
                 android:textSize="@dimen/sp_18" />
         </RelativeLayout>
     </android.support.v7.widget.CardView>
@@ -101,7 +101,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/dp_16"
-                android:text="我爱学习"
+                android:text=""
                 android:textSize="@dimen/sp_18" />
         </RelativeLayout>
     </android.support.v7.widget.CardView>
@@ -135,7 +135,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/dp_16"
-                android:text="www.perfectlin.com"
+                android:text=""
                 android:textSize="@dimen/sp_18" />
         </RelativeLayout>
     </android.support.v7.widget.CardView>

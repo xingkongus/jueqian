@@ -29,12 +29,14 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.listener.DeleteListener;
 import cn.bmob.v3.listener.GetListener;
-import cn.bmob.v3.listener.UpdateListener;
+import cn.bmob.v3.listener.SaveListener;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.adapter.QuestionRecyclerViewAdapter;
 import us.xingkong.jueqian.base.BaseActivity;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Answer;
+import us.xingkong.jueqian.bean.ForumBean.BombBean.Ding;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
 import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
 import us.xingkong.jueqian.module.Forum.NewAnswer.NewAnswerActivity;
@@ -72,7 +74,7 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
 
     Handler handler = new Handler() {
         @Override
-        public void handleMessage(Message msg) {
+        public void handleMessage(final Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 0:
@@ -158,16 +160,22 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                         }
                     });
                     break;
-                case 7:
+                case 7://设置点赞flag
                     String answer_ID = msg.getData().getString("answerID");
                     int zanFlag = msg.getData().getInt("flag");
                     if (zanFlag == 0) {
-                        Question question = new Question();
-                        question.setState(1);
-                        question.update(mContext, answer_ID, new UpdateListener() {
+                        final int pos=msg.getData().getInt("pos");
+                        final String dingID[]= (String[]) msg.obj;
+                        _User user = BmobUser.getCurrentUser(mContext, _User.class);
+                        Answer answer2 = new Answer();
+                        answer2.setObjectId(answer_ID);
+                        final Ding ding1 = new Ding();
+                        ding1.setDing(user);
+                        ding1.setDinged(answer2);
+                        ding1.save(mContext, new SaveListener() {
                             @Override
                             public void onSuccess() {
-
+                                dingID[pos]=ding1.getObjectId();
                             }
 
                             @Override
@@ -176,17 +184,16 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                             }
                         });
                     } else if (zanFlag == 1) {
-                        Question question = new Question();
-                        question.setState(0);
-                        question.update(mContext, answer_ID, new UpdateListener() {
+                        String dingID=msg.getData().getString("dingID");
+                        Ding ding1=new Ding();
+                        ding1.setObjectId(dingID);
+                        ding1.delete(mContext, new DeleteListener() {
                             @Override
                             public void onSuccess() {
-
                             }
 
                             @Override
                             public void onFailure(int i, String s) {
-
                             }
                         });
                     }
@@ -291,7 +298,7 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
         });
 
 
-}
+    }
 
     private void initRecyClerView() {
         recyclerViewAdapter = new QuestionRecyclerViewAdapter(mContext, getQuestion, answers, handler);
@@ -336,6 +343,7 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
 
     @Override
     protected void initEvent() {
+        huida.setTextColor(Color.parseColor("#000000"));
         huida.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -353,7 +361,7 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                 }
             }
         });
-
+        zan.setTextColor(Color.parseColor("#000000"));
         zan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -400,6 +408,7 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                 }
             }
         });
+        shoucan.setTextColor(Color.parseColor("#000000"));
         shoucan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -413,15 +422,15 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                     query.getObject(mContext, questionID, new GetListener<Question>() {
                         @Override
                         public void onSuccess(Question question) {
-                            int flag=question.getShouzanFlag();
-                            if (flag== 0) {
+                            int flag = question.getShouzanFlag();
+                            if (flag == 0) {
                                 shoucan.setBackgroundColor(Color.parseColor("#3CB371"));
                                 shoucan.setTextColor(Color.parseColor("#ffffff"));
                                 new Thread(new Runnable() {
                                     @Override
                                     public void run() {
                                         mPresenter.shoucan(mContext, handler, questionID);
-                                        mPresenter.shouzanStateChange(mContext,questionID,0);
+                                        mPresenter.shouzanStateChange(mContext, questionID, 0);
                                     }
                                 }).start();
 
@@ -432,7 +441,7 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                                     @Override
                                     public void run() {
                                         mPresenter.quxiaoShouzan(mContext, questionID);
-                                        mPresenter.shouzanStateChange(mContext,questionID,1);
+                                        mPresenter.shouzanStateChange(mContext, questionID, 1);
                                     }
                                 }).start();
                             }
