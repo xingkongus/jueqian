@@ -76,8 +76,9 @@ public class QuestionPresenter extends BasePresenterImpl implements QuestionCont
                     answer.getObjectId();
                     answers.add(answer);
                 }
-                handler.sendEmptyMessage(3);
-
+                if (answers != null) {
+                    handler.sendEmptyMessage(3);
+                }
             }
 
             @Override

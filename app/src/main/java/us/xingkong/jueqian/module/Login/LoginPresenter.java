@@ -35,6 +35,7 @@ public class LoginPresenter extends BasePresenterImpl implements LoginContract.P
                 bu.login(context, new SaveListener() {
                     @Override
                     public void onSuccess() {
+                        MainActivity.instance.finish();
                         Intent intent = new Intent(context, MainActivity.class);
                         context.startActivity(intent);
                         handler.sendEmptyMessage(0);
