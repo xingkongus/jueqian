@@ -25,13 +25,17 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
+import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.listener.DeleteListener;
+import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.GetListener;
 import cn.bmob.v3.listener.SaveListener;
+import cn.bmob.v3.listener.UpdateListener;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.adapter.QuestionRecyclerViewAdapter;
 import us.xingkong.jueqian.base.BaseActivity;
@@ -198,6 +202,65 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                         });
                     }
                     break;
+                case 8://问题回答数减一
+                    String questionID1=msg.getData().getString("questionID");
+                    if (questionID1 != null) {
+                        Question question=new Question();
+                        question.increment("answer_count",-1);
+                        question.update(mContext, questionID1, new UpdateListener() {
+                            @Override
+                            public void onSuccess() {
+                            }
+
+                            @Override
+                            public void onFailure(int i, String s) {
+                            }
+                        });
+                    }
+                    break;
+                case 9://连级删除问题下的回答
+                    final List<Answer>list1=new ArrayList<>();
+                    String questionID2=msg.getData().getString("questionID");
+                    BmobQuery<Answer>query=new BmobQuery<>();
+                    query.addWhereEqualTo("question",questionID2);
+                    query.findObjects(mContext, new FindListener<Answer>() {
+                        @Override
+                        public void onSuccess(List<Answer> list) {
+                            for (Answer answer:list){
+                               answer.getObjectId();
+                                list1.add(answer);
+                            }
+                            Message msg=new Message();
+                            msg.obj=list1;
+                            msg.what=10;
+                            handler.sendMessage(msg);
+                        }
+
+                        @Override
+                        public void onError(int i, String s) {
+
+                        }
+                    });
+                    break;
+                case 10:
+                    List<Answer>list11= (List<Answer>) msg.obj;
+                    List<BmobObject>list2=new ArrayList<>();
+                    for (int i=0;i<list11.size();i++){
+                        Answer answer=new Answer();
+                        answer.setObjectId(list11.get(i).getObjectId());
+                        list2.add(answer);
+                    }
+                    new BmobObject().deleteBatch(mContext, list2, new DeleteListener() {
+                        @Override
+                        public void onSuccess() {
+                        }
+
+                        @Override
+                        public void onFailure(int i, String s) {
+                        }
+                    });
+                    handler.sendEmptyMessage(0);
+                    break;
             }
         }
     };
@@ -275,6 +338,8 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
         mPresenter.getQuestion(mContext, questionID, handler);
         mPresenter.getQuestionAnswer(mContext, handler, questionID, answers);
         refreshLayout.setRefreshing(false);
+        _User user = BmobUser.getCurrentUser(mContext, _User.class);
+        if (user != null) {
         BmobQuery<Question> query = new BmobQuery<>();
         query.getObject(mContext, questionID, new GetListener<Question>() {
             @Override
@@ -296,7 +361,12 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                 showToast("网络连接超时");
             }
         });
-
+    }else{
+            zan.setBackgroundColor(Color.parseColor("#ffffff"));
+            zan.setTextColor(Color.parseColor("#000000"));
+            shoucan.setBackgroundColor(Color.parseColor("#ffffff"));
+            shoucan.setTextColor(Color.parseColor("#000000"));
+        }
 
     }
 
@@ -358,6 +428,7 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                     intent.putExtra("questionObjectid", questionID);
                     intent.putExtra("question_userID", question_userID);
                     startActivity(intent);
+                    finish();
                 }
             }
         });
