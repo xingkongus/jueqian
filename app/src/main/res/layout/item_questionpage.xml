@@ -21,7 +21,7 @@
             android:layout_margin="12dp"
             android:orientation="vertical">
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
@@ -37,9 +37,10 @@
                     android:id="@+id/user_icon_questionpage"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@mipmap/ic_launcher"/>
+                    android:src="@mipmap/ic_launcher" />
 
                 <TextView
+                    android:layout_toRightOf="@+id/user_icon_questionpage"
                     android:id="@+id/username_questionpage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -48,6 +49,7 @@
                     android:text="admin" />
 
                 <ImageView
+                    android:layout_toRightOf="@+id/username_questionpage"
                     android:id="@+id/state_questionpage"
                     android:layout_width="16dp"
                     android:layout_height="16dp"
@@ -55,6 +57,7 @@
                     android:paddingRight="3dp" />
 
                 <TextView
+                    android:layout_toRightOf="@+id/state_questionpage"
                     android:id="@+id/question_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -62,7 +65,14 @@
                     android:layout_marginStart="16dp"
                     android:text="XXXX-XX-XX XX:XX" />
 
-            </LinearLayout>
+                <ImageButton
+                    android:layout_alignParentRight="true"
+                    android:id="@+id/delete11"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:background="#00ffffff"
+                    android:src="@drawable/delete" />
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/content_questionpage"
@@ -87,14 +97,16 @@
                     android:layout_marginRight="5dp"
                     android:orientation="horizontal">
 
-                    <ImageButton
+                    <TextView
+                        android:textSize="@dimen/dp_16"
+                        android:text="顶"
                         android:id="@+id/good_question_item"
-                        android:layout_width="19dp"
-                        android:layout_height="19dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginEnd="3dp"
                         android:layout_marginRight="3dp"
                         android:layout_toLeftOf="@+id/like_questionpage_item"
-                        android:background="@drawable/good" />
+                        />
 
                     <TextView
                         android:id="@+id/like_questionpage_item"
@@ -115,14 +127,7 @@
                 <!--android:layout_toRightOf="@+id/like_questionpage_item"-->
                 <!--android:text="评论：999999" />-->
 
-                <!--<ImageButton-->
-                <!--android:id="@+id/more_questionpage"-->
-                <!--android:layout_width="24dp"-->
-                <!--android:layout_height="24dp"-->
-                <!--android:layout_alignParentEnd="true"-->
-                <!--android:layout_alignParentRight="true"-->
-                <!--android:background="#00ffffff"-->
-                <!--android:src="@drawable/ic_more_vert_black_24dp" />-->
+
             </RelativeLayout>
         </LinearLayout>
     </android.support.v7.widget.CardView>

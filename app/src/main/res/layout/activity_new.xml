@@ -67,6 +67,7 @@
             android:text="无标签" />
 
         <Button
+            android:textColor="@color/text_white"
             android:id="@+id/bt_tag_newpage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

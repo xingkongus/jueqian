@@ -1,6 +1,7 @@
 package us.xingkong.jueqian.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -22,14 +23,24 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
+import cn.bmob.v3.datatype.BmobPointer;
+import cn.bmob.v3.listener.DeleteListener;
 import cn.bmob.v3.listener.DownloadFileListener;
+import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.UpdateListener;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Answer;
+import us.xingkong.jueqian.bean.ForumBean.BombBean.Ding;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
+import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
+import us.xingkong.jueqian.module.main.MainActivity;
+import us.xingkong.jueqian.module.me.mainpage.MainPageAcitivity;
 
 
 /**
@@ -45,6 +56,7 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
     private Question getQuestion;
     private Context context;
     private BmobFile bmobFile;
+    private String dingID[];
 
     public QuestionRecyclerViewAdapter(Context context, Question getQuestion, List<Answer> answers, Handler mHandler) {
         this.getQuestion = getQuestion;
@@ -76,7 +88,53 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
 
     @Override
     public void onBindViewHolder(final VH holder, final int position) {
+        dingID=new String[answers.size()+1];
         if (position == 0) {
+            _User now = BmobUser.getCurrentUser(context, _User.class);
+            if (now.getObjectId().equals(getQuestion.getUser().getObjectId())) {
+                holder.question_delete.setVisibility(View.VISIBLE);
+                holder.question_delete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        new MaterialDialog.Builder(context)
+                                .title("提示")
+                                .content("是否删除？")
+                                .negativeText("取消")
+                                .positiveText("确认")
+                                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                    @Override
+                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                        Question question = new Question();
+                                        question.setObjectId(getQuestion.getObjectId());
+                                        question.delete(context, new DeleteListener() {
+                                            @Override
+                                            public void onSuccess() {
+                                                Intent intent = new Intent(context, MainActivity.class);
+                                                context.startActivity(intent);
+                                            }
+
+                                            @Override
+                                            public void onFailure(int i, String s) {
+
+                                            }
+                                        });
+
+                                    }
+                                })
+                                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                                    @Override
+                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+
+                                    }
+                                }).show();
+
+
+                    }
+                });
+            } else {
+                holder.question_delete.setVisibility(View.GONE);
+            }
+
             if (getQuestion.getMtitle() != null) {
                 holder.title_question.setText(getQuestion.getMtitle());
                 holder.content_question.setText(getQuestion.getMcontent());
@@ -88,6 +146,62 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
         }
 
         if (position != 0) {
+            holder.username_answer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, MainPageAcitivity.class);
+                    intent.putExtra("intentUserID", answers.get(position - 1).getUser().getObjectId());
+                    context.startActivity(intent);
+                }
+            });
+
+            _User now = BmobUser.getCurrentUser(context, _User.class);
+            if (now.getObjectId().equals(getQuestion.getUser().getObjectId())) {
+                holder.delete.setVisibility(View.VISIBLE);
+                holder.delete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        new MaterialDialog.Builder(context)
+                                .title("提示")
+                                .content("是否删除？")
+                                .negativeText("取消")
+                                .positiveText("确认")
+                                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                    @Override
+                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                        Answer answer = new Answer();
+                                        answer.setObjectId(answers.get(position - 1).getObjectId());
+                                        answer.delete(context, new DeleteListener() {
+                                            @Override
+                                            public void onSuccess() {
+                                                answers.remove(position - 1);
+                                                notifyItemRemoved(position - 1);
+                                                notifyItemRangeChanged(position - 1, answers.size());
+                                                Toast.makeText(context, "删除成功", Toast.LENGTH_SHORT).show();
+                                            }
+
+                                            @Override
+                                            public void onFailure(int i, String s) {
+
+                                            }
+                                        });
+
+                                    }
+                                })
+                                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                                    @Override
+                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+
+                                    }
+                                }).show();
+
+
+                    }
+                });
+            } else {
+                holder.delete.setVisibility(View.GONE);
+            }
+
             bmobFile = answers.get(position - 1).getUser().getProfile();
             if (bmobFile != null) {
                 new Thread(new Runnable() {
@@ -112,7 +226,7 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
                         });
                     }
                 }).start();
-            }else{
+            } else {
                 holder.answer_icon.setBackgroundResource(R.mipmap.ic_launcher);
             }
             holder.content.setText(answers.get(position - 1).getMcontent());
@@ -125,72 +239,159 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
                 holder.state_questionpage.setVisibility(View.GONE);
             }
 
+
+
+            BmobQuery<Ding> f1 = new BmobQuery<>();
+            f1.addWhereEqualTo("ding", new BmobPointer(now));
+            BmobQuery<Ding> f2 = new BmobQuery<>();
+            f2.addWhereEqualTo("dinged", new BmobPointer(answers.get(position - 1)));
+            List<BmobQuery<Ding>> queries = new ArrayList<>();
+            queries.add(f1);
+            queries.add(f2);
+            BmobQuery<Ding> query = new BmobQuery<>();
+            query.and(queries);
+            query.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
+            query.findObjects(context, new FindListener<Ding>() {
+                @Override
+                public void onSuccess(List<Ding> list) {
+                    if (list.size() == 0) {
+                        holder.goodImag.setText("顶");
+                    } else if (list.size() == 1) {
+                        if (list.get(0).getObjectId() != null) {
+                            dingID[position-1] = list.get(0).getObjectId();
+                            holder.goodImag.setText("已顶");
+                        }
+                    } else {
+                        Toast.makeText(context, "数据异常", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onError(int i, String s) {
+                    Toast.makeText(context, "查询是否存在关注关系失败CASE", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+
             holder.goodImag.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    new MaterialDialog.Builder(context).title("为答案点赞")
-                            .content("您是赞同还是反对呢?").negativeText("赞同").positiveText("反对")
-                            .onNegative(new MaterialDialog.SingleButtonCallback() {
-                                @Override
-                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                    if(answers.get(position-1).getState()==0) {
-                                        final Answer answer = new Answer();
-                                        answer.increment("ups");
-                                        answer.update(context, answers.get(position - 1).getObjectId(), new UpdateListener() {
-                                            @Override
-                                            public void onSuccess() {
-                                                String a = (String) holder.like.getText();
-                                                holder.like.setText(String.valueOf((Integer.parseInt(a)) + 1));
-                                                holder.like.setTextColor(Color.parseColor("#303F9F"));
-                                                Message message=new Message();
-                                                Bundle bundle=new Bundle();
-                                                bundle.putString("answerID",answers.get(position-1).getObjectId());
-                                                bundle.putInt("flag",0);
-                                                message.setData(bundle);
-                                                message.what=7;
-                                                mHandler.sendMessage(message);
-                                                answers.get(position-1).setState(1);
-                                            }
+                    if (holder.goodImag.getText().toString() == "顶") {
+                        final Answer answer = new Answer();
+                        answer.increment("ups");
+                        answer.update(context, answers.get(position - 1).getObjectId(), new UpdateListener() {
+                            @Override
+                            public void onSuccess() {
+                                holder.goodImag.setText("已顶");
+                                String up = (String) holder.like.getText();
+                                holder.like.setText(String.valueOf((Integer.parseInt(up)) + 1));
+                                holder.like.setTextColor(Color.parseColor("#303F9F"));
+                                Message message = new Message();
+                                Bundle bundle = new Bundle();
+                                bundle.putString("answerID", answers.get(position - 1).getObjectId());
+                                bundle.putInt("flag", 0);
+                                bundle.putInt("pos",position-1);
+                                message.setData(bundle);
+                                message.obj=dingID;
+                                message.what = 7;
+                                mHandler.sendMessage(message);
 
-                                            @Override
-                                            public void onFailure(int i, String s) {
-
-                                            }
-                                        });
-                                    }else{
-                                        Toast.makeText(context,"已赞",Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            }).onPositive(new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            if(answers.get(position-1).getState()==1) {
-                                Answer answer = new Answer();
-                                answer.increment("ups", -1);
-                                answer.update(context, answers.get(position - 1).getObjectId(), new UpdateListener() {
-                                    @Override
-                                    public void onSuccess() {
-                                        String a = (String) holder.like.getText();
-                                        holder.like.setText(String.valueOf((Integer.parseInt(a)) - 1));
-                                        holder.like.setTextColor(Color.parseColor("#000000"));
-                                        Message message=new Message();
-                                        Bundle bundle=new Bundle();
-                                        bundle.putString("answerID",answers.get(position-1).getObjectId());
-                                        bundle.putInt("flag",1);
-                                        message.setData(bundle);
-                                        message.what=7;
-                                        mHandler.sendMessage(message);
-                                        answers.get(position-1).setState(0);
-                                    }
-
-                                    @Override
-                                    public void onFailure(int i, String s) {
-
-                                    }
-                                });
                             }
-                        }
-                    }).show();
+
+                            @Override
+                            public void onFailure(int i, String s) {
+                                holder.goodImag.setText("顶");
+                            }
+                        });
+                    } else if (holder.goodImag.getText().toString() == "已顶") {
+                        Answer answer = new Answer();
+                        answer.increment("ups", -1);
+                        answer.update(context, answers.get(position - 1).getObjectId(), new UpdateListener() {
+                            @Override
+                            public void onSuccess() {
+                                holder.goodImag.setText("顶");
+                                String a = (String) holder.like.getText();
+                                holder.like.setText(String.valueOf((Integer.parseInt(a)) - 1));
+                                holder.like.setTextColor(Color.parseColor("#000000"));
+                                Message message = new Message();
+                                Bundle bundle = new Bundle();
+                                bundle.putString("answerID", answers.get(position - 1).getObjectId());
+                                bundle.putInt("flag", 1);
+                                bundle.putString("dingID", dingID[position-1]);
+                                message.setData(bundle);
+                                message.what = 7;
+                                mHandler.sendMessage(message);
+                            }
+
+                            @Override
+                            public void onFailure(int i, String s) {
+                                holder.goodImag.setText("已顶");
+                            }
+                        });
+                    }
+//                    new MaterialDialog.Builder(context).title("为答案点赞")
+//                            .content("您是赞同还是反对呢?").negativeText("赞同").positiveText("反对")
+//                            .onNegative(new MaterialDialog.SingleButtonCallback() {
+//                                @Override
+//                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+//                                    if(answers.get(position-1).getState()==0) {
+//                                        final Answer answer = new Answer();
+//                                        answer.increment("ups");
+//                                        answer.update(context, answers.get(position - 1).getObjectId(), new UpdateListener() {
+//                                            @Override
+//                                            public void onSuccess() {
+//                                                String a = (String) holder.like.getText();
+//                                                holder.like.setText(String.valueOf((Integer.parseInt(a)) + 1));
+//                                                holder.like.setTextColor(Color.parseColor("#303F9F"));
+//                                                Message message=new Message();
+//                                                Bundle bundle=new Bundle();
+//                                                bundle.putString("answerID",answers.get(position-1).getObjectId());
+//                                                bundle.putInt("flag",0);
+//                                                message.setData(bundle);
+//                                                message.what=7;
+//                                                mHandler.sendMessage(message);
+//                                                answers.get(position-1).setState(1);
+//                                            }
+//
+//                                            @Override
+//                                            public void onFailure(int i, String s) {
+//
+//                                            }
+//                                        });
+//                                    }else{
+//                                        Toast.makeText(context,"已赞",Toast.LENGTH_SHORT).show();
+//                                    }
+//                                }
+//                            }).onPositive(new MaterialDialog.SingleButtonCallback() {
+//                        @Override
+//                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+//                            if(answers.get(position-1).getState()==1) {
+//                                Answer answer = new Answer();
+//                                answer.increment("ups", -1);
+//                                answer.update(context, answers.get(position - 1).getObjectId(), new UpdateListener() {
+//                                    @Override
+//                                    public void onSuccess() {
+//                                        String a = (String) holder.like.getText();
+//                                        holder.like.setText(String.valueOf((Integer.parseInt(a)) - 1));
+//                                        holder.like.setTextColor(Color.parseColor("#000000"));
+//                                        Message message=new Message();
+//                                        Bundle bundle=new Bundle();
+//                                        bundle.putString("answerID",answers.get(position-1).getObjectId());
+//                                        bundle.putInt("flag",1);
+//                                        message.setData(bundle);
+//                                        message.what=7;
+//                                        mHandler.sendMessage(message);
+//                                        answers.get(position-1).setState(0);
+//                                    }
+//
+//                                    @Override
+//                                    public void onFailure(int i, String s) {
+//
+//                                    }
+//                                });
+//                            }
+//                        }
+//                    }).show();
                 }
             });
 
@@ -200,7 +401,7 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
                     Message msg = new Message();
                     Bundle bundle = new Bundle();
                     bundle.putString("answerID", answers.get(position - 1).getObjectId());
-                    bundle.putString("answer_userID",answers.get(position-1).getUser().getObjectId());
+                    bundle.putString("answer_userID", answers.get(position - 1).getUser().getObjectId());
                     msg.setData(bundle);
                     msg.obj = v;
                     msg.what = 6;
@@ -208,12 +409,6 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
                 }
             });
         }
-//        holder.imageButton_more.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                mHandler.sendEmptyMessage(4);
-//            }
-//        });
 
     }
 
@@ -225,7 +420,7 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
     class VH extends RecyclerView.ViewHolder {
         TextView content;
         //        TextView comment;
-//        ImageButton imageButton_more;
+        ImageButton question_delete;
         TextView title_question;
         TextView content_question;
         TextView tag1;
@@ -242,10 +437,12 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
         ImageView answer_icon;
         ImageView state_questionpage;
         LinearLayout zanLayout;
-        ImageButton goodImag;
+        TextView goodImag;
+        ImageButton delete;
 
         public VH(View itemView) {
             super(itemView);
+            delete = (ImageButton) itemView.findViewById(R.id.delete11);
             item_question = (LinearLayout) itemView.findViewById(R.id.item_question);
             question_time = (TextView) itemView.findViewById(R.id.question_time);
 //            zan = (TextView) itemView.findViewById(R.id.zan);
@@ -253,7 +450,7 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
             username_answer = (TextView) itemView.findViewById(R.id.username_questionpage);
             content = (TextView) itemView.findViewById(R.id.content_questionpage);
 //            comment = (TextView) itemView.findViewById(R.id.comment_questionpage);
-//            imageButton_more = (ImageButton) itemView.findViewById(R.id.more_questionpage);
+            question_delete = (ImageButton) itemView.findViewById(R.id.more_questionpage);
             title_question = (TextView) itemView.findViewById(R.id.title_questionpage);
             content_question = (TextView) itemView.findViewById(R.id.content_question);
             tag1 = (TextView) itemView.findViewById(R.id.tag1_questionpage);
@@ -265,7 +462,7 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
             answer_icon = (ImageView) itemView.findViewById(R.id.user_icon_questionpage);
             state_questionpage = (ImageView) itemView.findViewById(R.id.state_questionpage);
             zanLayout = (LinearLayout) itemView.findViewById(R.id.zanlayout_question_item);
-            goodImag = (ImageButton) itemView.findViewById(R.id.good_question_item);
+            goodImag = (TextView) itemView.findViewById(R.id.good_question_item);
         }
     }
 }
