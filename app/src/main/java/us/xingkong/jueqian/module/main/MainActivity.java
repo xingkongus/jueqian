@@ -18,7 +18,6 @@ import us.xingkong.jueqian.JueQianAPP;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.adapter.MainPagerAdapter;
 import us.xingkong.jueqian.base.BaseActivity;
-import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
 import us.xingkong.jueqian.module.Forum.ForumFragment;
 import us.xingkong.jueqian.module.RealS.RealSFragment;
 import us.xingkong.jueqian.module.me.MeFragment;
@@ -42,6 +41,7 @@ public class MainActivity extends BaseActivity<MainContract.Presenter> implement
     RadioButton mTabGanH;
     @BindView(R.id.rg_tab)
     RadioGroup mRadioGroup;
+    public static MainActivity instance=null;
 
     private MeFragment mMeFragment;
     private ForumFragment mForumFragment;
@@ -80,7 +80,7 @@ public class MainActivity extends BaseActivity<MainContract.Presenter> implement
 
     @Override
     protected void initView() {
-
+        instance=this;
         mViewPager.setPagingEnabled(false);
         List<Fragment> fragments = new ArrayList<>();
         addFragmentList(fragments);

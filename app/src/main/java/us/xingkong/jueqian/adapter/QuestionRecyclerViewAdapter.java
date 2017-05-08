@@ -52,7 +52,6 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
     private List<Answer> answers;
     private int HEADER = 1;
     private int CONTENT = 2;
-    //    private int FOOTER = 3;
     private Handler mHandler;
     private Question getQuestion;
     private Context context;
@@ -94,6 +93,7 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
             _User now = BmobUser.getCurrentUser(context, _User.class);
             if (now!=null&&now.getObjectId().equals(getQuestion.getUser().getObjectId())) {
                 holder.question_delete.setVisibility(View.VISIBLE);
+                holder.question_delete.setClickable(true);
                 holder.question_delete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -112,6 +112,12 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
                                             public void onSuccess() {
                                                 Intent intent = new Intent(context, MainActivity.class);
                                                 context.startActivity(intent);
+                                                Message msg=new Message();
+                                                Bundle bundle=new Bundle();
+                                                bundle.putString("questionID",getQuestion.getObjectId());
+                                                msg.setData(bundle);
+                                                msg.what=9;
+                                                mHandler.sendMessage(msg);
                                             }
 
                                             @Override
@@ -134,6 +140,7 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
                 });
             } else {
                 holder.question_delete.setVisibility(View.GONE);
+                holder.question_delete.setClickable(false);
             }
 
             if (getQuestion.getMtitle() != null) {
@@ -164,6 +171,7 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
 
             if (now != null && now.getObjectId().equals(getQuestion.getUser().getObjectId())) {
                 holder.delete.setVisibility(View.VISIBLE);
+                holder.delete.setClickable(true);
                 holder.delete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -184,6 +192,12 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
                                                 notifyItemRemoved(position - 1);
                                                 notifyItemRangeChanged(position - 1, answers.size());
                                                 Toast.makeText(context, "删除成功", Toast.LENGTH_SHORT).show();
+                                                Message msg=new Message();
+                                                Bundle bundle=new Bundle();
+                                                bundle.putString("questionID",getQuestion.getObjectId());
+                                                msg.setData(bundle);
+                                                msg.what=8;
+                                                mHandler.sendMessage(msg);
                                             }
 
                                             @Override
@@ -206,6 +220,7 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
                 });
             } else {
                 holder.delete.setVisibility(View.GONE);
+                holder.delete.setClickable(false);
             }
 
 
@@ -279,7 +294,7 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
 
                     @Override
                     public void onError(int i, String s) {
-                        Toast.makeText(context, "查询是否存在关注关系失败CASE", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "网络连接超时", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
