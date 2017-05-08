@@ -1,26 +1,20 @@
 package us.xingkong.jueqian.adapter;
 
+import android.content.Context;
 import android.content.Intent;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import cn.bmob.v3.BmobQuery;
-import cn.bmob.v3.listener.GetListener;
 import us.xingkong.jueqian.JueQianAPP;
 import us.xingkong.jueqian.R;
-import us.xingkong.jueqian.bean.ForumBean.BombBean.Answer;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
 import us.xingkong.jueqian.module.Forum.QuestionPage.QuestionActivity;
 
@@ -32,9 +26,11 @@ public class MyAnswerAdapter extends RecyclerView.Adapter<MyAnswerAdapter.MyView
 
     private List<Question> questions;
     private String title;
+    private Context context;
 
-    public MyAnswerAdapter(List<Question> questions) {
+    public MyAnswerAdapter(List<Question> questions, Context context) {
         this.questions = questions;
+        this.context = context;
     }
 
     @Override
@@ -53,7 +49,7 @@ public class MyAnswerAdapter extends RecyclerView.Adapter<MyAnswerAdapter.MyView
                 questionID = questions.get(position).getObjectId();
                 Intent intent = new Intent(JueQianAPP.getAppContext(), QuestionActivity.class);
                 intent.putExtra("questionid", questionID);
-                JueQianAPP.getAppContext().startActivity(intent);
+                context.startActivity(intent);
             }
         });
 

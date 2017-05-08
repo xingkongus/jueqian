@@ -39,6 +39,7 @@ import us.xingkong.jueqian.bean.ForumBean.BombBean.Answer;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Ding;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
 import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
+import us.xingkong.jueqian.module.Login.LoginActivity;
 import us.xingkong.jueqian.module.main.MainActivity;
 import us.xingkong.jueqian.module.me.mainpage.MainPageAcitivity;
 
@@ -88,11 +89,10 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
 
     @Override
     public void onBindViewHolder(final VH holder, final int position) {
-        dingID=new String[answers.size()+1];
+        dingID = new String[answers.size() + 1];
         if (position == 0) {
             _User now = BmobUser.getCurrentUser(context, _User.class);
-            if (now==null) return;
-            if (now.getObjectId().equals(getQuestion.getUser().getObjectId())) {
+            if (now!=null&&now.getObjectId().equals(getQuestion.getUser().getObjectId())) {
                 holder.question_delete.setVisibility(View.VISIBLE);
                 holder.question_delete.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -142,11 +142,17 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
                 holder.tag1.setText(getQuestion.getTAG1_ID());
                 holder.tag2.setText(getQuestion.getTAG2_ID());
                 holder.time.setText(getQuestion.getUpdatedAt());
-                holder.username.setText(getQuestion.getUser().getUsername());
+                if (getQuestion.getUser().getNickname() != null) {
+                    holder.username.setText(getQuestion.getUser().getNickname());
+                } else {
+                    holder.username.setText(getQuestion.getUser().getUsername());
+                }
+
             }
         }
 
         if (position != 0) {
+            final _User now = BmobUser.getCurrentUser(context, _User.class);
             holder.username_answer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -156,9 +162,7 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
                 }
             });
 
-            _User now = BmobUser.getCurrentUser(context, _User.class);
-            if (now==null) return;
-            if (now.getObjectId().equals(getQuestion.getUser().getObjectId())) {
+            if (now != null && now.getObjectId().equals(getQuestion.getUser().getObjectId())) {
                 holder.delete.setVisibility(View.VISIBLE);
                 holder.delete.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -204,6 +208,7 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
                 holder.delete.setVisibility(View.GONE);
             }
 
+
             bmobFile = answers.get(position - 1).getUser().getProfile();
             if (bmobFile != null) {
                 new Thread(new Runnable() {
@@ -232,7 +237,12 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
                 holder.answer_icon.setBackgroundResource(R.mipmap.ic_launcher);
             }
             holder.content.setText(answers.get(position - 1).getMcontent());
-            holder.username_answer.setText(answers.get(position - 1).getUser().getUsername());
+            if (answers.get(position - 1).getUser().getNickname() != null) {
+                holder.username_answer.setText(answers.get(position - 1).getUser().getNickname());
+            } else {
+                holder.username_answer.setText(answers.get(position - 1).getUser().getUsername());
+            }
+
             holder.like.setText(String.valueOf(answers.get(position - 1).getUps()));
             holder.question_time.setText(answers.get(position - 1).getUpdatedAt());
             if (answers.get(position - 1).getUser().getState() == 2) {
@@ -241,159 +251,103 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
                 holder.state_questionpage.setVisibility(View.GONE);
             }
 
-
-
-            BmobQuery<Ding> f1 = new BmobQuery<>();
-            f1.addWhereEqualTo("ding", new BmobPointer(now));
-            BmobQuery<Ding> f2 = new BmobQuery<>();
-            f2.addWhereEqualTo("dinged", new BmobPointer(answers.get(position - 1)));
-            List<BmobQuery<Ding>> queries = new ArrayList<>();
-            queries.add(f1);
-            queries.add(f2);
-            BmobQuery<Ding> query = new BmobQuery<>();
-            query.and(queries);
-            query.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
-            query.findObjects(context, new FindListener<Ding>() {
-                @Override
-                public void onSuccess(List<Ding> list) {
-                    if (list.size() == 0) {
-                        holder.goodImag.setText("顶");
-                    } else if (list.size() == 1) {
-                        if (list.get(0).getObjectId() != null) {
-                            dingID[position-1] = list.get(0).getObjectId();
-                            holder.goodImag.setText("已顶");
+            if (now != null) {
+                BmobQuery<Ding> f1 = new BmobQuery<>();
+                f1.addWhereEqualTo("ding", new BmobPointer(now));
+                BmobQuery<Ding> f2 = new BmobQuery<>();
+                f2.addWhereEqualTo("dinged", new BmobPointer(answers.get(position - 1)));
+                List<BmobQuery<Ding>> queries = new ArrayList<>();
+                queries.add(f1);
+                queries.add(f2);
+                BmobQuery<Ding> query = new BmobQuery<>();
+                query.and(queries);
+                query.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
+                query.findObjects(context, new FindListener<Ding>() {
+                    @Override
+                    public void onSuccess(List<Ding> list) {
+                        if (list.size() == 0) {
+                            holder.goodImag.setText("顶");
+                        } else if (list.size() == 1) {
+                            if (list.get(0).getObjectId() != null) {
+                                dingID[position - 1] = list.get(0).getObjectId();
+                                holder.goodImag.setText("已顶");
+                            }
+                        } else {
+                            Toast.makeText(context, "数据异常", Toast.LENGTH_SHORT).show();
                         }
-                    } else {
-                        Toast.makeText(context, "数据异常", Toast.LENGTH_SHORT).show();
                     }
-                }
 
-                @Override
-                public void onError(int i, String s) {
-                    Toast.makeText(context, "查询是否存在关注关系失败CASE", Toast.LENGTH_SHORT).show();
-                }
-            });
+                    @Override
+                    public void onError(int i, String s) {
+                        Toast.makeText(context, "查询是否存在关注关系失败CASE", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
 
 
             holder.goodImag.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (holder.goodImag.getText().toString() == "顶") {
-                        final Answer answer = new Answer();
-                        answer.increment("ups");
-                        answer.update(context, answers.get(position - 1).getObjectId(), new UpdateListener() {
-                            @Override
-                            public void onSuccess() {
-                                holder.goodImag.setText("已顶");
-                                String up = (String) holder.like.getText();
-                                holder.like.setText(String.valueOf((Integer.parseInt(up)) + 1));
-                                holder.like.setTextColor(Color.parseColor("#303F9F"));
-                                Message message = new Message();
-                                Bundle bundle = new Bundle();
-                                bundle.putString("answerID", answers.get(position - 1).getObjectId());
-                                bundle.putInt("flag", 0);
-                                bundle.putInt("pos",position-1);
-                                message.setData(bundle);
-                                message.obj=dingID;
-                                message.what = 7;
-                                mHandler.sendMessage(message);
+                    if (now != null) {
+                        if (holder.goodImag.getText().toString() == "顶") {
+                            final Answer answer = new Answer();
+                            answer.increment("ups");
+                            answer.update(context, answers.get(position - 1).getObjectId(), new UpdateListener() {
+                                @Override
+                                public void onSuccess() {
+                                    holder.goodImag.setText("已顶");
+                                    String up = (String) holder.like.getText();
+                                    holder.like.setText(String.valueOf((Integer.parseInt(up)) + 1));
+                                    holder.like.setTextColor(Color.parseColor("#303F9F"));
+                                    Message message = new Message();
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("answerID", answers.get(position - 1).getObjectId());
+                                    bundle.putInt("flag", 0);
+                                    bundle.putInt("pos", position - 1);
+                                    message.setData(bundle);
+                                    message.obj = dingID;
+                                    message.what = 7;
+                                    mHandler.sendMessage(message);
 
-                            }
+                                }
 
-                            @Override
-                            public void onFailure(int i, String s) {
-                                holder.goodImag.setText("顶");
-                            }
-                        });
-                    } else if (holder.goodImag.getText().toString() == "已顶") {
-                        Answer answer = new Answer();
-                        answer.increment("ups", -1);
-                        answer.update(context, answers.get(position - 1).getObjectId(), new UpdateListener() {
-                            @Override
-                            public void onSuccess() {
-                                holder.goodImag.setText("顶");
-                                String a = (String) holder.like.getText();
-                                holder.like.setText(String.valueOf((Integer.parseInt(a)) - 1));
-                                holder.like.setTextColor(Color.parseColor("#000000"));
-                                Message message = new Message();
-                                Bundle bundle = new Bundle();
-                                bundle.putString("answerID", answers.get(position - 1).getObjectId());
-                                bundle.putInt("flag", 1);
-                                bundle.putString("dingID", dingID[position-1]);
-                                message.setData(bundle);
-                                message.what = 7;
-                                mHandler.sendMessage(message);
-                            }
+                                @Override
+                                public void onFailure(int i, String s) {
+                                    holder.goodImag.setText("顶");
+                                }
+                            });
+                        } else if (holder.goodImag.getText().toString() == "已顶") {
+                            Answer answer = new Answer();
+                            answer.increment("ups", -1);
+                            answer.update(context, answers.get(position - 1).getObjectId(), new UpdateListener() {
+                                @Override
+                                public void onSuccess() {
+                                    holder.goodImag.setText("顶");
+                                    String a = (String) holder.like.getText();
+                                    holder.like.setText(String.valueOf((Integer.parseInt(a)) - 1));
+                                    holder.like.setTextColor(Color.parseColor("#000000"));
+                                    Message message = new Message();
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("answerID", answers.get(position - 1).getObjectId());
+                                    bundle.putInt("flag", 1);
+                                    bundle.putString("dingID", dingID[position - 1]);
+                                    message.setData(bundle);
+                                    message.what = 7;
+                                    mHandler.sendMessage(message);
+                                }
 
-                            @Override
-                            public void onFailure(int i, String s) {
-                                holder.goodImag.setText("已顶");
-                            }
-                        });
+                                @Override
+                                public void onFailure(int i, String s) {
+                                    holder.goodImag.setText("已顶");
+                                }
+                            });
+                        }
+                    }else{
+                        Intent intent=new Intent(context, LoginActivity.class);
+                        context.startActivity(intent);
+                        Toast.makeText(context,"要先登录才能顶哦！",Toast.LENGTH_SHORT).show();
+                        mHandler.sendEmptyMessage(0);
                     }
-//                    new MaterialDialog.Builder(context).title("为答案点赞")
-//                            .content("您是赞同还是反对呢?").negativeText("赞同").positiveText("反对")
-//                            .onNegative(new MaterialDialog.SingleButtonCallback() {
-//                                @Override
-//                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-//                                    if(answers.get(position-1).getState()==0) {
-//                                        final Answer answer = new Answer();
-//                                        answer.increment("ups");
-//                                        answer.update(context, answers.get(position - 1).getObjectId(), new UpdateListener() {
-//                                            @Override
-//                                            public void onSuccess() {
-//                                                String a = (String) holder.like.getText();
-//                                                holder.like.setText(String.valueOf((Integer.parseInt(a)) + 1));
-//                                                holder.like.setTextColor(Color.parseColor("#303F9F"));
-//                                                Message message=new Message();
-//                                                Bundle bundle=new Bundle();
-//                                                bundle.putString("answerID",answers.get(position-1).getObjectId());
-//                                                bundle.putInt("flag",0);
-//                                                message.setData(bundle);
-//                                                message.what=7;
-//                                                mHandler.sendMessage(message);
-//                                                answers.get(position-1).setState(1);
-//                                            }
-//
-//                                            @Override
-//                                            public void onFailure(int i, String s) {
-//
-//                                            }
-//                                        });
-//                                    }else{
-//                                        Toast.makeText(context,"已赞",Toast.LENGTH_SHORT).show();
-//                                    }
-//                                }
-//                            }).onPositive(new MaterialDialog.SingleButtonCallback() {
-//                        @Override
-//                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-//                            if(answers.get(position-1).getState()==1) {
-//                                Answer answer = new Answer();
-//                                answer.increment("ups", -1);
-//                                answer.update(context, answers.get(position - 1).getObjectId(), new UpdateListener() {
-//                                    @Override
-//                                    public void onSuccess() {
-//                                        String a = (String) holder.like.getText();
-//                                        holder.like.setText(String.valueOf((Integer.parseInt(a)) - 1));
-//                                        holder.like.setTextColor(Color.parseColor("#000000"));
-//                                        Message message=new Message();
-//                                        Bundle bundle=new Bundle();
-//                                        bundle.putString("answerID",answers.get(position-1).getObjectId());
-//                                        bundle.putInt("flag",1);
-//                                        message.setData(bundle);
-//                                        message.what=7;
-//                                        mHandler.sendMessage(message);
-//                                        answers.get(position-1).setState(0);
-//                                    }
-//
-//                                    @Override
-//                                    public void onFailure(int i, String s) {
-//
-//                                    }
-//                                });
-//                            }
-//                        }
-//                    }).show();
                 }
             });
 
@@ -411,6 +365,7 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
                 }
             });
         }
+
 
     }
 

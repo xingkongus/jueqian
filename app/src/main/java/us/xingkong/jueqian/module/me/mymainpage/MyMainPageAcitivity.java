@@ -59,8 +59,9 @@ public class MyMainPageAcitivity extends BaseActivity<MyMainPageContract.Present
     RelativeLayout ry_follower;
     @BindView(R.id.mymainpage_ry_following)
     RelativeLayout ry_following;
+    @BindView(R.id.mymainpage_tv_selfintro)
+    TextView tv_selfIntro;
 
-    private String intentUserID = null;
     private _User current_user;
 
     @Override
@@ -104,7 +105,7 @@ public class MyMainPageAcitivity extends BaseActivity<MyMainPageContract.Present
     private void updateFans() {
         //更新粉丝
         _User user = new _User();
-        user.setObjectId(intentUserID);
+        user.setObjectId(current_user.getObjectId());
         BmobQuery<Follow> query_follower = new BmobQuery<Follow>();
         query_follower.addWhereRelatedTo("followedUser", new BmobPointer(user));
         query_follower.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
@@ -126,12 +127,30 @@ public class MyMainPageAcitivity extends BaseActivity<MyMainPageContract.Present
     protected void initView() {
         initToolbar();
         initNickName();
+        initSelfIntro();
         initEditButton();
         initCollection();
         initRencentLooks();
         initProfile();
         toFollowing();
         toFollower();
+    }
+
+    private void initSelfIntro() {
+        BmobQuery<_User> bmobQuery = new BmobQuery<>();
+        bmobQuery.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
+        bmobQuery.getObject(JueQianAPP.getAppContext(), current_user.getObjectId(), new GetListener<_User>() {
+            @Override
+            public void onSuccess(_User user) {
+//                showToast("更新用户昵称成功");
+                tv_selfIntro.setText(user.getSelfsign());
+            }
+
+            @Override
+            public void onFailure(int i, String s) {
+                showToast("更新用户简介失败CASE:" + s);
+            }
+        });
     }
 
     private void toFollower() {
@@ -183,7 +202,7 @@ public class MyMainPageAcitivity extends BaseActivity<MyMainPageContract.Present
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(JueQianAPP.getAppContext(), MyRecentLookActivity.class);
-                intent.putExtra("intentUserID", intentUserID);
+                intent.putExtra("intentUserID", current_user.getObjectId());
                 startActivity(intent);
             }
         });
@@ -208,7 +227,7 @@ public class MyMainPageAcitivity extends BaseActivity<MyMainPageContract.Present
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(JueQianAPP.getAppContext(), MyCollectionActivity.class);
-                intent.putExtra("intentUserID", intentUserID);
+                intent.putExtra("intentUserID", current_user.getObjectId());
                 startActivity(intent);
             }
         });
@@ -287,6 +306,7 @@ public class MyMainPageAcitivity extends BaseActivity<MyMainPageContract.Present
         initCollection();
         initNickName();
         updateFans();
+        initSelfIntro();
         updateFollowing();
     }
 }

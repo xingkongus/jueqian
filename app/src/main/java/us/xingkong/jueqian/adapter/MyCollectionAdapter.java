@@ -1,5 +1,6 @@
 package us.xingkong.jueqian.adapter;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -18,7 +19,6 @@ import java.util.List;
 
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobRelation;
-import cn.bmob.v3.listener.DeleteListener;
 import cn.bmob.v3.listener.UpdateListener;
 import us.xingkong.jueqian.JueQianAPP;
 import us.xingkong.jueqian.R;
@@ -33,10 +33,12 @@ import us.xingkong.jueqian.module.Forum.QuestionPage.QuestionActivity;
 public class MyCollectionAdapter extends RecyclerView.Adapter<MyCollectionAdapter.MyViewHolder> implements View.OnLongClickListener {
     private Handler mHandler;
     private List<Question> questions;
+    private Context context;
 
-    public MyCollectionAdapter(Handler mHandler, List<Question> questions) {
+    public MyCollectionAdapter(Handler mHandler, List<Question> questions, Context context) {
         this.mHandler = mHandler;
         this.questions = questions;
+        this.context = context;
     }
 
 
@@ -56,7 +58,7 @@ public class MyCollectionAdapter extends RecyclerView.Adapter<MyCollectionAdapte
                 questionID = questions.get(position).getObjectId();
                 Intent intent = new Intent(JueQianAPP.getAppContext(), QuestionActivity.class);
                 intent.putExtra("questionid", questionID);
-                JueQianAPP.getAppContext().startActivity(intent);
+                context.startActivity(intent);
             }
         });
         holder.layout.setLongClickable(true);

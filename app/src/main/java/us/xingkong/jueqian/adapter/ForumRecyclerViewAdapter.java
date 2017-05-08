@@ -82,7 +82,12 @@ public class ForumRecyclerViewAdapter extends RecyclerView.Adapter<ForumRecycler
         holder.tag1.setText(infoSets.get(position).getTAG1_ID());
         holder.tag2.setText(infoSets.get(position).getTAG2_ID());
         holder.count_answer.setText(infoSets.get(position).getAnswer_count() + "回答");
-        holder.username.setText(infoSets.get(position).getUser().getUsername());
+        if (infoSets.get(position).getUser().getNickname() != null) {
+            holder.username.setText(infoSets.get(position).getUser().getNickname());
+        }else{
+            holder.username.setText(infoSets.get(position).getUser().getUsername());
+        }
+
         if (infoSets.get(position).getUser().getState() == 2) {
             holder.userState.setVisibility(View.VISIBLE);
         } else {

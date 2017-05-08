@@ -1,5 +1,6 @@
 package us.xingkong.jueqian.adapter;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
@@ -9,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import us.xingkong.jueqian.JueQianAPP;
@@ -24,10 +24,12 @@ import us.xingkong.jueqian.module.Forum.QuestionPage.QuestionActivity;
 public class MyRecentLookAdapter extends RecyclerView.Adapter<MyRecentLookAdapter.MyViewHolder> {
     private Handler mHandler;
     private List<Question> questions;
+    private Context context;
 
-    public MyRecentLookAdapter(Handler mHandler, List<Question> questions) {
+    public MyRecentLookAdapter(Handler mHandler, List<Question> questions, Context context) {
         this.mHandler = mHandler;
         this.questions = questions;
+        this.context = context;
     }
 
 
@@ -46,7 +48,7 @@ public class MyRecentLookAdapter extends RecyclerView.Adapter<MyRecentLookAdapte
                 questionID = questions.get(position).getObjectId();
                 Intent intent = new Intent(JueQianAPP.getAppContext(), QuestionActivity.class);
                 intent.putExtra("questionid", questionID);
-                JueQianAPP.getAppContext().startActivity(intent);
+                context.startActivity(intent);
             }
         });
     }
