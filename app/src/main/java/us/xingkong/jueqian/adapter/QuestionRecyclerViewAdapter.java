@@ -91,6 +91,7 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
         dingID=new String[answers.size()+1];
         if (position == 0) {
             _User now = BmobUser.getCurrentUser(context, _User.class);
+            if (now==null) return;
             if (now.getObjectId().equals(getQuestion.getUser().getObjectId())) {
                 holder.question_delete.setVisibility(View.VISIBLE);
                 holder.question_delete.setOnClickListener(new View.OnClickListener() {
@@ -156,6 +157,7 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
             });
 
             _User now = BmobUser.getCurrentUser(context, _User.class);
+            if (now==null) return;
             if (now.getObjectId().equals(getQuestion.getUser().getObjectId())) {
                 holder.delete.setVisibility(View.VISIBLE);
                 holder.delete.setOnClickListener(new View.OnClickListener() {
