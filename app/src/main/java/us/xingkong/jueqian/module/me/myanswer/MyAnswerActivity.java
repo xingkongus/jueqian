@@ -105,7 +105,7 @@ public class MyAnswerActivity extends BaseActivity<MyAnswerContract.Presenter> i
     }
 
     private void initRecyclerView() {
-        myAnswerAdapter = new MyAnswerAdapter(questions);
+        myAnswerAdapter = new MyAnswerAdapter(questions,this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(myAnswerAdapter);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(MyAnswerActivity.this, DividerItemDecoration.VERTICAL));

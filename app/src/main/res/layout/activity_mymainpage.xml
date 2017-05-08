@@ -26,12 +26,26 @@
             android:id="@+id/mymainpage_tv_nickname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/mymainpage_touxiang"
+            android:layout_alignTop="@id/mymainpage_touxiang"
             android:layout_marginLeft="@dimen/dp_16"
             android:layout_toRightOf="@id/mymainpage_touxiang"
             android:text="前往编辑你的昵称"
             android:textColor="@color/text_username"
             android:textSize="@dimen/sp_18" />
+
+        <TextView
+            android:id="@+id/mymainpage_tv_selfintro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/mymainpage_touxiang"
+            android:layout_below="@id/mymainpage_tv_nickname"
+            android:layout_marginLeft="@dimen/dp_16"
+            android:layout_marginRight="@dimen/dp_16"
+            android:layout_toLeftOf="@+id/mymainpage_bt_edit"
+            android:layout_toRightOf="@id/mymainpage_touxiang"
+            android:gravity="center_vertical"
+            android:text="我的自我介绍..."
+            android:textSize="@dimen/sp_16" />
 
         <Button
             android:id="@+id/mymainpage_bt_edit"

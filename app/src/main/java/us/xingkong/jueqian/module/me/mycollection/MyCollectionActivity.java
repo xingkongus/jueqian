@@ -94,7 +94,7 @@ public class MyCollectionActivity extends BaseActivity<MyCollectionContract.Pres
     }
 
     private void initRecyclerView() {
-        myCollectionAdapter = new MyCollectionAdapter(mHandler, questions);
+        myCollectionAdapter = new MyCollectionAdapter(mHandler, questions,this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(myCollectionAdapter);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(MyCollectionActivity.this, DividerItemDecoration.VERTICAL));

@@ -86,7 +86,7 @@ public class MyQuestionsAcitivity extends BaseActivity<MyQuestionsContract.Prese
 
     private void initRecyclerView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setAdapter(new MyQuestionsAdapter(mHandler, questions));
+        mRecyclerView.setAdapter(new MyQuestionsAdapter(mHandler, questions,this));
         mRecyclerView.addItemDecoration(new DividerItemDecoration(MyQuestionsAcitivity.this, DividerItemDecoration.VERTICAL));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 

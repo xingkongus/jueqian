@@ -33,7 +33,6 @@ import us.xingkong.jueqian.base.BaseActivity;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Follow;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
 import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
-import us.xingkong.jueqian.module.main.MainActivity;
 import us.xingkong.jueqian.module.me.follower.FollowerActivity;
 import us.xingkong.jueqian.module.me.following.FollowingActivity;
 import us.xingkong.jueqian.module.me.mycollection.MyCollectionActivity;
@@ -65,6 +64,8 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
     RelativeLayout ry_following;
     @BindView(R.id.mainpage_ry_follower)
     RelativeLayout ry_follower;
+    @BindView(R.id.mainpage_tv_selfintro)
+    TextView tv_selfIntro;
 
     private String intentUserID;
     private _User followedUser;
@@ -163,6 +164,7 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
     protected void initView() {
         initToolbar();
         initNickName();
+        initSelfIntro();
         initFocusButton();
         initProfile();
         initCollection();
@@ -170,6 +172,23 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
         toFollowing();
         toFollower();
 
+    }
+
+    private void initSelfIntro() {
+        BmobQuery<_User> bmobQuery = new BmobQuery<>();
+        bmobQuery.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
+        bmobQuery.getObject(JueQianAPP.getAppContext(), intentUserID, new GetListener<_User>() {
+            @Override
+            public void onSuccess(_User user) {
+//                showToast("更新用户昵称成功");
+                tv_selfIntro.setText(user.getSelfsign());
+            }
+
+            @Override
+            public void onFailure(int i, String s) {
+                showToast("更新用户昵称失败CASE:" + s);
+            }
+        });
     }
 
     private void toFollower() {
@@ -428,5 +447,6 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
     protected void onStart() {
         super.onStart();
         initNickName();
+        initSelfIntro();
     }
 }

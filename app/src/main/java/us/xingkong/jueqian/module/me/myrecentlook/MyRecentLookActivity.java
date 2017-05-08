@@ -94,7 +94,7 @@ public class MyRecentLookActivity extends BaseActivity<MyRecentLookContract.Pres
 
     private void initRecyclerView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setAdapter(new MyRecentLookAdapter(mHandler, questions));
+        mRecyclerView.setAdapter(new MyRecentLookAdapter(mHandler, questions,this));
         mRecyclerView.addItemDecoration(new DividerItemDecoration(MyRecentLookActivity.this, DividerItemDecoration.VERTICAL));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
     }

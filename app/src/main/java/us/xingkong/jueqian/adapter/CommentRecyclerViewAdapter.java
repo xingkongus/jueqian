@@ -79,7 +79,7 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
             head.username.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(context,MainPageAcitivity.class);
+                    Intent intent = new Intent(context, MainPageAcitivity.class);
                     intent.putExtra("intentUserID", answer.getUser().getObjectId());
                     context.startActivity(intent);
                 }
@@ -113,7 +113,12 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                 head.icon_head.setBackgroundResource(R.mipmap.ic_launcher);
             }
             head.content.setText(answer.getMcontent());
-            head.username.setText(answer.getUser().getUsername());
+            if (answer.getUser().getNickname() != null) {
+                head.username.setText(answer.getUser().getNickname());
+            } else {
+                head.username.setText(answer.getUser().getUsername());
+            }
+
             if (answer.getUser().getState() == 2) {
                 head.lebal_head.setVisibility(View.VISIBLE);
             } else {
@@ -171,12 +176,11 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
             vh_comment.username.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(context,MainPageAcitivity.class);
-                    intent.putExtra("intentUserID", comments.get(position-1).getUser().getObjectId());
+                    Intent intent = new Intent(context, MainPageAcitivity.class);
+                    intent.putExtra("intentUserID", comments.get(position - 1).getUser().getObjectId());
                     context.startActivity(intent);
                 }
             });
-
 
 
             bmobFile_comments = comments.get(position - 1).getUser().getProfile();
@@ -206,7 +210,12 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
             } else {
                 vh_comment.usericon_answer.setBackgroundResource(R.mipmap.ic_launcher);
             }
-            vh_comment.username.setText(comments.get(position - 1).getUser().getUsername());
+            if (comments.get(position - 1).getUser().getNickname() != null) {
+                vh_comment.username.setText(comments.get(position - 1).getUser().getNickname());
+            } else {
+                vh_comment.username.setText(comments.get(position - 1).getUser().getUsername());
+            }
+
             vh_comment.content.setText(comments.get(position - 1).getMcontent());
             if (comments.get(position - 1).getUser().getState() == 2) {
                 vh_comment.lebal_comment.setVisibility(View.VISIBLE);
