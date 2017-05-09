@@ -31,9 +31,9 @@ import butterknife.BindView;
 import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.datatype.BmobPointer;
 import cn.bmob.v3.listener.DeleteListener;
 import cn.bmob.v3.listener.FindListener;
-import cn.bmob.v3.listener.GetListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 import us.xingkong.jueqian.R;
@@ -75,6 +75,9 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
     private String question_userID;
     private int zanFlag;
     private int shouocanFlag;
+    private boolean isZan;
+    private boolean isShouzan;
+//    _User user = BmobUser.getCurrentUser(QuestionActivity.this, _User.class);
 
     Handler handler = new Handler() {
         @Override
@@ -168,8 +171,8 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                     String answer_ID = msg.getData().getString("answerID");
                     int zanFlag = msg.getData().getInt("flag");
                     if (zanFlag == 0) {
-                        final int pos=msg.getData().getInt("pos");
-                        final String dingID[]= (String[]) msg.obj;
+                        final int pos = msg.getData().getInt("pos");
+                        final String dingID[] = (String[]) msg.obj;
                         _User user = BmobUser.getCurrentUser(mContext, _User.class);
                         Answer answer2 = new Answer();
                         answer2.setObjectId(answer_ID);
@@ -179,7 +182,7 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                         ding1.save(mContext, new SaveListener() {
                             @Override
                             public void onSuccess() {
-                                dingID[pos]=ding1.getObjectId();
+                                dingID[pos] = ding1.getObjectId();
                             }
 
                             @Override
@@ -188,8 +191,8 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                             }
                         });
                     } else if (zanFlag == 1) {
-                        String dingID=msg.getData().getString("dingID");
-                        Ding ding1=new Ding();
+                        String dingID = msg.getData().getString("dingID");
+                        Ding ding1 = new Ding();
                         ding1.setObjectId(dingID);
                         ding1.delete(mContext, new DeleteListener() {
                             @Override
@@ -203,10 +206,10 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                     }
                     break;
                 case 8://问题回答数减一
-                    String questionID1=msg.getData().getString("questionID");
+                    String questionID1 = msg.getData().getString("questionID");
                     if (questionID1 != null) {
-                        Question question=new Question();
-                        question.increment("answer_count",-1);
+                        Question question = new Question();
+                        question.increment("answer_count", -1);
                         question.update(mContext, questionID1, new UpdateListener() {
                             @Override
                             public void onSuccess() {
@@ -219,20 +222,20 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                     }
                     break;
                 case 9://连级删除问题下的回答
-                    final List<Answer>list1=new ArrayList<>();
-                    String questionID2=msg.getData().getString("questionID");
-                    BmobQuery<Answer>query=new BmobQuery<>();
-                    query.addWhereEqualTo("question",questionID2);
+                    final List<Answer> list1 = new ArrayList<>();
+                    String questionID2 = msg.getData().getString("questionID");
+                    BmobQuery<Answer> query = new BmobQuery<>();
+                    query.addWhereEqualTo("question", questionID2);
                     query.findObjects(mContext, new FindListener<Answer>() {
                         @Override
                         public void onSuccess(List<Answer> list) {
-                            for (Answer answer:list){
-                               answer.getObjectId();
+                            for (Answer answer : list) {
+                                answer.getObjectId();
                                 list1.add(answer);
                             }
-                            Message msg=new Message();
-                            msg.obj=list1;
-                            msg.what=10;
+                            Message msg = new Message();
+                            msg.obj = list1;
+                            msg.what = 10;
                             handler.sendMessage(msg);
                         }
 
@@ -243,10 +246,10 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                     });
                     break;
                 case 10:
-                    List<Answer>list11= (List<Answer>) msg.obj;
-                    List<BmobObject>list2=new ArrayList<>();
-                    for (int i=0;i<list11.size();i++){
-                        Answer answer=new Answer();
+                    List<Answer> list11 = (List<Answer>) msg.obj;
+                    List<BmobObject> list2 = new ArrayList<>();
+                    for (int i = 0; i < list11.size(); i++) {
+                        Answer answer = new Answer();
                         answer.setObjectId(list11.get(i).getObjectId());
                         list2.add(answer);
                     }
@@ -332,36 +335,67 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
 
     @Override
     protected void initView() {
+        _User user = BmobUser.getCurrentUser(mContext, _User.class);
         setToolbarBackEnable("问题详情");
         initSwipeRefreshLayout();
         refreshLayout.setRefreshing(true);
         mPresenter.getQuestion(mContext, questionID, handler);
         mPresenter.getQuestionAnswer(mContext, handler, questionID, answers);
         refreshLayout.setRefreshing(false);
-        _User user = BmobUser.getCurrentUser(mContext, _User.class);
         if (user != null) {
-        BmobQuery<Question> query = new BmobQuery<>();
-        query.getObject(mContext, questionID, new GetListener<Question>() {
-            @Override
-            public void onSuccess(Question question) {
-                zanFlag = question.getState();
-                shouocanFlag = question.getShouzanFlag();
-                if (zanFlag == 1) {
-                    zan.setBackgroundColor(Color.parseColor("#3CB371"));
-                    zan.setTextColor(Color.parseColor("#ffffff"));
+            final String userID = user.getObjectId();
+            BmobQuery<_User> likeQuery = new BmobQuery<>();
+            Question question = new Question();
+            question.setObjectId(questionID);
+            likeQuery.addWhereRelatedTo("likepeople", new BmobPointer(question));
+            likeQuery.findObjects(mContext, new FindListener<_User>() {
+                @Override
+                public void onSuccess(List<_User> list) {
+                    for (_User user : list) {
+                        if (user.getObjectId().equals(userID)) {
+                            zan.setBackgroundColor(Color.parseColor("#3CB371"));
+                            zan.setTextColor(Color.parseColor("#ffffff"));
+                            isZan = true;
+                            return;
+                        } else {
+                            isZan = false;
+                            zan.setBackgroundColor(Color.parseColor("#ffffff"));
+                            zan.setTextColor(Color.parseColor("#000000"));
+                        }
+                    }
                 }
-                if (shouocanFlag == 1) {
-                    shoucan.setBackgroundColor(Color.parseColor("#3CB371"));
-                    shoucan.setTextColor(Color.parseColor("#ffffff"));
-                }
-            }
 
-            @Override
-            public void onFailure(int i, String s) {
-                showToast("网络连接超时");
-            }
-        });
-    }else{
+                @Override
+                public void onError(int i, String s) {
+
+                }
+            });
+
+            BmobQuery<Question> query = new BmobQuery<>();
+            query.addWhereRelatedTo("collections", new BmobPointer(user));
+            query.findObjects(mContext, new FindListener<Question>() {
+                @Override
+                public void onSuccess(List<Question> list) {
+                    for (Question question : list) {
+                        if (question.getObjectId().equals(questionID)) {
+                            shoucan.setBackgroundColor(Color.parseColor("#3CB371"));
+                            shoucan.setTextColor(Color.parseColor("#ffffff"));
+                            isShouzan = true;
+                            return;
+                        } else {
+                            isShouzan = false;
+                            shoucan.setBackgroundColor(Color.parseColor("#ffffff"));
+                            shoucan.setTextColor(Color.parseColor("#000000"));
+                        }
+                    }
+                }
+
+                @Override
+                public void onError(int i, String s) {
+
+                }
+            });
+        } else {
             zan.setBackgroundColor(Color.parseColor("#ffffff"));
             zan.setTextColor(Color.parseColor("#000000"));
             shoucan.setBackgroundColor(Color.parseColor("#ffffff"));
@@ -413,11 +447,11 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
 
     @Override
     protected void initEvent() {
+        final _User user = BmobUser.getCurrentUser(mContext, _User.class);
         huida.setTextColor(Color.parseColor("#000000"));
         huida.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                _User user = BmobUser.getCurrentUser(mContext, _User.class);
                 if (user == null) {
                     showToast("请先登录");
                     Intent intent = new Intent(mContext, LoginActivity.class);
@@ -436,46 +470,24 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
         zan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                _User user = BmobUser.getCurrentUser(mContext, _User.class);
                 if (user == null) {
                     showToast("请先登录");
                     Intent intent = new Intent(mContext, LoginActivity.class);
                     startActivity(intent);
                 } else {
-                    BmobQuery<Question> query = new BmobQuery<>();
-                    query.getObject(mContext, questionID, new GetListener<Question>() {
-                        @Override
-                        public void onSuccess(Question question) {
-                            int flag = question.getState();
-                            if (flag == 0) {
-                                zan.setBackgroundColor(Color.parseColor("#3CB371"));
-                                zan.setTextColor(Color.parseColor("#ffffff"));
-                                new Thread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        mPresenter.zan(mContext, handler, questionID);
-                                        mPresenter.zanStateChange(mContext, questionID, 0);
-                                    }
-                                }).start();
+                    if (isZan == true) {
+                        mPresenter.quxiaoZan(mContext, questionID);
+                        zan.setBackgroundColor(Color.parseColor("#ffffff"));
+                        zan.setTextColor(Color.parseColor("#000000"));
+                        isZan = false;
+                    } else {
+                        mPresenter.zan(mContext, handler, questionID);
+                        zan.setBackgroundColor(Color.parseColor("#3CB371"));
+                        zan.setTextColor(Color.parseColor("#ffffff"));
+                        isZan=true;
+                    }
 
-                            } else if (flag == 1) {
-                                zan.setBackgroundColor(Color.parseColor("#ffffff"));
-                                zan.setTextColor(Color.parseColor("#000000"));
-                                new Thread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        mPresenter.quxiaoZan(mContext, questionID);
-                                        mPresenter.zanStateChange(mContext, questionID, 1);
-                                    }
-                                }).start();
-                            }
-                        }
 
-                        @Override
-                        public void onFailure(int i, String s) {
-                            showToast("网络连接超时");
-                        }
-                    });
                 }
             }
         });
@@ -483,46 +495,23 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
         shoucan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                _User user = BmobUser.getCurrentUser(mContext, _User.class);
                 if (user == null) {
                     showToast("请先登录");
                     Intent intent = new Intent(mContext, LoginActivity.class);
                     startActivity(intent);
                 } else {
-                    BmobQuery<Question> query = new BmobQuery<>();
-                    query.getObject(mContext, questionID, new GetListener<Question>() {
-                        @Override
-                        public void onSuccess(Question question) {
-                            int flag = question.getShouzanFlag();
-                            if (flag == 0) {
-                                shoucan.setBackgroundColor(Color.parseColor("#3CB371"));
-                                shoucan.setTextColor(Color.parseColor("#ffffff"));
-                                new Thread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        mPresenter.shoucan(mContext, handler, questionID);
-                                        mPresenter.shouzanStateChange(mContext, questionID, 0);
-                                    }
-                                }).start();
+                    if (isShouzan == true) {
+                        mPresenter.quxiaoShouzan(mContext, questionID);
+                        shoucan.setBackgroundColor(Color.parseColor("#ffffff"));
+                        shoucan.setTextColor(Color.parseColor("#000000"));
+                        isShouzan = false;
+                    } else if (isShouzan == false) {
+                        mPresenter.shoucan(mContext, handler, questionID, question_userID);
+                        shoucan.setBackgroundColor(Color.parseColor("#3CB371"));
+                        shoucan.setTextColor(Color.parseColor("#ffffff"));
+                        isShouzan = true;
+                    }
 
-                            } else if (flag == 1) {
-                                shoucan.setBackgroundColor(Color.parseColor("#ffffff"));
-                                shoucan.setTextColor(Color.parseColor("#000000"));
-                                new Thread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        mPresenter.quxiaoShouzan(mContext, questionID);
-                                        mPresenter.shouzanStateChange(mContext, questionID, 1);
-                                    }
-                                }).start();
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(int i, String s) {
-
-                        }
-                    });
 
 
                 }

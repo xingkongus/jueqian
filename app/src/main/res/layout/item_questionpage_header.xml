@@ -91,30 +91,11 @@
                 android:text="发表于:xxxx-xx-xx xx:xx" />
         </RelativeLayout>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/likecount_question"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:orientation="horizontal">
-
-            <!--<TextView-->
-            <!--android:id="@+id/like_questionpage1"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_centerVertical="true"-->
-            <!--android:text=" " />-->
-
-            <!--<TextView-->
-            <!--android:id="@+id/comment_questionpage1"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_centerVertical="true"-->
-            <!--android:layout_marginLeft="16dp"-->
-            <!--android:layout_toEndOf="@+id/like_questionpage1"-->
-            <!--android:layout_toRightOf="@+id/like_questionpage1"-->
-            <!--android:text="评论：999999" />-->
-
-
-        </RelativeLayout>
+            android:textSize="15dp"
+            android:text="赞的人数:0"/>
     </LinearLayout>
 </LinearLayout>

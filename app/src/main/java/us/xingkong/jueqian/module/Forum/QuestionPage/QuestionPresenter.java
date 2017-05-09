@@ -112,10 +112,12 @@ public class QuestionPresenter extends BasePresenterImpl implements QuestionCont
     }
 
     @Override
-    public void shoucan(Context context, Handler handler, String questionID) {
+    public void shoucan(Context context, Handler handler, String questionID,String question_userID) {
         _User user=BmobUser.getCurrentUser(context,_User.class);
         Question question=new Question();
         question.setObjectId(questionID);
+        if (question_userID.equals(user.getObjectId()))
+            return;
         BmobRelation bmobRelation=new BmobRelation();
         bmobRelation.add(question);
         user.setCollections(bmobRelation);
