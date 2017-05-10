@@ -33,7 +33,7 @@ public class ForumPresenter extends BasePresenterImpl implements ForumContract.P
         query.setLimit(20);
         query.order("-createdAt");
         query.include("user");
-        if (flag == 1) {
+        if (flag == 1) {   //flag判断当前是刷新还是第一次加载页面
             Boolean isInCache = query.hasCachedResult(context, Question.class);
             if (isInCache) {
                 query.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);

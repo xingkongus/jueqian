@@ -1,6 +1,9 @@
 package us.xingkong.jueqian.module.Forum;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -43,6 +46,7 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
     private static final String PAGE_COUNT = "page_count";
     ArrayList<Question> questions = new ArrayList<>();
     Boolean isRolling = false;
+    private boolean isInitRecyclewView=false;
 
     public static ForumFragment getInstance(int page_count) {
         ForumFragment fra = new ForumFragment();
@@ -82,7 +86,13 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
             public void onRefresh() {
                 showToast("刷新");
                 swipeRefreshLayout.setRefreshing(true);
-                mHandler.sendEmptyMessage(REQUEST_REFRESH);
+                if (isNetworkAvailable(MainActivity.instance)) {
+                    mHandler.sendEmptyMessage(REQUEST_REFRESH);
+                }else {
+                    showToast("网络不可用");
+                    swipeRefreshLayout.setRefreshing(false);
+                }
+
             }
         });
     }
@@ -91,6 +101,9 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
     protected void initData(Bundle savedInstanceState) {
         swipeRefreshLayout.setRefreshing(true);
         questions = (ArrayList<Question>) mPresenter.getBmobQuestion(getContext(), questions, mHandler,1);
+        if (questions != null && isInitRecyclewView == true) {
+            recyclerViewAdapter.notifyDataSetChanged();
+        }
         swipeRefreshLayout.setRefreshing(false);
     }
 
@@ -149,6 +162,7 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
             }
         });
         recyclerview.setAdapter(recyclerViewAdapter);
+        isInitRecyclewView=true;
     }
 
     Handler mHandler = new Handler() {
@@ -156,22 +170,28 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
-                case REQUEST_REFRESH:
+                case REQUEST_REFRESH://刷新
                     questions.clear();
                     isRolling = true;
                     setRecyclewViewBug();
+                    if (isInitRecyclewView == false) {
+                        initRecyclerview();
+                    }
                     mPresenter.getBmobQuestion(getContext(), questions, mHandler,2);
                     break;
                 case 3:
-                    recyclerViewAdapter.notifyDataSetChanged();
-                    swipeRefreshLayout.setRefreshing(false);
-                    isRolling = false;
-                    setRecyclewViewBug();
+                    if (questions!=null&&isInitRecyclewView==true) {
+                        recyclerViewAdapter.notifyDataSetChanged();
+                        swipeRefreshLayout.setRefreshing(false);
+                        isRolling = false;
+                        setRecyclewViewBug();
+                    }
                     break;
                 case 4:
                     swipeRefreshLayout.setRefreshing(false);
                     isRolling = false;
                     setRecyclewViewBug();
+                    break;
             }
         }
     };
@@ -193,6 +213,22 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
     @Override
     public void onStart() {
         super.onStart();
-        recyclerViewAdapter.notifyDataSetChanged();
+    }
+    public static boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivity = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivity != null) {
+            NetworkInfo info = connectivity.getActiveNetworkInfo();
+            if (info != null && info.isConnected())
+            {
+                // 当前网络是连接的
+                if (info.getState() == NetworkInfo.State.CONNECTED)
+                {
+                    // 当前所连接的网络可用
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

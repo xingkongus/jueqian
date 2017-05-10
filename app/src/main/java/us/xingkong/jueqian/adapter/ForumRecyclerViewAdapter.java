@@ -84,7 +84,7 @@ public class ForumRecyclerViewAdapter extends RecyclerView.Adapter<ForumRecycler
         holder.count_answer.setText(infoSets.get(position).getAnswer_count() + "回答");
         if (infoSets.get(position).getUser().getNickname() != null) {
             holder.username.setText(infoSets.get(position).getUser().getNickname());
-        }else{
+        } else {
             holder.username.setText(infoSets.get(position).getUser().getUsername());
         }
 
@@ -98,20 +98,20 @@ public class ForumRecyclerViewAdapter extends RecyclerView.Adapter<ForumRecycler
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                questionID = infoSets.get(position).getObjectId();
-                userID = infoSets.get(position).getUser().getObjectId();
-                Intent intent = new Intent(mContext, QuestionActivity.class);
-                intent.putExtra("questionid", questionID);
-                intent.putExtra("question_userID", userID);
-                mContext.startActivity(intent);
+                    questionID = infoSets.get(position).getObjectId();
+                    userID = infoSets.get(position).getUser().getObjectId();
+                    Intent intent = new Intent(mContext, QuestionActivity.class);
+                    intent.putExtra("questionid", questionID);
+                    intent.putExtra("question_userID", userID);
+                    mContext.startActivity(intent);
             }
         });
         holder.item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(JueQianAPP.getAppContext(), MainPageAcitivity.class);
-                intent.putExtra("intentUserID", infoSets.get(position).getUser().getObjectId());
-                mContext.startActivity(intent);
+                    Intent intent = new Intent(JueQianAPP.getAppContext(), MainPageAcitivity.class);
+                    intent.putExtra("intentUserID", infoSets.get(position).getUser().getObjectId());
+                    mContext.startActivity(intent);
             }
         });
 
@@ -148,4 +148,5 @@ public class ForumRecyclerViewAdapter extends RecyclerView.Adapter<ForumRecycler
             item = (LinearLayout) itemView.findViewById(R.id.forum_mainpager);
         }
     }
+
 }

@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -73,11 +75,9 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
     Button popupwindow_huida;
     private Boolean isRolling = false;
     private String question_userID;
-    private int zanFlag;
-    private int shouocanFlag;
     private boolean isZan;
     private boolean isShouzan;
-//    _User user = BmobUser.getCurrentUser(QuestionActivity.this, _User.class);
+    private boolean isInitRecyclewView = false;
 
     Handler handler = new Handler() {
         @Override
@@ -89,10 +89,14 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                     break;
                 case 1:
                     getQuestion = (Question) msg.obj;
-                    initRecyClerView();
+                    if (getQuestion != null) {
+                        initRecyClerView();
+                    }
                     break;
                 case 3:
-                    recyclerViewAdapter.notifyDataSetChanged();
+                    if (answers != null && isInitRecyclewView == true) {
+                        recyclerViewAdapter.notifyDataSetChanged();
+                    }
                     break;
 //                case 4:
 //                    new MaterialDialog.Builder(mContext)
@@ -106,11 +110,13 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
 //                            .show();
 //                    break;
                 case 5:  //刷新数据
-                    answers.clear();
-                    mPresenter.getQuestionAnswer(mContext, handler, questionID, answers);
+                    if (isInitRecyclewView == false) {
+                        mPresenter.getQuestion(mContext, questionID, handler);
+                    }
                     isRolling = true;
                     setRecyclewViewBug();
-                    recyclerViewAdapter.notifyDataSetChanged();
+                    answers.clear();
+                    mPresenter.getQuestionAnswer(mContext, handler, questionID, answers);
                     refreshLayout.setRefreshing(false);
                     isRolling = false;
                     setRecyclewViewBug();
@@ -327,7 +333,12 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
             @Override
             public void onRefresh() {
                 Toast.makeText(getApplicationContext(), "刷新", Toast.LENGTH_SHORT).show();
-                handler.sendEmptyMessage(5);
+                if (isNetworkAvailable(mContext)) {
+                    handler.sendEmptyMessage(5);
+                } else {
+                    showToast("网络不可用");
+                }
+
             }
         });
     }
@@ -339,8 +350,12 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
         setToolbarBackEnable("问题详情");
         initSwipeRefreshLayout();
         refreshLayout.setRefreshing(true);
-        mPresenter.getQuestion(mContext, questionID, handler);
-        mPresenter.getQuestionAnswer(mContext, handler, questionID, answers);
+        if (isNetworkAvailable(mContext)) {
+            mPresenter.getQuestion(mContext, questionID, handler);
+            mPresenter.getQuestionAnswer(mContext, handler, questionID, answers);
+        } else {
+            showToast("网络不可用");
+        }
         refreshLayout.setRefreshing(false);
         if (user != null) {
             final String userID = user.getObjectId();
@@ -437,6 +452,7 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
             }
         });
         recyclerviewQuestionpage.setAdapter(recyclerViewAdapter);
+        isInitRecyclewView = true;
     }
 
 
@@ -475,19 +491,21 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                     Intent intent = new Intent(mContext, LoginActivity.class);
                     startActivity(intent);
                 } else {
-                    if (isZan == true) {
-                        mPresenter.quxiaoZan(mContext, questionID);
-                        zan.setBackgroundColor(Color.parseColor("#ffffff"));
-                        zan.setTextColor(Color.parseColor("#000000"));
-                        isZan = false;
+                    if (isNetworkAvailable(mContext)) {
+                        if (isZan == true) {
+                            mPresenter.quxiaoZan(mContext, questionID);
+                            zan.setBackgroundColor(Color.parseColor("#ffffff"));
+                            zan.setTextColor(Color.parseColor("#000000"));
+                            isZan = false;
+                        } else {
+                            mPresenter.zan(mContext, handler, questionID);
+                            zan.setBackgroundColor(Color.parseColor("#3CB371"));
+                            zan.setTextColor(Color.parseColor("#ffffff"));
+                            isZan = true;
+                        }
                     } else {
-                        mPresenter.zan(mContext, handler, questionID);
-                        zan.setBackgroundColor(Color.parseColor("#3CB371"));
-                        zan.setTextColor(Color.parseColor("#ffffff"));
-                        isZan=true;
+                        showToast("网络不可用");
                     }
-
-
                 }
             }
         });
@@ -500,20 +518,21 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                     Intent intent = new Intent(mContext, LoginActivity.class);
                     startActivity(intent);
                 } else {
-                    if (isShouzan == true) {
-                        mPresenter.quxiaoShouzan(mContext, questionID);
-                        shoucan.setBackgroundColor(Color.parseColor("#ffffff"));
-                        shoucan.setTextColor(Color.parseColor("#000000"));
-                        isShouzan = false;
-                    } else if (isShouzan == false) {
-                        mPresenter.shoucan(mContext, handler, questionID, question_userID);
-                        shoucan.setBackgroundColor(Color.parseColor("#3CB371"));
-                        shoucan.setTextColor(Color.parseColor("#ffffff"));
-                        isShouzan = true;
+                    if (isNetworkAvailable(mContext)) {
+                        if (isShouzan == true) {
+                            mPresenter.quxiaoShouzan(mContext, questionID);
+                            shoucan.setBackgroundColor(Color.parseColor("#ffffff"));
+                            shoucan.setTextColor(Color.parseColor("#000000"));
+                            isShouzan = false;
+                        } else if (isShouzan == false) {
+                            mPresenter.shoucan(mContext, handler, questionID, question_userID);
+                            shoucan.setBackgroundColor(Color.parseColor("#3CB371"));
+                            shoucan.setTextColor(Color.parseColor("#ffffff"));
+                            isShouzan = true;
+                        }
+                    } else {
+                        showToast("网络不可用");
                     }
-
-
-
                 }
             }
         });
@@ -542,5 +561,21 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                 }
             }
         });
+    }
+
+    public static boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivity = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivity != null) {
+            NetworkInfo info = connectivity.getActiveNetworkInfo();
+            if (info != null && info.isConnected()) {
+                // 当前网络是连接的
+                if (info.getState() == NetworkInfo.State.CONNECTED) {
+                    // 当前所连接的网络可用
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

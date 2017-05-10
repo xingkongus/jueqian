@@ -91,7 +91,7 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
         dingID = new String[answers.size() + 1];
         if (position == 0) {
             _User now = BmobUser.getCurrentUser(context, _User.class);
-            if (now!=null&&now.getObjectId().equals(getQuestion.getUser().getObjectId())) {
+            if (now!=null&&getQuestion!=null&&now.getObjectId().equals(getQuestion.getUser().getObjectId())) {
                 holder.question_delete.setVisibility(View.VISIBLE);
                 holder.question_delete.setClickable(true);
                 holder.question_delete.setOnClickListener(new View.OnClickListener() {
