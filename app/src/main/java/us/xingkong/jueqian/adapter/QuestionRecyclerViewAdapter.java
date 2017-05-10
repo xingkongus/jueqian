@@ -91,7 +91,7 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
         dingID = new String[answers.size() + 1];
         if (position == 0) {
             _User now = BmobUser.getCurrentUser(context, _User.class);
-            if (now!=null&&now.getObjectId().equals(getQuestion.getUser().getObjectId())) {
+            if (now!=null&&getQuestion!=null&&now.getObjectId().equals(getQuestion.getUser().getObjectId())) {
                 holder.question_delete.setVisibility(View.VISIBLE);
                 holder.question_delete.setClickable(true);
                 holder.question_delete.setOnClickListener(new View.OnClickListener() {
@@ -156,6 +156,26 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
                 }
 
             }
+            if (now != null) {
+                BmobQuery<_User> likeQuery = new BmobQuery<>();
+                Question question = new Question();
+                question.setObjectId(getQuestion.getObjectId());
+                likeQuery.addWhereRelatedTo("likepeople", new BmobPointer(question));
+                likeQuery.findObjects(context, new FindListener<_User>() {
+                    @Override
+                    public void onSuccess(List<_User> list) {
+                       int count=list.size();
+                        holder.likecount.setText("赞的人数:"+count);
+                    }
+
+                    @Override
+                    public void onError(int i, String s) {
+
+                    }
+                });
+            }
+
+
         }
 
         if (position != 0) {
@@ -391,50 +411,44 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
 
     class VH extends RecyclerView.ViewHolder {
         TextView content;
-        //        TextView comment;
         ImageButton question_delete;
         TextView title_question;
         TextView content_question;
         TextView tag1;
         TextView tag2;
-        //        TextView like_count;
-//        TextView comment_count;
         TextView username;
         TextView time;
         TextView username_answer;
         TextView like;
         TextView question_time;
-        //        TextView zan;
         LinearLayout item_question;
         ImageView answer_icon;
         ImageView state_questionpage;
         LinearLayout zanLayout;
         TextView goodImag;
         ImageButton delete;
+        TextView likecount;
 
         public VH(View itemView) {
             super(itemView);
             delete = (ImageButton) itemView.findViewById(R.id.delete11);
             item_question = (LinearLayout) itemView.findViewById(R.id.item_question);
             question_time = (TextView) itemView.findViewById(R.id.question_time);
-//            zan = (TextView) itemView.findViewById(R.id.zan);
             like = (TextView) itemView.findViewById(R.id.like_questionpage_item);
             username_answer = (TextView) itemView.findViewById(R.id.username_questionpage);
             content = (TextView) itemView.findViewById(R.id.content_questionpage);
-//            comment = (TextView) itemView.findViewById(R.id.comment_questionpage);
             question_delete = (ImageButton) itemView.findViewById(R.id.more_questionpage);
             title_question = (TextView) itemView.findViewById(R.id.title_questionpage);
             content_question = (TextView) itemView.findViewById(R.id.content_question);
             tag1 = (TextView) itemView.findViewById(R.id.tag1_questionpage);
             tag2 = (TextView) itemView.findViewById(R.id.tag2_questionpage);
-//            like_count= (TextView) itemView.findViewById(R.id.like_questionpage1);
-//            comment_count= (TextView) itemView.findViewById(R.id.comment_questionpage1);
             username = (TextView) itemView.findViewById(R.id.username_question);
             time = (TextView) itemView.findViewById(R.id.time_question);
             answer_icon = (ImageView) itemView.findViewById(R.id.user_icon_questionpage);
             state_questionpage = (ImageView) itemView.findViewById(R.id.state_questionpage);
             zanLayout = (LinearLayout) itemView.findViewById(R.id.zanlayout_question_item);
             goodImag = (TextView) itemView.findViewById(R.id.good_question_item);
+            likecount= (TextView) itemView.findViewById(R.id.likecount_question);
         }
     }
 }

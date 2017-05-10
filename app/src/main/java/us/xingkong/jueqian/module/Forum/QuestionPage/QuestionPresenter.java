@@ -50,7 +50,7 @@ public class QuestionPresenter extends BasePresenterImpl implements QuestionCont
 
             @Override
             public void onFailure(int i, String s) {
-                mView.showToast("网络连接超时");
+                mView.showToast("得到问题网络连接超时");
             }
         });
 
@@ -83,7 +83,7 @@ public class QuestionPresenter extends BasePresenterImpl implements QuestionCont
 
             @Override
             public void onError(int i, String s) {
-                mView.showToast("网络连接超时");
+                mView.showToast("得到回答网络连接超时");
             }
         });
         return answers;
@@ -105,17 +105,19 @@ public class QuestionPresenter extends BasePresenterImpl implements QuestionCont
 
             @Override
             public void onFailure(int i, String s) {
-                mView.showToast("网络连接超时");
+                mView.showToast("赞网络连接超时");
             }
         });
 
     }
 
     @Override
-    public void shoucan(Context context, Handler handler, String questionID) {
+    public void shoucan(Context context, Handler handler, String questionID,String question_userID) {
         _User user=BmobUser.getCurrentUser(context,_User.class);
         Question question=new Question();
         question.setObjectId(questionID);
+        if (question_userID.equals(user.getObjectId()))
+            return;
         BmobRelation bmobRelation=new BmobRelation();
         bmobRelation.add(question);
         user.setCollections(bmobRelation);
@@ -127,7 +129,7 @@ public class QuestionPresenter extends BasePresenterImpl implements QuestionCont
 
             @Override
             public void onFailure(int i, String s) {
-                mView.showToast("网络连接超时CASE:" + s);
+                mView.showToast("收藏网络连接超时");
             }
         });
     }
@@ -190,7 +192,7 @@ public class QuestionPresenter extends BasePresenterImpl implements QuestionCont
 
             @Override
             public void onFailure(int i, String s) {
-                mView.showToast("网络连接超时"+s);
+                mView.showToast("网络连接超时");
             }
         });
     }
