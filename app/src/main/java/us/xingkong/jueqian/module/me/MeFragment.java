@@ -215,7 +215,8 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
                     intent.putExtra("intentUserID", BmobUser.getCurrentUser(JueQianAPP.getAppContext()).getObjectId());
                     startActivity(intent);
                 } else {
-                    Toast.makeText(JueQianAPP.getAppContext(), "请先登录", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getContext(), LoginActivity.class);
+                    startActivity(intent);
                 }
 
             }
@@ -231,7 +232,8 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
                     intent.putExtra("intentUserID", BmobUser.getCurrentUser(JueQianAPP.getAppContext()).getObjectId());
                     startActivity(intent);
                 } else {
-                    Toast.makeText(JueQianAPP.getAppContext(), "请先登录", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getContext(), LoginActivity.class);
+                    startActivity(intent);
                 }
 
             }
@@ -247,7 +249,8 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
                     intent.putExtra("intentUserID", BmobUser.getCurrentUser(JueQianAPP.getAppContext()).getObjectId());
                     startActivity(intent);
                 } else {
-                    Toast.makeText(JueQianAPP.getAppContext(), "请先登录", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getContext(), LoginActivity.class);
+                    startActivity(intent);
                 }
 
             }
@@ -279,7 +282,8 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
                     startActivity(intent);
                     mCircleImageView_redpoint.setVisibility(View.INVISIBLE);
                 } else {
-                    Toast.makeText(JueQianAPP.getAppContext(), "请先登录", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getContext(), LoginActivity.class);
+                    startActivity(intent);
                 }
 
             }
@@ -294,7 +298,8 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
                     Intent intent = new Intent(getContext(), MyQuestionsAcitivity.class);
                     startActivity(intent);
                 } else {
-                    Toast.makeText(JueQianAPP.getAppContext(), "请先登录", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getContext(), LoginActivity.class);
+                    startActivity(intent);
                 }
 
             }
@@ -346,7 +351,7 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
                 }
             });
         } else {
-            showToast("请先登录");
+//            showToast("请先登录");
         }
 
     }
