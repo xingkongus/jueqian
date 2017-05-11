@@ -7,11 +7,10 @@ import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -31,13 +30,7 @@ import us.xingkong.jueqian.module.main.MainActivity;
 import static us.xingkong.jueqian.base.Constants.REQUEST_REFRESH;
 
 
-/**
- * Created by boluoxiaomo
- * Date: 17/1/9
- */
-
 public class ForumFragment extends BaseFragment<ForumContract.Presenter> implements ForumContract.View {
-
 
     @BindView(R.id.recyclerview_forum_main)
     RecyclerView recyclerview;
@@ -49,6 +42,7 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
     private ForumRecyclerViewAdapter recyclerViewAdapter;
     private static final String PAGE_COUNT = "page_count";
     ArrayList<Question> questions = new ArrayList<>();
+    Boolean isRolling = false;
 
     public static ForumFragment getInstance(int page_count) {
         ForumFragment fra = new ForumFragment();
@@ -70,39 +64,34 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
 
     @Override
     protected void prepareData(Bundle savedInstanceState) {
-        questions = (ArrayList<Question>) mPresenter.getBmobQuestion(getContext(), questions, mHandler);
+
     }
 
     @Override
     protected void initView(View rootView) {
         initSwipeRefreshLayout();
-        swipeRefreshLayout.setRefreshing(true);
         initRecyclerview();
-        swipeRefreshLayout.setRefreshing(false);
     }
 
     private void initSwipeRefreshLayout() {
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         swipeRefreshLayout.setSize(SwipeRefreshLayout.DEFAULT);
         swipeRefreshLayout.setProgressViewEndTarget(true, 200);
-//        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-//            @Override
-//            public void onRefresh() {
-//                new Thread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                            mHandler.sendEmptyMessage(REQUEST_REFRESH);
-//
-//
-//                    }
-//                }).start();
-//            }
-//        });
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                showToast("刷新");
+                swipeRefreshLayout.setRefreshing(true);
+                mHandler.sendEmptyMessage(REQUEST_REFRESH);
+            }
+        });
     }
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-
+        swipeRefreshLayout.setRefreshing(true);
+        questions = (ArrayList<Question>) mPresenter.getBmobQuestion(getContext(), questions, mHandler,1);
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -112,13 +101,12 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
 
     @OnClick(R.id.fab_forum_main)
     public void onClick() {
-        _User user = BmobUser.getCurrentUser(getContext(),_User.class);
-        if (user==null) {
+        _User user = BmobUser.getCurrentUser(getContext(), _User.class);
+        if (user == null) {
             showToast("请先登录");
-            Intent intent=new Intent(getContext(), LoginActivity.class);
+            Intent intent = new Intent(getContext(), LoginActivity.class);
             startActivity(intent);
-
-        }else {
+        } else {
             Intent intent = new Intent(getContext(), NewActivity.class);
             startActivity(intent);
         }
@@ -128,27 +116,26 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
         recyclerViewAdapter = new ForumRecyclerViewAdapter(questions, mHandler, getContext());
         mLayoutManager = new LinearLayoutManager(getContext());
         recyclerview.setLayoutManager(mLayoutManager);
-        recyclerview.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
+//        recyclerview.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         recyclerview.setItemAnimator(new DefaultItemAnimator());
         recyclerview.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    if (!recyclerView.canScrollVertically(1)) {
-
-
-                    }
-                    if (!recyclerView.canScrollVertically(-1)) {
-                        Toast.makeText(getContext(), "刷新", Toast.LENGTH_SHORT).show();
-                            swipeRefreshLayout.setRefreshing(true);
-                            mHandler.sendEmptyMessage(REQUEST_REFRESH);
-
-                    }
-                }
-
-            }
+//            @Override
+//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+//                super.onScrollStateChanged(recyclerView, newState);
+//
+//                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+//                    if (!recyclerView.canScrollVertically(1)) {
+//
+//                    }
+//                    if (!recyclerView.canScrollVertically(-1)) {
+//                        showToast("刷新");
+//                        swipeRefreshLayout.setRefreshing(true);
+//                        mHandler.sendEmptyMessage(REQUEST_REFRESH);
+//
+//                    }
+//                }
+//
+//            }
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -171,13 +158,41 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
             switch (msg.what) {
                 case REQUEST_REFRESH:
                     questions.clear();
-                    mPresenter.getBmobQuestion(getContext(),questions,mHandler);
+                    isRolling = true;
+                    setRecyclewViewBug();
+                    mPresenter.getBmobQuestion(getContext(), questions, mHandler,2);
                     break;
                 case 3:
                     recyclerViewAdapter.notifyDataSetChanged();
                     swipeRefreshLayout.setRefreshing(false);
+                    isRolling = false;
+                    setRecyclewViewBug();
                     break;
+                case 4:
+                    swipeRefreshLayout.setRefreshing(false);
+                    isRolling = false;
+                    setRecyclewViewBug();
             }
         }
     };
+
+    @Override
+    public void setRecyclewViewBug() {
+        recyclerview.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (isRolling) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        recyclerViewAdapter.notifyDataSetChanged();
+    }
 }

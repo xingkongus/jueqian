@@ -11,11 +11,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.datatype.BmobPointer;
+import cn.bmob.v3.listener.FindListener;
+import us.xingkong.jueqian.JueQianAPP;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.adapter.MyAnswerAdapter;
 import us.xingkong.jueqian.base.BaseActivity;
+import us.xingkong.jueqian.bean.ForumBean.BombBean.Answer;
+import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
 import us.xingkong.jueqian.module.me.mycollection.MyCollectionActivity;
 
 /**
@@ -27,18 +35,32 @@ public class MyAnswerActivity extends BaseActivity<MyAnswerContract.Presenter> i
     @BindView(R.id.recyclerview)
     RecyclerView mRecyclerView;
 
-    private ArrayList<String> mArrayList;
+
+    private List<Answer> answers = new ArrayList<>();
+    private List<Question> questions = new ArrayList<>();
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 1:
+                    for (Answer answer : answers) {
+                        Question q = answer.getQuestion();
+                        questions.add(q);
+                        System.out.println("qqqqqqqqqqqqqqqqqqqqqqqqqqqqq " + q.getObjectId());
+                    }
+                    if (questions == null) {
+                        showToast("回答列表为空");
+                        break;
+                    }
+                    initRecyclerView();
                     break;
             }
 
         }
     };
+
+    private MyAnswerAdapter myAnswerAdapter;
 
     @Override
     protected MyAnswerContract.Presenter createPresenter() {
@@ -52,24 +74,40 @@ public class MyAnswerActivity extends BaseActivity<MyAnswerContract.Presenter> i
 
     @Override
     protected void prepareData() {
-        if (mArrayList != null) {
-            mArrayList.clear();
-        }
-        mArrayList = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            mArrayList.add("世界上有没有傻逼?" + i);
-        }
+        BmobUser bmobUser = BmobUser.getCurrentUser(JueQianAPP.getAppContext());
+        BmobQuery<Answer> query = new BmobQuery<Answer>();
+        query.addWhereRelatedTo("answers", new BmobPointer(bmobUser));
+        query.include("question");
+        query.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
+        query.findObjects(JueQianAPP.getAppContext(), new FindListener<Answer>() {
+            @Override
+            public void onSuccess(List<Answer> list) {
+                answers = list;
+                if (answers == null) {
+                    showToast("回答列表为空");
+                    return;
+                }
+                showToast("获取我的回答列表成功");
+                mHandler.sendEmptyMessage(1);
+            }
+
+            @Override
+            public void onError(int i, String s) {
+                showToast("获取我的回答列表失败");
+            }
+        });
     }
 
     @Override
     protected void initView() {
         setToolbar();
-        initRecyclerView();
+//        initRecyclerView();
     }
 
     private void initRecyclerView() {
+        myAnswerAdapter = new MyAnswerAdapter(questions,this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setAdapter(new MyAnswerAdapter(mArrayList, mHandler));
+        mRecyclerView.setAdapter(myAnswerAdapter);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(MyAnswerActivity.this, DividerItemDecoration.VERTICAL));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
     }

@@ -8,16 +8,21 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.datatype.BmobPointer;
+import cn.bmob.v3.listener.FindListener;
+import us.xingkong.jueqian.JueQianAPP;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.adapter.MyQuestionsAdapter;
 import us.xingkong.jueqian.base.BaseActivity;
-import us.xingkong.jueqian.module.me.mycollection.MyCollectionActivity;
+import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
 
 /**
  * Created by PERFECTLIN on 2017/1/13 0013.
@@ -27,15 +32,17 @@ public class MyQuestionsAcitivity extends BaseActivity<MyQuestionsContract.Prese
     @BindView(R.id.recyclerview)
     RecyclerView mRecyclerView;
 
-    private ArrayList<String> mArrayList;
-    private Handler handler = new Handler() {
+    List<Question> questions=new ArrayList<>();
+    private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 1:
+                    initRecyclerView();
                     break;
             }
+
         }
     };
 
@@ -51,25 +58,35 @@ public class MyQuestionsAcitivity extends BaseActivity<MyQuestionsContract.Prese
 
     @Override
     protected void prepareData() {
-        if (mArrayList != null) {
-            mArrayList.clear();
-        }
-        mArrayList = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            mArrayList.add("世界上有没有傻逼?" + i);
-        }
+        BmobUser bmobUser = BmobUser.getCurrentUser(JueQianAPP.getAppContext());
+        BmobQuery<Question> query = new BmobQuery<Question>();;
+        query.addWhereRelatedTo("questions", new BmobPointer(bmobUser));
+        query.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
+        query.findObjects(JueQianAPP.getAppContext(), new FindListener<Question>() {
+            @Override
+            public void onSuccess(List<Question> list) {
+                questions = list;
+                showToast("获取我的提问列表成功");
+                mHandler.sendEmptyMessage(1);
+            }
+
+            @Override
+            public void onError(int i, String s) {
+                showToast("获取我的提问列表失败");
+            }
+        });
     }
 
     @Override
     protected void initView() {
         setToolbar();
-        initRecyclerView();
+       // initRecyclerView();
 
     }
 
     private void initRecyclerView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setAdapter(new MyQuestionsAdapter(handler, mArrayList));
+        mRecyclerView.setAdapter(new MyQuestionsAdapter(mHandler, questions,this));
         mRecyclerView.addItemDecoration(new DividerItemDecoration(MyQuestionsAcitivity.this, DividerItemDecoration.VERTICAL));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 

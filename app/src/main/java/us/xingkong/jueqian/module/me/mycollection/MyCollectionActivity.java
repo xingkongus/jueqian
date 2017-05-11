@@ -1,5 +1,6 @@
 package us.xingkong.jueqian.module.me.mycollection;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -10,10 +11,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobPointer;
 import cn.bmob.v3.listener.FindListener;
 import us.xingkong.jueqian.JueQianAPP;
@@ -31,24 +34,28 @@ public class MyCollectionActivity extends BaseActivity<MyCollectionContract.Pres
     @BindView(R.id.recyclerview)
     RecyclerView mRecyclerView;
 
-    List<Question> questions;
+    private List<Question> questions = new ArrayList<>();
+    private String intentUserID;
 
-    //    private ArrayList<String> mArrayList;
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
-                case 1:initRecyclerView();
+                case 1:
+                    initRecyclerView();
+                case 2:
+                    myCollectionAdapter.notifyDataSetChanged();
                     break;
             }
-
         }
     };
 
+    MyCollectionAdapter myCollectionAdapter;
+
     @Override
     protected MyCollectionContract.Presenter createPresenter() {
-        return new MyCollectionPresenter(this);
+        return new MyCollectionPresenter(this, mHandler);
     }
 
     @Override
@@ -58,33 +65,23 @@ public class MyCollectionActivity extends BaseActivity<MyCollectionContract.Pres
 
     @Override
     protected void prepareData() {
-//        if (mArrayList != null) {
-//            mArrayList.clear();
-//        }
-//        mArrayList = new ArrayList<>();
-//        for (int i = 0; i < 20; i++) {
-//            mArrayList.add("世界上有没有傻逼?" + i);
-//        }
-        BmobQuery<Question> query = new BmobQuery<Question>();
+        Intent intent = getIntent();
+        intentUserID = intent.getStringExtra("intentUserID");
         _User user = new _User();
-        user.setObjectId("1mdf000N");
+        user.setObjectId(intentUserID);
+        BmobQuery<Question> query = new BmobQuery<Question>();
         query.addWhereRelatedTo("collections", new BmobPointer(user));
-        System.out.println("---------------------------------------");
+        query.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
         query.findObjects(JueQianAPP.getAppContext(), new FindListener<Question>() {
             @Override
             public void onSuccess(List<Question> list) {
                 questions = list;
-                showToast("获取收藏表失败成功");
-                for (Question question : list) {
-                    System.out.println("ssssssssssssssssssssssss" + question.getMtitle());
-                }
                 mHandler.sendEmptyMessage(1);
             }
 
             @Override
             public void onError(int i, String s) {
                 showToast("获取收藏表失败");
-                System.out.println("ffffffffffffffffffffffffffffffffff" + s);
             }
         });
 
@@ -93,12 +90,13 @@ public class MyCollectionActivity extends BaseActivity<MyCollectionContract.Pres
     @Override
     protected void initView() {
         setToolbar();
-//        initRecyclerView();
+        //initRecyclerView();
     }
 
     private void initRecyclerView() {
+        myCollectionAdapter = new MyCollectionAdapter(mHandler, questions,this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setAdapter(new MyCollectionAdapter(mHandler,questions));
+        mRecyclerView.setAdapter(myCollectionAdapter);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(MyCollectionActivity.this, DividerItemDecoration.VERTICAL));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 

@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ffffff"
     android:orientation="vertical">
 
     <include layout="@layout/view_toolbar" />
@@ -10,15 +11,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        android:text="回答描述："
+        android:text="回答描述"
         android:textSize="20sp" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/text_secondary"/>
     <EditText
+        android:padding="3dp"
+        android:hint="写下您的回答..."
         android:layout_margin="10dp"
         android:id="@+id/new_huidacontent"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:drawable/edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFFFFF"
         android:enabled="true"
         android:gravity="top"
         android:inputType="textMultiLine"

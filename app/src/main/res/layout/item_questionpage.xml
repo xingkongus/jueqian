@@ -1,85 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/item_question"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:layout_marginTop="8dp"
+    android:background="#ffffff"
+    android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/user_icon_questionpage"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:background="#916a" />
-
-        <TextView
-            android:id="@+id/username_questionpage"
-            android:layout_width="56dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            android:text="admin" />
-
-        <ImageView
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:background="#6a7e" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
-            android:text="XXXX-XX-XX XX:XX" />
-
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/content_questionpage"
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:ellipsize="end"
-        android:maxLines="2"
-        android:text="我是回答的正文我是回答的正文我是回答的正文我是回答的正文我是回答的正文我是回答的正文我是回答的正文我是回答的正文我是回答的正文" />
+        android:background="#ffffff"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="0dp">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/like_questionpage_item"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:text="赞同：999999" />
+            android:layout_margin="12dp"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/comment_questionpage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="16dp"
-            android:layout_toEndOf="@+id/like_questionpage_item"
-            android:layout_toRightOf="@+id/like_questionpage_item"
-            android:text="评论：999999" />
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-        <ImageButton
-            android:id="@+id/more_questionpage"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:src="@drawable/ic_more_vert_black_24dp"
-            android:background="#00ffffff"/>
-    </RelativeLayout>
+                <!--<ImageView-->
+                <!--android:id="@+id/user_icon_questionpage"-->
+                <!--android:layout_width="24dp"-->
+                <!--android:layout_height="24dp"-->
+                <!--android:background="@mipmap/ic_launcher" />-->
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/user_icon_questionpage"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@mipmap/ic_launcher" />
+
+                <TextView
+                    android:layout_toRightOf="@+id/user_icon_questionpage"
+                    android:id="@+id/username_questionpage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
+                    android:text="admin" />
+
+                <ImageView
+                    android:layout_toRightOf="@+id/username_questionpage"
+                    android:id="@+id/state_questionpage"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:background="@mipmap/teacher"
+                    android:paddingRight="3dp" />
+
+                <TextView
+                    android:layout_toRightOf="@+id/state_questionpage"
+                    android:id="@+id/question_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginStart="16dp"
+                    android:text="XXXX-XX-XX XX:XX" />
+
+                <ImageButton
+                    android:layout_alignParentRight="true"
+                    android:id="@+id/delete11"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:background="#00ffffff"
+                    android:src="@drawable/delete" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/content_questionpage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="000" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/zanlayout_question_item"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:textSize="@dimen/dp_16"
+                        android:text="顶"
+                        android:id="@+id/good_question_item"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="3dp"
+                        android:layout_marginRight="3dp"
+                        android:layout_toLeftOf="@+id/like_questionpage_item"
+                        />
+
+                    <TextView
+                        android:id="@+id/like_questionpage_item"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+                <!--<TextView-->
+                <!--android:id="@+id/comment_questionpage"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:layout_marginLeft="16dp"-->
+                <!--android:layout_toEndOf="@+id/like_questionpage_item"-->
+                <!--android:layout_toRightOf="@+id/like_questionpage_item"-->
+                <!--android:text="评论：999999" />-->
 
 
+            </RelativeLayout>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
 </LinearLayout>

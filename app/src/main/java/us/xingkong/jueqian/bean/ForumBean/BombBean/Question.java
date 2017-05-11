@@ -14,14 +14,31 @@ public class Question extends BmobObject {
     private String mcontent;/*问题的内容*/
     private String TAG1_ID;/*第一个Tag的id*/
     private String TAG2_ID;/*第二个Tag的id*/
-
     private _User user;//提问题的用户
     private Integer focus;/*关注的数量*/
     private BmobRelation answers;
     private BmobRelation likepeople;
     private BmobRelation collectpeople;/*收藏的人的列表*/
     private BmobRelation focuspeople;/*关注的人的列表*/
-    private Integer state;
+    private Integer state;//0没赞，1已赞
+    private Integer answer_count;//回答问题的数量
+    private Integer shouzanFlag;//1已经收藏，0没有收藏
+
+    public Integer getShouzanFlag() {
+        return shouzanFlag;
+    }
+
+    public void setShouzanFlag(Integer shouzanFlag) {
+        this.shouzanFlag = shouzanFlag;
+    }
+
+    public Integer getAnswer_count() {
+        return answer_count;
+    }
+
+    public void setAnswer_count(Integer answer_count) {
+        this.answer_count = answer_count;
+    }
 
     public Integer getState() {
         return state;
@@ -110,4 +127,5 @@ public class Question extends BmobObject {
     public void setCollectpeople(BmobRelation collectpeople) {
         this.collectpeople = collectpeople;
     }
+
 }

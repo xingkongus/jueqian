@@ -5,7 +5,7 @@
     <item
         android:id="@+id/sendMessage"
         android:title="send"
-        android:icon="@drawable/ic_send_black_24dp"
+        android:icon="@drawable/tijiao"
         app:showAsAction="always"
         />
 </menu>

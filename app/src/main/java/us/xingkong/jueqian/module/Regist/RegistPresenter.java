@@ -30,6 +30,7 @@ public class RegistPresenter extends BasePresenterImpl implements RegistContract
                 _User bu = new _User();
                 bu.setUsername(username);
                 bu.setPassword(password);
+                bu.setState(1);
                 bu.signUp(context, new SaveListener() {
                     @Override
                     public void onSuccess() {

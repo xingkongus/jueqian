@@ -11,7 +11,7 @@ import cn.bmob.v3.datatype.BmobRelation;
 public class Answer extends BmobObject {
 
     private String mcontent; /*回答的正文*/
-    private Integer state;/*问题的状态，-1为举报成功的问题，1为正常问*/
+    private Integer state;/*问题的状态，0是没赞，1是已赞*/
     private Integer ups;/*赞同数*/
     private _User user;/*回答者*/
     private Question question;/*所回答的问题*/

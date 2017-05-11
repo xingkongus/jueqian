@@ -3,6 +3,8 @@ package us.xingkong.jueqian.module.Forum.NewPage;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,10 +23,6 @@ import us.xingkong.jueqian.base.BaseActivity;
 import us.xingkong.jueqian.module.main.MainActivity;
 
 
-/**
- * Created by boluoxiaomo
- * Date: 17/1/9
- */
 
 public class NewActivity extends BaseActivity<NewContract.Presenter> implements NewContract.View {
 
@@ -42,6 +40,19 @@ public class NewActivity extends BaseActivity<NewContract.Presenter> implements 
     TextView tag1;
     @BindView(R.id.tag2_new)
     TextView tag2;
+
+    Handler handler=new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what){
+                case 1:
+                    String myQuestionID= (String) msg.obj;
+                    mPresenter.addMyQuestion(mContext,myQuestionID);
+                    break;
+            }
+        }
+    };
 
     @Override
     protected NewContract.Presenter createPresenter() {
@@ -98,22 +109,21 @@ public class NewActivity extends BaseActivity<NewContract.Presenter> implements 
                                 String t1=tag1.getText().toString();
                                 String t2=tag2.getText().toString();
                                 if(!t.isEmpty()&&!c.isEmpty()&&!t1.isEmpty()){
-                                    mPresenter.addQuestion(mContext,t,c,t1,t2);
+                                    mPresenter.addQuestion(mContext,t,c,t1,t2,handler);
                                     Intent intent=new Intent(mContext,MainActivity.class);
                                     startActivity(intent);
                                     finish();
                                 }else{
                                     showToast("内容没有填写完整");
                                 }
-
                             }
                         })
-                        .onNegative(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                showToast("已取消");
-                            }
-                        }).show();
+                         .onNegative(new MaterialDialog.SingleButtonCallback() {
+                             @Override
+                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                 showToast("已取消");
+                             }
+                         }).show();
                 break;
 
         }

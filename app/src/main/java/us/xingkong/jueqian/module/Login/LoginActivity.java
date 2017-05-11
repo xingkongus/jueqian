@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import butterknife.BindView;
+import us.xingkong.jueqian.JueQianAPP;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.base.BaseActivity;
 import us.xingkong.jueqian.module.Regist.RegistActivity;
@@ -50,6 +51,7 @@ public class LoginActivity extends BaseActivity<LoginContract.Presenter> impleme
 
         return R.layout.activity_login;
     }
+
     @Override
     protected void prepareData() {
 
@@ -62,6 +64,14 @@ public class LoginActivity extends BaseActivity<LoginContract.Presenter> impleme
         password_layout.setHint("Password");
         mPresenter.setEditText(username_edit);
         mPresenter.setEditText(password_edit);
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                Intent intent=new Intent(JueQianAPP.getAppContext(),MainActivity.class);
+//                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     @Override
@@ -105,6 +115,7 @@ public class LoginActivity extends BaseActivity<LoginContract.Presenter> impleme
             super.handleMessage(msg);
             switch (msg.what) {
                 case 0:
+                    showToast("登陆成功");
                     finish();
                     break;
             }

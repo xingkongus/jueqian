@@ -3,43 +3,47 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:Android="http://schemas.android.com/tools"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_weight="1">
     <include layout="@layout/view_toolbar" />
 
     <LinearLayout
+        android:background="#ffffff"
+        android:layout_weight="0.8"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        Android:focusable="true"
         android:focusableInTouchMode="true"
-        android:padding="8dp">
+        android:orientation="vertical"
+        android:padding="8dp"
+        Android:focusable="true">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="标题：" />
 
         <EditText
+            android:padding="5dp"
+            android:hint="问题标题"
             android:id="@+id/title_new"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:drawable/edit_text"
+            android:background="#ffffff"
             android:enabled="true"
             android:gravity="top"
             android:inputType="text"
             android:maxLines="2"
             android:scrollbars="vertical"></EditText>
-
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="提问正文：" />
+            android:layout_height="1dp"
+            android:background="@color/text_secondary"/>
+
 
         <EditText
+            android:layout_marginTop="5dp"
+            android:padding="5dp"
+            android:hint="写下您的详细问题..."
             android:id="@+id/new_answercontent"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:drawable/edit_text"
+            android:background="#ffffff"
             android:enabled="true"
             android:gravity="top"
             android:inputType="textMultiLine"
@@ -50,9 +54,9 @@
     </LinearLayout>
 
     <RelativeLayout
+        android:layout_weight="0.1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/tv_tag_newpage"
@@ -63,6 +67,7 @@
             android:text="无标签" />
 
         <Button
+            android:textColor="@color/text_white"
             android:id="@+id/bt_tag_newpage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -73,34 +78,26 @@
             android:text="选择标签" />
 
         <TextView
-            android:text=" "
-            android:textSize="20sp"
-            android:textColor="@color/text_primary"
-            android:layout_marginLeft="20dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:id="@+id/tag1_new"
-            android:layout_toRightOf="@+id/bt_tag_newpage"/>
-        <TextView
-            android:text=" "
-            android:textSize="20sp"
-            android:textColor="@color/text_primary"
-            android:layout_marginLeft="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@+id/bt_tag_newpage"
+            android:text=" "
+            android:textColor="@color/text_primary"
+            android:textSize="20sp" />
+
+        <TextView
             android:id="@+id/tag2_new"
-            android:layout_toRightOf="@+id/tag1_new"/>
-        <!--<Switch-->
-            <!--android:id="@+id/swich_new"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_alignParentEnd="true"-->
-            <!--android:layout_alignParentRight="true"-->
-            <!--android:layout_centerVertical="true"-->
-            <!--android:padding="8dp"-->
-            <!--android:text="匿名发布" />-->
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@+id/tag1_new"
+            android:text=" "
+            android:textColor="@color/text_primary"
+            android:textSize="20sp" />
 
     </RelativeLayout>
 

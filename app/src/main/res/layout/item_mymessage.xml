@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/item_mymessage"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -15,13 +16,12 @@
         android:src="@mipmap/touxiang" />
 
     <TextView
-        android:id="@+id/item_mymessage_tv_username"
+        android:id="@+id/item_mymessage_tv_nickname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@id/item_mymessage_circleimageview"
-        android:layout_marginRight="16dp"
         android:layout_toRightOf="@id/item_mymessage_circleimageview"
-        android:text="Lamyuk"
+        android:layout_alignTop="@id/item_mymessage_circleimageview"
+        android:text=""
         android:textColor="#000"
         android:textSize="16sp" />
 
@@ -29,8 +29,9 @@
         android:id="@+id/item_mymessage_tv_action"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@id/item_mymessage_circleimageview"
-        android:layout_toRightOf="@id/item_mymessage_tv_username"
+        android:layout_alignTop="@id/item_mymessage_tv_nickname"
+        android:layout_marginLeft="@dimen/dp_16"
+        android:layout_toRightOf="@id/item_mymessage_tv_nickname"
         android:text="回复"
         android:textSize="16sp" />
 
@@ -38,22 +39,21 @@
         android:id="@+id/item_mymessage_tv_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/item_mymessage_tv_username"
-        android:layout_below="@id/item_mymessage_tv_username"
+        android:layout_alignLeft="@id/item_mymessage_tv_nickname"
+        android:layout_below="@id/item_mymessage_tv_nickname"
         android:layout_marginTop="8dp"
-        android:text="昨天"
-        android:textSize="16sp" />
+        android:textSize="@dimen/sp_14" />
 
 
     <TextView
         android:id="@+id/item_mymessage_tv_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/item_mymessage_tv_username"
+        android:layout_alignLeft="@id/item_mymessage_tv_nickname"
         android:layout_below="@id/item_mymessage_tv_time"
         android:layout_marginTop="8dp"
-        android:text="Look for wonderful！我爱学习！天天向上！"
-        android:textSize="16sp" />
+        android:text=""
+        android:textSize="@dimen/sp_18" />
 
 
 </RelativeLayout>

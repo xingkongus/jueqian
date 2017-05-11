@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -18,14 +17,13 @@
         app:cardMaxElevation="@dimen/dp_4">
 
         <RelativeLayout
-            android:id="@+id/me_myinfo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/dp_16"
             android:orientation="horizontal">
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/me_circleimageview"
+                android:id="@+id/me_profile"
                 android:layout_width="@dimen/dp_72"
                 android:layout_height="@dimen/dp_72"
                 android:layout_marginLeft="16dp"
@@ -35,10 +33,10 @@
                 android:id="@+id/me_tv_nickname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@id/me_circleimageview"
+                android:layout_alignTop="@id/me_profile"
                 android:layout_marginBottom="16dp"
                 android:layout_marginLeft="16dp"
-                android:layout_toRightOf="@id/me_circleimageview"
+                android:layout_toRightOf="@id/me_profile"
                 android:text="点击登录"
                 android:textColor="#000"
                 android:textSize="18sp" />
@@ -49,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@id/me_tv_nickname"
                 android:layout_below="@id/me_tv_nickname"
-                android:layout_toRightOf="@id/me_circleimageview"
+                android:layout_toRightOf="@id/me_profile"
                 android:text="查看或编辑个人主页"
                 android:textSize="16sp" />
 
@@ -83,6 +81,7 @@
                     android:src="@drawable/iv_message" />
 
                 <TextView
+                    android:textColor="#000"
                     android:id="@+id/me_tv_mymessage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -92,6 +91,15 @@
                     android:gravity="center"
                     android:text="@string/text_mymessage"
                     android:textSize="@dimen/sp_16" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:visibility="gone"
+                    android:id="@+id/redpoint"
+                    android:layout_width="5dp"
+                    android:layout_height="5dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@mipmap/redpoint" />
             </RelativeLayout>
 
             <TextView
@@ -116,6 +124,7 @@
                     android:src="@drawable/iv_collection" />
 
                 <TextView
+                    android:textColor="#000"
                     android:id="@+id/me_tv_mycollection"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -151,6 +160,7 @@
                     android:src="@drawable/iv_myquestions" />
 
                 <TextView
+                    android:textColor="#000"
                     android:id="@+id/me_tv_myquestions"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -186,15 +196,17 @@
                     android:src="@drawable/iv_myanswer" />
 
                 <TextView
+                    android:textColor="#000"
                     android:id="@+id/me_tv_myanswer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/dp_16"
-                    android:layout_toRightOf="@id/me_iv_myanswer"
                     android:gravity="center"
                     android:text="@string/text_myanswer"
-                    android:textSize="@dimen/sp_16" />
+                    android:textSize="@dimen/sp_16"
+                    android:layout_alignTop="@+id/me_iv_myanswer"
+                    android:layout_toRightOf="@+id/me_iv_myanswer"
+                    />
             </RelativeLayout>
 
             <TextView
@@ -219,6 +231,7 @@
                     android:src="@drawable/iv_recentlook" />
 
                 <TextView
+                    android:textColor="#000"
                     android:id="@+id/me_tv_recentlook"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -254,6 +267,7 @@
                     android:src="@drawable/iv_settings" />
 
                 <TextView
+                    android:textColor="#000"
                     android:id="@+id/me_tv_mysettings"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -268,5 +282,22 @@
         </LinearLayout>
     </android.support.v7.widget.CardView>
 
+    <android.support.v7.widget.CardView
+        android:id="@+id/me_layout_signout"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="@dimen/dp_8"
+        android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        app:cardMaxElevation="@dimen/dp_4">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/text_signout"
+            android:textColor="@color/text_red"
+            android:textSize="@dimen/sp_16" />
+
+    </android.support.v7.widget.CardView>
 </LinearLayout>

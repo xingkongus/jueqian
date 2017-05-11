@@ -1,0 +1,212 @@
+#
+# There is insufficient memory for the Java Runtime Environment to continue.
+# Native memory allocation (malloc) failed to allocate 262160 bytes for Chunk::new
+# Possible reasons:
+#   The system is out of physical RAM or swap space
+#   In 32 bit mode, the process size limit was hit
+# Possible solutions:
+#   Reduce memory load on the system
+#   Increase physical memory or swap space
+#   Check if swap backing store is full
+#   Use 64 bit Java on a 64 bit OS
+#   Decrease Java heap size (-Xmx/-Xms)
+#   Decrease number of Java threads
+#   Decrease Java thread stack sizes (-Xss)
+#   Set larger code cache with -XX:ReservedCodeCacheSize=
+# This output file may be truncated or incomplete.
+#
+#  Out of Memory Error (allocation.cpp:390), pid=14828, tid=0x0000000000002974
+#
+# JRE version: OpenJDK Runtime Environment (8.0_76-b03) (build 1.8.0_76-release-b03)
+# Java VM: OpenJDK 64-Bit Server VM (25.76-b03 mixed mode windows-amd64 compressed oops)
+# Failed to write core dump. Minidumps are not enabled by default on client versions of Windows
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x000000001a837800):  JavaThread "C2 CompilerThread0" daemon [_thread_in_native, id=10612, stack(0x000000001aeb0000,0x000000001afb0000)]
+
+Stack: [0x000000001aeb0000,0x000000001afb0000]
+[error occurred during error reporting (printing stack bounds), id 0xc0000005]
+
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+
+
+Current CompileTask:
+C2:   8121  310 %     4       com.trilead.ssh2.crypto.digest.SHA1::perform @ 3 (3654 bytes)
+
+
+---------------  P R O C E S S  ---------------
+
+Java Threads: ( => current thread )
+  0x000000001ab7e000 JavaThread "Forwarding stderr" daemon [_thread_blocked, id=16660, stack(0x000000001d5b0000,0x000000001d6b0000)]
+  0x000000001ab7d800 JavaThread "Forwarding stdout" daemon [_thread_blocked, id=15384, stack(0x000000001d4b0000,0x000000001d5b0000)]
+  0x000000001cafc000 JavaThread "Forwarding stdin" daemon [_thread_in_native, id=9252, stack(0x000000001d3b0000,0x000000001d4b0000)]
+  0x000000001cb27000 JavaThread "Keep-Alive-Timer" daemon [_thread_blocked, id=16988, stack(0x000000001d2b0000,0x000000001d3b0000)]
+  0x000000001a9e1000 JavaThread "Thread-0" daemon [_thread_in_native, id=13948, stack(0x000000001c9b0000,0x000000001cab0000)]
+  0x000000001a8df800 JavaThread "Service Thread" daemon [_thread_blocked, id=11220, stack(0x000000001b2b0000,0x000000001b3b0000)]
+  0x000000001a849800 JavaThread "C1 CompilerThread3" daemon [_thread_blocked, id=12212, stack(0x000000001b1b0000,0x000000001b2b0000)]
+  0x000000001a83a000 JavaThread "C2 CompilerThread2" daemon [_thread_blocked, id=14760, stack(0x000000001b0b0000,0x000000001b1b0000)]
+  0x000000001a838800 JavaThread "C2 CompilerThread1" daemon [_thread_blocked, id=14148, stack(0x000000001afb0000,0x000000001b0b0000)]
+=>0x000000001a837800 JavaThread "C2 CompilerThread0" daemon [_thread_in_native, id=10612, stack(0x000000001aeb0000,0x000000001afb0000)]
+  0x000000001a835800 JavaThread "Attach Listener" daemon [_thread_blocked, id=14576, stack(0x000000001adb0000,0x000000001aeb0000)]
+  0x000000001a7eb000 JavaThread "Signal Dispatcher" daemon [_thread_blocked, id=6352, stack(0x000000001acb0000,0x000000001adb0000)]
+  0x0000000003949000 JavaThread "Finalizer" daemon [_thread_blocked, id=9048, stack(0x000000001abb0000,0x000000001acb0000)]
+  0x00000000188cb800 JavaThread "Reference Handler" daemon [_thread_blocked, id=8616, stack(0x000000001a6b0000,0x000000001a7b0000)]
+  0x0000000003850800 JavaThread "main" [_thread_blocked, id=14144, stack(0x0000000003750000,0x0000000003850000)]
+
+Other Threads:
+  0x00000000188c7800 VMThread [stack: 0x000000001a5b0000,0x000000001a6b0000] [id=11064]
+  0x000000001a863800 WatcherThread [stack: 0x000000001b3b0000,0x000000001b4b0000] [id=9876]
+
+VM state:not at safepoint (normal execution)
+
+VM Mutex/Monitor currently owned by a thread: None
+
+Heap:
+ PSYoungGen      total 38400K, used 14913K [0x00000000d5f00000, 0x00000000d8980000, 0x0000000100000000)
+  eden space 33280K, 44% used [0x00000000d5f00000,0x00000000d6d904e8,0x00000000d7f80000)
+  from space 5120K, 0% used [0x00000000d8480000,0x00000000d8480000,0x00000000d8980000)
+  to   space 5120K, 0% used [0x00000000d7f80000,0x00000000d7f80000,0x00000000d8480000)
+ ParOldGen       total 87552K, used 0K [0x0000000081c00000, 0x0000000087180000, 0x00000000d5f00000)
+  object space 87552K, 0% used [0x0000000081c00000,0x0000000081c00000,0x0000000087180000)
+ Metaspace       used 5917K, capacity 6096K, committed 6400K, reserved 1056768K
+  class space    used 637K, capacity 692K, committed 768K, reserved 1048576K
+
+Card table byte_map: [0x0000000012d10000,0x0000000013110000] byte_map_base: 0x0000000012902000
+
+Marking Bits: (ParMarkBitMap*) 0x000000006b2e9d00
+ Begin Bits: [0x0000000013bc0000, 0x0000000015b50000)
+ End Bits:   [0x0000000015b50000, 0x0000000017ae0000)
+
+Polling page: 0x0000000001b50000
+
+CodeCache: size=245760Kb used=1731Kb max_used=1744Kb free=244028Kb
+ bounds [0x0000000003950000, 0x0000000003bc0000, 0x0000000012950000]
+ total_blobs=619 nmethods=309 adapters=224
+ compilation: enabled
+
+Compilation events (10 events):
+Event: 6.584 Thread 0x000000001a849800 nmethod 304 0x0000000003aff550 code [0x0000000003aff6c0, 0x0000000003aff8e8]
+Event: 7.383 Thread 0x000000001a849800  305  s    3       java.util.Vector::elementAt (48 bytes)
+Event: 7.384 Thread 0x000000001a849800 nmethod 305 0x0000000003aff9d0 code [0x0000000003affbe0, 0x0000000003b00768]
+Event: 8.061 Thread 0x000000001a83a000  306       4       com.trilead.ssh2.crypto.cipher.AES::unpackBlock (307 bytes)
+Event: 8.061 Thread 0x000000001a837800  307       4       com.trilead.ssh2.crypto.cipher.AES::packBlock (215 bytes)
+Event: 8.061 Thread 0x000000001a838800  308       4       com.trilead.ssh2.crypto.cipher.CTRMode::transformBlock (104 bytes)
+Event: 8.061 Thread 0x000000001a849800  309       3       com.trilead.ssh2.crypto.digest.HMAC::update (11 bytes)
+Event: 8.062 Thread 0x000000001a849800 nmethod 309 0x0000000003b00d10 code [0x0000000003b00e80, 0x0000000003b010a8]
+Event: 8.067 Thread 0x000000001a837800 nmethod 307 0x0000000003b03f10 code [0x0000000003b04040, 0x0000000003b041d8]
+Event: 8.067 Thread 0x000000001a837800  310 %     4       com.trilead.ssh2.crypto.digest.SHA1::perform @ 3 (3654 bytes)
+
+GC Heap History (0 events):
+No events
+
+Deoptimization events (3 events):
+Event: 1.600 Thread 0x000000001a9e1000 Uncommon trap: reason=unstable_if action=reinterpret pc=0x0000000003ab6284 method=java.math.BigInteger.primitiveLeftShift([III)V @ 5
+Event: 1.601 Thread 0x000000001a9e1000 Uncommon trap: reason=unstable_if action=reinterpret pc=0x0000000003ab7ccc method=java.math.BigInteger.squareToLen([II[I)[I @ 5
+Event: 1.657 Thread 0x000000001a9e1000 Uncommon trap: reason=unstable_if action=reinterpret pc=0x0000000003ab9a20 method=java.math.BigInteger.intArrayCmpToLen([I[II)I @ 32
+
+Internal exceptions (9 events):
+Event: 0.050 Thread 0x0000000003850800 Exception <a 'java/lang/NoSuchMethodError': Method sun.misc.Unsafe.defineClass(Ljava/lang/String;[BII)Ljava/lang/Class; name or signature does not match> (0x00000000d5f07cc0) thrown at [C:\src\android\AOSP-openjdk\external\jetbrains\jdk\hotspot\src\share\væò‰Ω+À©?
+Event: 0.050 Thread 0x0000000003850800 Exception <a 'java/lang/NoSuchMethodError': Method sun.misc.Unsafe.prefetchRead(Ljava/lang/Object;J)V name or signature does not match> (0x00000000d5f07fa8) thrown at [C:\src\android\AOSP-openjdk\external\jetbrains\jdk\hotspot\src\share\vm\prims\jni.cpp, l7∑Œ‹Où˘?
+Event: 1.601 Thread 0x000000001a9e1000 Implicit null exception at 0x0000000003ab747d to 0x0000000003ab7cad
+Event: 1.682 Thread 0x0000000003850800 Exception <a 'java/security/PrivilegedActionException'> (0x00000000d64ebfb0) thrown at [C:\src\android\AOSP-openjdk\external\jetbrains\jdk\hotspot\src\share\vm\prims\jvm.cpp, line 1386]
+Event: 1.682 Thread 0x0000000003850800 Exception <a 'java/security/PrivilegedActionException'> (0x00000000d64ec3a8) thrown at [C:\src\android\AOSP-openjdk\external\jetbrains\jdk\hotspot\src\share\vm\prims\jvm.cpp, line 1386]
+Event: 1.682 Thread 0x0000000003850800 Exception <a 'java/security/PrivilegedActionException'> (0x00000000d64ee9a0) thrown at [C:\src\android\AOSP-openjdk\external\jetbrains\jdk\hotspot\src\share\vm\prims\jvm.cpp, line 1386]
+Event: 1.682 Thread 0x0000000003850800 Exception <a 'java/security/PrivilegedActionException'> (0x00000000d64eed98) thrown at [C:\src\android\AOSP-openjdk\external\jetbrains\jdk\hotspot\src\share\vm\prims\jvm.cpp, line 1386]
+Event: 1.682 Thread 0x0000000003850800 Exception <a 'java/security/PrivilegedActionException'> (0x00000000d659ed10) thrown at [C:\src\android\AOSP-openjdk\external\jetbrains\jdk\hotspot\src\share\vm\prims\jvm.cpp, line 1386]
+Event: 1.682 Thread 0x0000000003850800 Exception <a 'java/security/PrivilegedActionException'> (0x00000000d659f108) thrown at [C:\src\android\AOSP-openjdk\external\jetbrains\jdk\hotspot\src\share\vm\prims\jvm.cpp, line 1386]
+
+Events (10 events):
+Event: 6.708 loading class java/util/HashMap$KeyIterator
+Event: 6.708 loading class java/util/HashMap$KeyIterator done
+Event: 6.709 loading class java/util/RandomAccessSubList
+Event: 6.709 loading class java/util/SubList
+Event: 6.709 loading class java/util/SubList done
+Event: 6.709 loading class java/util/RandomAccessSubList done
+Event: 6.709 loading class java/util/Collections$SynchronizedRandomAccessList
+Event: 6.709 loading class java/util/Collections$SynchronizedList
+Event: 6.710 loading class java/util/Collections$SynchronizedList done
+Event: 6.710 loading class java/util/Collections$SynchronizedRandomAccessList done
+
+
+Dynamic libraries:
+0x00007ff6e16f0000 - 0x00007ff6e1721000 	F:\AS\androidStudio\jre\jre\bin\java.exe
+0x00007ffec60c0000 - 0x00007ffec6281000 	C:\WINDOWS\SYSTEM32\ntdll.dll
+0x00007ffec4d60000 - 0x00007ffec4e0d000 	C:\WINDOWS\system32\KERNEL32.DLL
+0x00007ffec2a80000 - 0x00007ffec2c68000 	C:\WINDOWS\system32\KERNELBASE.dll
+0x00007ffec5fb0000 - 0x00007ffec6057000 	C:\WINDOWS\system32\ADVAPI32.dll
+0x00007ffec5ce0000 - 0x00007ffec5d7d000 	C:\WINDOWS\system32\msvcrt.dll
+0x00007ffec4bb0000 - 0x00007ffec4c0b000 	C:\WINDOWS\system32\sechost.dll
+0x00007ffec4a90000 - 0x00007ffec4bac000 	C:\WINDOWS\system32\RPCRT4.dll
+0x00007ffec55b0000 - 0x00007ffec5706000 	C:\WINDOWS\system32\USER32.dll
+0x00007ffec5710000 - 0x00007ffec5896000 	C:\WINDOWS\system32\GDI32.dll
+0x00007ffebf070000 - 0x00007ffebf2e4000 	C:\WINDOWS\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.10586.672_none_a2d6b3cea53ff843\COMCTL32.dll
+0x00007ffec4f80000 - 0x00007ffec51fd000 	C:\WINDOWS\system32\combase.dll
+0x00007ffec2c90000 - 0x00007ffec2cfa000 	C:\WINDOWS\system32\bcryptPrimitives.dll
+0x00007ffec5200000 - 0x00007ffec523b000 	C:\WINDOWS\system32\IMM32.DLL
+0x000000006aa50000 - 0x000000006ab22000 	F:\AS\androidStudio\jre\jre\bin\msvcr100.dll
+0x000000006ab30000 - 0x000000006b364000 	F:\AS\androidStudio\jre\jre\bin\server\jvm.dll
+0x00007ffec5cd0000 - 0x00007ffec5cd8000 	C:\WINDOWS\system32\PSAPI.DLL
+0x00007ffeb6b90000 - 0x00007ffeb6b99000 	C:\WINDOWS\SYSTEM32\WSOCK32.dll
+0x00007ffec0730000 - 0x00007ffec0753000 	C:\WINDOWS\SYSTEM32\WINMM.dll
+0x00007ffebf8b0000 - 0x00007ffebf8ba000 	C:\WINDOWS\SYSTEM32\VERSION.dll
+0x00007ffec34c0000 - 0x00007ffec352b000 	C:\WINDOWS\system32\WS2_32.dll
+0x00007ffec06d0000 - 0x00007ffec06fc000 	C:\WINDOWS\SYSTEM32\WINMMBASE.dll
+0x00007ffec2770000 - 0x00007ffec27b3000 	C:\WINDOWS\system32\cfgmgr32.dll
+0x00007ffeb6b20000 - 0x00007ffeb6b2f000 	F:\AS\androidStudio\jre\jre\bin\verify.dll
+0x00007ffeb39d0000 - 0x00007ffeb39f9000 	F:\AS\androidStudio\jre\jre\bin\java.dll
+0x00007ffeb6400000 - 0x00007ffeb6416000 	F:\AS\androidStudio\jre\jre\bin\zip.dll
+0x00007ffec3530000 - 0x00007ffec4a8c000 	C:\WINDOWS\system32\SHELL32.dll
+0x00007ffec2dc0000 - 0x00007ffec3405000 	C:\WINDOWS\system32\windows.storage.dll
+0x00007ffec5550000 - 0x00007ffec55a2000 	C:\WINDOWS\system32\shlwapi.dll
+0x00007ffec2760000 - 0x00007ffec276f000 	C:\WINDOWS\system32\kernel.appcore.dll
+0x00007ffec2d00000 - 0x00007ffec2db5000 	C:\WINDOWS\system32\shcore.dll
+0x00007ffec2710000 - 0x00007ffec275b000 	C:\WINDOWS\system32\powrprof.dll
+0x00007ffec26f0000 - 0x00007ffec2704000 	C:\WINDOWS\system32\profapi.dll
+0x00007ffeb3ad0000 - 0x00007ffeb3aea000 	F:\AS\androidStudio\jre\jre\bin\net.dll
+0x00007ffec2010000 - 0x00007ffec206c000 	C:\WINDOWS\system32\mswsock.dll
+0x0000000180000000 - 0x0000000180079000 	C:\WINDOWS\system32\DQLSP.dll
+0x00007ffec1560000 - 0x00007ffec1598000 	C:\WINDOWS\SYSTEM32\IPHLPAPI.DLL
+0x00007ffec20c0000 - 0x00007ffec20d7000 	C:\WINDOWS\SYSTEM32\CRYPTSP.dll
+0x00007ffec1d50000 - 0x00007ffec1d84000 	C:\WINDOWS\system32\rsaenh.dll
+0x00007ffec22e0000 - 0x00007ffec2309000 	C:\WINDOWS\SYSTEM32\bcrypt.dll
+0x00007ffec21e0000 - 0x00007ffec21eb000 	C:\WINDOWS\SYSTEM32\CRYPTBASE.dll
+0x00007ffec23f0000 - 0x00007ffec241d000 	C:\WINDOWS\SYSTEM32\SspiCli.dll
+0x00007ffec1110000 - 0x00007ffec11ba000 	C:\WINDOWS\SYSTEM32\DNSAPI.dll
+0x00007ffec5fa0000 - 0x00007ffec5fa8000 	C:\WINDOWS\system32\NSI.dll
+0x00007ffebe5a0000 - 0x00007ffebe5aa000 	C:\Windows\System32\rasadhlp.dll
+0x00007ffebe850000 - 0x00007ffebe8b7000 	C:\WINDOWS\System32\fwpuclnt.dll
+0x00007ffec1ea0000 - 0x00007ffec1ebf000 	C:\WINDOWS\SYSTEM32\USERENV.dll
+0x00007ffebfa90000 - 0x00007ffebfaa6000 	C:\WINDOWS\SYSTEM32\dhcpcsvc6.DLL
+0x00007ffebfa70000 - 0x00007ffebfa8a000 	C:\WINDOWS\SYSTEM32\dhcpcsvc.DLL
+0x00007ffeb34d0000 - 0x00007ffeb34e1000 	F:\AS\androidStudio\jre\jre\bin\nio.dll
+
+VM Arguments:
+java_command: org.jetbrains.git4idea.ssh.SSHMain git@github.com git-upload-pack 'xingkongus/jueqian.git'
+java_class_path (initial): F:/AS/androidStudio/plugins/git4idea/lib/git4idea-rt.jar;F:/AS/androidStudio/lib/xmlrpc-2.0.jar;F:/AS/androidStudio/lib/commons-codec-1.9.jar;F:/AS/androidStudio/lib/util.jar;F:/AS/androidStudio/plugins/git4idea/lib/trilead-ssh2.jar
+Launcher Type: SUN_STANDARD
+
+Environment Variables:
+JAVA_HOME=C:\Program Files (x86)\Java\jdk1.8.0_65
+CLASSPATH=.;C:\Program Files (x86)\Java\jdk1.8.0_65\lib\dt.jar;C:\Program Files (x86)\Java\jdk1.8.0_65\lib\tools.jar;F:\apache-tomcat-6.0.47\lib\servlet-api.jar;
+PATH=F:\Git\Git\mingw32/libexec/git-core;F:\Git\Git\mingw32\bin;F:\Git\Git\usr\bin;C:\Users\Administrator\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Java\jdk1.8.0_65\bin;C:\Program Files (x86)\Java\jdk1.8.0_65\jre\bin;F:\apache-tomcat-6.0.47\bin
+USERNAME=PERFECTLIN
+OS=Windows_NT
+PROCESSOR_IDENTIFIER=Intel64 Family 6 Model 60 Stepping 3, GenuineIntel
+
+
+
+---------------  S Y S T E M  ---------------
+
+OS: Windows 10.0 , 64 bit Build 10586 (10.0.10586.589)
+
+CPU:total 8 (4 cores per cpu, 2 threads per core) family 6 model 60 stepping 3, cmov, cx8, fxsr, mmx, sse, sse2, sse3, ssse3, sse4.1, sse4.2, popcnt, avx, avx2, aes, clmul, erms, lzcnt, ht, tsc, tscinvbit, bmi1, bmi2
+
+Memory: 4k page, physical 8273748k(651776k free), swap 8273748k(5624k free)
+
+vm_info: OpenJDK 64-Bit Server VM (25.76-b03) for windows-amd64 JRE (1.8.0_76-release-b03), built on Jun 29 2016 19:09:20 by "ralucas" with MS VC++ 10.0 (VS2010)
+
+time: Wed Jan 11 14:09:36 2017
+elapsed time: 8 seconds (0d 0h 0m 8s)
+

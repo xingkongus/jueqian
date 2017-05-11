@@ -10,15 +10,21 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
-import cn.bmob.v3.datatype.BmobRelation;
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.datatype.BmobPointer;
+import cn.bmob.v3.listener.FindListener;
+import us.xingkong.jueqian.JueQianAPP;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.adapter.MyMessageRecyclerAdapter;
 import us.xingkong.jueqian.base.BaseActivity;
+import us.xingkong.jueqian.bean.ForumBean.BombBean.NewMessage;
+import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
 
 /**
  * Created by PERFECTLIN on 2017/1/10 0010.
@@ -31,7 +37,9 @@ public class MyMessageActivity extends BaseActivity<MyMessageContract.Presenter>
     @BindView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout mSwipeRefreshLayout;
 
-    private ArrayList<String> mArrayList;
+    private String senderID;
+    private String content;
+    List<NewMessage> messages = new ArrayList<>();
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -39,7 +47,9 @@ public class MyMessageActivity extends BaseActivity<MyMessageContract.Presenter>
             switch (msg.what) {
                 case 1:
                     mSwipeRefreshLayout.setRefreshing(false);
-//                    Toast.makeText(getApplicationContext(), "刷新成功", Toast.LENGTH_SHORT).show();
+                    break;
+                case 2:
+                    initRecyclerView();
                     break;
             }
         }
@@ -57,15 +67,30 @@ public class MyMessageActivity extends BaseActivity<MyMessageContract.Presenter>
 
     @Override
     protected void prepareData() {
-        if (mArrayList != null) {
-            mArrayList.clear();
-        }
-        mArrayList = new ArrayList<>();
-        for (int i = 0; i < 15; i++) {
-//            ArrayList arrayList = new ArrayList();
-//            arrayList.add("我是消息" + i);
-            mArrayList.add("我是消息" + i);
-        }
+        _User bmobUser = BmobUser.getCurrentUser(JueQianAPP.getAppContext(), _User.class);
+        BmobQuery<NewMessage> query = new BmobQuery<>();
+        query.addWhereEqualTo("receiver", new BmobPointer(bmobUser));
+        query.include("sender,messComment.question,messAnswer.question");
+        query.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
+        query.findObjects(JueQianAPP.getAppContext(), new FindListener<NewMessage>() {
+            @Override
+            public void onSuccess(List<NewMessage> list) {
+                if (list.size() == 0) {
+//                    showToast("无消息");
+                    return;
+                }
+
+                messages = list;
+//                showToast("获取我的消息列表成功");
+                mHandler.sendEmptyMessage(2);
+            }
+
+            @Override
+            public void onError(int i, String s) {
+                showToast("获取我的消息列表失败CASE:" + s);
+            }
+        });
+
     }
 
     @Override
@@ -76,10 +101,9 @@ public class MyMessageActivity extends BaseActivity<MyMessageContract.Presenter>
 
     private void initRecyclerView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setAdapter(new MyMessageRecyclerAdapter(mArrayList, mHandler));
+        mRecyclerView.setAdapter(new MyMessageRecyclerAdapter(mHandler, messages,this));
         mRecyclerView.addItemDecoration(new DividerItemDecoration(MyMessageActivity.this, DividerItemDecoration.VERTICAL));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-
 
     }
 
