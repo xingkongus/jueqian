@@ -86,6 +86,7 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
                         @Override
                         public void onSuccess() {
                             updateFans();
+                            if (bt_edit == null) return;
                             bt_edit.setText("关注 +");
                         }
 
@@ -130,6 +131,7 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
             public void onSuccess(List<Follow> list) {
 //                showToast("获取关注的人成功" + list.size());
                 if (list.size() == 0) return;
+                if (tv_following == null) return;
                 tv_following.setText("" + list.size());
             }
 
@@ -150,6 +152,7 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
         query_follower.findObjects(JueQianAPP.getAppContext(), new FindListener<Follow>() {
             @Override
             public void onSuccess(List<Follow> list) {
+                if (tv_followers == null) return;
                 tv_followers.setText("" + list.size());
             }
 
@@ -181,6 +184,7 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
             @Override
             public void onSuccess(_User user) {
 //                showToast("更新用户昵称成功");
+                if (tv_selfIntro==null) return;
                 tv_selfIntro.setText(user.getSelfsign());
             }
 
@@ -235,6 +239,7 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
         query.findObjects(JueQianAPP.getAppContext(), new FindListener<Question>() {
             @Override
             public void onSuccess(List<Question> list) {
+                if (tv_collectioncount==null) return;
                 tv_collectioncount.setText("" + list.size());
             }
 
@@ -271,6 +276,7 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
                     return;
                 }
                 String profileURL = bmobFile.getUrl();
+                if (iv_touxiang==null) return;
                 Glide.with(JueQianAPP.getAppContext()).load(profileURL).into(iv_touxiang);
             }
 
@@ -288,6 +294,7 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
             @Override
             public void onSuccess(_User user) {
 //                showToast("更新用户昵称成功");
+                if (tv_nickname==null) return;
                 tv_nickname.setText(user.getNickname());
             }
 
@@ -334,6 +341,7 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
                             @Override
                             public void onSuccess() {
                                 updateFans();
+                                if (bt_edit==null) return;
                                 bt_edit.setText("取消关注");
                             }
 
@@ -362,6 +370,7 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
                         query.findObjects(JueQianAPP.getAppContext(), new FindListener<Follow>() {
                             @Override
                             public void onSuccess(List<Follow> list) {
+                                if (bt_edit==null) return;
                                 if (list.size() == 0) {
                                     bt_edit.setText("关注 +");
                                 } else if (list.size() == 1) {
@@ -403,6 +412,7 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
         query.findObjects(JueQianAPP.getAppContext(), new FindListener<Follow>() {
             @Override
             public void onSuccess(List<Follow> list) {
+                if (bt_edit==null) return;
 //                    handler.sendEmptyMessage(1);
                 if (list.size() == 0) {
                     bt_edit.setText("关注 +");

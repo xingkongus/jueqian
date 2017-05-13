@@ -174,6 +174,7 @@ public class CommentActivity extends BaseActivity<CommentContract.Presenter> imp
     }
 
     private void initRecyclerView() {
+        if (recyclerviewCommentpage==null) return;
         recyclerViewAdapter = new CommentRecyclerViewAdapter(mContext, handler, answer, comments);
         recyclerviewCommentpage.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
         recyclerviewCommentpage.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));

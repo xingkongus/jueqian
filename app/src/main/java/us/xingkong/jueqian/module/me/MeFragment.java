@@ -158,13 +158,16 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
         bmobQuery.getObject(JueQianAPP.getAppContext(), current_user.getObjectId(), new GetListener<_User>() {
             @Override
             public void onSuccess(_User user) {
-//                showToast("更新用户昵称成功");
+                if (user.getNickname() == null) {
+                    mTextView_nickname.setText("请前往设置你的昵称..");
+                    return;
+                }
                 mTextView_nickname.setText(user.getNickname());
             }
 
             @Override
             public void onFailure(int i, String s) {
-                showToast("更新用户昵称失败CASE:" + s);
+//                showToast("更新用户昵称失败CASE:" + s);
             }
         });
     }
@@ -333,12 +336,12 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
                 @Override
                 public void onSuccess(List<_User> list) {
                     if (list.size() == 0) {
-                        showToast("当前用户无头像");
+//                        showToast("当前用户无头像");
                         return;
                     }
                     bmobFile = list.get(0).getProfile();
                     if (bmobFile == null) {
-                        showToast("获取头像异常");
+//                        showToast("获取头像异常");
                         return;
                     }
                     profileURL = bmobFile.getUrl();
@@ -347,7 +350,7 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
 
                 @Override
                 public void onError(int i, String s) {
-                    showToast("获取头像失败CASE:" + s);
+//                    showToast("获取头像失败CASE:" + s);
                 }
             });
         } else {

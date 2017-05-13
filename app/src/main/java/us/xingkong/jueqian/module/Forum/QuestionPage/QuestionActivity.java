@@ -368,12 +368,14 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                 public void onSuccess(List<_User> list) {
                     for (_User user : list) {
                         if (user.getObjectId().equals(userID)) {
+                            if (zan==null) return;
                             zan.setBackgroundColor(Color.parseColor("#3CB371"));
                             zan.setTextColor(Color.parseColor("#ffffff"));
                             isZan = true;
                             return;
                         } else {
                             isZan = false;
+                            if (zan==null) return;
                             zan.setBackgroundColor(Color.parseColor("#ffffff"));
                             zan.setTextColor(Color.parseColor("#000000"));
                         }
@@ -393,12 +395,14 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                 public void onSuccess(List<Question> list) {
                     for (Question question : list) {
                         if (question.getObjectId().equals(questionID)) {
+                            if (shoucan == null) return;
                             shoucan.setBackgroundColor(Color.parseColor("#3CB371"));
                             shoucan.setTextColor(Color.parseColor("#ffffff"));
                             isShouzan = true;
                             return;
                         } else {
                             isShouzan = false;
+                            if (shoucan == null) return;
                             shoucan.setBackgroundColor(Color.parseColor("#ffffff"));
                             shoucan.setTextColor(Color.parseColor("#000000"));
                         }
@@ -411,6 +415,8 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                 }
             });
         } else {
+            if (zan==null) return;
+            if (shoucan == null) return;
             zan.setBackgroundColor(Color.parseColor("#ffffff"));
             zan.setTextColor(Color.parseColor("#000000"));
             shoucan.setBackgroundColor(Color.parseColor("#ffffff"));
@@ -420,6 +426,7 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
     }
 
     private void initRecyClerView() {
+        if (recyclerviewQuestionpage == null) return;
         recyclerViewAdapter = new QuestionRecyclerViewAdapter(mContext, getQuestion, answers, handler);
         recyclerviewQuestionpage.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
         recyclerviewQuestionpage.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));

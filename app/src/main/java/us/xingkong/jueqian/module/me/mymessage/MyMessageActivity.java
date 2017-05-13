@@ -100,6 +100,7 @@ public class MyMessageActivity extends BaseActivity<MyMessageContract.Presenter>
     }
 
     private void initRecyclerView() {
+        if (mRecyclerView==null) return;
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(new MyMessageRecyclerAdapter(mHandler, messages,this));
         mRecyclerView.addItemDecoration(new DividerItemDecoration(MyMessageActivity.this, DividerItemDecoration.VERTICAL));
