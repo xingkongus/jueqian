@@ -13,6 +13,7 @@
         android:orientation="vertical">
 
         <RelativeLayout
+            android:padding="@dimen/dp_8"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -34,9 +35,9 @@
         </RelativeLayout>
 
         <LinearLayout
+            android:padding="@dimen/dp_8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:orientation="horizontal">
 
             <TextView
@@ -59,10 +60,10 @@
         </LinearLayout>
 
         <TextView
+            android:padding="@dimen/dp_8"
             android:id="@+id/content_question"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:text="问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题"
             android:textColor="@color/content_color"
             android:textSize="@dimen/sp_16" />
@@ -73,6 +74,17 @@
             android:layout_marginTop="8dp">
 
             <TextView
+                android:padding="@dimen/dp_8"
+                android:id="@+id/likecount_question"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/sp_14"
+                android:layout_below="@+id/time_question"
+                android:layout_alignParentRight="true"
+                android:text="赞的人数:0"/>
+
+            <TextView
+                android:padding="@dimen/dp_8"
                 android:id="@+id/username_question"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -87,15 +99,8 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_below="@+id/username_question"
-                android:paddingTop="3dp"
                 android:text="发表于:xxxx-xx-xx xx:xx" />
         </RelativeLayout>
 
-        <TextView
-            android:id="@+id/likecount_question"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15dp"
-            android:text="赞的人数:0"/>
     </LinearLayout>
 </LinearLayout>
