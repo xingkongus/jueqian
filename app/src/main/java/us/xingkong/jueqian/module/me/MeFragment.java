@@ -345,6 +345,7 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
                         return;
                     }
                     profileURL = bmobFile.getUrl();
+                    if (mCircleImageView_profile==null) return;
                     Glide.with(JueQianAPP.getAppContext()).load(profileURL).into(mCircleImageView_profile);
                 }
 

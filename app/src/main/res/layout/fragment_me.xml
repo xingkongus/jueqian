@@ -27,6 +27,7 @@
                 android:layout_width="@dimen/dp_72"
                 android:layout_height="@dimen/dp_72"
                 android:layout_marginLeft="16dp"
+                android:layout_marginBottom="@dimen/dp_16"
                 android:src="@mipmap/ic_launcher" />
 
             <TextView
@@ -38,7 +39,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_toRightOf="@id/me_profile"
                 android:text="点击登录"
-                android:textColor="#000"
+                android:textColor="@color/text_title"
                 android:textSize="18sp" />
 
             <TextView
@@ -49,6 +50,7 @@
                 android:layout_below="@id/me_tv_nickname"
                 android:layout_toRightOf="@id/me_profile"
                 android:text="查看或编辑个人主页"
+                android:textColor="@color/text_pinglun"
                 android:textSize="16sp" />
 
         </RelativeLayout>
@@ -81,16 +83,17 @@
                     android:src="@drawable/iv_message" />
 
                 <TextView
-                    android:textColor="#000"
                     android:id="@+id/me_tv_mymessage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/dp_16"
-                    android:layout_toRightOf="@id/me_iv_mymessage"
+                    android:layout_marginLeft="14dp"
                     android:gravity="center"
                     android:text="@string/text_mymessage"
-                    android:textSize="@dimen/sp_16" />
+                    android:textSize="@dimen/sp_16"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/me_iv_mymessage"
+                    android:layout_toEndOf="@+id/me_iv_mymessage"
+                    android:layout_marginStart="14dp" />
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:visibility="gone"
@@ -124,7 +127,6 @@
                     android:src="@drawable/iv_collection" />
 
                 <TextView
-                    android:textColor="#000"
                     android:id="@+id/me_tv_mycollection"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -160,7 +162,6 @@
                     android:src="@drawable/iv_myquestions" />
 
                 <TextView
-                    android:textColor="#000"
                     android:id="@+id/me_tv_myquestions"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -196,7 +197,6 @@
                     android:src="@drawable/iv_myanswer" />
 
                 <TextView
-                    android:textColor="#000"
                     android:id="@+id/me_tv_myanswer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -231,7 +231,6 @@
                     android:src="@drawable/iv_recentlook" />
 
                 <TextView
-                    android:textColor="#000"
                     android:id="@+id/me_tv_recentlook"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -267,7 +266,6 @@
                     android:src="@drawable/iv_settings" />
 
                 <TextView
-                    android:textColor="#000"
                     android:id="@+id/me_tv_mysettings"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

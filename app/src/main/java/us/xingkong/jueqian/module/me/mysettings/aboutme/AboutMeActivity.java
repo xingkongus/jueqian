@@ -3,8 +3,11 @@ package us.xingkong.jueqian.module.me.mysettings.aboutme;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.text.method.LinkMovementMethod;
 import android.view.MenuItem;
+import android.widget.TextView;
 
+import butterknife.BindView;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.base.BaseActivity;
 
@@ -13,6 +16,7 @@ import us.xingkong.jueqian.base.BaseActivity;
  */
 
 public class AboutMeActivity extends BaseActivity<AboutMeContract.Presenter> implements AboutMeContract.View {
+
     @Override
     protected AboutMeContract.Presenter createPresenter() {
         return new AboutMePresenter(this);
@@ -51,7 +55,7 @@ public class AboutMeActivity extends BaseActivity<AboutMeContract.Presenter> imp
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
                 break;
