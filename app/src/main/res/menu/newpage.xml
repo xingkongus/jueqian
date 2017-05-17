@@ -2,12 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <item
+        android:id="@+id/insert_image"
+        android:icon="@mipmap/logo"
+        android:title="insert"
+        app:showAsAction="always" />
 
     <item
-
         android:id="@+id/sendMessage"
         android:icon="@drawable/tijiao"
         android:title="send"
         app:showAsAction="always" />
+
 
 </menu>

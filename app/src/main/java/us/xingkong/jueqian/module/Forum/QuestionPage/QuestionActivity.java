@@ -485,7 +485,6 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                     intent.putExtra("questionObjectid", questionID);
                     intent.putExtra("question_userID", question_userID);
                     startActivity(intent);
-                    finish();
                 }
             }
         });

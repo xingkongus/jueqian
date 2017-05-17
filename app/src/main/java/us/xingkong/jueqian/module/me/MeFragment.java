@@ -2,18 +2,19 @@ package us.xingkong.jueqian.module.me;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -343,9 +344,16 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
                     if (bmobFile == null) {
 //                        showToast("获取头像异常");
                         return;
-                    }
+                    }//mCircleImageView_profile
                     profileURL = bmobFile.getUrl();
-                    Glide.with(JueQianAPP.getAppContext()).load(profileURL).into(mCircleImageView_profile);
+                    Glide.with(getContext()).load(profileURL).priority( Priority.HIGH).error(R.mipmap.ic_launcher).into(new SimpleTarget<GlideDrawable>() {
+                        @Override
+                        public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
+                            mCircleImageView_profile.setImageDrawable(resource);
+                        }
+                    });
+
+
                 }
 
                 @Override
@@ -356,7 +364,6 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
         } else {
 //            showToast("请先登录");
         }
-
     }
 
     @Override

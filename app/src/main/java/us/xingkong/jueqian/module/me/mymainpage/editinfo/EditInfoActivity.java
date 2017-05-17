@@ -2,9 +2,6 @@ package us.xingkong.jueqian.module.me.mymainpage.editinfo;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -18,6 +15,10 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -294,7 +295,12 @@ public class EditInfoActivity extends BaseActivity<EditInfoContract.Presenter> i
                 }
                 String profileURL = bmobFile.getUrl();
                 if (iv_touxiang == null) return;
-                Glide.with(JueQianAPP.getAppContext()).load(profileURL).into(iv_touxiang);
+                Glide.with(JueQianAPP.getAppContext()).load(profileURL).priority( Priority.HIGH).error(R.mipmap.ic_launcher).into(new SimpleTarget<GlideDrawable>() {
+                    @Override
+                    public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
+                        iv_touxiang.setImageDrawable(resource);
+                    }
+                });
             }
 
             @Override

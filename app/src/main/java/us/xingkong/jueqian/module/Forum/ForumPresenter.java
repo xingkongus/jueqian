@@ -40,7 +40,7 @@ public class ForumPresenter extends BasePresenterImpl implements ForumContract.P
             } else {
                 query.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ONLY);
             }
-        }else if(flag==2){
+        } else if (flag == 2) {
             query.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ONLY);
         }
         query.findObjects(context, new FindListener<Question>() {

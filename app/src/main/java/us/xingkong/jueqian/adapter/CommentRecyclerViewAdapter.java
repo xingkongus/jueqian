@@ -127,6 +127,7 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
             _User now = BmobUser.getCurrentUser(context, _User.class);
             if (now.getObjectId().equals(answer.getUser().getObjectId())) {
                 head.delete_answer.setVisibility(View.VISIBLE);
+                head.delete_answer.setClickable(true);
                 head.delete_answer.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -169,6 +170,7 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                 });
             } else {
                 head.delete_answer.setVisibility(View.GONE);
+                head.delete_answer.setClickable(false);
             }
         }
         if (holder instanceof VH_comment) {
@@ -225,7 +227,9 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 
 
             _User now = BmobUser.getCurrentUser(context, _User.class);
-            if (now.getObjectId().equals(answer.getUser().getObjectId()))
+            if (now.getObjectId().equals(comments.get(position-1).getUser().getObjectId())||now.getObjectId().equals(answer.getObjectId())) {
+                vh_comment.delete_comments.setVisibility(View.VISIBLE);
+                vh_comment.delete_comments.setClickable(true);
                 vh_comment.delete_comments.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -266,6 +270,10 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 
                     }
                 });
+            }else{
+                vh_comment.delete_comments.setVisibility(View.GONE);
+                vh_comment.delete_comments.setClickable(false);
+            }
         }
     }
 
