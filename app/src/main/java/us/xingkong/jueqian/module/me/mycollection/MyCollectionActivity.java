@@ -1,15 +1,20 @@
 package us.xingkong.jueqian.module.me.mycollection;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.RequiresApi;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.FrameLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +38,10 @@ import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
 public class MyCollectionActivity extends BaseActivity<MyCollectionContract.Presenter> implements MyCollectionContract.View {
     @BindView(R.id.recyclerview)
     RecyclerView mRecyclerView;
+    @BindView(R.id.framelayout)
+    FrameLayout frameLayout;
+    @BindView(R.id.swipeRefreshLayout)
+    SwipeRefreshLayout mSwipeRefreshLayout;
 
     private List<Question> questions = new ArrayList<>();
     private String intentUserID;
@@ -44,6 +53,7 @@ public class MyCollectionActivity extends BaseActivity<MyCollectionContract.Pres
             switch (msg.what) {
                 case 1:
                     initRecyclerView();
+                    mSwipeRefreshLayout.setRefreshing(false);
                 case 2:
                     myCollectionAdapter.notifyDataSetChanged();
                     break;
@@ -65,26 +75,36 @@ public class MyCollectionActivity extends BaseActivity<MyCollectionContract.Pres
 
     @Override
     protected void prepareData() {
+        mSwipeRefreshLayout.setRefreshing(true);
         Intent intent = getIntent();
         intentUserID = intent.getStringExtra("intentUserID");
+        getCollection();
+    }
+
+    private void getCollection() {
         _User user = new _User();
         user.setObjectId(intentUserID);
         BmobQuery<Question> query = new BmobQuery<Question>();
         query.addWhereRelatedTo("collections", new BmobPointer(user));
         query.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
         query.findObjects(JueQianAPP.getAppContext(), new FindListener<Question>() {
+            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onSuccess(List<Question> list) {
+                if (list.size() == 0) {
+                    frameLayout.setVisibility(View.VISIBLE);
+                    return;
+                }
                 questions = list;
                 mHandler.sendEmptyMessage(1);
             }
 
             @Override
             public void onError(int i, String s) {
-                showToast("获取收藏表失败");
+                mSwipeRefreshLayout.setRefreshing(false);
+                showToast("获取收藏表失败CASE:+" + s);
             }
         });
-
     }
 
     @Override
@@ -94,7 +114,7 @@ public class MyCollectionActivity extends BaseActivity<MyCollectionContract.Pres
     }
 
     private void initRecyclerView() {
-        myCollectionAdapter = new MyCollectionAdapter(mHandler, questions,this);
+        myCollectionAdapter = new MyCollectionAdapter(mHandler, questions, this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(myCollectionAdapter);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(MyCollectionActivity.this, DividerItemDecoration.VERTICAL));
@@ -116,7 +136,15 @@ public class MyCollectionActivity extends BaseActivity<MyCollectionContract.Pres
 
     @Override
     protected void initEvent() {
-
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+        mSwipeRefreshLayout.setSize(SwipeRefreshLayout.DEFAULT);
+        mSwipeRefreshLayout.setProgressViewEndTarget(true, 200);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getCollection();
+            }
+        });
     }
 
     @Override

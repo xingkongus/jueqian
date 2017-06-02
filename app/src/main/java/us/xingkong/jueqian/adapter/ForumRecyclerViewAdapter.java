@@ -2,8 +2,6 @@ package us.xingkong.jueqian.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,13 +10,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.io.File;
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 import cn.bmob.v3.datatype.BmobFile;
-import cn.bmob.v3.listener.DownloadFileListener;
 import de.hdodenhof.circleimageview.CircleImageView;
 import us.xingkong.jueqian.JueQianAPP;
 import us.xingkong.jueqian.R;
@@ -53,28 +50,24 @@ public class ForumRecyclerViewAdapter extends RecyclerView.Adapter<ForumRecycler
     public void onBindViewHolder(final VH holder, final int position) {
         bmobFile = infoSets.get(position).getUser().getProfile();
         if (bmobFile != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    bmobFile.download(mContext, new DownloadFileListener() {
-                        @Override
-                        public void onSuccess(String s) {
-                            File file = new File(s);
-                            if (file.exists()) {
-                                Bitmap bm = BitmapFactory.decodeFile(s);
-                                holder.profile.setImageBitmap(bm);
-                            } else {
-                                return;
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(int i, String s) {
-                            Toast.makeText(mContext, "网络连接超时", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
-            }).start();
+            Picasso.with(mContext).load(bmobFile.getUrl()).into(holder.profile);
+//                    bmobFile.download(mContext, new DownloadFileListener() {
+//                        @Override
+//                        public void onSuccess(String s) {
+//                            File file = new File(s);
+//                            if (file.exists()) {
+//                                Bitmap bm = BitmapFactory.decodeFile(s);
+//                                holder.profile.setImageBitmap(bm);
+//                            } else {
+//                                return;
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void onFailure(int i, String s) {
+//                            Toast.makeText(mContext, "网络连接超时", Toast.LENGTH_SHORT).show();
+//                        }
+//                    });
         } else {
             holder.profile.setBackgroundResource(R.mipmap.ic_launcher);
         }
@@ -98,20 +91,20 @@ public class ForumRecyclerViewAdapter extends RecyclerView.Adapter<ForumRecycler
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    questionID = infoSets.get(position).getObjectId();
-                    userID = infoSets.get(position).getUser().getObjectId();
-                    Intent intent = new Intent(mContext, QuestionActivity.class);
-                    intent.putExtra("questionid", questionID);
-                    intent.putExtra("question_userID", userID);
-                    mContext.startActivity(intent);
+                questionID = infoSets.get(position).getObjectId();
+                userID = infoSets.get(position).getUser().getObjectId();
+                Intent intent = new Intent(mContext, QuestionActivity.class);
+                intent.putExtra("questionid", questionID);
+                intent.putExtra("question_userID", userID);
+                mContext.startActivity(intent);
             }
         });
         holder.item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                    Intent intent = new Intent(JueQianAPP.getAppContext(), MainPageAcitivity.class);
-                    intent.putExtra("intentUserID", infoSets.get(position).getUser().getObjectId());
-                    mContext.startActivity(intent);
+                Intent intent = new Intent(JueQianAPP.getAppContext(), MainPageAcitivity.class);
+                intent.putExtra("intentUserID", infoSets.get(position).getUser().getObjectId());
+                mContext.startActivity(intent);
             }
         });
 

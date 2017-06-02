@@ -167,13 +167,14 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                                 intent.putExtra("answerID", answerID);
                                 intent.putExtra("questionID", questionID);
                                 intent.putExtra("answer_userID", answer_userID);
+                                intent.putExtra("question_userID",question_userID);
                                 startActivity(intent);
                                 mpopupWindow.dismiss();
                             }
                         }
                     });
                     break;
-                case 7://设置点赞flag
+                case 7://设置点赞flag数组
                     String answer_ID = msg.getData().getString("answerID");
                     int zanFlag = msg.getData().getInt("flag");
                     if (zanFlag == 0) {

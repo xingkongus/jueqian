@@ -2,105 +2,113 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="5dp"
+    android:layout_marginTop="@dimen/dp_8"
     android:background="#ffffff"
     android:orientation="vertical">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:orientation="vertical">
-
-        <RelativeLayout
-            android:padding="@dimen/dp_8"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/title_questionpage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="我是题目"
-                android:textColor="@color/title_color"
-                android:textSize="@dimen/sp_18" />
-
-            <ImageButton
-                android:id="@+id/more_questionpage"
-                android:layout_width="12dp"
-                android:layout_height="12dp"
-                android:layout_alignParentRight="true"
-                android:background="#00ffffff"
-                android:src="@drawable/delete" />
-        </RelativeLayout>
+        android:layout_height="wrap_content">
 
         <LinearLayout
-            android:padding="@dimen/dp_8"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_margin="@dimen/dp_8"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tag1_questionpage"
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dp_8">
+
+                <TextView
+                    android:id="@+id/title_questionpage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textColor="@color/text_title"
+                    android:textSize="@dimen/sp_18" />
+
+                <ImageButton
+                    android:id="@+id/more_questionpage"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:layout_alignParentRight="true"
+                    android:background="#00ffffff"
+                    android:src="@drawable/delete" />
+            </RelativeLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TAG1"
-                android:textColor="@color/colorPrimary"
+                android:orientation="horizontal"
+                android:padding="@dimen/dp_8">
+
+                <TextView
+                    android:id="@+id/tag1_questionpage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TAG1"
+                    android:textColor="@color/text_pinglun"
+                    android:textSize="@dimen/sp_16" />
+
+                <TextView
+                    android:id="@+id/tag2_questionpage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginStart="16dp"
+                    android:text="TAG2"
+                    android:textColor="@color/text_pinglun"
+                    android:textSize="@dimen/sp_16" />
+            </LinearLayout>
+
+
+            <us.xingkong.jueqian.module.Forum.QuestionPage.richtext.RichText
+                android:id="@+id/content_question"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dp_8"
+                android:text=""
+                android:textColor="@color/text_content"
                 android:textSize="@dimen/sp_16" />
 
-            <TextView
-                android:id="@+id/tag2_questionpage"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginStart="16dp"
-                android:text="TAG2"
-                android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/sp_16" />
+                android:layout_marginTop="8dp">
+
+                <TextView
+                    android:id="@+id/likecount_question"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/time_question"
+                    android:padding="@dimen/dp_8"
+                    android:text="赞的人数:0"
+                    android:textColor="@color/text_pinglun"
+                    android:textSize="@dimen/sp_14" />
+
+                <TextView
+                    android:id="@+id/username_question"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:padding="@dimen/dp_8"
+                    android:text="作者名字"
+                    android:textColor="@color/text_username" />
+
+                <TextView
+                    android:id="@+id/time_question"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/username_question"
+                    android:text="发表于:xxxx-xx-xx xx:xx"
+                    android:textColor="@color/text_pinglun" />
+            </RelativeLayout>
+
         </LinearLayout>
-
-        <TextView
-            android:padding="@dimen/dp_8"
-            android:id="@+id/content_question"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题问题"
-            android:textColor="@color/content_color"
-            android:textSize="@dimen/sp_16" />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp">
-
-            <TextView
-                android:padding="@dimen/dp_8"
-                android:id="@+id/likecount_question"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/sp_14"
-                android:layout_below="@+id/time_question"
-                android:layout_alignParentRight="true"
-                android:text="赞的人数:0"/>
-
-            <TextView
-                android:padding="@dimen/dp_8"
-                android:id="@+id/username_question"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:text="作者名字"
-                android:textColor="#000" />
-
-            <TextView
-                android:id="@+id/time_question"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_below="@+id/username_question"
-                android:text="发表于:xxxx-xx-xx xx:xx" />
-        </RelativeLayout>
-
-    </LinearLayout>
+    </ScrollView>
 </LinearLayout>

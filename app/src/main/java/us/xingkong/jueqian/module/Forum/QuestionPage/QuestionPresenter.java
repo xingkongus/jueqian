@@ -31,7 +31,7 @@ public class QuestionPresenter extends BasePresenterImpl implements QuestionCont
     @Override
     public void getQuestion(Context context, final String questionID, final Handler handler) {
 
-        BmobQuery<Question> query=new BmobQuery<>();
+        final BmobQuery<Question> query=new BmobQuery<>();
         query.include("user");
         query.getObject(context, questionID, new GetListener<Question>() {
             @Override
@@ -42,6 +42,7 @@ public class QuestionPresenter extends BasePresenterImpl implements QuestionCont
                 question.getMtitle();
                 question.getUser();
                 question.getFocus();
+                question.getImageFiles();
                 Message msg=new Message();
                 msg.what=1;
                 msg.obj=question;

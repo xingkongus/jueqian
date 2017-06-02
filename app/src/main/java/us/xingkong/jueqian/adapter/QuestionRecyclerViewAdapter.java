@@ -3,8 +3,10 @@ package us.xingkong.jueqian.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.PixelFormat;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -21,17 +23,18 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.squareup.picasso.Picasso;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.datatype.BmobPointer;
 import cn.bmob.v3.listener.DeleteListener;
-import cn.bmob.v3.listener.DownloadFileListener;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.UpdateListener;
 import us.xingkong.jueqian.R;
@@ -39,6 +42,7 @@ import us.xingkong.jueqian.bean.ForumBean.BombBean.Answer;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Ding;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
 import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
+import us.xingkong.jueqian.module.Forum.QuestionPage.richtext.RichText;
 import us.xingkong.jueqian.module.Login.LoginActivity;
 import us.xingkong.jueqian.module.main.MainActivity;
 import us.xingkong.jueqian.module.me.mainpage.MainPageAcitivity;
@@ -57,6 +61,7 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
     private Context context;
     private BmobFile bmobFile;
     private String dingID[];
+    final List<String> list = new ArrayList<>();
 
     public QuestionRecyclerViewAdapter(Context context, Question getQuestion, List<Answer> answers, Handler mHandler) {
         this.getQuestion = getQuestion;
@@ -90,8 +95,8 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
     public void onBindViewHolder(final VH holder, final int position) {
         dingID = new String[answers.size() + 1];
         if (position == 0) {
-            _User now = BmobUser.getCurrentUser(context, _User.class);
-            if (now!=null&&getQuestion!=null&&now.getObjectId().equals(getQuestion.getUser().getObjectId())) {
+            final _User now = BmobUser.getCurrentUser(context, _User.class);
+            if (now != null && getQuestion != null && now.getObjectId().equals(getQuestion.getUser().getObjectId())) {
                 holder.question_delete.setVisibility(View.VISIBLE);
                 holder.question_delete.setClickable(true);
                 holder.question_delete.setOnClickListener(new View.OnClickListener() {
@@ -110,19 +115,19 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
                                         question.delete(context, new DeleteListener() {
                                             @Override
                                             public void onSuccess() {
+                                                MainActivity.instance.finish();
                                                 Intent intent = new Intent(context, MainActivity.class);
                                                 context.startActivity(intent);
-                                                Message msg=new Message();
-                                                Bundle bundle=new Bundle();
-                                                bundle.putString("questionID",getQuestion.getObjectId());
+                                                Message msg = new Message();
+                                                Bundle bundle = new Bundle();
+                                                bundle.putString("questionID", getQuestion.getObjectId());
                                                 msg.setData(bundle);
-                                                msg.what=9;
+                                                msg.what = 9;
                                                 mHandler.sendMessage(msg);
                                             }
 
                                             @Override
                                             public void onFailure(int i, String s) {
-
                                             }
                                         });
 
@@ -134,8 +139,6 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
 
                                     }
                                 }).show();
-
-
                     }
                 });
             } else {
@@ -143,9 +146,39 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
                 holder.question_delete.setClickable(false);
             }
 
+
             if (getQuestion.getMtitle() != null) {
                 holder.title_question.setText(getQuestion.getMtitle());
-                holder.content_question.setText(getQuestion.getMcontent());
+
+                if (getQuestion.getImageFiles() != null) {
+                    for (int i = 0; i < getQuestion.getImageFiles().size(); i++) {
+                        list.add(getQuestion.getImageFiles().get(i));
+                    }
+                    if (list.size() != 0) {
+//                        DisplayMetrics dm = context.getResources().getDisplayMetrics();
+//                        int imageSize = dm.widthPixels;
+                        float imageSize = holder.content_question.getTextSize();
+                        String text=getQuestion.getMcontent();
+//                        SpannableString spannableString = new SpannableString(text);
+                        Pattern p = Pattern.compile("\\/[^ .]+.(gif|jpg|jpeg|png)");//"\\/[^ .]+.(gif|jpg|jpeg|png)" <img src="[^"]+" />
+                        final Matcher matcher = p.matcher(text);
+                        while (matcher.find()) {
+//                            ImageSpan imageSpan;
+//                            String group=matcher.group();
+                            String url = list.get(0);
+//                            Drawable drawable = new URLImageParser(holder.content_question, context, (int) imageSize).getDrawable(url);//异步获取网络图片
+//                            imageSpan = new ImageSpan(drawable,ImageSpan.ALIGN_BOTTOM);
+//                            spannableString.setSpan(imageSpan, matcher.start(), matcher.end(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//                            spannableString.removeSpan(imageSpan);
+                            text=text.replace(matcher.group(),url);
+
+                            list.remove(0);
+                        }
+                        holder.content_question.setRichText(text);
+                    }
+                } else {
+                    holder.content_question.setText(getQuestion.getMcontent());//没有图片就直接setText
+                }
                 holder.tag1.setText(getQuestion.getTAG1_ID());
                 holder.tag2.setText(getQuestion.getTAG2_ID());
                 holder.time.setText(getQuestion.getUpdatedAt());
@@ -164,8 +197,8 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
                 likeQuery.findObjects(context, new FindListener<_User>() {
                     @Override
                     public void onSuccess(List<_User> list) {
-                       int count=list.size();
-                        holder.likecount.setText("赞的人数:"+count);
+                        int count = list.size();
+                        holder.likecount.setText("赞的人数:" + count);
                     }
 
                     @Override
@@ -189,7 +222,7 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
                 }
             });
 
-            if (now != null && now.getObjectId().equals(getQuestion.getUser().getObjectId())) {
+            if (now != null && (now.getObjectId().equals(getQuestion.getUser().getObjectId()) || now.getObjectId().equals(answers.get(position - 1).getUser().getObjectId()))) {
                 holder.delete.setVisibility(View.VISIBLE);
                 holder.delete.setClickable(true);
                 holder.delete.setOnClickListener(new View.OnClickListener() {
@@ -212,11 +245,11 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
                                                 notifyItemRemoved(position - 1);
                                                 notifyItemRangeChanged(position - 1, answers.size());
                                                 Toast.makeText(context, "删除成功", Toast.LENGTH_SHORT).show();
-                                                Message msg=new Message();
-                                                Bundle bundle=new Bundle();
-                                                bundle.putString("questionID",getQuestion.getObjectId());
+                                                Message msg = new Message();
+                                                Bundle bundle = new Bundle();
+                                                bundle.putString("questionID", getQuestion.getObjectId());
                                                 msg.setData(bundle);
-                                                msg.what=8;
+                                                msg.what = 8;
                                                 mHandler.sendMessage(msg);
                                             }
 
@@ -246,28 +279,7 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
 
             bmobFile = answers.get(position - 1).getUser().getProfile();
             if (bmobFile != null) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        bmobFile.download(context, new DownloadFileListener() {
-                            @Override
-                            public void onSuccess(String s) {
-                                File file = new File(s);
-                                if (file.exists()) {
-                                    Bitmap bm = BitmapFactory.decodeFile(s);
-                                    holder.answer_icon.setImageBitmap(bm);
-                                } else {
-                                    return;
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(int i, String s) {
-                                Toast.makeText(context, "网络连接超时", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
-                }).start();
+                Picasso.with(context).load(bmobFile.getUrl()).into(holder.answer_icon);
             } else {
                 holder.answer_icon.setBackgroundResource(R.mipmap.ic_launcher);
             }
@@ -377,10 +389,10 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
                                 }
                             });
                         }
-                    }else{
-                        Intent intent=new Intent(context, LoginActivity.class);
+                    } else {
+                        Intent intent = new Intent(context, LoginActivity.class);
                         context.startActivity(intent);
-                        Toast.makeText(context,"要先登录才能顶哦！",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "要先登录才能顶哦！", Toast.LENGTH_SHORT).show();
                         mHandler.sendEmptyMessage(0);
                     }
                 }
@@ -413,7 +425,7 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
         TextView content;
         ImageButton question_delete;
         TextView title_question;
-        TextView content_question;
+        RichText content_question;
         TextView tag1;
         TextView tag2;
         TextView username;
@@ -439,7 +451,7 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
             content = (TextView) itemView.findViewById(R.id.content_questionpage);
             question_delete = (ImageButton) itemView.findViewById(R.id.more_questionpage);
             title_question = (TextView) itemView.findViewById(R.id.title_questionpage);
-            content_question = (TextView) itemView.findViewById(R.id.content_question);
+            content_question = (RichText) itemView.findViewById(R.id.content_question);
             tag1 = (TextView) itemView.findViewById(R.id.tag1_questionpage);
             tag2 = (TextView) itemView.findViewById(R.id.tag2_questionpage);
             username = (TextView) itemView.findViewById(R.id.username_question);
@@ -448,7 +460,33 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
             state_questionpage = (ImageView) itemView.findViewById(R.id.state_questionpage);
             zanLayout = (LinearLayout) itemView.findViewById(R.id.zanlayout_question_item);
             goodImag = (TextView) itemView.findViewById(R.id.good_question_item);
-            likecount= (TextView) itemView.findViewById(R.id.likecount_question);
+            likecount = (TextView) itemView.findViewById(R.id.likecount_question);
         }
+    }
+
+
+    public static Bitmap drawableToBitmap(Drawable drawable) {
+
+
+        Bitmap bitmap = Bitmap.createBitmap(
+
+                drawable.getIntrinsicWidth(),
+
+                drawable.getIntrinsicHeight(),
+
+                drawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888
+
+                        : Bitmap.Config.RGB_565);
+
+        Canvas canvas = new Canvas(bitmap);
+
+        //canvas.setBitmap(bitmap);
+
+        drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+
+        drawable.draw(canvas);
+
+        return bitmap;
+
     }
 }

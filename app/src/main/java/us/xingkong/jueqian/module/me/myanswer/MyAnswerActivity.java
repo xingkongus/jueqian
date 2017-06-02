@@ -3,12 +3,15 @@ package us.xingkong.jueqian.module.me.myanswer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.FrameLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +37,10 @@ public class MyAnswerActivity extends BaseActivity<MyAnswerContract.Presenter> i
 
     @BindView(R.id.recyclerview)
     RecyclerView mRecyclerView;
-
+    @BindView(R.id.framelayout)
+    FrameLayout frameLayout;
+    @BindView(R.id.swipeRefreshLayout)
+    SwipeRefreshLayout mSwipeRefreshLayout;
 
     private List<Answer> answers = new ArrayList<>();
     private List<Question> questions = new ArrayList<>();
@@ -47,13 +53,13 @@ public class MyAnswerActivity extends BaseActivity<MyAnswerContract.Presenter> i
                     for (Answer answer : answers) {
                         Question q = answer.getQuestion();
                         questions.add(q);
-                        System.out.println("qqqqqqqqqqqqqqqqqqqqqqqqqqqqq " + q.getObjectId());
                     }
                     if (questions == null) {
                         showToast("回答列表为空");
                         break;
                     }
                     initRecyclerView();
+                    mSwipeRefreshLayout.setRefreshing(false);
                     break;
             }
 
@@ -74,6 +80,11 @@ public class MyAnswerActivity extends BaseActivity<MyAnswerContract.Presenter> i
 
     @Override
     protected void prepareData() {
+        getAnswer();
+    }
+
+    private void getAnswer() {
+        mSwipeRefreshLayout.setRefreshing(true);
         BmobUser bmobUser = BmobUser.getCurrentUser(JueQianAPP.getAppContext());
         BmobQuery<Answer> query = new BmobQuery<Answer>();
         query.addWhereRelatedTo("answers", new BmobPointer(bmobUser));
@@ -82,17 +93,20 @@ public class MyAnswerActivity extends BaseActivity<MyAnswerContract.Presenter> i
         query.findObjects(JueQianAPP.getAppContext(), new FindListener<Answer>() {
             @Override
             public void onSuccess(List<Answer> list) {
-                answers = list;
-                if (answers == null) {
-                    showToast("回答列表为空");
+                if (list.size() == 0) {
+                    frameLayout.setVisibility(View.VISIBLE);
                     return;
                 }
-                showToast("获取我的回答列表成功");
+                answers = list;
+                if (answers == null) {
+                    return;
+                }
                 mHandler.sendEmptyMessage(1);
             }
 
             @Override
             public void onError(int i, String s) {
+                mSwipeRefreshLayout.setRefreshing(false);
                 showToast("获取我的回答列表失败");
             }
         });
@@ -105,7 +119,7 @@ public class MyAnswerActivity extends BaseActivity<MyAnswerContract.Presenter> i
     }
 
     private void initRecyclerView() {
-        myAnswerAdapter = new MyAnswerAdapter(questions,this);
+        myAnswerAdapter = new MyAnswerAdapter(questions, this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(myAnswerAdapter);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(MyAnswerActivity.this, DividerItemDecoration.VERTICAL));
@@ -126,7 +140,15 @@ public class MyAnswerActivity extends BaseActivity<MyAnswerContract.Presenter> i
 
     @Override
     protected void initEvent() {
-
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+        mSwipeRefreshLayout.setSize(SwipeRefreshLayout.DEFAULT);
+        mSwipeRefreshLayout.setProgressViewEndTarget(true, 200);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getAnswer();
+            }
+        });
     }
 
     @Override
