@@ -158,7 +158,7 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
 //                        DisplayMetrics dm = context.getResources().getDisplayMetrics();
 //                        int imageSize = dm.widthPixels;
                         float imageSize = holder.content_question.getTextSize();
-                        String text=getQuestion.getMcontent();
+                        String text = getQuestion.getMcontent();
 //                        SpannableString spannableString = new SpannableString(text);
                         Pattern p = Pattern.compile("\\/[^ .]+.(gif|jpg|jpeg|png)");//"\\/[^ .]+.(gif|jpg|jpeg|png)" <img src="[^"]+" />
                         final Matcher matcher = p.matcher(text);
@@ -170,7 +170,7 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
 //                            imageSpan = new ImageSpan(drawable,ImageSpan.ALIGN_BOTTOM);
 //                            spannableString.setSpan(imageSpan, matcher.start(), matcher.end(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 //                            spannableString.removeSpan(imageSpan);
-                            text=text.replace(matcher.group(),url);
+                            text = text.replace(matcher.group(), url);
 
                             list.remove(0);
                         }
@@ -345,7 +345,7 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
                                     holder.goodImag.setText("已顶");
                                     String up = (String) holder.like.getText();
                                     holder.like.setText(String.valueOf((Integer.parseInt(up)) + 1));
-                                    holder.like.setTextColor(Color.parseColor("#303F9F"));
+                                    holder.like.setTextColor(Color.parseColor("#000000"));
                                     Message message = new Message();
                                     Bundle bundle = new Bundle();
                                     bundle.putString("answerID", answers.get(position - 1).getObjectId());
@@ -385,7 +385,8 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
 
                                 @Override
                                 public void onFailure(int i, String s) {
-                                    holder.goodImag.setText("已顶");
+//                                    holder.goodImag.setText("已顶");
+                                    Toast.makeText(context, "传输异常", Toast.LENGTH_SHORT).show();
                                 }
                             });
                         }
@@ -413,7 +414,7 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
             });
         }
 
-
+        mHandler.sendEmptyMessage(15);
     }
 
     @Override

@@ -21,6 +21,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -61,16 +62,16 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
     @BindView(R.id.question_tab)
     RadioGroup tab;
     @BindView(R.id.tab_huida)
-    RadioButton huida;
+    ImageButton huida;
     private String questionID;
     Question getQuestion = new Question();
     ArrayList<Answer> answers = new ArrayList<>();
     @BindView(R.id.refreshLayout_question)
     SwipeRefreshLayout refreshLayout;
     @BindView(R.id.tab_shoucan)
-    RadioButton shoucan;
+    ImageButton shoucan;
     @BindView(R.id.tab_zan)
-    RadioButton zan;
+    ImageButton zan;
     PopupWindow mpopupWindow;
     Button popupwindow_huida;
     private Boolean isRolling = false;
@@ -167,7 +168,7 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                                 intent.putExtra("answerID", answerID);
                                 intent.putExtra("questionID", questionID);
                                 intent.putExtra("answer_userID", answer_userID);
-                                intent.putExtra("question_userID",question_userID);
+                                intent.putExtra("question_userID", question_userID);
                                 startActivity(intent);
                                 mpopupWindow.dismiss();
                             }
@@ -271,6 +272,25 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                     });
                     handler.sendEmptyMessage(0);
                     break;
+                case 11:
+                    shoucan.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_star2));
+                    refreshLayout.setRefreshing(false);
+                    break;
+                case 12:
+                    shoucan.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_star1));
+                    refreshLayout.setRefreshing(false);
+                    break;
+                case 13:
+                    zan.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_like1));
+                    refreshLayout.setRefreshing(false);
+                    break;
+                case 14:
+                    zan.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_like2));
+                    refreshLayout.setRefreshing(false);
+                    break;
+                case 15:
+                    zan.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_like2));
+                    break;
             }
         }
     };
@@ -369,16 +389,14 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                 public void onSuccess(List<_User> list) {
                     for (_User user : list) {
                         if (user.getObjectId().equals(userID)) {
-                            if (zan==null) return;
-                            zan.setBackgroundColor(Color.parseColor("#3CB371"));
-                            zan.setTextColor(Color.parseColor("#ffffff"));
+                            if (zan == null) return;
+                            zan.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_like2));
                             isZan = true;
                             return;
                         } else {
                             isZan = false;
-                            if (zan==null) return;
-                            zan.setBackgroundColor(Color.parseColor("#ffffff"));
-                            zan.setTextColor(Color.parseColor("#000000"));
+                            if (zan == null) return;
+                            zan.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_like1));
                         }
                     }
                 }
@@ -397,15 +415,13 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                     for (Question question : list) {
                         if (question.getObjectId().equals(questionID)) {
                             if (shoucan == null) return;
-                            shoucan.setBackgroundColor(Color.parseColor("#3CB371"));
-                            shoucan.setTextColor(Color.parseColor("#ffffff"));
+                            shoucan.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_star2));
                             isShouzan = true;
                             return;
                         } else {
                             isShouzan = false;
                             if (shoucan == null) return;
-                            shoucan.setBackgroundColor(Color.parseColor("#ffffff"));
-                            shoucan.setTextColor(Color.parseColor("#000000"));
+                            shoucan.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_star1));
                         }
                     }
                 }
@@ -416,18 +432,17 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                 }
             });
         } else {
-            if (zan==null) return;
+            if (zan == null) return;
             if (shoucan == null) return;
-            zan.setBackgroundColor(Color.parseColor("#ffffff"));
-            zan.setTextColor(Color.parseColor("#000000"));
-            shoucan.setBackgroundColor(Color.parseColor("#ffffff"));
-            shoucan.setTextColor(Color.parseColor("#000000"));
+            zan.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_like1));
+            shoucan.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_star1));
         }
 
     }
 
     private void initRecyClerView() {
         if (recyclerviewQuestionpage == null) return;
+        refreshLayout.setRefreshing(true);
         recyclerViewAdapter = new QuestionRecyclerViewAdapter(mContext, getQuestion, answers, handler);
         recyclerviewQuestionpage.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
         recyclerviewQuestionpage.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
@@ -461,6 +476,7 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
         });
         recyclerviewQuestionpage.setAdapter(recyclerViewAdapter);
         isInitRecyclewView = true;
+        refreshLayout.setRefreshing(false);
     }
 
 
@@ -472,7 +488,6 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
     @Override
     protected void initEvent() {
         final _User user = BmobUser.getCurrentUser(mContext, _User.class);
-        huida.setTextColor(Color.parseColor("#000000"));
         huida.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -489,7 +504,7 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                 }
             }
         });
-        zan.setTextColor(Color.parseColor("#000000"));
+        zan.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_like1));
         zan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -500,14 +515,14 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                 } else {
                     if (isNetworkAvailable(mContext)) {
                         if (isZan == true) {
-                            mPresenter.quxiaoZan(mContext, questionID);
-                            zan.setBackgroundColor(Color.parseColor("#ffffff"));
-                            zan.setTextColor(Color.parseColor("#000000"));
+                            refreshLayout.setRefreshing(true);
+                            mPresenter.quxiaoZan(mContext, questionID, handler);
+                            zan.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_like1));
                             isZan = false;
                         } else {
+                            refreshLayout.setRefreshing(true);
                             mPresenter.zan(mContext, handler, questionID);
-                            zan.setBackgroundColor(Color.parseColor("#3CB371"));
-                            zan.setTextColor(Color.parseColor("#ffffff"));
+                            zan.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_like2));
                             isZan = true;
                         }
                     } else {
@@ -516,7 +531,6 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                 }
             }
         });
-        shoucan.setTextColor(Color.parseColor("#000000"));
         shoucan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -527,14 +541,14 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                 } else {
                     if (isNetworkAvailable(mContext)) {
                         if (isShouzan == true) {
-                            mPresenter.quxiaoShouzan(mContext, questionID);
-                            shoucan.setBackgroundColor(Color.parseColor("#ffffff"));
-                            shoucan.setTextColor(Color.parseColor("#000000"));
+                            refreshLayout.setRefreshing(true);
+                            mPresenter.quxiaoShouzan(mContext, questionID, handler);
+//                            shoucan.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_star1));
                             isShouzan = false;
                         } else if (isShouzan == false) {
+                            refreshLayout.setRefreshing(true);
                             mPresenter.shoucan(mContext, handler, questionID, question_userID);
-                            shoucan.setBackgroundColor(Color.parseColor("#3CB371"));
-                            shoucan.setTextColor(Color.parseColor("#ffffff"));
+//                            shoucan.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_star2));
                             isShouzan = true;
                         }
                     } else {

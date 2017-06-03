@@ -61,51 +61,53 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.1">
 
-        <TextView
-            android:id="@+id/tv_tag_newpage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_margin="16dp"
-            android:text="无标签" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.1">
 
-        <Button
-            android:id="@+id/bt_tag_newpage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toEndOf="@+id/tv_tag_newpage"
-            android:layout_toRightOf="@+id/tv_tag_newpage"
-            android:background="@drawable/buttonshape"
-            android:text="选择标签"
-            android:textColor="@color/text_white" />
+            <TextView
+                android:id="@+id/tv_tag_newpage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_margin="16dp"
+                android:layout_toLeftOf="@+id/bt_tag_newpage"
+                android:text="无标签" />
 
-        <TextView
-            android:id="@+id/tag1_new"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="20dp"
-            android:layout_toRightOf="@+id/bt_tag_newpage"
-            android:textColor="@color/text_primary"
-            android:textSize="20sp" />
+            <Button
+                android:id="@+id/bt_tag_newpage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_margin="@dimen/dp_16"
+                android:background="@drawable/buttonshape"
+                android:text="选择标签"
+                android:textColor="@color/text_white" />
 
-        <TextView
-            android:id="@+id/tag2_new"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="20dp"
-            android:layout_toRightOf="@+id/tag1_new"
-            android:textColor="@color/text_primary"
-            android:textSize="20sp" />
+            <TextView
+                android:id="@+id/tag1_new"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:layout_toRightOf="@+id/bt_tag_newpage"
+                android:textColor="@color/text_primary"
+                android:textSize="20sp" />
 
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/tag2_new"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:layout_toRightOf="@+id/tag1_new"
+                android:textColor="@color/text_primary"
+                android:textSize="20sp" />
+
+        </RelativeLayout>
     </ScrollView>
 
 </LinearLayout>

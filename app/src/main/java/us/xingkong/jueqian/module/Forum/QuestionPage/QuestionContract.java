@@ -22,8 +22,8 @@ public interface QuestionContract {
         void zan(Context context,Handler handler,String questionID);
         void shoucan(Context context,Handler handler,String questionID,String question_userID);
         void addRecentlook(Context context, String questionID, String userID, _User user);
-        void quxiaoZan(Context context,String questionID);
-        void quxiaoShouzan(Context context,String questionID);
+        void quxiaoZan(Context context,String questionID,Handler handler);
+        void quxiaoShouzan(Context context,String questionID,Handler handler);
         void zanStateChange(Context context,String questionID,int flag);
         void shouzanStateChange(Context context,String questionID,int flag);
     }

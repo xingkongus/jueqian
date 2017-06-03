@@ -17,20 +17,23 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/text_secondary"/>
+        android:background="@color/text_secondary" />
+
     <EditText
-        android:padding="3dp"
-        android:hint="写下您的回答..."
-        android:layout_margin="10dp"
         android:id="@+id/new_huidacontent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="10dp"
         android:background="#FFFFFF"
         android:enabled="true"
         android:gravity="top"
+        android:hint="写下您的回答..."
         android:inputType="textMultiLine"
         android:maxLines="10"
         android:minLines="8"
-        android:scrollbars="vertical"></EditText>
+        android:padding="3dp"
+        android:scrollbars="vertical">
+
+    </EditText>
 
 </LinearLayout>

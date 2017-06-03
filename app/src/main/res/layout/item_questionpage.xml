@@ -40,14 +40,14 @@
                     android:src="@mipmap/ic_launcher" />
 
                 <TextView
-                    android:textColor="@color/text_username"
                     android:id="@+id/username_questionpage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_toRightOf="@+id/user_icon_questionpage"
-                    android:text="" />
+                    android:text=""
+                    android:textColor="@color/text_username" />
 
                 <ImageView
                     android:id="@+id/state_questionpage"
@@ -96,26 +96,30 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="5dp"
-                    android:orientation="horizontal">
+                    android:layout_marginRight="@dimen/dp_8"
+                    android:background="@drawable/buttonshape"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/dp_4"
+                    android:paddingLeft="@dimen/dp_8"
+                    android:paddingRight="@dimen/dp_8"
+                    android:paddingTop="@dimen/dp_4">
 
                     <TextView
                         android:id="@+id/good_question_item"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="3dp"
-                        android:layout_marginRight="3dp"
                         android:layout_toLeftOf="@+id/like_questionpage_item"
                         android:text="顶"
-                        android:textColor="@color/colorPrimary"
+                        android:textColor="@color/text_white"
                         android:textSize="@dimen/dp_16" />
 
                     <TextView
-                        android:textColor="@color/colorPrimary"
                         android:id="@+id/like_questionpage_item"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_8"
                         android:text="0"
+                        android:textColor="@color/text_white"
                         android:textSize="16sp" />
 
                 </LinearLayout>
