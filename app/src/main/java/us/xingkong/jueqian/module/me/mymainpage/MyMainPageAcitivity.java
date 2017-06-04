@@ -13,11 +13,7 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.Priority;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -266,13 +262,14 @@ public class MyMainPageAcitivity extends BaseActivity<MyMainPageContract.Present
                     return;
                 }
                 String profileURL = bmobFile.getUrl();
-                if (iv_touxiang == null) return;
-                Glide.with(JueQianAPP.getAppContext()).load(profileURL).priority( Priority.HIGH).error(R.mipmap.ic_launcher).into(new SimpleTarget<GlideDrawable>() {
-                    @Override
-                    public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
-                        iv_touxiang.setImageDrawable(resource);
-                    }
-                });
+                Picasso.with(MyMainPageAcitivity.this).load(profileURL).into(iv_touxiang);
+//                if (iv_touxiang == null) return;
+//                Glide.with(JueQianAPP.getAppContext()).load(profileURL).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(new SimpleTarget<GlideDrawable>() {
+//                    @Override
+//                    public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
+//                        iv_touxiang.setImageDrawable(resource);
+//                    }
+//                });
             }
 
             @Override

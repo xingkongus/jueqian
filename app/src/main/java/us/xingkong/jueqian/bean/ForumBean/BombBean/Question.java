@@ -1,5 +1,7 @@
 package us.xingkong.jueqian.bean.ForumBean.BombBean;
 
+import java.util.List;
+
 import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.datatype.BmobRelation;
 
@@ -23,6 +25,15 @@ public class Question extends BmobObject {
     private Integer state;//0没赞，1已赞
     private Integer answer_count;//回答问题的数量
     private Integer shouzanFlag;//1已经收藏，0没有收藏
+    private List<String> imageFiles;//添加问题的插入图片列表
+
+    public List<String> getImageFiles() {
+        return imageFiles;
+    }
+
+    public void setImageFiles(List<String> imageFiles) {
+        this.imageFiles = imageFiles;
+    }
 
     public Integer getShouzanFlag() {
         return shouzanFlag;

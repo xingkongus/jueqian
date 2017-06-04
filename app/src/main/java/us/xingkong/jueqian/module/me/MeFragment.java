@@ -10,11 +10,7 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.Priority;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -141,7 +137,6 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
                     JSONObject receiverObj = dataObject.getJSONObject("receiver");
                     JSONObject senderObj = dataObject.getJSONObject("sender");
                     String receiverID = receiverObj.getString("objectId");
-//                    String senderID = senderObj.getString("objectId");
                     if (receiverID.equals(current_user.getObjectId())) {
                         mCircleImageView_redpoint.setVisibility(View.VISIBLE);
                     }
@@ -168,7 +163,6 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
 
             @Override
             public void onFailure(int i, String s) {
-//                showToast("更新用户昵称失败CASE:" + s);
             }
         });
     }
@@ -204,7 +198,6 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
     }
 
     private void isSignIn() {
-//        _User bmobUser = BmobUser.getCurrentUser(JueQianAPP.getAppContext(), _User.class);
         current_user = BmobUser.getCurrentUser(JueQianAPP.getAppContext(), _User.class);
         if (current_user == null) isLogin = false;
         else isLogin = true;
@@ -314,13 +307,11 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
         mCardView_editinfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                _User user = BmobUser.getCurrentUser(JueQianAPP.getAppContext(), _User.class);
                 if (current_user == null) {
                     Intent intent = new Intent(getContext(), LoginActivity.class);
                     startActivity(intent);
                 } else {
                     Intent intent = new Intent(getContext(), MyMainPageAcitivity.class);
-//                    intent.putExtra("intentUserID", current_user.getObjectId());
                     intent.putExtra("profileURL", profileURL);
                     startActivity(intent);
                 }
@@ -337,33 +328,25 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
                 @Override
                 public void onSuccess(List<_User> list) {
                     if (list.size() == 0) {
-//                        showToast("当前用户无头像");
                         return;
                     }
                     bmobFile = list.get(0).getProfile();
                     if (bmobFile == null) {
-//                        showToast("获取头像异常");
                         return;
-                    }//mCircleImageView_profile
+                    }
                     profileURL = bmobFile.getUrl();
-                    Glide.with(getContext()).load(profileURL).priority( Priority.HIGH).error(R.mipmap.ic_launcher).into(new SimpleTarget<GlideDrawable>() {
-                        @Override
-                        public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
-                            mCircleImageView_profile.setImageDrawable(resource);
-                        }
-                    });
-
+                    if (mCircleImageView_profile == null) return;
+                    Picasso.with(getContext()).load(profileURL).into(mCircleImageView_profile);
 
                 }
 
                 @Override
                 public void onError(int i, String s) {
-//                    showToast("获取头像失败CASE:" + s);
                 }
             });
         } else {
-//            showToast("请先登录");
         }
+
     }
 
     @Override

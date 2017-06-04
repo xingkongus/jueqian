@@ -57,6 +57,7 @@ public class CommentActivity extends BaseActivity<CommentContract.Presenter> imp
     private Boolean isRolling = false;
     private String answer_userID;
     private boolean isInitRecyclewView = false;
+    private String question_userID;
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -116,7 +117,6 @@ public class CommentActivity extends BaseActivity<CommentContract.Presenter> imp
                     break;
                 case 5://得到新评论内容
                     String newCommentID = msg.getData().getString("new_commentID");
-                    System.out.println("111111111qq" + newCommentID);
                     mPresenter.getNewComment(mContext, handler, newCommentID);
                     break;
                 case 6:
@@ -146,6 +146,7 @@ public class CommentActivity extends BaseActivity<CommentContract.Presenter> imp
         answerID = bundle.getString("answerID");
         questionID = bundle.getString("questionID");
         answer_userID = bundle.getString("answer_userID");
+        question_userID=bundle.getString("question_userID");
     }
 
     private void initSwipeRefreshLayout() {
@@ -175,7 +176,7 @@ public class CommentActivity extends BaseActivity<CommentContract.Presenter> imp
 
     private void initRecyclerView() {
         if (recyclerviewCommentpage==null) return;
-        recyclerViewAdapter = new CommentRecyclerViewAdapter(mContext, handler, answer, comments);
+        recyclerViewAdapter = new CommentRecyclerViewAdapter(mContext, handler, answer, comments,questionID,question_userID);
         recyclerviewCommentpage.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
         recyclerviewCommentpage.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         recyclerviewCommentpage.setItemAnimator(new DefaultItemAnimator());

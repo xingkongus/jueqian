@@ -126,6 +126,7 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
     }
 
     private void initRecyclerview() {
+        swipeRefreshLayout.setRefreshing(true);
         recyclerViewAdapter = new ForumRecyclerViewAdapter(questions, mHandler, getContext());
         mLayoutManager = new LinearLayoutManager(getContext());
         recyclerview.setLayoutManager(mLayoutManager);
@@ -163,6 +164,7 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
         });
         recyclerview.setAdapter(recyclerViewAdapter);
         isInitRecyclewView=true;
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     Handler mHandler = new Handler() {

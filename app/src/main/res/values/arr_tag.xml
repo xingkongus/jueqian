@@ -3,9 +3,25 @@
     <string-array name="tag">
         <item>c语言</item>
         <item>java </item>
+        <item>android</item>
+        <item>web前端</item>
+        <item>web后端</item>
         <item>php</item>
         <item>xml</item>
         <item>html</item>
+        <item>c#</item>
+        <item>c++</item>
+        <item>node.js</item>
+        <item>python</item>
+        <item>obj-c</item>
+        <item>swift</item>
+        <item>kotlin</item>
+        <item>visual basic</item>
+        <item>ruby</item>
+        <item>pl/sql</item>
+        <item>其他</item>
+
+
     </string-array>
 
 </resources>

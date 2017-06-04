@@ -33,9 +33,10 @@
                     android:id="@+id/username_comment_head"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/text_username"
                     android:layout_marginLeft="8dp"
                     android:layout_marginStart="8dp"
-                    android:text="admin" />
+                    android:text="" />
 
                 <ImageView
                     android:id="@+id/lebal_head"
@@ -61,10 +62,11 @@
             <TextView
                 android:id="@+id/answer_content_comment_head"
                 android:layout_width="match_parent"
+                android:textColor="@color/text_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/layout_comment_head"
                 android:paddingTop="10dp"
-                android:text="testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest" />
+                android:text="" />
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 </LinearLayout>
