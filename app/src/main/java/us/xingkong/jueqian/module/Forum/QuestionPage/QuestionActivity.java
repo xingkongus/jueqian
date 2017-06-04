@@ -3,7 +3,6 @@ package us.xingkong.jueqian.module.Forum.QuestionPage;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -21,8 +20,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.PopupWindow;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -61,16 +60,16 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
     @BindView(R.id.question_tab)
     RadioGroup tab;
     @BindView(R.id.tab_huida)
-    RadioButton huida;
+    ImageButton huida;
     private String questionID;
     Question getQuestion = new Question();
     ArrayList<Answer> answers = new ArrayList<>();
     @BindView(R.id.refreshLayout_question)
     SwipeRefreshLayout refreshLayout;
     @BindView(R.id.tab_shoucan)
-    RadioButton shoucan;
+    ImageButton shoucan;
     @BindView(R.id.tab_zan)
-    RadioButton zan;
+    ImageButton zan;
     PopupWindow mpopupWindow;
     Button popupwindow_huida;
     private Boolean isRolling = false;
@@ -78,6 +77,7 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
     private boolean isZan;
     private boolean isShouzan;
     private boolean isInitRecyclewView = false;
+    public static QuestionActivity close = null;
 
     Handler handler = new Handler() {
         @Override
@@ -97,6 +97,7 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                     if (answers != null && isInitRecyclewView == true) {
                         recyclerViewAdapter.notifyDataSetChanged();
                     }
+                    refreshLayout.setRefreshing(false);
                     break;
 //                case 4:
 //                    new MaterialDialog.Builder(mContext)
@@ -167,7 +168,7 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                                 intent.putExtra("answerID", answerID);
                                 intent.putExtra("questionID", questionID);
                                 intent.putExtra("answer_userID", answer_userID);
-                                intent.putExtra("question_userID",question_userID);
+                                intent.putExtra("question_userID", question_userID);
                                 startActivity(intent);
                                 mpopupWindow.dismiss();
                             }
@@ -271,6 +272,22 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                     });
                     handler.sendEmptyMessage(0);
                     break;
+                case 11:   //1是已赞的处理，2是取消赞处理，3是收藏后的处理，4是取消收藏后的处理
+                    int flag = (int) msg.obj;
+                    if (flag == 1) {
+                        zan.setImageResource(R.drawable.ic_action_like2);
+                        isZan = true;
+                    } else if (flag == 2) {
+                        zan.setImageResource(R.drawable.ic_action_like1);
+                        isZan = false;
+                    } else if (flag == 3) {
+                        shoucan.setImageResource(R.drawable.ic_action_star2);
+                        isShouzan = true;
+                    } else if (flag == 4) {
+                        shoucan.setImageResource(R.drawable.ic_action_star1);
+                        isShouzan = false;
+                    }
+                    break;
             }
         }
     };
@@ -315,6 +332,7 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
     @Override
     protected void prepareData() {
         mContext = this;
+        close = this;
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         questionID = bundle.getString("questionid");
@@ -357,7 +375,6 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
         } else {
             showToast("网络不可用");
         }
-        refreshLayout.setRefreshing(false);
         if (user != null) {
             final String userID = user.getObjectId();
             BmobQuery<_User> likeQuery = new BmobQuery<>();
@@ -369,16 +386,14 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                 public void onSuccess(List<_User> list) {
                     for (_User user : list) {
                         if (user.getObjectId().equals(userID)) {
-                            if (zan==null) return;
-                            zan.setBackgroundColor(Color.parseColor("#3CB371"));
-                            zan.setTextColor(Color.parseColor("#ffffff"));
+                            if (zan == null) return;
+                            zan.setImageResource(R.drawable.ic_action_like2);
                             isZan = true;
                             return;
                         } else {
                             isZan = false;
-                            if (zan==null) return;
-                            zan.setBackgroundColor(Color.parseColor("#ffffff"));
-                            zan.setTextColor(Color.parseColor("#000000"));
+                            if (zan == null) return;
+                            zan.setImageResource(R.drawable.ic_action_like1);
                         }
                     }
                 }
@@ -397,15 +412,13 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                     for (Question question : list) {
                         if (question.getObjectId().equals(questionID)) {
                             if (shoucan == null) return;
-                            shoucan.setBackgroundColor(Color.parseColor("#3CB371"));
-                            shoucan.setTextColor(Color.parseColor("#ffffff"));
+                            shoucan.setImageResource(R.drawable.ic_action_star2);
                             isShouzan = true;
                             return;
                         } else {
                             isShouzan = false;
                             if (shoucan == null) return;
-                            shoucan.setBackgroundColor(Color.parseColor("#ffffff"));
-                            shoucan.setTextColor(Color.parseColor("#000000"));
+                            shoucan.setImageResource(R.drawable.ic_action_star1);
                         }
                     }
                 }
@@ -416,12 +429,10 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                 }
             });
         } else {
-            if (zan==null) return;
+            if (zan == null) return;
             if (shoucan == null) return;
-            zan.setBackgroundColor(Color.parseColor("#ffffff"));
-            zan.setTextColor(Color.parseColor("#000000"));
-            shoucan.setBackgroundColor(Color.parseColor("#ffffff"));
-            shoucan.setTextColor(Color.parseColor("#000000"));
+            zan.setPressed(false);
+            shoucan.setPressed(false);
         }
 
     }
@@ -472,7 +483,6 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
     @Override
     protected void initEvent() {
         final _User user = BmobUser.getCurrentUser(mContext, _User.class);
-        huida.setTextColor(Color.parseColor("#000000"));
         huida.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -489,7 +499,7 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                 }
             }
         });
-        zan.setTextColor(Color.parseColor("#000000"));
+
         zan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -500,15 +510,11 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                 } else {
                     if (isNetworkAvailable(mContext)) {
                         if (isZan == true) {
-                            mPresenter.quxiaoZan(mContext, questionID);
-                            zan.setBackgroundColor(Color.parseColor("#ffffff"));
-                            zan.setTextColor(Color.parseColor("#000000"));
-                            isZan = false;
+                            mPresenter.quxiaoZan(mContext, questionID, handler);
+
                         } else {
                             mPresenter.zan(mContext, handler, questionID);
-                            zan.setBackgroundColor(Color.parseColor("#3CB371"));
-                            zan.setTextColor(Color.parseColor("#ffffff"));
-                            isZan = true;
+
                         }
                     } else {
                         showToast("网络不可用");
@@ -516,7 +522,7 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                 }
             }
         });
-        shoucan.setTextColor(Color.parseColor("#000000"));
+
         shoucan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -527,15 +533,11 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                 } else {
                     if (isNetworkAvailable(mContext)) {
                         if (isShouzan == true) {
-                            mPresenter.quxiaoShouzan(mContext, questionID);
-                            shoucan.setBackgroundColor(Color.parseColor("#ffffff"));
-                            shoucan.setTextColor(Color.parseColor("#000000"));
-                            isShouzan = false;
+                            mPresenter.quxiaoShouzan(mContext, questionID, handler);
+
                         } else if (isShouzan == false) {
                             mPresenter.shoucan(mContext, handler, questionID, question_userID);
-                            shoucan.setBackgroundColor(Color.parseColor("#3CB371"));
-                            shoucan.setTextColor(Color.parseColor("#ffffff"));
-                            isShouzan = true;
+
                         }
                     } else {
                         showToast("网络不可用");

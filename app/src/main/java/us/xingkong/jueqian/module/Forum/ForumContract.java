@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Handler;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import us.xingkong.jueqian.base.BasePresenter;
 import us.xingkong.jueqian.base.BaseView;
@@ -17,6 +16,6 @@ public interface ForumContract {
     }
 
     interface Presenter extends BasePresenter {
-        List<Question> getBmobQuestion(Context context, ArrayList<Question> questions, Handler handler,int flag);
+        void getBmobQuestion(Context context, ArrayList<Question> questions, Handler handler,int flag);
     }
 }

@@ -1,7 +1,7 @@
 package us.xingkong.jueqian.module.Forum.QuestionPage.richtext;
 
 /**
- * Created by Jesson_Yi on 2016/6/22.
+ * Created by Jying on 2017/6/2.
  */
 import android.content.Context;
 import android.graphics.drawable.Drawable;

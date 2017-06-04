@@ -3,6 +3,7 @@ package us.xingkong.jueqian.module.Forum;
 
 import android.content.Context;
 import android.os.Handler;
+import android.os.Message;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,7 @@ public class ForumPresenter extends BasePresenterImpl implements ForumContract.P
 
 
     @Override
-    public List<Question> getBmobQuestion(Context context, final ArrayList<Question> questions, final Handler handler, int flag) {
+    public void getBmobQuestion(Context context, final ArrayList<Question> questions, final Handler handler, int flag) {
         BmobQuery<Question> query = new BmobQuery<>();
         query.setLimit(20);
         query.order("-createdAt");
@@ -58,16 +59,18 @@ public class ForumPresenter extends BasePresenterImpl implements ForumContract.P
                     questions.add(question);
 
                 }
-                handler.sendEmptyMessage(3);
+                Message msg=new Message();
+                msg.obj=questions;
+                msg.what=5;
+                handler.sendMessage(msg);
             }
 
             @Override
             public void onError(int i, String s) {
-                mView.showToast("网络连接超时");
+                mView.showToast("网络有点差哦！可重新刷新！");
                 handler.sendEmptyMessage(4);
             }
         });
 
-        return questions;
     }
 }
