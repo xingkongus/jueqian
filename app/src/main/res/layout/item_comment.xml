@@ -47,11 +47,11 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:textColor="@color/text_username"
                             android:id="@+id/username_comment"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="" />
+                            android:text=""
+                            android:textColor="@color/text_username" />
 
                         <ImageView
                             android:id="@+id/lebal_comment"
@@ -75,12 +75,13 @@
                     </LinearLayout>
 
                     <TextView
-                        android:textColor="@color/text_content"
                         android:id="@+id/answer_comment"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingTop="8dp"
-                        android:text="" />
+                        android:text="bucuoasdada"
+                        android:textColor="@color/text_content"
+                        android:textSize="@dimen/sp_16" />
                 </LinearLayout>
             </LinearLayout>
 

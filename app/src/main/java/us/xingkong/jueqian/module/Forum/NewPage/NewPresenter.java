@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -19,6 +20,8 @@ import cn.bmob.v3.listener.GetListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 import cn.bmob.v3.listener.UploadBatchListener;
+import id.zelory.compressor.Compressor;
+import us.xingkong.jueqian.JueQianAPP;
 import us.xingkong.jueqian.base.BasePresenterImpl;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
 import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
@@ -107,7 +110,9 @@ public class NewPresenter extends BasePresenterImpl implements NewContract.Prese
         if (arrayList.size() != 0) {
             String files[] = new String[arrayList.size()];
             for (int i = 0; i < arrayList.size(); i++) {
-                files[i] = arrayList.get(i);
+                File file = new File(arrayList.get(i));
+                File zipFile = Compressor.getDefault(JueQianAPP.getAppContext()).compressToFile(file);
+                files[i] = zipFile.getPath();
             }
             BmobFile.uploadBatch(context, files, new UploadBatchListener() {
                 @Override

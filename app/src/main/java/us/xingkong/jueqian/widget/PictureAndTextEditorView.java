@@ -78,7 +78,7 @@ public class PictureAndTextEditorView extends android.support.v7.widget.AppCompa
         SpannableString newLine = new SpannableString("\n");
         edit_text.insert(index, newLine);//插入图片前换行
         // 创建一个SpannableString对象，以便插入用ImageSpan对象封装的图像
-        path = "<img src=\"" + path + "\" />";
+        path = "<br /><img src=\"" + path + "\" /><br />";
         //"<img src=\''+*+"\">，
         SpannableString spannableString = new SpannableString(path);
         // 根据Bitmap对象创建ImageSpan对象

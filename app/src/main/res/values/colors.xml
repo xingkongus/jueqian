@@ -21,4 +21,5 @@
     <color name="content_color">#1b1b1b</color>
     <color name="text_content">#1b1b1b</color>
     <color name="bg_color">#F5F5F5</color>
+    <color name="bg_tag">#7f3f51b5</color>
 </resources>

@@ -18,7 +18,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="12dp"
+            android:layout_margin="@dimen/dp_16"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -79,11 +79,13 @@
                 android:id="@+id/content_questionpage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:ellipsize="end"
-                android:padding="@dimen/dp_8"
-                android:text=""
-                android:textColor="@color/text_content" />
+                android:paddingBottom="@dimen/dp_8"
+                android:paddingRight="@dimen/dp_8"
+                android:paddingTop="@dimen/dp_8"
+                android:text="bbbbbbbbbbbbbb"
+                android:textColor="@color/text_content"
+                android:textSize="@dimen/sp_16" />
 
             <RelativeLayout
                 android:layout_width="wrap_content"
@@ -96,7 +98,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="@dimen/dp_8"
                     android:background="@drawable/buttonshape"
                     android:orientation="horizontal"
                     android:paddingBottom="@dimen/dp_4"
@@ -118,7 +119,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/dp_8"
-                        android:text="0"
+                        android:text=" "
                         android:textColor="@color/text_white"
                         android:textSize="16sp" />
 

@@ -22,6 +22,7 @@ import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobRealTimeData;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
+import cn.bmob.v3.datatype.BmobPointer;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.GetListener;
 import cn.bmob.v3.listener.ValueEventListener;
@@ -29,6 +30,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import us.xingkong.jueqian.JueQianAPP;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.base.BaseFragment;
+import us.xingkong.jueqian.bean.ForumBean.BombBean.NewMessage;
 import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
 import us.xingkong.jueqian.module.Login.LoginActivity;
 import us.xingkong.jueqian.module.me.myanswer.MyAnswerActivity;
@@ -146,6 +148,26 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
             }
         });
 
+        _User bmobUser = BmobUser.getCurrentUser(JueQianAPP.getAppContext(), _User.class);
+        BmobQuery<NewMessage> query = new BmobQuery<>();
+        query.addWhereEqualTo("receiver", new BmobPointer(bmobUser));
+        query.addWhereNotEqualTo("isRead", 1);
+        query.include("sender,messComment.question,messAnswer.question");
+        query.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
+        query.findObjects(JueQianAPP.getAppContext(), new FindListener<NewMessage>() {
+            @Override
+            public void onSuccess(List<NewMessage> list) {
+                if (list.size() == 0) {
+                    return;
+                }
+                mCircleImageView_redpoint.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onError(int i, String s) {
+                showToast("获取我的消息列表失败CASE:" + s);
+            }
+        });
     }
 
     private void initNickName() {

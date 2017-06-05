@@ -91,9 +91,9 @@
                 android:id="@+id/tag1_new"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="20dp"
-                android:layout_toRightOf="@+id/bt_tag_newpage"
                 android:textColor="@color/text_primary"
                 android:textSize="20sp" />
 
@@ -104,6 +104,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="20dp"
                 android:layout_toRightOf="@+id/tag1_new"
+
                 android:textColor="@color/text_primary"
                 android:textSize="20sp" />
 

@@ -332,7 +332,7 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
             }
 
 
-            holder.goodImag.setOnClickListener(new View.OnClickListener() {
+            holder.zanLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (now != null) {
@@ -345,7 +345,7 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
                                     holder.goodImag.setText("已顶");
                                     String up = (String) holder.like.getText();
                                     holder.like.setText(String.valueOf((Integer.parseInt(up)) + 1));
-                                    holder.like.setTextColor(Color.parseColor("#000000"));
+                                    holder.like.setTextColor(Color.parseColor("#ffffff"));
                                     Message message = new Message();
                                     Bundle bundle = new Bundle();
                                     bundle.putString("answerID", answers.get(position - 1).getObjectId());
@@ -372,7 +372,7 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
                                     holder.goodImag.setText("顶");
                                     String a = (String) holder.like.getText();
                                     holder.like.setText(String.valueOf((Integer.parseInt(a)) - 1));
-                                    holder.like.setTextColor(Color.parseColor("#000000"));
+                                    holder.like.setTextColor(Color.parseColor("#ffffff"));
                                     Message message = new Message();
                                     Bundle bundle = new Bundle();
                                     bundle.putString("answerID", answers.get(position - 1).getObjectId());
@@ -385,7 +385,6 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
 
                                 @Override
                                 public void onFailure(int i, String s) {
-//                                    holder.goodImag.setText("已顶");
                                     Toast.makeText(context, "传输异常", Toast.LENGTH_SHORT).show();
                                 }
                             });

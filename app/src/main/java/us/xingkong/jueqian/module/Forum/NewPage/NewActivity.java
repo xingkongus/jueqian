@@ -212,7 +212,7 @@ public class NewActivity extends BaseActivity<NewContract.Presenter> implements 
                                 tag2.setText(text[1]);
                             } else {
                                 tag1.setText(text[0]);
-                                tag2.setText("  ");
+                                tag2.setText("");
                             }
 
                         }
