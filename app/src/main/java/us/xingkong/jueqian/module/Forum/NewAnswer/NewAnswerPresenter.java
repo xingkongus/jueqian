@@ -45,6 +45,7 @@ public class NewAnswerPresenter extends BasePresenterImpl implements NewAnswerCo
             public void onSuccess() {
                 Intent intent=new Intent(context, QuestionActivity.class);
                 intent.putExtra("questionid",questionID);
+                QuestionActivity.close.finish();
                 context.startActivity(intent);
                 Message msg=new Message();
                 msg.obj=answer;

@@ -52,7 +52,7 @@ public class QuestionPresenter extends BasePresenterImpl implements QuestionCont
 
             @Override
             public void onFailure(int i, String s) {
-                mView.showToast("得到问题网络连接超时");
+                mView.showToast("网络有点差哦！");
             }
         });
 
@@ -85,7 +85,7 @@ public class QuestionPresenter extends BasePresenterImpl implements QuestionCont
 
             @Override
             public void onError(int i, String s) {
-                mView.showToast("得到回答网络连接超时");
+                mView.showToast("网络有点差哦！");
             }
         });
         return answers;
@@ -102,12 +102,16 @@ public class QuestionPresenter extends BasePresenterImpl implements QuestionCont
         question.update(context, new UpdateListener() {
             @Override
             public void onSuccess() {
-                handler.sendEmptyMessage(12);
+                mView.showToast("已赞该问题！");
+                Message msg=new Message();
+                msg.what=11;
+                msg.obj=1;
+                handler.sendMessage(msg);
             }
 
             @Override
             public void onFailure(int i, String s) {
-                mView.showToast("赞网络连接超时");
+                mView.showToast("网络有点差哦！可重新尝试下！");
             }
         });
 
@@ -126,12 +130,16 @@ public class QuestionPresenter extends BasePresenterImpl implements QuestionCont
         user.update(context, new UpdateListener() {
             @Override
             public void onSuccess() {
-                handler.sendEmptyMessage(12);//改变图标
+                mView.showToast("已收藏！");
+                Message msg=new Message();
+                msg.what=11;
+                msg.obj=3;
+                handler.sendMessage(msg);
             }
 
             @Override
             public void onFailure(int i, String s) {
-                mView.showToast("收藏网络连接超时");
+                mView.showToast("网络有点差哦！可重新尝试收藏！");
             }
         });
     }
@@ -168,12 +176,16 @@ public class QuestionPresenter extends BasePresenterImpl implements QuestionCont
         question.update(context, new UpdateListener() {
             @Override
             public void onSuccess() {
-                handler.sendEmptyMessage(13);
+                mView.showToast("已取消赞");
+                Message msg=new Message();
+                msg.what=11;
+                msg.obj=2;
+                handler.sendMessage(msg);
             }
 
             @Override
             public void onFailure(int i, String s) {
-                mView.showToast("网络连接超时");
+                mView.showToast("网络有点差哦！可重新尝试下！");
             }
         });
     }
@@ -189,12 +201,16 @@ public class QuestionPresenter extends BasePresenterImpl implements QuestionCont
         user.update(context, new UpdateListener() {
             @Override
             public void onSuccess() {
-                handler.sendEmptyMessage(11);
+                mView.showToast("已取消收藏");
+                Message msg=new Message();
+                msg.what=11;
+                msg.obj=4;
+                handler.sendMessage(msg);
             }
 
             @Override
             public void onFailure(int i, String s) {
-                mView.showToast("网络连接超时");
+                mView.showToast("网络有点差哦！可重新尝试取消收藏！");
             }
         });
     }

@@ -46,7 +46,7 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
     private static final String PAGE_COUNT = "page_count";
     ArrayList<Question> questions = new ArrayList<>();
     Boolean isRolling = false;
-    private boolean isInitRecyclewView=false;
+    private boolean isInitRecyclewView = false;
 
     public static ForumFragment getInstance(int page_count) {
         ForumFragment fra = new ForumFragment();
@@ -74,7 +74,6 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
     @Override
     protected void initView(View rootView) {
         initSwipeRefreshLayout();
-        initRecyclerview();
     }
 
     private void initSwipeRefreshLayout() {
@@ -88,7 +87,7 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
                 swipeRefreshLayout.setRefreshing(true);
                 if (isNetworkAvailable(MainActivity.instance)) {
                     mHandler.sendEmptyMessage(REQUEST_REFRESH);
-                }else {
+                } else {
                     showToast("网络不可用");
                     swipeRefreshLayout.setRefreshing(false);
                 }
@@ -100,11 +99,11 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
     @Override
     protected void initData(Bundle savedInstanceState) {
         swipeRefreshLayout.setRefreshing(true);
-        questions = (ArrayList<Question>) mPresenter.getBmobQuestion(getContext(), questions, mHandler,1);
-        if (questions != null && isInitRecyclewView == true) {
-            recyclerViewAdapter.notifyDataSetChanged();
-        }
-        swipeRefreshLayout.setRefreshing(false);
+        mPresenter.getBmobQuestion(getContext(), questions, mHandler, 1);
+//        if (questions != null && isInitRecyclewView == true) {
+//            initRecyclerview();
+//        }
+
     }
 
     @Override
@@ -126,7 +125,6 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
     }
 
     private void initRecyclerview() {
-        swipeRefreshLayout.setRefreshing(true);
         recyclerViewAdapter = new ForumRecyclerViewAdapter(questions, mHandler, getContext());
         mLayoutManager = new LinearLayoutManager(getContext());
         recyclerview.setLayoutManager(mLayoutManager);
@@ -163,8 +161,7 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
             }
         });
         recyclerview.setAdapter(recyclerViewAdapter);
-        isInitRecyclewView=true;
-        swipeRefreshLayout.setRefreshing(false);
+        isInitRecyclewView = true;
     }
 
     Handler mHandler = new Handler() {
@@ -173,26 +170,38 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
             super.handleMessage(msg);
             switch (msg.what) {
                 case REQUEST_REFRESH://刷新
-                    questions.clear();
-                    isRolling = true;
-                    setRecyclewViewBug();
                     if (isInitRecyclewView == false) {
                         initRecyclerview();
                     }
-                    mPresenter.getBmobQuestion(getContext(), questions, mHandler,2);
+                    questions.clear();
+                    isRolling = true;
+                    setRecyclewViewBug();
+                    mPresenter.getBmobQuestion(getContext(), questions, mHandler, 2);
                     break;
-                case 3:
-                    if (questions!=null&&isInitRecyclewView==true) {
+//                case 3:
+//                    if (questions != null && isInitRecyclewView == true) {
+//                        recyclerViewAdapter.notifyDataSetChanged();
+//                        swipeRefreshLayout.setRefreshing(false);
+//                        isRolling = false;
+//                        setRecyclewViewBug();
+//                    }
+//                    break;
+                case 4:
+                    swipeRefreshLayout.setRefreshing(false);
+                    isRolling = false;
+                    setRecyclewViewBug();
+                    break;
+                case 5:
+                    questions = (ArrayList<Question>) msg.obj;
+                    if (questions.size() != 0) {
+                        if (isInitRecyclewView == false) {
+                            initRecyclerview();
+                        }
                         recyclerViewAdapter.notifyDataSetChanged();
                         swipeRefreshLayout.setRefreshing(false);
                         isRolling = false;
                         setRecyclewViewBug();
                     }
-                    break;
-                case 4:
-                    swipeRefreshLayout.setRefreshing(false);
-                    isRolling = false;
-                    setRecyclewViewBug();
                     break;
             }
         }
@@ -216,16 +225,15 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
     public void onStart() {
         super.onStart();
     }
+
     public static boolean isNetworkAvailable(Context context) {
         ConnectivityManager connectivity = (ConnectivityManager) context
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connectivity != null) {
             NetworkInfo info = connectivity.getActiveNetworkInfo();
-            if (info != null && info.isConnected())
-            {
+            if (info != null && info.isConnected()) {
                 // 当前网络是连接的
-                if (info.getState() == NetworkInfo.State.CONNECTED)
-                {
+                if (info.getState() == NetworkInfo.State.CONNECTED) {
                     // 当前所连接的网络可用
                     return true;
                 }

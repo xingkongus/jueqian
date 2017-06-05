@@ -3,7 +3,6 @@ package us.xingkong.jueqian.module.Forum.QuestionPage;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -23,7 +22,6 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -79,6 +77,7 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
     private boolean isZan;
     private boolean isShouzan;
     private boolean isInitRecyclewView = false;
+    public static QuestionActivity close = null;
 
     Handler handler = new Handler() {
         @Override
@@ -98,6 +97,7 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                     if (answers != null && isInitRecyclewView == true) {
                         recyclerViewAdapter.notifyDataSetChanged();
                     }
+                    refreshLayout.setRefreshing(false);
                     break;
 //                case 4:
 //                    new MaterialDialog.Builder(mContext)
@@ -272,24 +272,21 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                     });
                     handler.sendEmptyMessage(0);
                     break;
-                case 11:
-                    shoucan.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_star2));
-                    refreshLayout.setRefreshing(false);
-                    break;
-                case 12:
-                    shoucan.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_star1));
-                    refreshLayout.setRefreshing(false);
-                    break;
-                case 13:
-                    zan.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_like1));
-                    refreshLayout.setRefreshing(false);
-                    break;
-                case 14:
-                    zan.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_like2));
-                    refreshLayout.setRefreshing(false);
-                    break;
-                case 15:
-                    zan.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_like2));
+                case 11:   //1是已赞的处理，2是取消赞处理，3是收藏后的处理，4是取消收藏后的处理
+                    int flag = (int) msg.obj;
+                    if (flag == 1) {
+                        zan.setImageResource(R.drawable.ic_action_like2);
+                        isZan = true;
+                    } else if (flag == 2) {
+                        zan.setImageResource(R.drawable.ic_action_like1);
+                        isZan = false;
+                    } else if (flag == 3) {
+                        shoucan.setImageResource(R.drawable.ic_action_star2);
+                        isShouzan = true;
+                    } else if (flag == 4) {
+                        shoucan.setImageResource(R.drawable.ic_action_star1);
+                        isShouzan = false;
+                    }
                     break;
             }
         }
@@ -335,6 +332,7 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
     @Override
     protected void prepareData() {
         mContext = this;
+        close = this;
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         questionID = bundle.getString("questionid");
@@ -377,7 +375,6 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
         } else {
             showToast("网络不可用");
         }
-        refreshLayout.setRefreshing(false);
         if (user != null) {
             final String userID = user.getObjectId();
             BmobQuery<_User> likeQuery = new BmobQuery<>();
@@ -390,13 +387,13 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                     for (_User user : list) {
                         if (user.getObjectId().equals(userID)) {
                             if (zan == null) return;
-                            zan.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_like2));
+                            zan.setImageResource(R.drawable.ic_action_like2);
                             isZan = true;
                             return;
                         } else {
                             isZan = false;
                             if (zan == null) return;
-                            zan.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_like1));
+                            zan.setImageResource(R.drawable.ic_action_like1);
                         }
                     }
                 }
@@ -415,13 +412,13 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                     for (Question question : list) {
                         if (question.getObjectId().equals(questionID)) {
                             if (shoucan == null) return;
-                            shoucan.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_star2));
+                            shoucan.setImageResource(R.drawable.ic_action_star2);
                             isShouzan = true;
                             return;
                         } else {
                             isShouzan = false;
                             if (shoucan == null) return;
-                            shoucan.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_star1));
+                            shoucan.setImageResource(R.drawable.ic_action_star1);
                         }
                     }
                 }
@@ -434,15 +431,14 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
         } else {
             if (zan == null) return;
             if (shoucan == null) return;
-            zan.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_like1));
-            shoucan.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_star1));
+            zan.setPressed(false);
+            shoucan.setPressed(false);
         }
 
     }
 
     private void initRecyClerView() {
         if (recyclerviewQuestionpage == null) return;
-        refreshLayout.setRefreshing(true);
         recyclerViewAdapter = new QuestionRecyclerViewAdapter(mContext, getQuestion, answers, handler);
         recyclerviewQuestionpage.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
         recyclerviewQuestionpage.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
@@ -476,7 +472,6 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
         });
         recyclerviewQuestionpage.setAdapter(recyclerViewAdapter);
         isInitRecyclewView = true;
-        refreshLayout.setRefreshing(false);
     }
 
 
@@ -504,7 +499,7 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                 }
             }
         });
-        zan.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_like1));
+
         zan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -515,15 +510,11 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                 } else {
                     if (isNetworkAvailable(mContext)) {
                         if (isZan == true) {
-                            refreshLayout.setRefreshing(true);
                             mPresenter.quxiaoZan(mContext, questionID, handler);
-                            zan.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_like1));
-                            isZan = false;
+
                         } else {
-                            refreshLayout.setRefreshing(true);
                             mPresenter.zan(mContext, handler, questionID);
-                            zan.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_like2));
-                            isZan = true;
+
                         }
                     } else {
                         showToast("网络不可用");
@@ -531,6 +522,7 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                 }
             }
         });
+
         shoucan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -541,15 +533,11 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                 } else {
                     if (isNetworkAvailable(mContext)) {
                         if (isShouzan == true) {
-                            refreshLayout.setRefreshing(true);
                             mPresenter.quxiaoShouzan(mContext, questionID, handler);
-//                            shoucan.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_star1));
-                            isShouzan = false;
+
                         } else if (isShouzan == false) {
-                            refreshLayout.setRefreshing(true);
                             mPresenter.shoucan(mContext, handler, questionID, question_userID);
-//                            shoucan.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_star2));
-                            isShouzan = true;
+
                         }
                     } else {
                         showToast("网络不可用");
