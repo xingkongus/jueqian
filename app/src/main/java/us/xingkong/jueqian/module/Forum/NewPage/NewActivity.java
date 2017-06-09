@@ -112,6 +112,7 @@ public class NewActivity extends BaseActivity<NewContract.Presenter> implements 
     protected void prepareData() {
         mContext = this;
         close = this;
+
     }
 
     @Override
