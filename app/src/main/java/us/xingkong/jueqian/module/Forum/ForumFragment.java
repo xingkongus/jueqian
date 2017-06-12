@@ -16,6 +16,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -47,6 +48,7 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
     ArrayList<Question> questions = new ArrayList<>();
     Boolean isRolling = false;
     private boolean isInitRecyclewView = false;
+    private int item_count;
 
     public static ForumFragment getInstance(int page_count) {
         ForumFragment fra = new ForumFragment();
@@ -131,23 +133,35 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
 //        recyclerview.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         recyclerview.setItemAnimator(new DefaultItemAnimator());
         recyclerview.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-//                super.onScrollStateChanged(recyclerView, newState);
-//
-//                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                LinearLayoutManager manager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {  // 当不滚动时
+                    int lastVisibleItem = manager.findLastCompletelyVisibleItemPosition();
+                    int totalItemCount = manager.getItemCount();
+                    // 判断是否滚动到底部
+                    if (lastVisibleItem == (totalItemCount - 1)) {
+                        //加载更多功能的代码
+                        ArrayList<Question>newQuestions=new ArrayList<>();
+                        mPresenter.getMoreBmobQuestion(getContext(),newQuestions,mHandler,item_count);
+                    }
+
+
+
+
 //                    if (!recyclerView.canScrollVertically(1)) {
-//
+//                        mPresenter.getMoreBmobQuestion(getContext(),questions,mHandler,item_count);
 //                    }
 //                    if (!recyclerView.canScrollVertically(-1)) {
 //                        showToast("刷新");
 //                        swipeRefreshLayout.setRefreshing(true);
 //                        mHandler.sendEmptyMessage(REQUEST_REFRESH);
-//
 //                    }
-//                }
-//
-//            }
+                }
+
+            }
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -159,6 +173,7 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
                     handler.sendEmptyMessage(1);
                 }
             }
+
         });
         recyclerview.setAdapter(recyclerViewAdapter);
         isInitRecyclewView = true;
@@ -196,12 +211,27 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
                     if (questions.size() != 0) {
                         if (isInitRecyclewView == false) {
                             initRecyclerview();
+                            item_count=20;
                         }
                         recyclerViewAdapter.notifyDataSetChanged();
                         swipeRefreshLayout.setRefreshing(false);
                         isRolling = false;
                         setRecyclewViewBug();
                     }
+                    break;
+                case 6://加载更多返回的数据操作
+                    List<Question>newQuestion= (List<Question>) msg.obj;
+                    if (newQuestion.size() != 0) {
+                        recyclerViewAdapter.addMoreItem(newQuestion);
+                        recyclerViewAdapter.changeMoreStatus(ForumRecyclerViewAdapter.LOADING_MORE);
+                        item_count+=20;
+                    }else{
+                        recyclerViewAdapter.changeMoreStatus(ForumRecyclerViewAdapter.NO_MORE);
+                    }
+
+                    break;
+                case 7://没有更多信息
+                    recyclerViewAdapter.changeMoreStatus(ForumRecyclerViewAdapter.NO_MORE);
                     break;
             }
         }

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_mymessage"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/item_allmessage_circleimageview"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginLeft="@dimen/dp_16"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:src="@mipmap/ic_launcher" />
+
+    <TextView
+        android:id="@+id/item_allmessage_tv_nickname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/item_allmessage_circleimageview"
+        android:layout_toRightOf="@id/item_allmessage_circleimageview"
+        android:text=""
+        android:textColor="@color/text_username"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/item_allmessage_tv_action"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/item_allmessage_tv_nickname"
+        android:layout_marginLeft="@dimen/dp_16"
+        android:layout_toRightOf="@id/item_allmessage_tv_nickname"
+        android:text="回复"
+        android:textColor="@color/text_pinglun"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/item_allmessage_tv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/item_allmessage_tv_nickname"
+        android:layout_below="@id/item_allmessage_tv_nickname"
+        android:layout_marginTop="8dp"
+        android:textSize="@dimen/sp_14" />
+
+
+    <TextView
+        android:id="@+id/item_allmessage_tv_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/item_allmessage_tv_nickname"
+        android:layout_below="@id/item_allmessage_tv_time"
+        android:layout_marginTop="8dp"
+        android:text=""
+        android:textColor="@color/text_content"
+        android:textSize="@dimen/sp_18" />
+
+
+</RelativeLayout>

@@ -102,7 +102,7 @@ public class QuestionPresenter extends BasePresenterImpl implements QuestionCont
         question.update(context, new UpdateListener() {
             @Override
             public void onSuccess() {
-                mView.showToast("已赞该问题！");
+//                mView.showToast("已赞该问题！");
                 Message msg=new Message();
                 msg.what=11;
                 msg.obj=1;
@@ -130,7 +130,7 @@ public class QuestionPresenter extends BasePresenterImpl implements QuestionCont
         user.update(context, new UpdateListener() {
             @Override
             public void onSuccess() {
-                mView.showToast("已收藏！");
+//                mView.showToast("已收藏！");
                 Message msg=new Message();
                 msg.what=11;
                 msg.obj=3;

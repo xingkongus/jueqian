@@ -23,7 +23,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,6 +96,7 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                     if (answers != null && isInitRecyclewView == true) {
                         recyclerViewAdapter.notifyDataSetChanged();
                     }
+                    if (refreshLayout == null) return;
                     refreshLayout.setRefreshing(false);
                     break;
 //                case 4:
@@ -275,15 +275,19 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                 case 11:   //1是已赞的处理，2是取消赞处理，3是收藏后的处理，4是取消收藏后的处理
                     int flag = (int) msg.obj;
                     if (flag == 1) {
+                        if (zan == null) return;
                         zan.setImageResource(R.drawable.ic_action_like2);
                         isZan = true;
                     } else if (flag == 2) {
+                        if (zan == null) return;
                         zan.setImageResource(R.drawable.ic_action_like1);
                         isZan = false;
                     } else if (flag == 3) {
+                        if (shoucan == null) return;
                         shoucan.setImageResource(R.drawable.ic_action_star2);
                         isShouzan = true;
                     } else if (flag == 4) {
+                        if (shoucan == null) return;
                         shoucan.setImageResource(R.drawable.ic_action_star1);
                         isShouzan = false;
                     }
@@ -341,6 +345,13 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
         if (user != null && questionID != null && question_userID != null) {
             mPresenter.addRecentlook(mContext, questionID, question_userID, user);
         }
+        if (user != null) {
+            if (question_userID.equals(user.getObjectId())) {
+                if (shoucan == null) return;
+                shoucan.setVisibility(View.GONE);
+                shoucan.setEnabled(false);
+            }
+        }
 
     }
 
@@ -351,7 +362,7 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                Toast.makeText(getApplicationContext(), "刷新", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), "刷新", Toast.LENGTH_SHORT).show();
                 if (isNetworkAvailable(mContext)) {
                     handler.sendEmptyMessage(5);
                 } else {

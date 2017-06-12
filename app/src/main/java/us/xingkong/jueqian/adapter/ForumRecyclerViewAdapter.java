@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -27,7 +28,16 @@ import us.xingkong.jueqian.module.me.mainpage.MainPageAcitivity;
  * Created by Garfield on 1/9/17.
  */
 
-public class ForumRecyclerViewAdapter extends RecyclerView.Adapter<ForumRecyclerViewAdapter.VH> {
+public class ForumRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private static final int TYPE_ITEM = 0;  //普通Item View
+    private static final int TYPE_FOOTER = 1;  //顶部FootView
+    //上拉加载更多
+    public static final int  PULLUP_LOAD_MORE=0;
+    //正在加载中
+    public static final int  LOADING_MORE=1;
+    public static final int  NO_MORE=2;
+    //上拉加载更多状态-默认为0
+    private int load_more_status=0;
     List<Question> infoSets;
     Handler mHandler;
     Context mContext;
@@ -42,78 +52,105 @@ public class ForumRecyclerViewAdapter extends RecyclerView.Adapter<ForumRecycler
     }
 
     @Override
-    public VH onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new VH(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_forum_main, parent, false));
+    public int getItemViewType(int position) {
+        if (position + 1 == getItemCount()) {
+            return TYPE_FOOTER;
+        } else {
+            return TYPE_ITEM;
+        }
     }
 
     @Override
-    public void onBindViewHolder(final VH holder, final int position) {
-        bmobFile = infoSets.get(position).getUser().getProfile();
-        if (bmobFile != null) {
-            Picasso.with(mContext).load(bmobFile.getUrl()).into(holder.profile);
-//                    bmobFile.download(mContext, new DownloadFileListener() {
-//                        @Override
-//                        public void onSuccess(String s) {
-//                            File file = new File(s);
-//                            if (file.exists()) {
-//                                Bitmap bm = BitmapFactory.decodeFile(s);
-//                                holder.profile.setImageBitmap(bm);
-//                            } else {
-//                                return;
-//                            }
-//                        }
-//
-//                        @Override
-//                        public void onFailure(int i, String s) {
-//                            Toast.makeText(mContext, "网络连接超时", Toast.LENGTH_SHORT).show();
-//                        }
-//                    });
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if (viewType == TYPE_ITEM) {
+            return new VH(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_forum_main, parent, false));
+        } else if (viewType == TYPE_FOOTER) {
+            return new Footer(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_loadmore, parent, false));
         } else {
-            holder.profile.setBackgroundResource(R.mipmap.ic_launcher);
-        }
-        holder.title.setText(infoSets.get(position).getMtitle());
-        holder.tag1.setText(infoSets.get(position).getTAG1_ID());
-        holder.tag2.setText(infoSets.get(position).getTAG2_ID());
-        holder.count_answer.setText(infoSets.get(position).getAnswer_count() + "回答");
-        if (infoSets.get(position).getUser().getNickname() != null) {
-            holder.username.setText(infoSets.get(position).getUser().getNickname());
-        } else {
-            holder.username.setText(infoSets.get(position).getUser().getUsername());
+            return null;
         }
 
-        if (infoSets.get(position).getUser().getState() == 2) {
-            holder.userState.setVisibility(View.VISIBLE);
-        } else {
-            holder.userState.setVisibility(View.GONE);
-        }
-
-
-        holder.linearLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                questionID = infoSets.get(position).getObjectId();
-                userID = infoSets.get(position).getUser().getObjectId();
-                Intent intent = new Intent(mContext, QuestionActivity.class);
-                intent.putExtra("questionid", questionID);
-                intent.putExtra("question_userID", userID);
-                mContext.startActivity(intent);
-            }
-        });
-        holder.item.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(JueQianAPP.getAppContext(), MainPageAcitivity.class);
-                intent.putExtra("intentUserID", infoSets.get(position).getUser().getObjectId());
-                mContext.startActivity(intent);
-            }
-        });
-
+//        return new VH(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_forum_main, parent, false));
     }
 
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+        if (holder instanceof VH) {
+            final VH vh = (VH) holder;
+            bmobFile = infoSets.get(position).getUser().getProfile();
+            if (bmobFile != null) {
+                Picasso.with(mContext).load(bmobFile.getUrl()).into(vh.profile);
 
+            } else {
+                vh.profile.setBackgroundResource(R.mipmap.ic_launcher);
+            }
+            vh.title.setText(infoSets.get(position).getMtitle());
+            vh.tag1.setText(infoSets.get(position).getTAG1_ID());
+            vh.tag2.setText(infoSets.get(position).getTAG2_ID());
+            vh.count_answer.setText(infoSets.get(position).getAnswer_count() + "回答");
+            if (infoSets.get(position).getUser().getNickname() != null) {
+                vh.username.setText(infoSets.get(position).getUser().getNickname());
+            } else {
+                vh.username.setText(infoSets.get(position).getUser().getUsername());
+            }
+
+            if (infoSets.get(position).getUser().getState() == 2) {
+                vh.userState.setVisibility(View.VISIBLE);
+            } else {
+                vh.userState.setVisibility(View.GONE);
+            }
+
+
+            vh.linearLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    questionID = infoSets.get(position).getObjectId();
+                    userID = infoSets.get(position).getUser().getObjectId();
+                    Intent intent = new Intent(mContext, QuestionActivity.class);
+                    intent.putExtra("questionid", questionID);
+                    intent.putExtra("question_userID", userID);
+                    mContext.startActivity(intent);
+                }
+            });
+            vh.item.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(JueQianAPP.getAppContext(), MainPageAcitivity.class);
+                    intent.putExtra("intentUserID", infoSets.get(position).getUser().getObjectId());
+                    mContext.startActivity(intent);
+                }
+            });
+        }
+        if (holder instanceof Footer) {
+            final Footer footer = (Footer) holder;
+            switch (load_more_status){
+                case PULLUP_LOAD_MORE:
+                    footer.pro.setVisibility(View.GONE);
+                    footer.loadmore.setText("上拉加载更多...");
+                    break;
+                case LOADING_MORE:
+                    footer.pro.setVisibility(View.VISIBLE);
+                    footer.loadmore.setText("正在加载更多数据...");
+                    break;
+                case NO_MORE:
+                    footer.loadmore.setText("已经没有更多啦...");
+                    footer.pro.setVisibility(View.GONE);
+                    break;
+            }
+        }
+    }
+    public void addMoreItem(List<Question> newDatas) {
+        infoSets.addAll(newDatas);
+        notifyDataSetChanged();
+    }
+
+    public void changeMoreStatus(int status){
+        load_more_status=status;
+        notifyDataSetChanged();
+    }
     @Override
     public int getItemCount() {
-        return infoSets.size();
+        return infoSets.size()+1;
     }
 
 
@@ -139,6 +176,15 @@ public class ForumRecyclerViewAdapter extends RecyclerView.Adapter<ForumRecycler
             tag1 = (TextView) itemView.findViewById(R.id.TAG1_forum);
             tag2 = (TextView) itemView.findViewById(R.id.TAG2_forum);
             item = (LinearLayout) itemView.findViewById(R.id.forum_mainpager);
+        }
+    }
+    class Footer extends RecyclerView.ViewHolder{
+    TextView loadmore;
+        ProgressBar pro;
+        public Footer(View itemView) {
+            super(itemView);
+            loadmore= (TextView) itemView.findViewById(R.id.item_loadmore_text);
+            pro= (ProgressBar) itemView.findViewById(R.id.pro);
         }
     }
 

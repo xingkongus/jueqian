@@ -2,11 +2,7 @@ package us.xingkong.jueqian.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.PixelFormat;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -158,7 +154,7 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
 //                        DisplayMetrics dm = context.getResources().getDisplayMetrics();
 //                        int imageSize = dm.widthPixels;
                         float imageSize = holder.content_question.getTextSize();
-                        String text=getQuestion.getMcontent();
+                        String text = getQuestion.getMcontent();
 //                        SpannableString spannableString = new SpannableString(text);
                         Pattern p = Pattern.compile("\\/[^ .]+.(gif|jpg|jpeg|png)");//"\\/[^ .]+.(gif|jpg|jpeg|png)" <img src="[^"]+" />
                         final Matcher matcher = p.matcher(text);
@@ -170,7 +166,7 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
 //                            imageSpan = new ImageSpan(drawable,ImageSpan.ALIGN_BOTTOM);
 //                            spannableString.setSpan(imageSpan, matcher.start(), matcher.end(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 //                            spannableString.removeSpan(imageSpan);
-                            text=text.replace(matcher.group(),url);
+                            text = text.replace(matcher.group(), url);
 
                             list.remove(0);
                         }
@@ -332,7 +328,7 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
             }
 
 
-            holder.goodImag.setOnClickListener(new View.OnClickListener() {
+            holder.zanLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (now != null) {
@@ -345,7 +341,7 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
                                     holder.goodImag.setText("已顶");
                                     String up = (String) holder.like.getText();
                                     holder.like.setText(String.valueOf((Integer.parseInt(up)) + 1));
-                                    holder.like.setTextColor(Color.parseColor("#303F9F"));
+                                    holder.like.setTextColor(Color.parseColor("#ffffff"));
                                     Message message = new Message();
                                     Bundle bundle = new Bundle();
                                     bundle.putString("answerID", answers.get(position - 1).getObjectId());
@@ -372,7 +368,7 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
                                     holder.goodImag.setText("顶");
                                     String a = (String) holder.like.getText();
                                     holder.like.setText(String.valueOf((Integer.parseInt(a)) - 1));
-                                    holder.like.setTextColor(Color.parseColor("#000000"));
+                                    holder.like.setTextColor(Color.parseColor("#ffffff"));
                                     Message message = new Message();
                                     Bundle bundle = new Bundle();
                                     bundle.putString("answerID", answers.get(position - 1).getObjectId());
@@ -385,7 +381,7 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
 
                                 @Override
                                 public void onFailure(int i, String s) {
-                                    holder.goodImag.setText("已顶");
+                                    Toast.makeText(context, "传输异常", Toast.LENGTH_SHORT).show();
                                 }
                             });
                         }
@@ -413,7 +409,7 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
             });
         }
 
-
+        mHandler.sendEmptyMessage(15);
     }
 
     @Override
@@ -465,28 +461,4 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
     }
 
 
-    public static Bitmap drawableToBitmap(Drawable drawable) {
-
-
-        Bitmap bitmap = Bitmap.createBitmap(
-
-                drawable.getIntrinsicWidth(),
-
-                drawable.getIntrinsicHeight(),
-
-                drawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888
-
-                        : Bitmap.Config.RGB_565);
-
-        Canvas canvas = new Canvas(bitmap);
-
-        //canvas.setBitmap(bitmap);
-
-        drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-
-        drawable.draw(canvas);
-
-        return bitmap;
-
-    }
 }

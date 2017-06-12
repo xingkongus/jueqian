@@ -41,6 +41,7 @@
         <activity android:name=".module.Forum.QuestionPage.AnwserPage.AnswerActivity" />
         <activity android:name=".module.Forum.NewPage.NewActivity" />
         <activity android:name=".module.me.mymessage.MyMessageActivity" />
+        <activity android:name=".module.me.mymessage.allmessage.AllMessageActivity" />
         <activity android:name=".module.me.mycollection.MyCollectionActivity" />
         <activity android:name=".module.me.myanswer.MyAnswerActivity" />
         <activity android:name=".module.me.myrecentlook.MyRecentLookActivity" />
