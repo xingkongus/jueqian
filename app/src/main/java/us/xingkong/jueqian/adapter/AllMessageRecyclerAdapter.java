@@ -90,6 +90,7 @@ public class AllMessageRecyclerAdapter extends RecyclerView.Adapter<AllMessageRe
                         if (bmobFile == null) {
                             return;
                         }
+                        if (holder.civ_touxiang == null) return;
                         String profileURL = bmobFile.getUrl();
                         Glide.with(JueQianAPP.getAppContext()).load(profileURL).into(holder.civ_touxiang);
                     }
@@ -142,6 +143,7 @@ public class AllMessageRecyclerAdapter extends RecyclerView.Adapter<AllMessageRe
                             return;
                         }
                         String profileURL = bmobFile.getUrl();
+                        if (holder.civ_touxiang == null) return;
                         Glide.with(JueQianAPP.getAppContext()).load(profileURL).into(holder.civ_touxiang);
                     }
 

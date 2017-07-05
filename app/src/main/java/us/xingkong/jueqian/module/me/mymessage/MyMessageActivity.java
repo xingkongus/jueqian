@@ -93,6 +93,7 @@ public class MyMessageActivity extends BaseActivity<MyMessageContract.Presenter>
         BmobQuery<NewMessage> query = new BmobQuery<>();
         query.addWhereEqualTo("receiver", new BmobPointer(bmobUser));
         query.addWhereNotEqualTo("isRead", 1);
+        query.order("createdAt");
         query.include("sender,messComment.question,messAnswer.question");
         query.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
         query.findObjects(JueQianAPP.getAppContext(), new FindListener<NewMessage>() {

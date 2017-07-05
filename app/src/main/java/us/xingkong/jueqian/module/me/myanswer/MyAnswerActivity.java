@@ -89,6 +89,7 @@ public class MyAnswerActivity extends BaseActivity<MyAnswerContract.Presenter> i
         BmobQuery<Answer> query = new BmobQuery<Answer>();
         query.addWhereRelatedTo("answers", new BmobPointer(bmobUser));
         query.include("question");
+        query.order("-createdAt");
         query.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
         query.findObjects(JueQianAPP.getAppContext(), new FindListener<Answer>() {
             @Override

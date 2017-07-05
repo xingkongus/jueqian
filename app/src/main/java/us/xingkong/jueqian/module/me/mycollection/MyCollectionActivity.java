@@ -86,6 +86,7 @@ public class MyCollectionActivity extends BaseActivity<MyCollectionContract.Pres
         user.setObjectId(intentUserID);
         BmobQuery<Question> query = new BmobQuery<Question>();
         query.addWhereRelatedTo("collections", new BmobPointer(user));
+        query.order("createdAt");
         query.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
         query.findObjects(JueQianAPP.getAppContext(), new FindListener<Question>() {
             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
