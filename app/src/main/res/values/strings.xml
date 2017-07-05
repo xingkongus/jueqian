@@ -21,6 +21,7 @@
     <string name="menu_allmessage">全部消息</string>
     <string name="menu_finish">完成</string>
 
+
     <string-array name="tab_title">
         <item>论坛</item>
         <item>干货</item>
