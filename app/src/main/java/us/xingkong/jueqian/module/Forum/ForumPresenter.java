@@ -4,7 +4,6 @@ package us.xingkong.jueqian.module.Forum;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,7 +81,6 @@ public class ForumPresenter extends BasePresenterImpl implements ForumContract.P
         query.setLimit(20);
         query.order("-createdAt");
         query.include("user");
-        Log.e("tttt","skip:"+item_count);
         query.findObjects(context, new FindListener<Question>() {
             @Override
             public void onSuccess(List<Question> list) {
@@ -98,7 +96,6 @@ public class ForumPresenter extends BasePresenterImpl implements ForumContract.P
                     questions.add(question);
 
                 }
-                Log.e("tttt","size:"+questions.size());
                 Message msg=new Message();
                 msg.obj=questions;
                 msg.what=6;

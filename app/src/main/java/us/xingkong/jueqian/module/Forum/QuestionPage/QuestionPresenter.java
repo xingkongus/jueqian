@@ -63,6 +63,7 @@ public class QuestionPresenter extends BasePresenterImpl implements QuestionCont
     public ArrayList<Answer> getQuestionAnswer(Context context, final Handler handler, String questionID, final ArrayList<Answer> answers) {
         BmobQuery<Answer> query = new BmobQuery<>();
         query.include("user,question.user");
+        query.setLimit(20);
         Question question = new Question();
         question.setObjectId(questionID);
         query.addWhereEqualTo("question", new BmobPointer(question));
@@ -280,5 +281,41 @@ public class QuestionPresenter extends BasePresenterImpl implements QuestionCont
                 }
             });
         }
+    }
+
+    @Override
+    public void getMoreAnswer(Context context, final ArrayList<Answer> newAnswers, final Handler handler, int item_count, String questionID) {
+        BmobQuery<Answer> query = new BmobQuery<>();
+        query.setSkip(item_count);
+        query.include("user,question.user");
+        query.setLimit(20);
+        Question question = new Question();
+        question.setObjectId(questionID);
+        query.addWhereEqualTo("question", new BmobPointer(question));
+        query.order("-createdAt");
+        query.findObjects(context, new FindListener<Answer>() {
+            @Override
+            public void onSuccess(List<Answer> list) {
+                for (Answer answer : list) {
+                    answer.getUser();
+                    answer.getMcontent();
+                    answer.getUps();
+                    answer.getState();
+                    answer.getObjectId();
+                    newAnswers.add(answer);
+                }
+                if (newAnswers != null) {
+                    Message msg=new Message();
+                    msg.obj=newAnswers;
+                    msg.what=12;
+                    handler.sendMessage(msg);
+                }
+            }
+
+            @Override
+            public void onError(int i, String s) {
+                mView.showToast("网络有点差哦！");
+            }
+        });
     }
 }

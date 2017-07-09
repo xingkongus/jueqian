@@ -62,6 +62,7 @@ public class CommentPresenter extends BasePresenterImpl implements CommentContra
         query.addWhereEqualTo("answer", new BmobPointer(answer));
         query.include("user");
         query.order("-createdAt");
+        query.setLimit(20);
         query.findObjects(context, new FindListener<Comment>() {
             @Override
             public void onSuccess(List<Comment> list) {
@@ -138,5 +139,39 @@ public class CommentPresenter extends BasePresenterImpl implements CommentContra
             }
         });
 
+    }
+
+    @Override
+    public void getMoreComment(Context context, final Handler handler, String answerID, final ArrayList<Comment> newComments, int item_count) {
+        BmobQuery<Comment> query = new BmobQuery<>();
+        query.setLimit(20);
+        query.setSkip(item_count);
+        Answer answer = new Answer();
+        answer.setObjectId(answerID);
+        query.addWhereEqualTo("answer", new BmobPointer(answer));
+        query.include("user");
+        query.order("-createdAt");
+        query.findObjects(context, new FindListener<Comment>() {
+            @Override
+            public void onSuccess(List<Comment> list) {
+                for (Comment comment : list) {
+                    comment.getState();
+                    comment.getUser();
+                    comment.getMcontent();
+                    newComments.add(comment);
+                }
+                if (newComments != null) {
+                    Message msg=new Message();
+                    msg.obj=newComments;
+                    msg.what=7;
+                    handler.sendMessage(msg);
+                }
+            }
+
+            @Override
+            public void onError(int i, String s) {
+                mView.showToast("网络连接超时");
+            }
+        });
     }
 }

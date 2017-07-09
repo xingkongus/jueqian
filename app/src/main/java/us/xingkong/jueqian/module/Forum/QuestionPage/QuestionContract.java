@@ -34,5 +34,7 @@ public interface QuestionContract {
         void zanStateChange(Context context, String questionID, int flag);
 
         void shouzanStateChange(Context context, String questionID, int flag);
+
+        void getMoreAnswer(Context context,ArrayList<Answer> newAnswers,Handler handler,int item_count,String questionID);
     }
 }

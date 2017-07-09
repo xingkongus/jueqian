@@ -77,6 +77,8 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
     private boolean isShouzan;
     private boolean isInitRecyclewView = false;
     public static QuestionActivity close = null;
+    private int item_count=0;//记载跳过的回答数
+
 
     Handler handler = new Handler() {
         @Override
@@ -95,9 +97,11 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                 case 3:
                     if (answers != null && isInitRecyclewView == true) {
                         recyclerViewAdapter.notifyDataSetChanged();
+                        item_count=20;
                     }
-                    if (refreshLayout == null) return;
-                    refreshLayout.setRefreshing(false);
+                    if (refreshLayout != null) {
+                        refreshLayout.setRefreshing(false);
+                    }
                     break;
 //                case 4:
 //                    new MaterialDialog.Builder(mContext)
@@ -121,6 +125,7 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                     refreshLayout.setRefreshing(false);
                     isRolling = false;
                     setRecyclewViewBug();
+                    item_count=20;
                     break;
                 case 6:
                     backgroundAlpha(0.5f);
@@ -292,6 +297,16 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                         isShouzan = false;
                     }
                     break;
+                case 12:
+                    List<Answer>newAnswers= (List<Answer>) msg.obj;
+                    if (newAnswers.size() != 0) {
+                        recyclerViewAdapter.addMoreItem(newAnswers);
+                        recyclerViewAdapter.changeMoreStatus(QuestionRecyclerViewAdapter.LOADING_MORE);
+                        item_count+=20;
+                    }else{
+                        recyclerViewAdapter.changeMoreStatus(QuestionRecyclerViewAdapter.NO_MORE);
+                    }
+                    break;
             }
         }
     };
@@ -454,10 +469,23 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
         recyclerviewQuestionpage.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
         recyclerviewQuestionpage.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         recyclerviewQuestionpage.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-//                super.onScrollStateChanged(recyclerView, newState);
-//                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                LinearLayoutManager manager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    int lastVisibleItem = manager.findLastCompletelyVisibleItemPosition();
+                    int totalItemCount = manager.getItemCount();
+                    // 判断是否滚动到底部
+                    if (lastVisibleItem == (totalItemCount - 1)) {
+                        //加载更多功能的代码
+                        ArrayList<Answer>newAnswers =new ArrayList<Answer>();
+                        mPresenter.getMoreAnswer(mContext,newAnswers,handler,item_count,questionID);
+                    }
+
+
+
+
 //                    if (!recyclerView.canScrollVertically(1)) {
 ////                        Toast.makeText(getApplicationContext(), "到底啦", Toast.LENGTH_SHORT).show();
 //                    }
@@ -467,8 +495,8 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
 //                        handler.sendEmptyMessage(5);
 //
 //                    }
-//                }
-//            }
+                }
+            }
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {

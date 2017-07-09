@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +21,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
@@ -43,6 +45,14 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     private BmobFile bmobFile_comments;
     private String questionID;
     private String question_userID;
+    private static final int FOOTER = 3;  //底部FootView
+    //上拉加载更多
+    public static final int PULLUP_LOAD_MORE = 0;
+    //正在加载中
+    public static final int LOADING_MORE = 1;
+    public static final int NO_MORE = 2;
+    //上拉加载更多状态-默认为0
+    private int load_more_status = 0;
 
     public CommentRecyclerViewAdapter(Context context, Handler mHandler, Answer answer, ArrayList<Comment> comments, String questionID, String question_userID) {
         this.mHandler = mHandler;
@@ -61,6 +71,15 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         mHandler.sendMessage(msg);
     }
 
+    public void addMoreItem(List<Comment> newDatas) {
+        comments.addAll(newDatas);
+        notifyDataSetChanged();
+    }
+
+    public void changeMoreStatus(int status) {
+        load_more_status = status;
+        notifyDataSetChanged();
+    }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -68,6 +87,8 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
             return new VH_head(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_comment_head, parent, false));
         } else if (viewType == TWO) {
             return new VH_comment(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_comment, parent, false));
+        }else if(viewType==FOOTER){
+            return new vh_footer(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_loadmore, parent, false));
         } else {
             return null;
         }
@@ -258,18 +279,37 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                 vh_comment.delete_comments.setClickable(false);
             }
         }
+        if (holder instanceof vh_footer) {
+            final vh_footer footer = (vh_footer) holder;
+            switch (load_more_status) {
+                case PULLUP_LOAD_MORE:
+                    footer.pro.setVisibility(View.GONE);
+                    footer.loadmore.setText("上拉加载更多...");
+                    break;
+                case LOADING_MORE:
+                    footer.pro.setVisibility(View.VISIBLE);
+                    footer.loadmore.setText("正在加载更多数据...");
+                    break;
+                case NO_MORE:
+                    footer.loadmore.setText("已经没有更多啦...");
+                    footer.pro.setVisibility(View.GONE);
+                    break;
+            }
+        }
     }
 
 
     @Override
     public int getItemCount() {
-        return comments.size() + 1;
+        return comments.size() + 2;
     }
 
     @Override
     public int getItemViewType(int position) {
         if (position == 0) {
             return ONE;
+        } else if (position + 1 == getItemCount()) {
+            return FOOTER;
         } else {
             return TWO;
         }
@@ -315,4 +355,15 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
             lebal_comment = (ImageView) itemView.findViewById(R.id.lebal_comment);
         }
     }
+    class vh_footer extends RecyclerView.ViewHolder {
+        TextView loadmore;
+        ProgressBar pro;
+
+        public vh_footer(View itemView) {
+            super(itemView);
+            loadmore = (TextView) itemView.findViewById(R.id.item_loadmore_text);
+            pro = (ProgressBar) itemView.findViewById(R.id.pro);
+        }
+    }
+
 }
