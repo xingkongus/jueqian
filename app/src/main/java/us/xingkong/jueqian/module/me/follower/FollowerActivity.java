@@ -101,6 +101,7 @@ public class FollowerActivity extends BaseActivity<FollowerContract.Presenter> i
     }
 
     private void initRecyclerView() {
+        if (mRecyclerView==null) return;
         followerAdapter = new FollowerAdapter(mHandler, followers,this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(followerAdapter);

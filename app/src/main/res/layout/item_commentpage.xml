@@ -28,7 +28,6 @@
                 android:id="@+id/username_commentpage"
                 android:layout_width="56dp"
                 android:layout_height="wrap_content"
-
                 android:text="菠萝小莫" />
 
             <ImageView

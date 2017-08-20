@@ -30,11 +30,11 @@ public class NewAnswerPresenter extends BasePresenterImpl implements NewAnswerCo
 
 
     @Override
-    public void addNewAnswer(final Context context, String newAnswer, final String questionID, final Handler handler,String question_userID) {
-        _User user= BmobUser.getCurrentUser(context,_User.class);
-        Question question=new Question();
+    public void addNewAnswer(final Context context, String newAnswer, final String questionID, final Handler handler, String question_userID) {
+        final _User user = BmobUser.getCurrentUser(context, _User.class);
+        final Question question = new Question();
         question.setObjectId(questionID);
-        final Answer answer=new Answer();
+        final Answer answer = new Answer();
         answer.setUser(user);
         answer.setQuestion(question);
         answer.setMcontent(newAnswer);
@@ -43,12 +43,14 @@ public class NewAnswerPresenter extends BasePresenterImpl implements NewAnswerCo
         answer.save(context, new SaveListener() {
             @Override
             public void onSuccess() {
-                Intent intent=new Intent(context, QuestionActivity.class);
-                intent.putExtra("questionid",questionID);
+                Intent intent = new Intent(context, QuestionActivity.class);
+                intent.putExtra("questionid", questionID);
+                intent.putExtra("question_userID", user.getObjectId());
+                QuestionActivity.close.finish();
                 context.startActivity(intent);
-                Message msg=new Message();
-                msg.obj=answer;
-                msg.what=0;
+                Message msg = new Message();
+                msg.obj = answer;
+                msg.what = 0;
                 handler.sendMessage(msg);
             }
 

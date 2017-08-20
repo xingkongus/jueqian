@@ -2,6 +2,8 @@ package us.xingkong.jueqian.module.Forum.QuestionPage.Comment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -19,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import cn.bmob.v3.BmobUser;
@@ -54,6 +57,9 @@ public class CommentActivity extends BaseActivity<CommentContract.Presenter> imp
     SwipeRefreshLayout refreshLayout;
     private Boolean isRolling = false;
     private String answer_userID;
+    private boolean isInitRecyclewView = false;
+    private String question_userID;
+    private int item_count;
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -64,27 +70,35 @@ public class CommentActivity extends BaseActivity<CommentContract.Presenter> imp
                     break;
                 case 1:
                     answer = (Answer) msg.obj;
-                    initRecyclerView();
+                    if (answer != null) {
+                        initRecyclerView();
+                    }
                     break;
                 case 2:
-                    recyclerViewAdapter.notifyDataSetChanged();
+                    if (comments != null && isNetworkAvailable(mContext)) {
+                        recyclerViewAdapter.notifyDataSetChanged();
+                        item_count=20;
+                    }
                     break;
                 case 3: //刷新数据
+                    if (isInitRecyclewView == false) {
+                        mPresenter.getAnswer(mContext, answerID, handler);
+                    }
                     isRolling = true;
                     setRecyclewViewBug();
                     comments.clear();
                     mPresenter.getAnswerComments(mContext, handler, answerID, comments);
-                    recyclerViewAdapter.notifyDataSetChanged();
                     isRolling = false;
                     setRecyclewViewBug();
                     refreshLayout.setRefreshing(false);
+                    item_count=20;
                     break;
                 case 4:
                     recyclerviewCommentpage.scrollToPosition(1);
                     recyclerViewAdapter.notifyItemInserted(1);
                     recyclerViewAdapter.notifyDataSetChanged();
                     _User user = BmobUser.getCurrentUser(mContext, _User.class);
-                    if(!user.getObjectId().equals(answer_userID)) {
+                    if (!user.getObjectId().equals(answer_userID)) {
                         Comment comment1 = (Comment) msg.obj;
                         NewMessage message = new NewMessage();
                         message.setSender(user);
@@ -107,13 +121,22 @@ public class CommentActivity extends BaseActivity<CommentContract.Presenter> imp
                     break;
                 case 5://得到新评论内容
                     String newCommentID = msg.getData().getString("new_commentID");
-                    System.out.println("111111111qq"+newCommentID);
                     mPresenter.getNewComment(mContext, handler, newCommentID);
                     break;
                 case 6:
                     Comment comment;
                     comment = (Comment) msg.obj;
                     recyclerViewAdapter.addItem(0, comment);
+                    break;
+                case 7:
+                    List<Comment>newComments= (List<Comment>) msg.obj;
+                    if (newComments.size() != 0) {
+                        recyclerViewAdapter.addMoreItem(newComments);
+                        recyclerViewAdapter.changeMoreStatus(CommentRecyclerViewAdapter.LOADING_MORE);
+                        item_count+=20;
+                    }else{
+                        recyclerViewAdapter.changeMoreStatus(CommentRecyclerViewAdapter.NO_MORE);
+                    }
                     break;
             }
         }
@@ -136,31 +159,8 @@ public class CommentActivity extends BaseActivity<CommentContract.Presenter> imp
         Bundle bundle = intent.getExtras();
         answerID = bundle.getString("answerID");
         questionID = bundle.getString("questionID");
-        answer_userID=bundle.getString("answer_userID");
-
-//        mHandler = new Handler(getMainLooper()){
-//            @Override
-//            public void handleMessage(Message msg) {
-//                super.handleMessage(msg);
-//                switch (msg.what){
-//                    case 1:
-//                        new MaterialDialog.Builder(mContext)
-//                                .items(R.array.option_head)
-//                                .itemsCallback(new MaterialDialog.ListCallback() {
-//                                    @Override
-//                                    public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-//                                        Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
-//                                    }
-//                                })
-//                                .show();
-//                        break;
-//                    case 2:
-//                        break;
-//                    case 3:
-//                        break;
-//                }
-//            }
-//        };
+        answer_userID = bundle.getString("answer_userID");
+        question_userID=bundle.getString("question_userID");
     }
 
     private void initSwipeRefreshLayout() {
@@ -171,7 +171,12 @@ public class CommentActivity extends BaseActivity<CommentContract.Presenter> imp
             @Override
             public void onRefresh() {
                 Toast.makeText(getApplicationContext(), "刷新", Toast.LENGTH_SHORT).show();
-                handler.sendEmptyMessage(3);
+                if (isNetworkAvailable(mContext)) {
+                    handler.sendEmptyMessage(3);
+                }else {
+                    showToast("网络不可用");
+                    refreshLayout.setRefreshing(false);
+                }
             }
         });
     }
@@ -184,13 +189,27 @@ public class CommentActivity extends BaseActivity<CommentContract.Presenter> imp
     }
 
     private void initRecyclerView() {
-        recyclerViewAdapter = new CommentRecyclerViewAdapter(mContext, handler, answer, comments);
+        if (recyclerviewCommentpage==null) return;
+        recyclerViewAdapter = new CommentRecyclerViewAdapter(mContext, handler, answer, comments,questionID,question_userID);
         recyclerviewCommentpage.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
-        recyclerviewCommentpage.setAdapter(recyclerViewAdapter);
         recyclerviewCommentpage.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         recyclerviewCommentpage.setItemAnimator(new DefaultItemAnimator());
         recyclerviewCommentpage.addOnScrollListener(new RecyclerView.OnScrollListener() {
-
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                LinearLayoutManager manager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    int lastVisibleItem = manager.findLastCompletelyVisibleItemPosition();
+                    int totalItemCount = manager.getItemCount();
+                    // 判断是否滚动到底部
+                    if (lastVisibleItem == (totalItemCount - 1)) {
+                        //加载更多功能的代码
+                        ArrayList<Comment>newComments=new ArrayList<Comment>();
+                        mPresenter.getMoreComment(mContext,handler,answerID,newComments,item_count);
+                    }
+                }
+            }
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
@@ -201,15 +220,22 @@ public class CommentActivity extends BaseActivity<CommentContract.Presenter> imp
                 }
             }
         });
+        recyclerviewCommentpage.setAdapter(recyclerViewAdapter);
+        isInitRecyclewView = true;
     }
 
 
     @Override
     protected void initData(Bundle savedInstanceState) {
         refreshLayout.setRefreshing(true);
-        mPresenter.getAnswer(mContext, answerID, handler);
-        mPresenter.getAnswerComments(mContext, handler, answerID, comments);
-        refreshLayout.setRefreshing(false);
+        if (isNetworkAvailable(mContext)) {
+            mPresenter.getAnswer(mContext, answerID, handler);
+            mPresenter.getAnswerComments(mContext, handler, answerID, comments);
+            refreshLayout.setRefreshing(false);
+        } else {
+            showToast("网络不可用");
+            refreshLayout.setRefreshing(false);
+        }
     }
 
     @Override
@@ -221,7 +247,7 @@ public class CommentActivity extends BaseActivity<CommentContract.Presenter> imp
                 if (comment_content.isEmpty()) {
                     showToast("评论内容不能为空");
                 } else {
-                    mPresenter.addNewComment(mContext, handler, comment_content, answerID, questionID,answer_userID);
+                    mPresenter.addNewComment(mContext, handler, comment_content, answerID, questionID, answer_userID);
                     edit_comment.setText("");
                 }
             }
@@ -249,5 +275,21 @@ public class CommentActivity extends BaseActivity<CommentContract.Presenter> imp
                 }
             }
         });
+    }
+
+    public static boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivity = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivity != null) {
+            NetworkInfo info = connectivity.getActiveNetworkInfo();
+            if (info != null && info.isConnected()) {
+                // 当前网络是连接的
+                if (info.getState() == NetworkInfo.State.CONNECTED) {
+                    // 当前所连接的网络可用
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

@@ -18,6 +18,8 @@
     <string name="text_aboutme_line1">©星空学生创新中心</string>
     <string name="text_aboutme_line2">www.xingkong.us</string>
     <string name="text_loaddata_again">点击重新加载</string>
+    <string name="menu_allmessage">全部消息</string>
+
 
     <string-array name="tab_title">
         <item>论坛</item>

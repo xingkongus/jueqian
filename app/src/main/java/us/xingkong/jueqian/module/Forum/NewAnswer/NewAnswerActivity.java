@@ -68,6 +68,7 @@ public class NewAnswerActivity extends BaseActivity<NewAnswerContract.Presenter>
                         receiver.setObjectId(question_userID);
                         message.setReceiver(receiver);
                         message.setTYPE(2);
+                        message.setIsRead(0);
                         message.setMessAnswer(answer);
                         message.save(context, new SaveListener() {
                             @Override

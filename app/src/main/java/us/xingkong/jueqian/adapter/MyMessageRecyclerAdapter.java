@@ -18,6 +18,8 @@ import java.util.List;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.SaveListener;
+import cn.bmob.v3.listener.UpdateListener;
 import de.hdodenhof.circleimageview.CircleImageView;
 import us.xingkong.jueqian.JueQianAPP;
 import us.xingkong.jueqian.R;
@@ -53,6 +55,7 @@ public class MyMessageRecyclerAdapter extends RecyclerView.Adapter<MyMessageRecy
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         switch (messages.get(position).getTYPE()) {
             case 1:
+
                 holder.item.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -62,9 +65,26 @@ public class MyMessageRecyclerAdapter extends RecyclerView.Adapter<MyMessageRecy
                         intent.putExtra("answerID", messages.get(position).getMessComment().getAnswer().getObjectId());
                         intent.putExtra("questionID", messages.get(position).getMessComment().getQuestion().getObjectId());
                         intent.putExtra("answer_userID", messages.get(position).getReceiver().getObjectId());
-                       mContext.startActivity(intent);
+                        mContext.startActivity(intent);
+                        //将消息设置为已读
+                        NewMessage readMessage = new NewMessage();
+                        readMessage.setIsRead(1);
+                        readMessage.update(mContext, messages.get(position).getObjectId(), new UpdateListener() {
+                            @Override
+                            public void onSuccess() {
+
+                            }
+
+                            @Override
+                            public void onFailure(int i, String s) {
+
+                            }
+                        });
+
                     }
                 });
+
+
                 if (messages.get(position).getMessComment().getMcontent() == null || messages.get(position).getSender().getNickname() == null || messages.get(position).getCreatedAt() == null) {
                     Toast.makeText(JueQianAPP.getAppContext(), "数据异常", Toast.LENGTH_SHORT).show();
                     break;
@@ -110,6 +130,20 @@ public class MyMessageRecyclerAdapter extends RecyclerView.Adapter<MyMessageRecy
 //                        intent.putExtra("questionID", messages.get(position).getMessAnswer().getQuestion().getObjectId());
 //                        intent.putExtra("answer_userID",messages.get(position).getMessAnswer().getUser().getObjectId());
                         mContext.startActivity(intent);
+                        //将消息设置为已读
+                        NewMessage readMessage = new NewMessage();
+                        readMessage.setIsRead(1);
+                        readMessage.update(mContext, messages.get(position).getObjectId(), new UpdateListener() {
+                            @Override
+                            public void onSuccess() {
+
+                            }
+
+                            @Override
+                            public void onFailure(int i, String s) {
+
+                            }
+                        });
                     }
                 });
                 if (messages.get(position).getMessAnswer().getMcontent() == null || messages.get(position).getSender().getNickname() == null || messages.get(position).getCreatedAt() == null) {

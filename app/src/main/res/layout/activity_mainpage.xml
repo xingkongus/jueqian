@@ -30,7 +30,7 @@
             android:layout_marginLeft="@dimen/dp_16"
             android:layout_toRightOf="@id/mainpage_touxiang"
             android:text="前往编辑你的昵称"
-            android:textColor="@color/text_username"
+            android:textColor="@color/text_title"
             android:textSize="@dimen/sp_18" />
 
         <TextView
@@ -41,6 +41,7 @@
             android:layout_below="@id/mainpage_nickname"
             android:layout_marginLeft="@dimen/dp_16"
             android:layout_marginRight="@dimen/dp_16"
+            android:textColor="@color/text_pinglun"
             android:layout_toLeftOf="@+id/mainpage_bt_edit"
             android:layout_toRightOf="@+id/mainpage_touxiang"
             android:gravity="center_vertical"
@@ -71,13 +72,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_16"
                 android:text="0"
-                android:textColor="@color/text_username"
+                android:textColor="@color/text_title"
                 android:textSize="@dimen/sp_16" />
 
             <TextView
                 android:id="@+id/mainpage_tv_following"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/text_pinglun"
                 android:layout_below="@id/mainpage_tv_following_count"
                 android:layout_marginLeft="@dimen/dp_16"
                 android:layout_marginTop="@dimen/dp_4"
@@ -100,10 +102,11 @@
                 android:layout_alignLeft="@+id/mainpage_tv_follower"
                 android:layout_alignParentTop="true"
                 android:text="0"
-                android:textColor="@color/text_username"
+                android:textColor="@color/text_title"
                 android:textSize="@dimen/sp_16" />
 
             <TextView
+                android:textColor="@color/text_pinglun"
                 android:id="@+id/mainpage_tv_follower"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -139,7 +142,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginStart="16dp"
                 android:text="收藏"
-                android:textColor="@color/text_username"
+                android:textColor="@color/text_title"
                 android:textSize="@dimen/sp_16" />
 
             <TextView
@@ -148,6 +151,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
+                android:textColor="@color/text_pinglun"
                 android:layout_marginRight="@dimen/dp_16"
                 android:text="0"
                 android:textSize="@dimen/sp_16" />
@@ -176,7 +180,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/dp_16"
                 android:text="最近浏览"
-                android:textColor="@color/text_username"
+                android:textColor="@color/text_title"
                 android:textSize="@dimen/sp_16" />
 
         </RelativeLayout>

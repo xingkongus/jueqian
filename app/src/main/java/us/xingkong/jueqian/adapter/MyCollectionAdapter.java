@@ -58,6 +58,7 @@ public class MyCollectionAdapter extends RecyclerView.Adapter<MyCollectionAdapte
                 questionID = questions.get(position).getObjectId();
                 Intent intent = new Intent(JueQianAPP.getAppContext(), QuestionActivity.class);
                 intent.putExtra("questionid", questionID);
+                intent.putExtra("question_userID", questions.get(position).getUser().getObjectId());
                 context.startActivity(intent);
             }
         });

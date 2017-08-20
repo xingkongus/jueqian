@@ -4,12 +4,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.FrameLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +39,10 @@ public class MyRecentLookActivity extends BaseActivity<MyRecentLookContract.Pres
 
     @BindView(R.id.recyclerview)
     RecyclerView mRecyclerView;
+    @BindView(R.id.framelayout)
+    FrameLayout frameLayout;
+    @BindView(R.id.swipeRefreshLayout)
+    SwipeRefreshLayout mSwipeRefreshLayout;
 
     private String intentUserID;
     List<Question> questions = new ArrayList<>();
@@ -46,6 +53,7 @@ public class MyRecentLookActivity extends BaseActivity<MyRecentLookContract.Pres
             switch (msg.what) {
                 case 1:
                     initRecyclerView();
+                    mSwipeRefreshLayout.setRefreshing(false);
                     break;
             }
 
@@ -66,6 +74,11 @@ public class MyRecentLookActivity extends BaseActivity<MyRecentLookContract.Pres
     protected void prepareData() {
         Intent intent = getIntent();
         intentUserID = intent.getStringExtra("intentUserID");
+        getRecentLook();
+    }
+
+    private void getRecentLook() {
+        mSwipeRefreshLayout.setRefreshing(true);
         _User user = new _User();
         user.setObjectId(intentUserID);
         BmobQuery<Question> query = new BmobQuery<Question>();
@@ -74,14 +87,18 @@ public class MyRecentLookActivity extends BaseActivity<MyRecentLookContract.Pres
         query.findObjects(JueQianAPP.getAppContext(), new FindListener<Question>() {
             @Override
             public void onSuccess(List<Question> list) {
+                if (list.size() == 0) {
+                    frameLayout.setVisibility(View.VISIBLE);
+                    return;
+                }
                 questions = list;
-                showToast("获取最近浏览列表成功");
                 mHandler.sendEmptyMessage(1);
             }
 
             @Override
             public void onError(int i, String s) {
-                showToast("获取最近浏览列表失败");
+                mSwipeRefreshLayout.setRefreshing(false);
+                showToast("获取最近浏览列表失败CASE:" + s);
             }
         });
     }
@@ -93,8 +110,9 @@ public class MyRecentLookActivity extends BaseActivity<MyRecentLookContract.Pres
     }
 
     private void initRecyclerView() {
+        if (mRecyclerView == null) return;
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setAdapter(new MyRecentLookAdapter(mHandler, questions,this));
+        mRecyclerView.setAdapter(new MyRecentLookAdapter(mHandler, questions, this));
         mRecyclerView.addItemDecoration(new DividerItemDecoration(MyRecentLookActivity.this, DividerItemDecoration.VERTICAL));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
     }
@@ -112,7 +130,15 @@ public class MyRecentLookActivity extends BaseActivity<MyRecentLookContract.Pres
 
     @Override
     protected void initEvent() {
-
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+        mSwipeRefreshLayout.setSize(SwipeRefreshLayout.DEFAULT);
+        mSwipeRefreshLayout.setProgressViewEndTarget(true, 200);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getRecentLook();
+            }
+        });
     }
 
     @Override

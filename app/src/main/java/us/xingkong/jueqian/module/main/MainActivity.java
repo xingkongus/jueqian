@@ -34,14 +34,13 @@ public class MainActivity extends BaseActivity<MainContract.Presenter> implement
     String[] mTitles;
     @BindView(R.id.viewpager)
     ScrollViewPager mViewPager;
-
     @BindView(R.id.tab_homepager)
     RadioButton mTabHomePager;
     @BindView(R.id.tab_ganhuo)
     RadioButton mTabGanH;
     @BindView(R.id.rg_tab)
     RadioGroup mRadioGroup;
-    public static MainActivity instance=null;
+    public static MainActivity instance = null;
 
     private MeFragment mMeFragment;
     private ForumFragment mForumFragment;
@@ -80,7 +79,7 @@ public class MainActivity extends BaseActivity<MainContract.Presenter> implement
 
     @Override
     protected void initView() {
-        instance=this;
+        instance = this;
         mViewPager.setPagingEnabled(false);
         List<Fragment> fragments = new ArrayList<>();
         addFragmentList(fragments);

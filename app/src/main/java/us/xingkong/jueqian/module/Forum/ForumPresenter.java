@@ -3,6 +3,7 @@ package us.xingkong.jueqian.module.Forum;
 
 import android.content.Context;
 import android.os.Handler;
+import android.os.Message;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,19 +29,19 @@ public class ForumPresenter extends BasePresenterImpl implements ForumContract.P
 
 
     @Override
-    public List<Question> getBmobQuestion(Context context, final ArrayList<Question> questions, final Handler handler, int flag) {
+    public void getBmobQuestion(Context context, final ArrayList<Question> questions, final Handler handler, int flag) {
         BmobQuery<Question> query = new BmobQuery<>();
         query.setLimit(20);
         query.order("-createdAt");
         query.include("user");
-        if (flag == 1) {
+        if (flag == 1) {   //flag判断当前是刷新还是第一次加载页面
             Boolean isInCache = query.hasCachedResult(context, Question.class);
             if (isInCache) {
                 query.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
             } else {
                 query.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ONLY);
             }
-        }else if(flag==2){
+        } else if (flag == 2) {
             query.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ONLY);
         }
         query.findObjects(context, new FindListener<Question>() {
@@ -58,16 +59,53 @@ public class ForumPresenter extends BasePresenterImpl implements ForumContract.P
                     questions.add(question);
 
                 }
-                handler.sendEmptyMessage(3);
+                Message msg=new Message();
+                msg.obj=questions;
+                msg.what=5;
+                handler.sendMessage(msg);
             }
 
             @Override
             public void onError(int i, String s) {
-                mView.showToast("网络连接超时");
+                mView.showToast("网络有点差哦！可重新刷新！");
                 handler.sendEmptyMessage(4);
             }
         });
 
-        return questions;
+    }
+
+    @Override
+    public void getMoreBmobQuestion(Context context, final ArrayList<Question> questions, final Handler handler,int item_count) {
+        BmobQuery<Question> query = new BmobQuery<>();
+        query.setSkip(item_count);
+        query.setLimit(20);
+        query.order("-createdAt");
+        query.include("user");
+        query.findObjects(context, new FindListener<Question>() {
+            @Override
+            public void onSuccess(List<Question> list) {
+                for (Question question : list) {
+                    question.getObjectId();
+                    question.getMtitle();
+                    question.getMcontent();
+                    question.getTAG1_ID();
+                    question.getTAG2_ID();
+                    question.getUser();
+                    question.getAnswer_count();
+                    question.getState();
+                    questions.add(question);
+
+                }
+                Message msg=new Message();
+                msg.obj=questions;
+                msg.what=6;
+                handler.sendMessage(msg);
+            }
+
+            @Override
+            public void onError(int i, String s) {
+                handler.sendEmptyMessage(7);
+            }
+        });
     }
 }

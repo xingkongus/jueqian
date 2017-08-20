@@ -2,9 +2,6 @@ package us.xingkong.jueqian.module.me.mymainpage.editinfo;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -17,7 +14,7 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -87,7 +84,7 @@ public class EditInfoActivity extends BaseActivity<EditInfoContract.Presenter> i
 
                         @Override
                         public void onFailure(int i, String s) {
-                            showToast("上传头像失败" + s);
+                            showToast("上传头像失败，请重试CASE:" + s);
                         }
                     });
                     break;
@@ -107,7 +104,7 @@ public class EditInfoActivity extends BaseActivity<EditInfoContract.Presenter> i
 
                         @Override
                         public void onFailure(int i, String s) {
-                            showToast("修改昵称失败CASE:" + s);
+                            showToast("修改昵称失败，请重试。CASE:" + s);
                         }
                     });
                     break;
@@ -118,13 +115,13 @@ public class EditInfoActivity extends BaseActivity<EditInfoContract.Presenter> i
                         @Override
                         public void onSuccess() {
                             String nickname = BmobUser.getCurrentUser(JueQianAPP.getAppContext(), _User.class).getNickname();
-                            showToast("修改简介成功");
+                            showToast("修改成功");
                             handler.sendEmptyMessage(2);
                         }
 
                         @Override
                         public void onFailure(int i, String s) {
-                            showToast("修改简介失败CASE:" + s);
+                            showToast("修改自我介绍失败，请重试。CASE:" + s);
                         }
                     });
                     break;
@@ -141,7 +138,7 @@ public class EditInfoActivity extends BaseActivity<EditInfoContract.Presenter> i
 
                         @Override
                         public void onFailure(int i, String s) {
-                            showToast("修改blog失败CASE:" + s);
+//                            showToast("修改blog失败CASE:" + s);
                         }
                     });
                     break;
@@ -163,12 +160,12 @@ public class EditInfoActivity extends BaseActivity<EditInfoContract.Presenter> i
     @Override
     protected void prepareData() {
         BmobQuery<_User> bmobQuery = new BmobQuery<>();
-        bmobQuery.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
+//        bmobQuery.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
         bmobQuery.getObject(JueQianAPP.getAppContext(), BmobUser.getCurrentUser(JueQianAPP.getAppContext()).getObjectId(), new GetListener<_User>() {
             @Override
             public void onSuccess(_User user) {
                 update_user = user;
-                showToast("更新用户成功");
+                if (tv_nickname == null || tv_selfintro == null || tv_blog == null) return;
                 tv_nickname.setText(user.getNickname());
                 tv_selfintro.setText(user.getSelfsign());
                 tv_blog.setText(user.getBlog());
@@ -176,7 +173,7 @@ public class EditInfoActivity extends BaseActivity<EditInfoContract.Presenter> i
 
             @Override
             public void onFailure(int i, String s) {
-                showToast("更新用户失败CASE:" + s);
+//                showToast("更新用户失败CASE:" + s);
             }
         });
     }
@@ -224,7 +221,7 @@ public class EditInfoActivity extends BaseActivity<EditInfoContract.Presenter> i
             @Override
             public void onClick(View view) {
                 new MaterialDialog.Builder(view.getContext())
-                        .title("修改简介")
+                        .title("修改自我介绍")
                         .negativeText("取消")
                         .positiveText("确认")
                         .input("", "", new MaterialDialog.InputCallback() {
@@ -279,26 +276,33 @@ public class EditInfoActivity extends BaseActivity<EditInfoContract.Presenter> i
         BmobQuery<_User> query = new BmobQuery<>();
         query.addWhereEqualTo("objectId", BmobUser.getCurrentUser(JueQianAPP.getAppContext()).getObjectId());
         query.addQueryKeys("profile");
-        query.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
+//        query.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
         query.findObjects(JueQianAPP.getAppContext(), new FindListener<_User>() {
             @Override
             public void onSuccess(List<_User> list) {
                 if (list.size() == 0) {
-                    showToast("当前用户无头像");
+//                    showToast("当前用户无头像");
                     return;
                 }
                 BmobFile bmobFile = list.get(0).getProfile();
                 if (bmobFile == null) {
-                    showToast("bmobfile is null");
+//                    showToast("bmobfile is null");
                     return;
                 }
                 String profileURL = bmobFile.getUrl();
-                Glide.with(JueQianAPP.getAppContext()).load(profileURL).into(iv_touxiang);
+                Picasso.with(EditInfoActivity.this).load(profileURL).into(iv_touxiang);
+//                if (iv_touxiang == null) return;
+//                Glide.with(JueQianAPP.getAppContext()).load(profileURL).diskCacheStrategy(DiskCacheStrategy.SOURCE).placeholder(R.mipmap.ic_launcher).into(new SimpleTarget<GlideDrawable>() {
+//                    @Override
+//                    public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
+//                        iv_touxiang.setImageDrawable(resource);
+//                    }
+//                });
             }
 
             @Override
             public void onError(int i, String s) {
-                showToast("获取头像失败");
+//                showToast("获取头像失败");
             }
         });
     }
@@ -350,19 +354,19 @@ public class EditInfoActivity extends BaseActivity<EditInfoContract.Presenter> i
             if (data != null) {
                 ArrayList<String> photos = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
                 String photo = photos.get(0);
-                File file=new File(photo);
-                File zipFile= Compressor.getDefault(JueQianAPP.getAppContext()).compressToFile(file);
+                File file = new File(photo);
+                File zipFile = Compressor.getDefault(JueQianAPP.getAppContext()).compressToFile(file);
                 bmobFile = new BmobFile(zipFile);
                 bmobFile.uploadblock(JueQianAPP.getAppContext(), new UploadFileListener() {
                     @Override
                     public void onSuccess() {
-                        showToast("上传到block成功");
+//                        showToast("上传到block成功");
                         handler.sendEmptyMessage(1);
                     }
 
                     @Override
                     public void onFailure(int i, String s) {
-                        showToast("上传到block失败" + s);
+                        showToast("上传图片到服务器失败，请重试。CASE:" + s);
                     }
                 });
 

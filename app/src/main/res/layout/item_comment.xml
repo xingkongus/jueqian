@@ -50,7 +50,8 @@
                             android:id="@+id/username_comment"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="admin" />
+                            android:text=""
+                            android:textColor="@color/text_username" />
 
                         <ImageView
                             android:id="@+id/lebal_comment"
@@ -78,7 +79,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingTop="8dp"
-                        android:text="testtesttesttesttesttesttesttesttesttesttesttesttesttest" />
+                        android:text="bucuoasdada"
+                        android:textColor="@color/text_content"
+                        android:textSize="@dimen/sp_16" />
                 </LinearLayout>
             </LinearLayout>
 
