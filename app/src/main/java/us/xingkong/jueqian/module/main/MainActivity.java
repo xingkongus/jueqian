@@ -1,6 +1,7 @@
 package us.xingkong.jueqian.module.main;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -14,6 +15,7 @@ import java.util.List;
 
 import butterknife.BindArray;
 import butterknife.BindView;
+import cn.bmob.v3.BmobUser;
 import us.xingkong.jueqian.JueQianAPP;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.adapter.MainPagerAdapter;
@@ -21,6 +23,7 @@ import us.xingkong.jueqian.base.BaseActivity;
 import us.xingkong.jueqian.module.Forum.ForumFragment;
 import us.xingkong.jueqian.module.RealS.RealSFragment;
 import us.xingkong.jueqian.module.me.MeFragment;
+import us.xingkong.jueqian.module.me.mymainpage.editinfo.EditInfoActivity;
 import us.xingkong.jueqian.widget.ScrollViewPager;
 
 /**
@@ -74,7 +77,6 @@ public class MainActivity extends BaseActivity<MainContract.Presenter> implement
 
     @Override
     protected void prepareData() {
-
     }
 
     @Override

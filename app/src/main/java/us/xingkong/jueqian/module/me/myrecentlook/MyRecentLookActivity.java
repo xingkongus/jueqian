@@ -83,6 +83,7 @@ public class MyRecentLookActivity extends BaseActivity<MyRecentLookContract.Pres
         user.setObjectId(intentUserID);
         BmobQuery<Question> query = new BmobQuery<Question>();
         query.addWhereRelatedTo("recentlooks", new BmobPointer(user));
+        query.order("createdAt");
         query.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
         query.findObjects(JueQianAPP.getAppContext(), new FindListener<Question>() {
             @Override

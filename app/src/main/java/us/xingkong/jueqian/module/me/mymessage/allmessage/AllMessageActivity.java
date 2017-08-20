@@ -81,6 +81,7 @@ public class AllMessageActivity extends BaseActivity<AllMessageContract.Presente
         BmobQuery<NewMessage> query = new BmobQuery<>();
         query.addWhereEqualTo("receiver", new BmobPointer(bmobUser));
         query.include("sender,messComment.question,messAnswer.question");
+        query.order("-createdAt");
         query.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
         query.findObjects(JueQianAPP.getAppContext(), new FindListener<NewMessage>() {
             @Override

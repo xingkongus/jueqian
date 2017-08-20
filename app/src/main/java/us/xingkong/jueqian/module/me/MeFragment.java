@@ -139,7 +139,8 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
                     JSONObject receiverObj = dataObject.getJSONObject("receiver");
                     JSONObject senderObj = dataObject.getJSONObject("sender");
                     String receiverID = receiverObj.getString("objectId");
-                    if (receiverID.equals(current_user.getObjectId())) {
+                    int isRead = dataObject.getInt("isRead");
+                    if (receiverID.equals(current_user.getObjectId()) && isRead == 0) {
                         mCircleImageView_redpoint.setVisibility(View.VISIBLE);
                     }
                 } catch (JSONException e) {

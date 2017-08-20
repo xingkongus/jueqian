@@ -8,6 +8,8 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.CardView;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -35,6 +37,8 @@ import us.xingkong.jueqian.JueQianAPP;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.base.BaseActivity;
 import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
+import us.xingkong.jueqian.module.Login.LoginActivity;
+import us.xingkong.jueqian.module.main.MainActivity;
 
 /**
  * Created by PERFECTLIN on 2017/4/20 0020.
@@ -57,9 +61,10 @@ public class EditInfoActivity extends BaseActivity<EditInfoContract.Presenter> i
     TextView tv_selfintro;
     @BindView(R.id.tv_blog)
     TextView tv_blog;
+    @BindView(R.id.swipeRefreshLayout)
 
 
-    private Activity activity = this;
+//    private Activity activity = this;
     private BmobFile bmobFile;
     private File profile;
     private String inputNickName;
@@ -289,6 +294,7 @@ public class EditInfoActivity extends BaseActivity<EditInfoContract.Presenter> i
 //                    showToast("bmobfile is null");
                     return;
                 }
+                if (iv_touxiang == null) return;
                 String profileURL = bmobFile.getUrl();
                 Picasso.with(EditInfoActivity.this).load(profileURL).into(iv_touxiang);
 //                if (iv_touxiang == null) return;
@@ -316,15 +322,16 @@ public class EditInfoActivity extends BaseActivity<EditInfoContract.Presenter> i
                         .setShowCamera(true)
                         .setShowGif(false)
                         .setPreviewEnabled(false)
-                        .start(activity, PhotoPicker.REQUEST_CODE);
+                        .start(EditInfoActivity.this, PhotoPicker.REQUEST_CODE);
             }
         });
     }
 
     private void setToolbar() {
         ActionBar acb = getSupportActionBar();
-        acb.setDisplayHomeAsUpEnabled(true);
         acb.setTitle("编辑个人资料");
+        acb.setDisplayHomeAsUpEnabled(true);
+
     }
 
     @Override
@@ -338,10 +345,33 @@ public class EditInfoActivity extends BaseActivity<EditInfoContract.Presenter> i
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu_editinfo, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                finish();
+                if (BmobUser.getCurrentUser(JueQianAPP.getAppContext()).getUsername() == null) {
+                    Intent intent = new Intent(EditInfoActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    finish();
+                }
+
+                break;
+            case R.id.item_finish:
+                if (tv_nickname.getText().equals("") || tv_selfintro.getText().equals("")) {
+                    showToast("请将信息填写完善");
+                } else {
+                    Intent intent = new Intent(EditInfoActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -351,6 +381,7 @@ public class EditInfoActivity extends BaseActivity<EditInfoContract.Presenter> i
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == PhotoPicker.REQUEST_CODE) {
+
             if (data != null) {
                 ArrayList<String> photos = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
                 String photo = photos.get(0);
