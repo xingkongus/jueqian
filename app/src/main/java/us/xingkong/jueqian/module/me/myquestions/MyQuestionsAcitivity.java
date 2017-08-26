@@ -48,6 +48,8 @@ public class MyQuestionsAcitivity extends BaseActivity<MyQuestionsContract.Prese
             switch (msg.what) {
                 case 1:
                     initRecyclerView();
+                    if (mSwipeRefreshLayout == null)
+                        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
                     mSwipeRefreshLayout.setRefreshing(false);
                     break;
             }
@@ -71,6 +73,8 @@ public class MyQuestionsAcitivity extends BaseActivity<MyQuestionsContract.Prese
     }
 
     private void getQuestion() {
+        if (mSwipeRefreshLayout == null)
+            mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
         mSwipeRefreshLayout.setRefreshing(true);
         BmobUser bmobUser = BmobUser.getCurrentUser(JueQianAPP.getAppContext());
         BmobQuery<Question> query = new BmobQuery<Question>();
@@ -81,6 +85,8 @@ public class MyQuestionsAcitivity extends BaseActivity<MyQuestionsContract.Prese
             @Override
             public void onSuccess(List<Question> list) {
                 if (list.size() == 0) {
+                    if (frameLayout == null)
+                        frameLayout = (FrameLayout) findViewById(R.id.framelayout);
                     frameLayout.setVisibility(View.VISIBLE);
                     return;
                 }
@@ -90,6 +96,8 @@ public class MyQuestionsAcitivity extends BaseActivity<MyQuestionsContract.Prese
 
             @Override
             public void onError(int i, String s) {
+                if (mSwipeRefreshLayout == null)
+                    mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
                 mSwipeRefreshLayout.setRefreshing(false);
                 showToast("获取我的提问列表失败CASE:" + s);
             }
@@ -104,7 +112,7 @@ public class MyQuestionsAcitivity extends BaseActivity<MyQuestionsContract.Prese
     }
 
     private void initRecyclerView() {
-        if (mRecyclerView == null) return;
+        if (mRecyclerView == null) mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(new MyQuestionsAdapter(mHandler, questions, this));
         mRecyclerView.addItemDecoration(new DividerItemDecoration(MyQuestionsAcitivity.this, DividerItemDecoration.VERTICAL));
@@ -124,6 +132,8 @@ public class MyQuestionsAcitivity extends BaseActivity<MyQuestionsContract.Prese
 
     @Override
     protected void initEvent() {
+        if (mSwipeRefreshLayout == null)
+            mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         mSwipeRefreshLayout.setSize(SwipeRefreshLayout.DEFAULT);
         mSwipeRefreshLayout.setProgressViewEndTarget(true, 200);

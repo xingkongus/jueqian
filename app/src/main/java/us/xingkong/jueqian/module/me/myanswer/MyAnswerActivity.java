@@ -59,6 +59,8 @@ public class MyAnswerActivity extends BaseActivity<MyAnswerContract.Presenter> i
                         break;
                     }
                     initRecyclerView();
+                    if (mSwipeRefreshLayout == null)
+                        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
                     mSwipeRefreshLayout.setRefreshing(false);
                     break;
             }
@@ -84,6 +86,8 @@ public class MyAnswerActivity extends BaseActivity<MyAnswerContract.Presenter> i
     }
 
     private void getAnswer() {
+        if (mSwipeRefreshLayout == null)
+            mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
         mSwipeRefreshLayout.setRefreshing(true);
         BmobUser bmobUser = BmobUser.getCurrentUser(JueQianAPP.getAppContext());
         BmobQuery<Answer> query = new BmobQuery<Answer>();
@@ -95,6 +99,7 @@ public class MyAnswerActivity extends BaseActivity<MyAnswerContract.Presenter> i
             @Override
             public void onSuccess(List<Answer> list) {
                 if (list.size() == 0) {
+                    if (frameLayout==null) frameLayout= (FrameLayout) findViewById(R.id.framelayout);
                     frameLayout.setVisibility(View.VISIBLE);
                     return;
                 }
@@ -107,6 +112,8 @@ public class MyAnswerActivity extends BaseActivity<MyAnswerContract.Presenter> i
 
             @Override
             public void onError(int i, String s) {
+                if (mSwipeRefreshLayout == null)
+                    mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
                 mSwipeRefreshLayout.setRefreshing(false);
                 showToast("获取我的回答列表失败");
             }
@@ -120,11 +127,13 @@ public class MyAnswerActivity extends BaseActivity<MyAnswerContract.Presenter> i
     }
 
     private void initRecyclerView() {
+        if (mRecyclerView==null) mRecyclerView= (RecyclerView) findViewById(R.id.recyclerview);
         myAnswerAdapter = new MyAnswerAdapter(questions, this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(myAnswerAdapter);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(MyAnswerActivity.this, DividerItemDecoration.VERTICAL));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        answers.clear();
     }
 
     private void setToolbar() {

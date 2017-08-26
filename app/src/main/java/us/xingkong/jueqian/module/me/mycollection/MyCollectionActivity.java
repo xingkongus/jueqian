@@ -12,6 +12,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -53,6 +54,8 @@ public class MyCollectionActivity extends BaseActivity<MyCollectionContract.Pres
             switch (msg.what) {
                 case 1:
                     initRecyclerView();
+                    if (mSwipeRefreshLayout == null)
+                        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
                     mSwipeRefreshLayout.setRefreshing(false);
                 case 2:
                     myCollectionAdapter.notifyDataSetChanged();
@@ -75,6 +78,8 @@ public class MyCollectionActivity extends BaseActivity<MyCollectionContract.Pres
 
     @Override
     protected void prepareData() {
+        if (mSwipeRefreshLayout == null)
+            mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
         mSwipeRefreshLayout.setRefreshing(true);
         Intent intent = getIntent();
         intentUserID = intent.getStringExtra("intentUserID");
@@ -93,6 +98,8 @@ public class MyCollectionActivity extends BaseActivity<MyCollectionContract.Pres
             @Override
             public void onSuccess(List<Question> list) {
                 if (list.size() == 0) {
+                    if (frameLayout == null)
+                        frameLayout = (FrameLayout) findViewById(R.id.framelayout);
                     frameLayout.setVisibility(View.VISIBLE);
                     return;
                 }
@@ -102,6 +109,8 @@ public class MyCollectionActivity extends BaseActivity<MyCollectionContract.Pres
 
             @Override
             public void onError(int i, String s) {
+                if (mSwipeRefreshLayout == null)
+                    mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
                 mSwipeRefreshLayout.setRefreshing(false);
                 showToast("获取收藏表失败CASE:+" + s);
             }
@@ -115,7 +124,7 @@ public class MyCollectionActivity extends BaseActivity<MyCollectionContract.Pres
     }
 
     private void initRecyclerView() {
-        if (mRecyclerView==null) return;
+        if (mRecyclerView == null) mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         myCollectionAdapter = new MyCollectionAdapter(mHandler, questions, this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(myCollectionAdapter);
@@ -125,9 +134,11 @@ public class MyCollectionActivity extends BaseActivity<MyCollectionContract.Pres
     }
 
     private void setToolbar() {
+
         ActionBar acb = getSupportActionBar();
         acb.setDisplayHomeAsUpEnabled(true);
-        acb.setTitle("我的收藏");
+        acb.setTitle("收藏");
+
     }
 
     @Override
@@ -138,6 +149,8 @@ public class MyCollectionActivity extends BaseActivity<MyCollectionContract.Pres
 
     @Override
     protected void initEvent() {
+        if (mSwipeRefreshLayout == null)
+            mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         mSwipeRefreshLayout.setSize(SwipeRefreshLayout.DEFAULT);
         mSwipeRefreshLayout.setProgressViewEndTarget(true, 200);

@@ -61,10 +61,9 @@ public class EditInfoActivity extends BaseActivity<EditInfoContract.Presenter> i
     TextView tv_selfintro;
     @BindView(R.id.tv_blog)
     TextView tv_blog;
-    @BindView(R.id.swipeRefreshLayout)
 
 
-//    private Activity activity = this;
+    private Activity activity = this;
     private BmobFile bmobFile;
     private File profile;
     private String inputNickName;
@@ -170,7 +169,9 @@ public class EditInfoActivity extends BaseActivity<EditInfoContract.Presenter> i
             @Override
             public void onSuccess(_User user) {
                 update_user = user;
-                if (tv_nickname == null || tv_selfintro == null || tv_blog == null) return;
+                if (tv_nickname == null) tv_nickname = (TextView) findViewById(R.id.tv_nickname);
+                if (tv_selfintro == null) tv_selfintro = (TextView) findViewById(R.id.tv_selfintro);
+                if (tv_blog == null) tv_blog = (TextView) findViewById(R.id.tv_blog);
                 tv_nickname.setText(user.getNickname());
                 tv_selfintro.setText(user.getSelfsign());
                 tv_blog.setText(user.getBlog());
@@ -222,6 +223,7 @@ public class EditInfoActivity extends BaseActivity<EditInfoContract.Presenter> i
     }
 
     private void setSelfIntro() {
+        if (selfintro==null) selfintro= (CardView) findViewById(R.id.layout_selfintro);
         selfintro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -250,6 +252,7 @@ public class EditInfoActivity extends BaseActivity<EditInfoContract.Presenter> i
     }
 
     private void setNickName() {
+        if (nickname==null) nickname= (CardView) findViewById(R.id.layout_nickname);
         nickname.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -294,8 +297,8 @@ public class EditInfoActivity extends BaseActivity<EditInfoContract.Presenter> i
 //                    showToast("bmobfile is null");
                     return;
                 }
-                if (iv_touxiang == null) return;
                 String profileURL = bmobFile.getUrl();
+                if (iv_touxiang==null) iv_touxiang= (CircleImageView) findViewById(R.id.iv_touxiang);
                 Picasso.with(EditInfoActivity.this).load(profileURL).into(iv_touxiang);
 //                if (iv_touxiang == null) return;
 //                Glide.with(JueQianAPP.getAppContext()).load(profileURL).diskCacheStrategy(DiskCacheStrategy.SOURCE).placeholder(R.mipmap.ic_launcher).into(new SimpleTarget<GlideDrawable>() {
@@ -322,16 +325,15 @@ public class EditInfoActivity extends BaseActivity<EditInfoContract.Presenter> i
                         .setShowCamera(true)
                         .setShowGif(false)
                         .setPreviewEnabled(false)
-                        .start(EditInfoActivity.this, PhotoPicker.REQUEST_CODE);
+                        .start(activity, PhotoPicker.REQUEST_CODE);
             }
         });
     }
 
     private void setToolbar() {
         ActionBar acb = getSupportActionBar();
-        acb.setTitle("编辑个人资料");
         acb.setDisplayHomeAsUpEnabled(true);
-
+        acb.setTitle("编辑个人资料");
     }
 
     @Override
@@ -345,33 +347,10 @@ public class EditInfoActivity extends BaseActivity<EditInfoContract.Presenter> i
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.menu_editinfo, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                if (BmobUser.getCurrentUser(JueQianAPP.getAppContext()).getUsername() == null) {
-                    Intent intent = new Intent(EditInfoActivity.this, LoginActivity.class);
-                    startActivity(intent);
-                    finish();
-                } else {
-                    finish();
-                }
-
-                break;
-            case R.id.item_finish:
-                if (tv_nickname.getText().equals("") || tv_selfintro.getText().equals("")) {
-                    showToast("请将信息填写完善");
-                } else {
-                    Intent intent = new Intent(EditInfoActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
+                finish();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -381,7 +360,6 @@ public class EditInfoActivity extends BaseActivity<EditInfoContract.Presenter> i
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == PhotoPicker.REQUEST_CODE) {
-
             if (data != null) {
                 ArrayList<String> photos = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
                 String photo = photos.get(0);

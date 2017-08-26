@@ -39,16 +39,20 @@ public class LoginPresenter extends BasePresenterImpl implements LoginContract.P
                     @Override
                     public void onSuccess() {
 
-                        if (BmobUser.getCurrentUser(JueQianAPP.getAppContext()).getUsername() == null) {
-                            MainActivity.instance.finish();
-                            Intent intent = new Intent(context, MainActivity.class);
-                            context.startActivity(intent);
-                            handler.sendEmptyMessage(0);
-                        }else {
-                            MainActivity.instance.finish();
-                            Intent intent = new Intent(context, EditInfoActivity.class);
-                            context.startActivity(intent);
-                        }
+//                        if (BmobUser.getCurrentUser(JueQianAPP.getAppContext()).getUsername() == null) {
+//                            MainActivity.instance.finish();
+//                            Intent intent = new Intent(context, MainActivity.class);
+//                            context.startActivity(intent);
+//                            handler.sendEmptyMessage(0);
+//                        }else {
+//                            MainActivity.instance.finish();
+//                            Intent intent = new Intent(context, EditInfoActivity.class);
+//                            context.startActivity(intent);
+//                        }
+                        MainActivity.instance.finish();
+                        Intent intent = new Intent(context, MainActivity.class);
+                        context.startActivity(intent);
+                        handler.sendEmptyMessage(0);
 
                     }
 

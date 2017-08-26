@@ -144,11 +144,9 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
                     // 判断是否滚动到底部
                     if (lastVisibleItem == (totalItemCount - 1)) {
                         //加载更多功能的代码
-                        ArrayList<Question>newQuestions=new ArrayList<>();
-                        mPresenter.getMoreBmobQuestion(getContext(),newQuestions,mHandler,item_count);
+                        ArrayList<Question> newQuestions = new ArrayList<>();
+                        mPresenter.getMoreBmobQuestion(getContext(), newQuestions, mHandler, item_count);
                     }
-
-
 
 
 //                    if (!recyclerView.canScrollVertically(1)) {
@@ -211,7 +209,7 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
                     if (questions.size() != 0) {
                         if (isInitRecyclewView == false) {
                             initRecyclerview();
-                            item_count=20;
+                            item_count = 20;
                         }
                         recyclerViewAdapter.notifyDataSetChanged();
                         swipeRefreshLayout.setRefreshing(false);
@@ -220,12 +218,12 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
                     }
                     break;
                 case 6://加载更多返回的数据操作
-                    List<Question>newQuestion= (List<Question>) msg.obj;
+                    List<Question> newQuestion = (List<Question>) msg.obj;
                     if (newQuestion.size() != 0) {
                         recyclerViewAdapter.addMoreItem(newQuestion);
                         recyclerViewAdapter.changeMoreStatus(ForumRecyclerViewAdapter.LOADING_MORE);
-                        item_count+=20;
-                    }else{
+                        item_count += 20;
+                    } else {
                         recyclerViewAdapter.changeMoreStatus(ForumRecyclerViewAdapter.NO_MORE);
                     }
 

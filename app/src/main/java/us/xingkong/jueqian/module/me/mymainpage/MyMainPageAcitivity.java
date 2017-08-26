@@ -96,7 +96,8 @@ public class MyMainPageAcitivity extends BaseActivity<MyMainPageContract.Present
 //                showToast("获取关注的人成功" + list.size());
                 if (list == null) return;
                 if (list.size() == 0) return;
-                if (tv_following == null) return;
+                if (tv_following == null)
+                    tv_following = (TextView) findViewById(R.id.mymainpage_tv_following_count);
                 tv_following.setText(String.valueOf(list.size()));
             }
 
@@ -119,6 +120,8 @@ public class MyMainPageAcitivity extends BaseActivity<MyMainPageContract.Present
             public void onSuccess(List<Follow> list) {
                 if (list == null) return;
                 if (list.size() == 0) return;
+                if (tv_followers == null)
+                    tv_followers = (TextView) findViewById(R.id.mymainpage_tv_follower_count);
                 tv_followers.setText(String.valueOf(list.size()));
             }
 
@@ -150,7 +153,8 @@ public class MyMainPageAcitivity extends BaseActivity<MyMainPageContract.Present
             public void onSuccess(_User user) {
 //                showToast("更新用户昵称成功");
                 if (user.getSelfsign() == null) return;
-                if (tv_selfIntro == null) return;
+                if (tv_selfIntro == null)
+                    tv_selfIntro = (TextView) findViewById(R.id.mymainpage_tv_selfintro);
                 tv_selfIntro.setText(user.getSelfsign());
             }
 
@@ -162,6 +166,8 @@ public class MyMainPageAcitivity extends BaseActivity<MyMainPageContract.Present
     }
 
     private void toFollower() {
+        if (ry_follower == null)
+            ry_follower = (RelativeLayout) findViewById(R.id.mymainpage_ry_follower);
         ry_follower.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -173,6 +179,8 @@ public class MyMainPageAcitivity extends BaseActivity<MyMainPageContract.Present
     }
 
     private void toFollowing() {
+        if (ry_following == null)
+            ry_following = (RelativeLayout) findViewById(R.id.mymainpage_ry_following);
         ry_following.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -193,7 +201,8 @@ public class MyMainPageAcitivity extends BaseActivity<MyMainPageContract.Present
                     tv_nickname.setText("请前往设置你的昵称..");
                     return;
                 }
-                if (tv_nickname == null) return;
+                if (tv_nickname == null)
+                    tv_nickname = (TextView) findViewById(R.id.mymainpage_tv_nickname);
                 tv_nickname.setText(user.getNickname());
             }
 
@@ -205,6 +214,8 @@ public class MyMainPageAcitivity extends BaseActivity<MyMainPageContract.Present
     }
 
     private void initRencentLooks() {
+        if (rencentlooks == null)
+            rencentlooks = (CardView) findViewById(R.id.mymainpage_recentlooks);
         rencentlooks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -223,7 +234,8 @@ public class MyMainPageAcitivity extends BaseActivity<MyMainPageContract.Present
             @Override
             public void onSuccess(List<Question> list) {
                 if (list == null) return;
-                if (tv_collectioncount == null) return;
+                if (tv_collectioncount == null)
+                    tv_collectioncount = (TextView) findViewById(R.id.mymainpage_collection_count);
                 tv_collectioncount.setText(String.valueOf(list.size()));
             }
 
@@ -232,6 +244,7 @@ public class MyMainPageAcitivity extends BaseActivity<MyMainPageContract.Present
 //                showToast("获取收藏表失败");
             }
         });
+        if (collections == null) collections = (CardView) findViewById(R.id.mymainpage_collections);
         collections.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -262,6 +275,8 @@ public class MyMainPageAcitivity extends BaseActivity<MyMainPageContract.Present
                     return;
                 }
                 String profileURL = bmobFile.getUrl();
+                if (iv_touxiang == null)
+                    iv_touxiang = (CircleImageView) findViewById(R.id.mymainpage_touxiang);
                 Picasso.with(MyMainPageAcitivity.this).load(profileURL).into(iv_touxiang);
 //                if (iv_touxiang == null) return;
 //                Glide.with(JueQianAPP.getAppContext()).load(profileURL).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(new SimpleTarget<GlideDrawable>() {
@@ -280,6 +295,7 @@ public class MyMainPageAcitivity extends BaseActivity<MyMainPageContract.Present
     }
 
     private void initEditButton() {
+        if (bt_edit == null) bt_edit = (Button) findViewById(R.id.mymainpage_bt_edit);
         bt_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

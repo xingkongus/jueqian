@@ -181,7 +181,8 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
                     mTextView_nickname.setText("请前往设置你的昵称..");
                     return;
                 }
-                mTextView_nickname.setText(user.getNickname());
+                if (mTextView_nickname != null)
+                    mTextView_nickname.setText(user.getNickname());
             }
 
             @Override
