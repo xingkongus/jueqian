@@ -141,6 +141,7 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
                     String receiverID = receiverObj.getString("objectId");
                     int isRead = dataObject.getInt("isRead");
                     if (receiverID.equals(current_user.getObjectId()) && isRead == 0) {
+                        if (mCircleImageView_redpoint==null)  return;
                         mCircleImageView_redpoint.setVisibility(View.VISIBLE);
                     }
                 } catch (JSONException e) {

@@ -44,21 +44,24 @@ public class MyAnswerActivity extends BaseActivity<MyAnswerContract.Presenter> i
 
     private List<Answer> answers = new ArrayList<>();
     private List<Question> questions = new ArrayList<>();
+    private static boolean isInit = false;
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 1:
+                    if (isInit) answers.clear();
                     for (Answer answer : answers) {
                         Question q = answer.getQuestion();
                         questions.add(q);
                     }
-                    if (questions == null) {
-                        showToast("回答列表为空");
-                        break;
+                    if (isInit) {
+                        if (myAnswerAdapter==null) myAnswerAdapter = new MyAnswerAdapter(questions, MyAnswerActivity.this);
+                        myAnswerAdapter.notifyDataSetChanged();
+                    } else {
+                        initRecyclerView();
                     }
-                    initRecyclerView();
                     if (mSwipeRefreshLayout == null)
                         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
                     mSwipeRefreshLayout.setRefreshing(false);
@@ -89,6 +92,7 @@ public class MyAnswerActivity extends BaseActivity<MyAnswerContract.Presenter> i
         if (mSwipeRefreshLayout == null)
             mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
         mSwipeRefreshLayout.setRefreshing(true);
+
         BmobUser bmobUser = BmobUser.getCurrentUser(JueQianAPP.getAppContext());
         BmobQuery<Answer> query = new BmobQuery<Answer>();
         query.addWhereRelatedTo("answers", new BmobPointer(bmobUser));
@@ -98,13 +102,14 @@ public class MyAnswerActivity extends BaseActivity<MyAnswerContract.Presenter> i
         query.findObjects(JueQianAPP.getAppContext(), new FindListener<Answer>() {
             @Override
             public void onSuccess(List<Answer> list) {
-                if (list.size() == 0) {
-                    if (frameLayout==null) frameLayout= (FrameLayout) findViewById(R.id.framelayout);
-                    frameLayout.setVisibility(View.VISIBLE);
-                    return;
-                }
+
                 answers = list;
-                if (answers == null) {
+
+                //if data's lenth==0,show the null page.
+                if (list.size() == 0) {
+                    if (frameLayout == null || answers == null)
+                        frameLayout = (FrameLayout) findViewById(R.id.framelayout);
+                    frameLayout.setVisibility(View.VISIBLE);
                     return;
                 }
                 mHandler.sendEmptyMessage(1);
@@ -123,17 +128,17 @@ public class MyAnswerActivity extends BaseActivity<MyAnswerContract.Presenter> i
     @Override
     protected void initView() {
         setToolbar();
-//        initRecyclerView();
     }
 
     private void initRecyclerView() {
-        if (mRecyclerView==null) mRecyclerView= (RecyclerView) findViewById(R.id.recyclerview);
+        if (mRecyclerView == null) mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         myAnswerAdapter = new MyAnswerAdapter(questions, this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(myAnswerAdapter);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(MyAnswerActivity.this, DividerItemDecoration.VERTICAL));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        answers.clear();
+        isInit = true;
+
     }
 
     private void setToolbar() {
@@ -165,9 +170,16 @@ public class MyAnswerActivity extends BaseActivity<MyAnswerContract.Presenter> i
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                isInit=false;
                 finish();
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        isInit = false;
     }
 }

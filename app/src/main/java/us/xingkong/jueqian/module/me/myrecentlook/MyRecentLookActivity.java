@@ -45,7 +45,10 @@ public class MyRecentLookActivity extends BaseActivity<MyRecentLookContract.Pres
     SwipeRefreshLayout mSwipeRefreshLayout;
 
     private String intentUserID;
-    private List<Question> questions = new ArrayList<>();
+    private List<Question> questions;
+    private MyRecentLookAdapter myRecentLookAdapter;
+    private List<Question> questions_adapter = new ArrayList<>();
+    private static boolean isInit = false;
 
     private Handler mHandler = new Handler() {
         @Override
@@ -53,7 +56,15 @@ public class MyRecentLookActivity extends BaseActivity<MyRecentLookContract.Pres
             super.handleMessage(msg);
             switch (msg.what) {
                 case 1:
-                    initRecyclerView();
+                    if (isInit) {
+                        questions_adapter.clear();
+                        questions = questions_adapter;
+                        if (myRecentLookAdapter == null)
+                            myRecentLookAdapter = new MyRecentLookAdapter(mHandler, questions_adapter, MyRecentLookActivity.this);
+                        myRecentLookAdapter.notifyDataSetChanged();
+                    } else {
+                        initRecyclerView();
+                    }
                     if (mSwipeRefreshLayout == null)
                         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
                     mSwipeRefreshLayout.setRefreshing(false);
@@ -63,7 +74,6 @@ public class MyRecentLookActivity extends BaseActivity<MyRecentLookContract.Pres
         }
     };
 
-    private MyRecentLookAdapter myRecentLookAdapter = new MyRecentLookAdapter(mHandler, questions, this);
 
     @Override
     protected MyRecentLookContract.Presenter createPresenter() {
@@ -86,6 +96,7 @@ public class MyRecentLookActivity extends BaseActivity<MyRecentLookContract.Pres
         if (mSwipeRefreshLayout == null)
             mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
         mSwipeRefreshLayout.setRefreshing(true);
+
         _User user = new _User();
         user.setObjectId(intentUserID);
         BmobQuery<Question> query = new BmobQuery<Question>();
@@ -95,13 +106,14 @@ public class MyRecentLookActivity extends BaseActivity<MyRecentLookContract.Pres
         query.findObjects(JueQianAPP.getAppContext(), new FindListener<Question>() {
             @Override
             public void onSuccess(List<Question> list) {
-                if (list.size() == 0) {
+                questions = new ArrayList<>();
+                questions = list;
+                if (questions.size() == 0) {
                     if (frameLayout == null)
                         frameLayout = (FrameLayout) findViewById(R.id.framelayout);
                     frameLayout.setVisibility(View.VISIBLE);
                     return;
                 }
-                questions = list;
                 mHandler.sendEmptyMessage(1);
             }
 
@@ -118,16 +130,16 @@ public class MyRecentLookActivity extends BaseActivity<MyRecentLookContract.Pres
     @Override
     protected void initView() {
         setToolbar();
-        //initRecyclerView();
     }
 
     private void initRecyclerView() {
         if (mRecyclerView == null) mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        myRecentLookAdapter = new MyRecentLookAdapter(mHandler, questions, this);
         mRecyclerView.setAdapter(myRecentLookAdapter);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(MyRecentLookActivity.this, DividerItemDecoration.VERTICAL));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        questions.clear();
+        isInit = true;
     }
 
     private void setToolbar() {
@@ -138,36 +150,6 @@ public class MyRecentLookActivity extends BaseActivity<MyRecentLookContract.Pres
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-        if (mSwipeRefreshLayout == null)
-            mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
-        mSwipeRefreshLayout.setRefreshing(true);
-        _User user = new _User();
-        user.setObjectId(intentUserID);
-        BmobQuery<Question> query = new BmobQuery<Question>();
-        query.addWhereRelatedTo("recentlooks", new BmobPointer(user));
-        query.order("createdAt");
-        query.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
-        query.findObjects(JueQianAPP.getAppContext(), new FindListener<Question>() {
-            @Override
-            public void onSuccess(List<Question> list) {
-                if (list.size() == 0) {
-                    if (frameLayout == null)
-                        frameLayout = (FrameLayout) findViewById(R.id.framelayout);
-                    frameLayout.setVisibility(View.VISIBLE);
-                    return;
-                }
-                questions = list;
-                mHandler.sendEmptyMessage(1);
-            }
-
-            @Override
-            public void onError(int i, String s) {
-                if (mSwipeRefreshLayout == null)
-                    mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
-                mSwipeRefreshLayout.setRefreshing(false);
-                showToast("获取最近浏览列表失败CASE:" + s);
-            }
-        });
     }
 
     @Override
@@ -180,54 +162,26 @@ public class MyRecentLookActivity extends BaseActivity<MyRecentLookContract.Pres
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                updateData();
-            }
-
-
-        });
-    }
-
-    private void updateData() {
-        if (mSwipeRefreshLayout == null)
-            mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
-        mSwipeRefreshLayout.setRefreshing(true);
-        _User user = new _User();
-        user.setObjectId(intentUserID);
-        BmobQuery<Question> query = new BmobQuery<Question>();
-        query.addWhereRelatedTo("recentlooks", new BmobPointer(user));
-        query.order("createdAt");
-        query.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
-        query.findObjects(JueQianAPP.getAppContext(), new FindListener<Question>() {
-            @Override
-            public void onSuccess(List<Question> list) {
-                if (list.size() == 0) {
-                    if (frameLayout == null)
-                        frameLayout = (FrameLayout) findViewById(R.id.framelayout);
-                    frameLayout.setVisibility(View.VISIBLE);
-
-                    return;
-                }
-                questions = list;
-                mHandler.sendEmptyMessage(1);
-            }
-
-            @Override
-            public void onError(int i, String s) {
-                if (mSwipeRefreshLayout == null)
-                    mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
-                mSwipeRefreshLayout.setRefreshing(false);
-                showToast("获取最近浏览列表失败CASE:" + s);
+                getRecentLook();
             }
         });
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                isInit = false;
                 finish();
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        isInit = false;
     }
 }
