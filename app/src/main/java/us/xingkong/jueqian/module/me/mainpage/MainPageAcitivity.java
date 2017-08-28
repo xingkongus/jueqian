@@ -72,6 +72,7 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
     private _User current_user;
     private _User intentUser = new _User();
     private String followID;
+    boolean isNull = false;
 
     private Handler handler = new Handler() {
         @Override
@@ -118,6 +119,7 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
         intentUserID = intent.getStringExtra("intentUserID");
         intentUser.setObjectId(intentUserID);
 
+        checkInfo();
         updateFans();
         updateFollowing();
     }
@@ -322,6 +324,8 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
     }
 
     private void initFocusButton() {
+
+
         if (bt_edit == null) bt_edit = (Button) findViewById(R.id.mainpage_bt_edit);
         if (BmobUser.getCurrentUser(JueQianAPP.getAppContext()) == null) {
             bt_edit.setVisibility(View.INVISIBLE);
@@ -342,7 +346,10 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
             bt_edit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    if (isNull) {
+                        showToast("请先完善个人信息");
+                        return;
+                    }
                     if (bt_edit.getText().equals("关注 +")) {
                         //添加关注关系
                         Follow follow = new Follow();
@@ -381,7 +388,8 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
                         query.findObjects(JueQianAPP.getAppContext(), new FindListener<Follow>() {
                             @Override
                             public void onSuccess(List<Follow> list) {
-                                if (bt_edit==null) bt_edit= (Button) findViewById(R.id.mainpage_bt_edit);
+                                if (bt_edit == null)
+                                    bt_edit = (Button) findViewById(R.id.mainpage_bt_edit);
                                 if (list.size() == 0) {
                                     bt_edit.setText("关注 +");
                                 } else if (list.size() == 1) {
@@ -404,6 +412,36 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
                 }
             });
         }
+
+    }
+
+    private boolean checkInfo() {
+        BmobQuery<_User> query = new BmobQuery<>();
+        query.addWhereEqualTo("objectId", BmobUser.getCurrentUser(JueQianAPP.getAppContext()).getObjectId());
+//        query.addQueryKeys("profile");
+        query.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
+        query.findObjects(JueQianAPP.getAppContext(), new FindListener<_User>() {
+            @Override
+            public void onSuccess(List<_User> list) {
+                BmobFile bmobFile = list.get(0).getProfile();
+                String nickname = list.get(0).getNickname();
+                if (bmobFile == null || nickname == null) {
+                    isNull = true;
+                    return;
+                }
+            }
+
+            @Override
+            public void onError(int i, String s) {
+            }
+        });
+
+        if (isNull) {
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
     private void isFocus() {
@@ -423,7 +461,7 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
         query.findObjects(JueQianAPP.getAppContext(), new FindListener<Follow>() {
             @Override
             public void onSuccess(List<Follow> list) {
-                if (bt_edit==null) bt_edit= (Button) findViewById(R.id.mainpage_bt_edit);
+                if (bt_edit == null) bt_edit = (Button) findViewById(R.id.mainpage_bt_edit);
 //                    handler.sendEmptyMessage(1);
                 if (list.size() == 0) {
                     bt_edit.setText("关注 +");
