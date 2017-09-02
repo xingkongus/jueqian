@@ -1,21 +1,29 @@
 package us.xingkong.jueqian.module.main;
 
 import android.content.Context;
-import android.content.Intent;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+
+import com.pgyersdk.crash.PgyCrashManager;
+import com.pgyersdk.javabean.AppBean;
+import com.pgyersdk.update.PgyUpdateManager;
+import com.pgyersdk.update.UpdateManagerListener;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindArray;
 import butterknife.BindView;
-import cn.bmob.v3.BmobUser;
 import us.xingkong.jueqian.JueQianAPP;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.adapter.MainPagerAdapter;
@@ -23,7 +31,6 @@ import us.xingkong.jueqian.base.BaseActivity;
 import us.xingkong.jueqian.module.Forum.ForumFragment;
 import us.xingkong.jueqian.module.RealS.RealSFragment;
 import us.xingkong.jueqian.module.me.MeFragment;
-import us.xingkong.jueqian.module.me.mymainpage.editinfo.EditInfoActivity;
 import us.xingkong.jueqian.widget.ScrollViewPager;
 
 /**
@@ -81,6 +88,8 @@ public class MainActivity extends BaseActivity<MainContract.Presenter> implement
 
     @Override
     protected void initView() {
+        registPgyCrash(); //蒲公英注册Crash
+        autoUpadate(); //蒲公英自动更新
         instance = this;
         mViewPager.setPagingEnabled(false);
         List<Fragment> fragments = new ArrayList<>();
@@ -93,6 +102,61 @@ public class MainActivity extends BaseActivity<MainContract.Presenter> implement
                 this.mTitles);
         mViewPager.setAdapter(pagerAdapter);
 
+    }
+
+    private void autoUpadate() {
+        PgyUpdateManager.setIsForced(false); //设置是否强制更新。true为强制更新；false为不强制更新（默认值）。
+//        PgyUpdateManager.register(this, "pgy_provider");
+
+        PgyUpdateManager.register(MainActivity.this, "pgy_provider",
+                new UpdateManagerListener() {
+                    String releaseNote;
+                    @Override
+                    public void onUpdateAvailable(final String result) {
+
+                        try {
+                            JSONObject upadate_result=new JSONObject(result);
+                            JSONObject data=upadate_result.getJSONObject("data");
+                            releaseNote=data.getString("releaseNote");
+                            if (releaseNote==null){
+                                releaseNote="修复了一些bug";
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        // 将新版本信息封装到AppBean中
+                        final AppBean appBean = getAppBeanFromString(result);
+                        new AlertDialog.Builder(MainActivity.this)
+                                .setTitle("发现新的版本")
+                                .setMessage(releaseNote)
+                                .setNegativeButton(
+                                        "确定",
+                                        new DialogInterface.OnClickListener() {
+
+                                            @Override
+                                            public void onClick(
+                                                    DialogInterface dialog,
+                                                    int which) {
+                                                startDownloadTask(
+                                                        MainActivity.this,
+                                                        appBean.getDownloadURL());
+                                            }
+                                        }).setPositiveButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                            }
+                        }).show();
+                    }
+
+                    @Override
+                    public void onNoUpdateAvailable() {
+                    }
+                });
+    }
+
+    private void registPgyCrash() {
+        PgyCrashManager.register(this);
     }
 
     private void addFragmentList(List<Fragment> fragments) {
@@ -135,6 +199,5 @@ public class MainActivity extends BaseActivity<MainContract.Presenter> implement
     public void onBackPressed() {
         JueQianAPP.exitApp();
     }
-
 
 }

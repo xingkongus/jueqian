@@ -14,6 +14,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        resValue "string", "updatefun_provider_file_authorities", "us.xingkong.jueqian.fileprovider"
     }
     buildTypes {
         release {
@@ -72,4 +73,7 @@ dependencies {
     compile 'id.zelory:compressor:1.0.4'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.github.castorflex.smoothprogressbar:library-circular:1.0.2'
+
+    //蒲公英
+    compile 'com.pgyersdk:sdk:2.7.0'
 }
