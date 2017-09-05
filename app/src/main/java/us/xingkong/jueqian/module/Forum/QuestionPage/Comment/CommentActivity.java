@@ -21,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import cn.bmob.v3.BmobUser;
@@ -58,6 +59,7 @@ public class CommentActivity extends BaseActivity<CommentContract.Presenter> imp
     private String answer_userID;
     private boolean isInitRecyclewView = false;
     private String question_userID;
+    private int item_count;
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -75,6 +77,7 @@ public class CommentActivity extends BaseActivity<CommentContract.Presenter> imp
                 case 2:
                     if (comments != null && isNetworkAvailable(mContext)) {
                         recyclerViewAdapter.notifyDataSetChanged();
+                        item_count=20;
                     }
                     break;
                 case 3: //刷新数据
@@ -88,6 +91,7 @@ public class CommentActivity extends BaseActivity<CommentContract.Presenter> imp
                     isRolling = false;
                     setRecyclewViewBug();
                     refreshLayout.setRefreshing(false);
+                    item_count=20;
                     break;
                 case 4:
                     recyclerviewCommentpage.scrollToPosition(1);
@@ -123,6 +127,16 @@ public class CommentActivity extends BaseActivity<CommentContract.Presenter> imp
                     Comment comment;
                     comment = (Comment) msg.obj;
                     recyclerViewAdapter.addItem(0, comment);
+                    break;
+                case 7:
+                    List<Comment>newComments= (List<Comment>) msg.obj;
+                    if (newComments.size() != 0) {
+                        recyclerViewAdapter.addMoreItem(newComments);
+                        recyclerViewAdapter.changeMoreStatus(CommentRecyclerViewAdapter.LOADING_MORE);
+                        item_count+=20;
+                    }else{
+                        recyclerViewAdapter.changeMoreStatus(CommentRecyclerViewAdapter.NO_MORE);
+                    }
                     break;
             }
         }
@@ -181,7 +195,21 @@ public class CommentActivity extends BaseActivity<CommentContract.Presenter> imp
         recyclerviewCommentpage.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         recyclerviewCommentpage.setItemAnimator(new DefaultItemAnimator());
         recyclerviewCommentpage.addOnScrollListener(new RecyclerView.OnScrollListener() {
-
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                LinearLayoutManager manager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    int lastVisibleItem = manager.findLastCompletelyVisibleItemPosition();
+                    int totalItemCount = manager.getItemCount();
+                    // 判断是否滚动到底部
+                    if (lastVisibleItem == (totalItemCount - 1)) {
+                        //加载更多功能的代码
+                        ArrayList<Comment>newComments=new ArrayList<Comment>();
+                        mPresenter.getMoreComment(mContext,handler,answerID,newComments,item_count);
+                    }
+                }
+            }
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);

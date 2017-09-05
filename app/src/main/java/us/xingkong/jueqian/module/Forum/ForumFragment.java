@@ -190,6 +190,7 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
                     isRolling = true;
                     setRecyclewViewBug();
                     mPresenter.getBmobQuestion(getContext(), questions, mHandler, 2);
+                    item_count=20;
                     break;
 //                case 3:
 //                    if (questions != null && isInitRecyclewView == true) {

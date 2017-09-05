@@ -9,8 +9,10 @@ import android.support.annotation.NonNull;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -54,6 +56,8 @@ public class NewActivity extends BaseActivity<NewContract.Presenter> implements 
     private String newTag2;
     public static NewActivity close = null;
     private int isExistImag;
+    @BindView(R.id.new_question_pro)
+    ProgressBar pro;
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -66,9 +70,10 @@ public class NewActivity extends BaseActivity<NewContract.Presenter> implements 
                         MainActivity.instance.finish();
                         Intent intent = new Intent(mContext, MainActivity.class);
                         startActivity(intent);
+                        pro.setVisibility(View.GONE);
                         finish();
                     } else if (isExistImag == 1) {
-                        mPresenter.upLoadImage(mContext, newQuestionContent, handler);//发现图片上传到服务器
+                        mPresenter.upLoadImage(mContext, newQuestionContent, handler,pro);//发现图片上传到服务器
                     }
 
                     mPresenter.addMyQuestion(mContext, myQuestionID, handler);//添加到我的问题
@@ -76,7 +81,7 @@ public class NewActivity extends BaseActivity<NewContract.Presenter> implements 
                     break;
                 case 2:
                     imageFiles = (List<String>) msg.obj;                      //得到files后保存图片URL到问题列表
-                    mPresenter.saveURL(imageFiles, newQuestionID, mContext, handler);
+                    mPresenter.saveURL(imageFiles, newQuestionID, mContext, handler,pro);
                     break;
                 case 3:
 //                    if (isExistImag == 0) {
@@ -118,6 +123,7 @@ public class NewActivity extends BaseActivity<NewContract.Presenter> implements 
     @Override
     protected void initView() {
         setToolbarBackEnable("提问");
+        pro.setVisibility(View.GONE);
     }
 
 
@@ -149,6 +155,7 @@ public class NewActivity extends BaseActivity<NewContract.Presenter> implements 
                         .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                pro.setVisibility(View.VISIBLE);
                                 newtitle = title.getText().toString();
                                 newQuestionContent = content.getText().toString();
                                 newTag1 = tag1.getText().toString();

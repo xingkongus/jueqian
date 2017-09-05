@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -100,7 +102,7 @@ public class NewPresenter extends BasePresenterImpl implements NewContract.Prese
     }
 
     @Override
-    public int upLoadImage(final Context context, String content, final Handler handler) {
+    public int upLoadImage(final Context context, String content, final Handler handler, final ProgressBar pro) {
         Pattern p = Pattern.compile("\\/[^ .]+.(gif|jpg|jpeg|png)");
         Matcher matcher = p.matcher(content);
         final ArrayList<String> arrayList = new ArrayList<>();
@@ -137,6 +139,7 @@ public class NewPresenter extends BasePresenterImpl implements NewContract.Prese
                     MainActivity.instance.finish();
                     Intent intent = new Intent(context, MainActivity.class);
                     context.startActivity(intent);
+                    pro.setVisibility(View.GONE);
                     NewActivity.close.finish();
                 }
             });
@@ -146,7 +149,7 @@ public class NewPresenter extends BasePresenterImpl implements NewContract.Prese
     }
 
     @Override
-    public void saveURL(List<String> imageFiles, String newQuestionID, final Context context, final Handler handler) {
+    public void saveURL(List<String> imageFiles, String newQuestionID, final Context context, final Handler handler,final ProgressBar pro) {
         Question question = new Question();
         question.setImageFiles(imageFiles);
         question.update(context, newQuestionID, new UpdateListener() {
@@ -156,6 +159,7 @@ public class NewPresenter extends BasePresenterImpl implements NewContract.Prese
                 MainActivity.instance.finish();
                 Intent intent = new Intent(context, MainActivity.class);
                 context.startActivity(intent);
+                pro.setVisibility(View.GONE);
                 NewActivity.close.finish();
             }
 
@@ -165,6 +169,7 @@ public class NewPresenter extends BasePresenterImpl implements NewContract.Prese
                 MainActivity.instance.finish();
                 Intent intent = new Intent(context, MainActivity.class);
                 context.startActivity(intent);
+                pro.setVisibility(View.GONE);
                 NewActivity.close.finish();
             }
         });

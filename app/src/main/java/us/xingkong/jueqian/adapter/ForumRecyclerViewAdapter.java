@@ -32,12 +32,12 @@ public class ForumRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
     private static final int TYPE_ITEM = 0;  //普通Item View
     private static final int TYPE_FOOTER = 1;  //顶部FootView
     //上拉加载更多
-    public static final int  PULLUP_LOAD_MORE=0;
+    public static final int PULLUP_LOAD_MORE = 0;
     //正在加载中
-    public static final int  LOADING_MORE=1;
-    public static final int  NO_MORE=2;
+    public static final int LOADING_MORE = 1;
+    public static final int NO_MORE = 2;
     //上拉加载更多状态-默认为0
-    private int load_more_status=0;
+    private int load_more_status = 0;
     List<Question> infoSets;
     Handler mHandler;
     Context mContext;
@@ -123,7 +123,7 @@ public class ForumRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
         }
         if (holder instanceof Footer) {
             final Footer footer = (Footer) holder;
-            switch (load_more_status){
+            switch (load_more_status) {
                 case PULLUP_LOAD_MORE:
                     footer.pro.setVisibility(View.GONE);
                     footer.loadmore.setText("上拉加载更多...");
@@ -139,18 +139,20 @@ public class ForumRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
             }
         }
     }
+
     public void addMoreItem(List<Question> newDatas) {
         infoSets.addAll(newDatas);
         notifyDataSetChanged();
     }
 
-    public void changeMoreStatus(int status){
-        load_more_status=status;
+    public void changeMoreStatus(int status) {
+        load_more_status = status;
         notifyDataSetChanged();
     }
+
     @Override
     public int getItemCount() {
-        return infoSets.size()+1;
+        return infoSets.size() + 1;
     }
 
 
@@ -178,13 +180,15 @@ public class ForumRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
             item = (LinearLayout) itemView.findViewById(R.id.forum_mainpager);
         }
     }
-    class Footer extends RecyclerView.ViewHolder{
-    TextView loadmore;
+
+    class Footer extends RecyclerView.ViewHolder {
+        TextView loadmore;
         ProgressBar pro;
+
         public Footer(View itemView) {
             super(itemView);
-            loadmore= (TextView) itemView.findViewById(R.id.item_loadmore_text);
-            pro= (ProgressBar) itemView.findViewById(R.id.pro);
+            loadmore = (TextView) itemView.findViewById(R.id.item_loadmore_text);
+            pro = (ProgressBar) itemView.findViewById(R.id.pro);
         }
     }
 

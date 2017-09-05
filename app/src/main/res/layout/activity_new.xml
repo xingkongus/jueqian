@@ -37,25 +37,37 @@
             android:layout_height="1dp"
             android:background="@color/text_secondary" />
 
-        <ScrollView
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <us.xingkong.jueqian.widget.PictureAndTextEditorView
-                android:id="@+id/new_answercontent"
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:background="#ffffff"
-                android:enabled="true"
-                android:gravity="top"
-                android:hint="写下您的详细问题..."
-                android:inputType="textMultiLine"
-                android:maxLines="10"
-                android:minLines="8"
-                android:padding="5dp"
-                android:scrollbars="vertical"></us.xingkong.jueqian.widget.PictureAndTextEditorView>
-        </ScrollView>
+                android:layout_height="wrap_content">
+
+                <us.xingkong.jueqian.widget.PictureAndTextEditorView
+                    android:id="@+id/new_answercontent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="#ffffff"
+                    android:enabled="true"
+                    android:gravity="top"
+                    android:hint="写下您的详细问题..."
+                    android:inputType="textMultiLine"
+                    android:maxLines="10"
+                    android:minLines="8"
+                    android:padding="5dp"
+                    android:scrollbars="vertical"></us.xingkong.jueqian.widget.PictureAndTextEditorView>
+            </ScrollView>
+
+            <ProgressBar
+                android:visibility="gone"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/new_question_pro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
     </LinearLayout>
 
     <ScrollView
