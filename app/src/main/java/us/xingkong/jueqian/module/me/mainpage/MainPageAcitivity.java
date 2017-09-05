@@ -119,7 +119,7 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
         intentUserID = intent.getStringExtra("intentUserID");
         intentUser.setObjectId(intentUserID);
 
-        checkInfo();
+//        checkInfo();
         updateFans();
         updateFollowing();
     }
@@ -277,12 +277,12 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
             @Override
             public void onSuccess(List<_User> list) {
                 if (list.size() == 0) {
-                    showToast("当前用户无头像");
+//                    showToast("当前用户无头像");
                     return;
                 }
                 BmobFile bmobFile = list.get(0).getProfile();
                 if (bmobFile == null) {
-                    showToast("当前用户无头像");
+//                    showToast("当前用户无头像");
                     return;
                 }
                 String profileURL = bmobFile.getUrl();
