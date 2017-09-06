@@ -77,7 +77,7 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
     private boolean isShouzan;
     private boolean isInitRecyclewView = false;
     public static QuestionActivity close = null;
-    private int item_count=0;//记载跳过的回答数
+    private int item_count = 0;//记载跳过的回答数
 
 
     Handler handler = new Handler() {
@@ -97,7 +97,7 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                 case 3:
                     if (answers != null && isInitRecyclewView == true) {
                         recyclerViewAdapter.notifyDataSetChanged();
-                        item_count=20;
+                        item_count = 20;
                     }
                     if (refreshLayout != null) {
                         refreshLayout.setRefreshing(false);
@@ -125,7 +125,7 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                     refreshLayout.setRefreshing(false);
                     isRolling = false;
                     setRecyclewViewBug();
-                    item_count=20;
+                    item_count = 20;
                     break;
                 case 6:
                     backgroundAlpha(0.5f);
@@ -298,12 +298,12 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                     }
                     break;
                 case 12:
-                    List<Answer>newAnswers= (List<Answer>) msg.obj;
+                    List<Answer> newAnswers = (List<Answer>) msg.obj;
                     if (newAnswers.size() != 0) {
                         recyclerViewAdapter.addMoreItem(newAnswers);
                         recyclerViewAdapter.changeMoreStatus(QuestionRecyclerViewAdapter.LOADING_MORE);
-                        item_count+=20;
-                    }else{
+                        item_count += 20;
+                    } else {
                         recyclerViewAdapter.changeMoreStatus(QuestionRecyclerViewAdapter.NO_MORE);
                     }
                     break;
@@ -479,11 +479,9 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                     // 判断是否滚动到底部
                     if (lastVisibleItem == (totalItemCount - 1)) {
                         //加载更多功能的代码
-                        ArrayList<Answer>newAnswers =new ArrayList<Answer>();
-                        mPresenter.getMoreAnswer(mContext,newAnswers,handler,item_count,questionID);
+                        ArrayList<Answer> newAnswers = new ArrayList<Answer>();
+                        mPresenter.getMoreAnswer(mContext, newAnswers, handler, item_count, questionID);
                     }
-
-
 
 
 //                    if (!recyclerView.canScrollVertically(1)) {
@@ -501,7 +499,7 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                if (dy > 0) {
+                if (dy > 0 && answers.size() >= 0) {
                     tab.setVisibility(View.GONE);//底部的tab隐藏和出现
                 } else if (dy < 0) {
                     tab.setVisibility(View.VISIBLE);
