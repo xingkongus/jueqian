@@ -86,8 +86,8 @@
                     android:layout_marginLeft="8dp"
                     android:layout_marginStart="8dp"
                     android:background="@color/bg_tag"
-                    android:paddingTop="@dimen/dp_2"
                     android:paddingBottom="@dimen/dp_2"
+                    android:paddingTop="@dimen/dp_2"
                     android:text="android"
                     android:textColor="@color/colorPrimary" />
 
@@ -98,8 +98,8 @@
                     android:layout_marginLeft="8dp"
                     android:layout_marginStart="8dp"
                     android:background="@color/bg_tag"
-                    android:paddingTop="@dimen/dp_2"
                     android:paddingBottom="@dimen/dp_2"
+                    android:paddingTop="@dimen/dp_2"
                     android:text="移动开发"
                     android:textColor="@color/colorPrimary" />
             </LinearLayout>

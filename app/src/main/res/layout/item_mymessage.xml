@@ -4,7 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="8dp">
+    android:paddingLeft="@dimen/dp_8"
+    android:paddingRight="@dimen/dp_8"
+    android:paddingTop="@dimen/dp_8"
+    android:paddingBottom="@dimen/dp_16"
+    >
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/item_mymessage_circleimageview"
@@ -36,26 +40,27 @@
         android:textColor="@color/text_pinglun"
         android:textSize="16sp" />
 
-    <TextView
-        android:id="@+id/item_mymessage_tv_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/item_mymessage_tv_nickname"
-        android:layout_below="@id/item_mymessage_tv_nickname"
-        android:layout_marginTop="8dp"
-        android:textSize="@dimen/sp_14" />
-
 
     <TextView
         android:id="@+id/item_mymessage_tv_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/item_mymessage_tv_nickname"
-        android:layout_below="@id/item_mymessage_tv_time"
+        android:layout_below="@id/item_mymessage_tv_nickname"
         android:layout_marginTop="8dp"
-        android:text=""
+        android:text="lihaile"
         android:textColor="@color/text_content"
         android:textSize="@dimen/sp_18" />
+
+    <TextView
+        android:id="@+id/item_mymessage_tv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/item_mymessage_tv_content"
+        android:layout_below="@id/item_mymessage_tv_content"
+        android:layout_marginTop="8dp"
+        android:text=""
+        android:textSize="@dimen/sp_14" />
 
 
 </RelativeLayout>

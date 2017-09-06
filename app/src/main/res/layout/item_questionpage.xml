@@ -41,6 +41,7 @@
 
                 <TextView
                     android:id="@+id/username_questionpage"
+                    android:layout_centerVertical="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
@@ -89,10 +90,11 @@
                     android:id="@+id/question_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/dp_16"
-                    android:layout_toLeftOf="@+id/zanlayout_question_item"
-                    android:text="" />
+                    android:text=""
+                    android:textColor="@color/text_pinglun" />
 
                 <LinearLayout
                     android:id="@+id/zanlayout_question_item"
