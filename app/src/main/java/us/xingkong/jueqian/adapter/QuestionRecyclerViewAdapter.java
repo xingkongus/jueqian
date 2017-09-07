@@ -239,6 +239,7 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
             if (now != null && (now.getObjectId().equals(getQuestion.getUser().getObjectId()) || now.getObjectId().equals(answers.get(position - 1).getUser().getObjectId()))) {
                 vh_answer.delete.setVisibility(View.VISIBLE);
                 vh_answer.delete.setClickable(true);
+                final String answerID1=answers.get(position-1).getObjectId();
                 vh_answer.delete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -258,10 +259,12 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                                                 answers.remove(position - 1);
                                                 notifyItemRemoved(position - 1);
                                                 notifyItemRangeChanged(position - 1, answers.size());
+                                                notifyDataSetChanged();
                                                 Toast.makeText(context, "删除成功", Toast.LENGTH_SHORT).show();
                                                 Message msg = new Message();
                                                 Bundle bundle = new Bundle();
                                                 bundle.putString("questionID", getQuestion.getObjectId());
+                                                bundle.putString("answerID1",answerID1);
                                                 msg.setData(bundle);
                                                 msg.what = 8;
                                                 mHandler.sendMessage(msg);
@@ -281,8 +284,6 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
                                     }
                                 }).show();
-
-
                     }
                 });
             } else {
@@ -445,7 +446,6 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
             }
         }
 
-//        mHandler.sendEmptyMessage(15);
     }
 
     @Override
