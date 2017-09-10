@@ -2,6 +2,7 @@ package us.xingkong.jueqian.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
@@ -146,11 +147,16 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                                         answer1.delete(context, new DeleteListener() {
                                             @Override
                                             public void onSuccess() {
+                                                QuestionActivity.close.finish();
                                                 Intent intent = new Intent(context, QuestionActivity.class);
                                                 intent.putExtra("questionid", questionID);
                                                 intent.putExtra("question_userID", question_userID);
                                                 context.startActivity(intent);
                                                 Toast.makeText(context, "删除成功", Toast.LENGTH_SHORT).show();
+                                                Message message=new Message();
+                                                message.what=8;
+                                                message.obj=answer.getObjectId();
+                                                mHandler.sendMessage(message);
                                             }
 
                                             @Override
@@ -234,6 +240,7 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
             if (now.getObjectId().equals(comments.get(position - 1).getUser().getObjectId()) || now.getObjectId().equals(answer.getObjectId())) {
                 vh_comment.delete_comments.setVisibility(View.VISIBLE);
                 vh_comment.delete_comments.setClickable(true);
+                final String commentID1=comments.get(position-1).getObjectId();
                 vh_comment.delete_comments.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -254,6 +261,12 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                                                 notifyItemRemoved(position - 1);
                                                 notifyItemRangeChanged(position - 1, comments.size());
                                                 Toast.makeText(context, "删除成功", Toast.LENGTH_SHORT).show();
+                                                Message msg=new Message();
+                                                Bundle bundle=new Bundle();
+                                                bundle.putString("commentID",commentID1);
+                                                msg.setData(bundle);
+                                                msg.what=11;
+                                                mHandler.sendMessage(msg);
                                             }
 
                                             @Override

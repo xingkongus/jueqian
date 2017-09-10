@@ -40,7 +40,9 @@ import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.adapter.QuestionRecyclerViewAdapter;
 import us.xingkong.jueqian.base.BaseActivity;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Answer;
+import us.xingkong.jueqian.bean.ForumBean.BombBean.Comment;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Ding;
+import us.xingkong.jueqian.bean.ForumBean.BombBean.NewMessage;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
 import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
 import us.xingkong.jueqian.module.Forum.NewAnswer.NewAnswerActivity;
@@ -103,17 +105,25 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                         refreshLayout.setRefreshing(false);
                     }
                     break;
-//                case 4:
-//                    new MaterialDialog.Builder(mContext)
-//                            .items(R.array.option_head)
-//                            .itemsCallback(new MaterialDialog.ListCallback() {
-//                                @Override
-//                                public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-//                                    Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
-//                                }
-//                            })
-//                            .show();
-//                    break;
+                case 4:
+                    final List<NewMessage> newMessageList1 = (List<NewMessage>) msg.obj;
+                    List<BmobObject> newMessageList2 = new ArrayList<>();
+                    for (int i = 0; i < newMessageList1.size(); i++) {
+                        NewMessage newMessage = new NewMessage();
+                        newMessage.setObjectId(newMessageList1.get(i).getObjectId());
+                        newMessageList2.add(newMessage);
+                    }
+                    if (newMessageList2.size() == 0) return;
+                    new BmobObject().deleteBatch(mContext, newMessageList2, new DeleteListener() {
+                        @Override
+                        public void onSuccess() {
+                        }
+
+                        @Override
+                        public void onFailure(int i, String s) {
+                        }
+                    });
+                    break;
                 case 5:  //刷新数据
                     if (isInitRecyclewView == false) {
                         mPresenter.getQuestion(mContext, questionID, handler);
@@ -220,6 +230,7 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                     break;
                 case 8://问题回答数减一
                     String questionID1 = msg.getData().getString("questionID");
+                    String answerID1 = msg.getData().getString("answerID1");
                     if (questionID1 != null) {
                         Question question = new Question();
                         question.increment("answer_count", -1);
@@ -233,10 +244,74 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                             }
                         });
                     }
+                    //查找NewMessage表相同的questionID项
+                    final List<NewMessage> newMessageList22 = new ArrayList<>();
+                    BmobQuery<NewMessage> messageBmobQuery1 = new BmobQuery<>();
+                    messageBmobQuery1.addWhereEqualTo("messAnswer", answerID1);
+                    messageBmobQuery1.findObjects(mContext, new FindListener<NewMessage>() {
+                        @Override
+                        public void onSuccess(List<NewMessage> list) {
+                            for (NewMessage newMessage : list) {
+                                newMessageList22.add(newMessage);
+                            }
+                            Message message = new Message();
+                            message.obj = newMessageList22;
+                            message.what = 13;
+                            handler.sendMessage(message);
+                        }
+
+                        @Override
+                        public void onError(int i, String s) {
+
+                        }
+                    });
+
+                    //查找Comment中对应answerID项
+                    final List<Comment> comments = new ArrayList<>();
+                    BmobQuery<Comment> commentBmobQuery = new BmobQuery<>();
+                    commentBmobQuery.addWhereEqualTo("answer", answerID1);
+                    commentBmobQuery.findObjects(mContext, new FindListener<Comment>() {
+                        @Override
+                        public void onSuccess(List<Comment> list) {
+                            for (Comment comment1 : list) {
+                                comments.add(comment1);
+                            }
+                            Message message = new Message();
+                            message.obj = comments;
+                            message.what = 14;
+                            handler.sendMessage(message);
+                        }
+
+                        @Override
+                        public void onError(int i, String s) {
+                        }
+                    });
+                    //查找NewMessage表中的对应commentID项
+                    final List<NewMessage> newMessageList44 = new ArrayList<>();
+                    BmobQuery<NewMessage> messageBmobQuery44 = new BmobQuery<>();
+                    messageBmobQuery44.addWhereEqualTo("answer", answerID1);
+                    messageBmobQuery44.findObjects(mContext, new FindListener<NewMessage>() {
+                        @Override
+                        public void onSuccess(List<NewMessage> list) {
+                            for (NewMessage newMessage : list) {
+                                newMessageList44.add(newMessage);
+                            }
+                            Message message = new Message();
+                            message.obj = newMessageList44;
+                            message.what = 15;
+                            handler.sendMessage(message);
+                        }
+
+                        @Override
+                        public void onError(int i, String s) {
+                        }
+                    });
                     break;
                 case 9://连级删除问题下的回答
-                    final List<Answer> list1 = new ArrayList<>();
+                    //先查找到所有关于这个问题的answerID
                     String questionID2 = msg.getData().getString("questionID");
+                    //查找answer表相同questionID的项
+                    final List<Answer> list1 = new ArrayList<>();
                     BmobQuery<Answer> query = new BmobQuery<>();
                     query.addWhereEqualTo("question", questionID2);
                     query.findObjects(mContext, new FindListener<Answer>() {
@@ -257,8 +332,30 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
 
                         }
                     });
+                    //查找NewMessage表相同的questionID项
+                    final List<NewMessage> newMessageList = new ArrayList<>();
+                    BmobQuery<NewMessage> messageBmobQuery = new BmobQuery<>();
+                    messageBmobQuery.addWhereEqualTo("question", questionID2);
+                    messageBmobQuery.findObjects(mContext, new FindListener<NewMessage>() {
+                        @Override
+                        public void onSuccess(List<NewMessage> list) {
+                            for (NewMessage newMessage : list) {
+                                newMessageList.add(newMessage);
+                            }
+                            Message message = new Message();
+                            message.obj = newMessageList;
+                            message.what = 4;
+                            handler.sendMessage(message);
+                        }
+
+                        @Override
+                        public void onError(int i, String s) {
+
+                        }
+                    });
+                    finish();
                     break;
-                case 10:
+                case 10://删除问题下的所有回答
                     List<Answer> list11 = (List<Answer>) msg.obj;
                     List<BmobObject> list2 = new ArrayList<>();
                     for (int i = 0; i < list11.size(); i++) {
@@ -275,7 +372,6 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                         public void onFailure(int i, String s) {
                         }
                     });
-                    handler.sendEmptyMessage(0);
                     break;
                 case 11:   //1是已赞的处理，2是取消赞处理，3是收藏后的处理，4是取消收藏后的处理
                     int flag = (int) msg.obj;
@@ -306,6 +402,66 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                     } else {
                         recyclerViewAdapter.changeMoreStatus(QuestionRecyclerViewAdapter.NO_MORE);
                     }
+                    break;
+                case 13:
+                    //删除点击删除answer关联下的NewMessage
+                    final List<NewMessage> newMessageList3 = (List<NewMessage>) msg.obj;
+                    List<BmobObject> newMessageList4 = new ArrayList<>();
+                    for (int i = 0; i < newMessageList3.size(); i++) {
+                        NewMessage newMessage = new NewMessage();
+                        newMessage.setObjectId(newMessageList3.get(i).getObjectId());
+                        newMessageList4.add(newMessage);
+                    }
+                    if (newMessageList4.size() == 0) return;
+                    new BmobObject().deleteBatch(mContext, newMessageList4, new DeleteListener() {
+                        @Override
+                        public void onSuccess() {
+                        }
+
+                        @Override
+                        public void onFailure(int i, String s) {
+                        }
+                    });
+                    break;
+                case 14://通过answerID删除Comment表对应的项
+                    final List<Comment> comments2 = (List<Comment>) msg.obj;
+                    List<BmobObject> bmobObjectList = new ArrayList<>();
+                    for (int i = 0; i < comments2.size(); i++) {
+                        Comment newComment = new Comment();
+                        newComment.setObjectId(comments2.get(i).getObjectId());
+                        bmobObjectList.add(newComment);
+                    }
+                    if (bmobObjectList.size() == 0) return;
+                    new BmobObject().deleteBatch(mContext, bmobObjectList, new DeleteListener() {
+                        @Override
+                        public void onSuccess() {
+                        }
+
+                        @Override
+                        public void onFailure(int i, String s) {
+
+                        }
+                    });
+                    break;
+                case 15:
+                    //通过answerID删除NewMessage表的对应项
+                    final List<NewMessage> newMessageList55 = (List<NewMessage>) msg.obj;
+                    List<BmobObject> newMessageList555 = new ArrayList<>();
+                    for (int i = 0; i < newMessageList55.size(); i++) {
+                        NewMessage newMessage = new NewMessage();
+                        newMessage.setObjectId(newMessageList55.get(i).getObjectId());
+                        newMessageList555.add(newMessage);
+                    }
+                    if (newMessageList555.size() == 0) return;
+                    new BmobObject().deleteBatch(mContext, newMessageList555, new DeleteListener() {
+                        @Override
+                        public void onSuccess() {
+                        }
+
+                        @Override
+                        public void onFailure(int i, String s) {
+                        }
+                    });
                     break;
             }
         }

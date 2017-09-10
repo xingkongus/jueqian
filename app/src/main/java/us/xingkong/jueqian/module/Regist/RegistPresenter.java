@@ -2,7 +2,9 @@ package us.xingkong.jueqian.module.Regist;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -35,9 +37,13 @@ public class RegistPresenter extends BasePresenterImpl implements RegistContract
                     @Override
                     public void onSuccess() {
                         mView.showToast("注册完成");
-                        Intent intent = new Intent(context, LoginActivity.class);
-                        context.startActivity(intent);
-                        handler.sendEmptyMessage(0);
+                        Message msg=new Message();
+                        msg.what=0;
+                        Bundle bundle=new Bundle();
+                        bundle.putString("username",username);
+                        bundle.putString("password",password);
+                        msg.setData(bundle);
+                        handler.sendMessage(msg);
                     }
 
                     @Override

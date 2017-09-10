@@ -1,10 +1,6 @@
 package us.xingkong.jueqian.bean.ForumBean.BombBean;
 
-import android.content.Context;
-import android.content.Intent;
-
 import cn.bmob.v3.BmobObject;
-import cn.bmob.v3.listener.SaveListener;
 
 /**
  * Created by PERFECTLIN on 2017/5/1 0001.
@@ -17,6 +13,24 @@ public class NewMessage extends BmobObject {
     private Answer messAnswer;
     private Integer TYPE;
     private Integer isRead;
+    private Question question;
+    private Answer answer;
+
+    public Answer getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(Answer answer) {
+        this.answer = answer;
+    }
+
+    public Question getQuestion() {
+        return question;
+    }
+
+    public void setQuestion(Question question) {
+        this.question = question;
+    }
 
     public _User getSender() {
         return sender;

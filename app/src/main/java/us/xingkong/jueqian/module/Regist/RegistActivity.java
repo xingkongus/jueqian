@@ -14,9 +14,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import butterknife.BindView;
+import cn.bmob.v3.listener.SaveListener;
 import us.xingkong.jueqian.JueQianAPP;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.base.BaseActivity;
+import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
 import us.xingkong.jueqian.module.Login.LoginActivity;
 import us.xingkong.jueqian.module.main.MainActivity;
 import us.xingkong.jueqian.utils.CheckUtils;
@@ -104,7 +106,7 @@ public class RegistActivity extends BaseActivity<RegistContract.Presenter> imple
                 if (username.equals("")) {
                     usernameWrapper.setError("用户名不能为空");
                 } else if (!CheckUtils.checkPassword(password)) {
-                    passwordWrapper.setError("密码由6个字符组成");
+                    passwordWrapper.setError("密码由6个小写字符和数字组成");
                 } else if (!passwordComfirm.equals(password)) {
                     passwordWrapper.setError("两个密码不相等");
                 } else {
@@ -132,6 +134,23 @@ Handler handler=new Handler(){
         super.handleMessage(msg);
         switch (msg.what){
             case 0:
+                String username1=msg.getData().getString("username");
+                String password1=msg.getData().getString("password");
+                _User bu = new _User();
+                bu.setUsername(username1);
+                bu.setPassword(password1);
+                bu.login(context, new SaveListener() {
+                    @Override
+                    public void onSuccess() {
+                        Intent intent = new Intent(context, MainActivity.class);
+                        context.startActivity(intent);
+                    }
+
+                    @Override
+                    public void onFailure(int i, String s) {
+                        showToast("网络连接超时");
+                    }
+                });
                 finish();
                 break;
         }

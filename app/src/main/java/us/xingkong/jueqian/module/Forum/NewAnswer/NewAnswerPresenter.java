@@ -30,7 +30,7 @@ public class NewAnswerPresenter extends BasePresenterImpl implements NewAnswerCo
 
 
     @Override
-    public void addNewAnswer(final Context context, String newAnswer, final String questionID, final Handler handler, String question_userID) {
+    public void addNewAnswer(final Context context, String newAnswer, final String questionID, final Handler handler, final String question_userID) {
         final _User user = BmobUser.getCurrentUser(context, _User.class);
         final Question question = new Question();
         question.setObjectId(questionID);
@@ -45,7 +45,7 @@ public class NewAnswerPresenter extends BasePresenterImpl implements NewAnswerCo
             public void onSuccess() {
                 Intent intent = new Intent(context, QuestionActivity.class);
                 intent.putExtra("questionid", questionID);
-                intent.putExtra("question_userID", user.getObjectId());
+                intent.putExtra("question_userID", question_userID);
                 QuestionActivity.close.finish();
                 context.startActivity(intent);
                 Message msg = new Message();
