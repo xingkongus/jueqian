@@ -210,7 +210,6 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
 
                             @Override
                             public void onFailure(int i, String s) {
-
                             }
                         });
                     } else if (zanFlag == 1) {

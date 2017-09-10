@@ -127,6 +127,7 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
     }
 
     private void initRecyclerview() {
+        if(recyclerview==null) recyclerview= (RecyclerView) getActivity().findViewById(R.id.recyclerview);
         recyclerViewAdapter = new ForumRecyclerViewAdapter(questions, mHandler, getContext());
         mLayoutManager = new LinearLayoutManager(getContext());
         recyclerview.setLayoutManager(mLayoutManager);

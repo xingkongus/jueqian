@@ -106,9 +106,9 @@ public class RegistActivity extends BaseActivity<RegistContract.Presenter> imple
                 if (username.equals("")) {
                     usernameWrapper.setError("用户名不能为空");
                 } else if (!CheckUtils.checkPassword(password)) {
-                    passwordWrapper.setError("密码由6个小写字符和数字组成");
+                    passwordWrapper.setError("密码由6位的英文和数字组成");
                 } else if (!passwordComfirm.equals(password)) {
-                    passwordWrapper.setError("两个密码不相等");
+                    passwordWrapper.setError("两次输入密码不一致");
                 } else {
                     usernameWrapper.setErrorEnabled(false);
                     passwordWrapper.setErrorEnabled(false);
