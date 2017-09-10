@@ -8,13 +8,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 
-import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.listener.SaveListener;
-import us.xingkong.jueqian.JueQianAPP;
 import us.xingkong.jueqian.base.BasePresenterImpl;
 import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
 import us.xingkong.jueqian.module.main.MainActivity;
-import us.xingkong.jueqian.module.me.mymainpage.editinfo.EditInfoActivity;
 
 
 public class LoginPresenter extends BasePresenterImpl implements LoginContract.Presenter {
