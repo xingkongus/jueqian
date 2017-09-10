@@ -110,6 +110,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/dp_8"
                     android:layout_below="@+id/username_question"
                     android:text="发表于:xxxx-xx-xx xx:xx"
                     android:textColor="@color/text_pinglun" />

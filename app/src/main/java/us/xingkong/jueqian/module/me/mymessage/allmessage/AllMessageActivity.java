@@ -50,10 +50,14 @@ public class AllMessageActivity extends BaseActivity<AllMessageContract.Presente
             super.handleMessage(msg);
             switch (msg.what) {
                 case 1:
+                    if (mSwipeRefreshLayout == null)
+                        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
                     mSwipeRefreshLayout.setRefreshing(false);
                     break;
                 case 2:
                     initRecyclerView();
+                    if (mSwipeRefreshLayout == null)
+                        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
                     mSwipeRefreshLayout.setRefreshing(false);
                     break;
             }
@@ -81,11 +85,14 @@ public class AllMessageActivity extends BaseActivity<AllMessageContract.Presente
         BmobQuery<NewMessage> query = new BmobQuery<>();
         query.addWhereEqualTo("receiver", new BmobPointer(bmobUser));
         query.include("sender,messComment.question,messAnswer.question");
+        query.order("-createdAt");
         query.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
         query.findObjects(JueQianAPP.getAppContext(), new FindListener<NewMessage>() {
             @Override
             public void onSuccess(List<NewMessage> list) {
                 if (list.size() == 0) {
+                    if (frameLayout == null)
+                        frameLayout = (FrameLayout) findViewById(R.id.framelayout);
                     frameLayout.setVisibility(View.VISIBLE);
                     return;
                 }
@@ -96,6 +103,9 @@ public class AllMessageActivity extends BaseActivity<AllMessageContract.Presente
             @Override
             public void onError(int i, String s) {
                 showToast("获取我的消息列表失败CASE:" + s);
+
+                if (mSwipeRefreshLayout == null)
+                    mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         });
@@ -127,10 +137,11 @@ public class AllMessageActivity extends BaseActivity<AllMessageContract.Presente
 
     @Override
     protected void initEvent() {
+        if (mSwipeRefreshLayout == null)
+            mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         mSwipeRefreshLayout.setSize(SwipeRefreshLayout.DEFAULT);
         mSwipeRefreshLayout.setProgressViewEndTarget(true, 200);
-
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

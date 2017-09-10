@@ -8,6 +8,8 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.CardView;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -35,6 +37,8 @@ import us.xingkong.jueqian.JueQianAPP;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.base.BaseActivity;
 import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
+import us.xingkong.jueqian.module.Login.LoginActivity;
+import us.xingkong.jueqian.module.main.MainActivity;
 
 /**
  * Created by PERFECTLIN on 2017/4/20 0020.
@@ -165,7 +169,9 @@ public class EditInfoActivity extends BaseActivity<EditInfoContract.Presenter> i
             @Override
             public void onSuccess(_User user) {
                 update_user = user;
-                if (tv_nickname == null || tv_selfintro == null || tv_blog == null) return;
+                if (tv_nickname == null) tv_nickname = (TextView) findViewById(R.id.tv_nickname);
+                if (tv_selfintro == null) tv_selfintro = (TextView) findViewById(R.id.tv_selfintro);
+                if (tv_blog == null) tv_blog = (TextView) findViewById(R.id.tv_blog);
                 tv_nickname.setText(user.getNickname());
                 tv_selfintro.setText(user.getSelfsign());
                 tv_blog.setText(user.getBlog());
@@ -217,6 +223,7 @@ public class EditInfoActivity extends BaseActivity<EditInfoContract.Presenter> i
     }
 
     private void setSelfIntro() {
+        if (selfintro==null) selfintro= (CardView) findViewById(R.id.layout_selfintro);
         selfintro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -245,6 +252,7 @@ public class EditInfoActivity extends BaseActivity<EditInfoContract.Presenter> i
     }
 
     private void setNickName() {
+        if (nickname==null) nickname= (CardView) findViewById(R.id.layout_nickname);
         nickname.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -290,6 +298,7 @@ public class EditInfoActivity extends BaseActivity<EditInfoContract.Presenter> i
                     return;
                 }
                 String profileURL = bmobFile.getUrl();
+                if (iv_touxiang==null) iv_touxiang= (CircleImageView) findViewById(R.id.iv_touxiang);
                 Picasso.with(EditInfoActivity.this).load(profileURL).into(iv_touxiang);
 //                if (iv_touxiang == null) return;
 //                Glide.with(JueQianAPP.getAppContext()).load(profileURL).diskCacheStrategy(DiskCacheStrategy.SOURCE).placeholder(R.mipmap.ic_launcher).into(new SimpleTarget<GlideDrawable>() {
