@@ -28,7 +28,8 @@
             android:layout_height="wrap_content"
             android:layout_alignTop="@id/mainpage_touxiang"
             android:layout_marginLeft="@dimen/dp_16"
-            android:layout_toRightOf="@id/mainpage_touxiang"
+            android:layout_toLeftOf="@+id/mainpage_bt_edit"
+            android:layout_toRightOf="@+id/mainpage_touxiang"
             android:text=""
             android:textColor="@color/text_title"
             android:textSize="@dimen/sp_18" />
@@ -37,13 +38,15 @@
             android:id="@+id/mainpage_tv_selfintro"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/text_pinglun"
-            android:gravity="center_vertical"
-            android:text=""
-            android:textSize="@dimen/sp_16"
-            android:layout_below="@+id/mainpage_nickname"
             android:layout_alignLeft="@+id/mainpage_nickname"
-            android:layout_alignStart="@+id/mainpage_nickname" />
+            android:layout_alignStart="@+id/mainpage_nickname"
+            android:layout_below="@+id/mainpage_nickname"
+            android:layout_marginRight="@dimen/dp_4"
+            android:layout_toLeftOf="@+id/mainpage_bt_edit"
+            android:gravity="center_vertical"
+            android:maxLines="2"
+            android:textColor="@color/text_pinglun"
+            android:textSize="@dimen/sp_16" />
 
         <Button
             android:id="@+id/mainpage_bt_edit"
@@ -76,11 +79,11 @@
                 android:id="@+id/mainpage_tv_following"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/text_pinglun"
                 android:layout_below="@id/mainpage_tv_following_count"
                 android:layout_marginLeft="@dimen/dp_16"
                 android:layout_marginTop="@dimen/dp_4"
                 android:text="关注"
+                android:textColor="@color/text_pinglun"
                 android:textSize="@dimen/sp_16" />
         </RelativeLayout>
 
@@ -103,7 +106,6 @@
                 android:textSize="@dimen/sp_16" />
 
             <TextView
-                android:textColor="@color/text_pinglun"
                 android:id="@+id/mainpage_tv_follower"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -111,6 +113,7 @@
                 android:layout_marginLeft="@dimen/dp_16"
                 android:layout_marginTop="@dimen/dp_4"
                 android:text="粉丝"
+                android:textColor="@color/text_pinglun"
                 android:textSize="@dimen/sp_16" />
         </RelativeLayout>
 
@@ -148,9 +151,9 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:textColor="@color/text_pinglun"
                 android:layout_marginRight="@dimen/dp_16"
                 android:text="0"
+                android:textColor="@color/text_pinglun"
                 android:textSize="@dimen/sp_16" />
 
 
