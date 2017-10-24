@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:background="#F5F5F5">
 
-    <include layout="@layout/view_toolbar" />
+    <include layout="@layout/view_home_toolbar" />
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
