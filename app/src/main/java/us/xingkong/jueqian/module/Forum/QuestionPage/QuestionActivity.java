@@ -123,7 +123,6 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                         public void onFailure(int i, String s) {
                         }
                     });
-                    handler.sendEmptyMessage(0);
 
                     break;
                 case 5:  //刷新数据
@@ -212,7 +211,6 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
 
                             @Override
                             public void onFailure(int i, String s) {
-
                             }
                         });
                     } else if (zanFlag == 1) {
@@ -355,6 +353,9 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
 
                         }
                     });
+
+                    finish();
+
                     break;
                 case 10://删除问题下的所有回答
                     List<Answer> list11 = (List<Answer>) msg.obj;

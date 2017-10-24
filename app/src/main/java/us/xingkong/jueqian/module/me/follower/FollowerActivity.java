@@ -46,6 +46,7 @@ public class FollowerActivity extends BaseActivity<FollowerContract.Presenter> i
                 case 1:
                     initRecyclerView();
                 case 2:
+
                     followerAdapter.notifyDataSetChanged();
                     break;
             }
@@ -100,7 +101,7 @@ public class FollowerActivity extends BaseActivity<FollowerContract.Presenter> i
     }
 
     private void initRecyclerView() {
-        if (mRecyclerView == null) return;
+        if (mRecyclerView == null) mRecyclerView.findViewById(R.id.recyclerview);
         followerAdapter = new FollowerAdapter(mHandler, followers, this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(followerAdapter);

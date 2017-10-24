@@ -96,6 +96,14 @@ public class EditInfoActivity extends BaseActivity<EditInfoContract.Presenter> i
                     prepareData();
                     break;
                 case 3:
+                    if (inputNickName.length() >= 8) {
+                        showToast("昵称长度必须小于8个字符");
+                        return;
+                    }
+                    if (inputNickName.length() == 0) {
+                        showToast("昵称不能为空");
+                        return;
+                    }
                     _User u = new _User();
                     u.setNickname(inputNickName);
                     u.update(JueQianAPP.getAppContext(), BmobUser.getCurrentUser(JueQianAPP.getAppContext()).getObjectId(), new UpdateListener() {
@@ -113,6 +121,14 @@ public class EditInfoActivity extends BaseActivity<EditInfoContract.Presenter> i
                     });
                     break;
                 case 4:
+                    if (inputSelfIntro.length() >= 16) {
+                        showToast("自我介绍长度必须小于或等于16个字符");
+                        return;
+                    }
+                    if (inputSelfIntro.length() == 0) {
+                        showToast("自我介绍不能为空");
+                        return;
+                    }
                     _User u1 = new _User();
                     u1.setSelfsign(inputSelfIntro);
                     u1.update(JueQianAPP.getAppContext(), BmobUser.getCurrentUser(JueQianAPP.getAppContext()).getObjectId(), new UpdateListener() {
@@ -129,23 +145,23 @@ public class EditInfoActivity extends BaseActivity<EditInfoContract.Presenter> i
                         }
                     });
                     break;
-                case 5:
-                    _User u2 = new _User();
-                    u2.setBlog(inputBlog);
-                    u2.update(JueQianAPP.getAppContext(), BmobUser.getCurrentUser(JueQianAPP.getAppContext()).getObjectId(), new UpdateListener() {
-                        @Override
-                        public void onSuccess() {
-                            String nickname = BmobUser.getCurrentUser(JueQianAPP.getAppContext(), _User.class).getNickname();
-                            showToast("修改blog成功");
-                            handler.sendEmptyMessage(2);
-                        }
-
-                        @Override
-                        public void onFailure(int i, String s) {
-//                            showToast("修改blog失败CASE:" + s);
-                        }
-                    });
-                    break;
+//                case 5:
+//                    _User u2 = new _User();
+//                    u2.setBlog(inputBlog);
+//                    u2.update(JueQianAPP.getAppContext(), BmobUser.getCurrentUser(JueQianAPP.getAppContext()).getObjectId(), new UpdateListener() {
+//                        @Override
+//                        public void onSuccess() {
+//                            String nickname = BmobUser.getCurrentUser(JueQianAPP.getAppContext(), _User.class).getNickname();
+//                            showToast("修改blog成功");
+//                            handler.sendEmptyMessage(2);
+//                        }
+//
+//                        @Override
+//                        public void onFailure(int i, String s) {
+////                            showToast("修改blog失败CASE:" + s);
+//                        }
+//                    });
+//                    break;
             }
 
         }
@@ -174,7 +190,7 @@ public class EditInfoActivity extends BaseActivity<EditInfoContract.Presenter> i
                 if (tv_blog == null) tv_blog = (TextView) findViewById(R.id.tv_blog);
                 tv_nickname.setText(user.getNickname());
                 tv_selfintro.setText(user.getSelfsign());
-                tv_blog.setText(user.getBlog());
+//                tv_blog.setText(user.getBlog());
             }
 
             @Override
@@ -191,39 +207,39 @@ public class EditInfoActivity extends BaseActivity<EditInfoContract.Presenter> i
         setPhotoPick();
         setNickName();
         setSelfIntro();
-        setBlog();
+//        setBlog();
     }
-
-    private void setBlog() {
-        blog.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new MaterialDialog.Builder(view.getContext())
-                        .title("修改网站")
-                        .negativeText("取消")
-                        .positiveText("确认")
-                        .input("", "", new MaterialDialog.InputCallback() {
-                            @Override
-                            public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                                inputBlog = input.toString();
-                            }
-                        }).onNegative(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-
-                    }
-                }).onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        handler.sendEmptyMessage(5);
-                    }
-                }).show();
-            }
-        });
-    }
+//
+//    private void setBlog() {
+//        blog.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                new MaterialDialog.Builder(view.getContext())
+//                        .title("修改网站")
+//                        .negativeText("取消")
+//                        .positiveText("确认")
+//                        .input("", "", new MaterialDialog.InputCallback() {
+//                            @Override
+//                            public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+//                                inputBlog = input.toString();
+//                            }
+//                        }).onNegative(new MaterialDialog.SingleButtonCallback() {
+//                    @Override
+//                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+//
+//                    }
+//                }).onPositive(new MaterialDialog.SingleButtonCallback() {
+//                    @Override
+//                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+//                        handler.sendEmptyMessage(5);
+//                    }
+//                }).show();
+//            }
+//        });
+//    }
 
     private void setSelfIntro() {
-        if (selfintro==null) selfintro= (CardView) findViewById(R.id.layout_selfintro);
+        if (selfintro == null) selfintro = (CardView) findViewById(R.id.layout_selfintro);
         selfintro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -252,7 +268,7 @@ public class EditInfoActivity extends BaseActivity<EditInfoContract.Presenter> i
     }
 
     private void setNickName() {
-        if (nickname==null) nickname= (CardView) findViewById(R.id.layout_nickname);
+        if (nickname == null) nickname = (CardView) findViewById(R.id.layout_nickname);
         nickname.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -298,7 +314,8 @@ public class EditInfoActivity extends BaseActivity<EditInfoContract.Presenter> i
                     return;
                 }
                 String profileURL = bmobFile.getUrl();
-                if (iv_touxiang==null) iv_touxiang= (CircleImageView) findViewById(R.id.iv_touxiang);
+                if (iv_touxiang == null)
+                    iv_touxiang = (CircleImageView) findViewById(R.id.iv_touxiang);
                 Picasso.with(EditInfoActivity.this).load(profileURL).into(iv_touxiang);
 //                if (iv_touxiang == null) return;
 //                Glide.with(JueQianAPP.getAppContext()).load(profileURL).diskCacheStrategy(DiskCacheStrategy.SOURCE).placeholder(R.mipmap.ic_launcher).into(new SimpleTarget<GlideDrawable>() {

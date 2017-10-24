@@ -8,7 +8,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +40,7 @@ import us.xingkong.jueqian.bean.ForumBean.BombBean.Answer;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Ding;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
 import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
+import us.xingkong.jueqian.module.Forum.QuestionPage.QuestionActivity;
 import us.xingkong.jueqian.module.Forum.QuestionPage.richtext.RichText;
 import us.xingkong.jueqian.module.Login.LoginActivity;
 import us.xingkong.jueqian.module.main.MainActivity;
@@ -239,7 +239,8 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
             if (now != null && (now.getObjectId().equals(getQuestion.getUser().getObjectId()) || now.getObjectId().equals(answers.get(position - 1).getUser().getObjectId()))) {
                 vh_answer.delete.setVisibility(View.VISIBLE);
-                vh_answer.delete.setEnabled(true);
+                vh_answer.delete.setClickable(true);
+                final String answerID1=answers.get(position-1).getObjectId();
                 vh_answer.delete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -264,6 +265,7 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                                                 Message msg = new Message();
                                                 Bundle bundle = new Bundle();
                                                 bundle.putString("questionID", getQuestion.getObjectId());
+                                                bundle.putString("answerID1",answerID1);
                                                 msg.setData(bundle);
                                                 msg.what = 8;
                                                 mHandler.sendMessage(msg);
@@ -283,8 +285,6 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
                                     }
                                 }).show();
-
-
                     }
                 });
             } else {
