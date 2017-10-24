@@ -27,7 +27,7 @@ import us.xingkong.jueqian.utils.TimeDifferenceUtils;
  * Date: 17/1/11 15:01
  */
 
-public class PartHotAdapter extends AddFooterBaseAdapter<Results> {
+public class  PartHotAdapter extends AddFooterBaseAdapter<Results> {
 
     private Context context;
     private View mFooterView;

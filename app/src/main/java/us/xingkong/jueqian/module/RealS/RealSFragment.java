@@ -71,9 +71,9 @@ public class RealSFragment extends BaseFragment<RealSContract.Presenter> impleme
                 android.R.color.holo_purple};
 
         mCoordinatorTabLayout
+                .setTranslucentStatusBar(getActivity())
                 .setImageArray(mImageArray, mColorArray)
                 .setupWithViewPager(mViewPager);
-
     }
 
     @Override
