@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import butterknife.BindView;
 import cn.bmob.v3.listener.SaveListener;
+
 import us.xingkong.jueqian.JueQianAPP;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.base.BaseActivity;
@@ -48,6 +49,7 @@ public class RegistActivity extends BaseActivity<RegistContract.Presenter> imple
     EditText passwordAgain;
     @BindView(R.id.close)
     ImageView close;
+
 
     @Override
     protected RegistContract.Presenter createPresenter() {
@@ -128,7 +130,7 @@ public class RegistActivity extends BaseActivity<RegistContract.Presenter> imple
         });
 
     }
-Handler handler=new Handler(){
+        Handler handler=new Handler(){
     @Override
     public void handleMessage(Message msg) {
         super.handleMessage(msg);

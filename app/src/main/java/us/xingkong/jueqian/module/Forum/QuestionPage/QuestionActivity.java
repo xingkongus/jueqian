@@ -123,6 +123,7 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
                         public void onFailure(int i, String s) {
                         }
                     });
+
                     break;
                 case 5:  //刷新数据
                     if (isInitRecyclewView == false) {
@@ -352,7 +353,9 @@ public class QuestionActivity extends BaseActivity<QuestionContract.Presenter> i
 
                         }
                     });
+
                     finish();
+
                     break;
                 case 10://删除问题下的所有回答
                     List<Answer> list11 = (List<Answer>) msg.obj;

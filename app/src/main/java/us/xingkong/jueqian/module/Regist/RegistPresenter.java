@@ -13,7 +13,6 @@ import android.widget.EditText;
 import cn.bmob.v3.listener.SaveListener;
 import us.xingkong.jueqian.base.BasePresenterImpl;
 import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
-import us.xingkong.jueqian.module.Login.LoginActivity;
 
 
 public class RegistPresenter extends BasePresenterImpl implements RegistContract.Presenter {
