@@ -21,6 +21,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:autoLink="all"
+            android:textColorLink="@color/colorPrimary"
             android:text="@string/text_aboutme_line2"
             android:textSize="@dimen/sp_20" />
     </LinearLayout>

@@ -3,12 +3,15 @@ package us.xingkong.jueqian.module.me.myquestions;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.FrameLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,15 +34,31 @@ import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
 public class MyQuestionsAcitivity extends BaseActivity<MyQuestionsContract.Presenter> implements MyQuestionsContract.View {
     @BindView(R.id.recyclerview)
     RecyclerView mRecyclerView;
+    @BindView(R.id.framelayout)
+    FrameLayout frameLayout;
+    @BindView(R.id.swipeRefreshLayout)
+    SwipeRefreshLayout mSwipeRefreshLayout;
 
-    List<Question> questions=new ArrayList<>();
+
+    List<Question> questions = new ArrayList<>();
+    private MyQuestionsAdapter myQuestionsAdapter;
+    private static boolean isInit = false;
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 1:
-                    initRecyclerView();
+                    if (!isInit)
+                        initRecyclerView();
+                    else {
+                        if (myQuestionsAdapter == null)
+                            myQuestionsAdapter = new MyQuestionsAdapter(mHandler, questions, MyQuestionsAcitivity.this);
+                        myQuestionsAdapter.notifyDataSetChanged();
+                    }
+                    if (mSwipeRefreshLayout == null)
+                        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
+                    mSwipeRefreshLayout.setRefreshing(false);
                     break;
             }
 
@@ -58,21 +77,38 @@ public class MyQuestionsAcitivity extends BaseActivity<MyQuestionsContract.Prese
 
     @Override
     protected void prepareData() {
+        getQuestion();
+    }
+
+    private void getQuestion() {
+        if (mSwipeRefreshLayout == null)
+            mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
+        mSwipeRefreshLayout.setRefreshing(true);
         BmobUser bmobUser = BmobUser.getCurrentUser(JueQianAPP.getAppContext());
-        BmobQuery<Question> query = new BmobQuery<Question>();;
+        BmobQuery<Question> query = new BmobQuery<Question>();
         query.addWhereRelatedTo("questions", new BmobPointer(bmobUser));
+        query.order("createdAt");
         query.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
         query.findObjects(JueQianAPP.getAppContext(), new FindListener<Question>() {
             @Override
             public void onSuccess(List<Question> list) {
+                if (list.size() == 0) {
+                    if (frameLayout == null)
+                        frameLayout = (FrameLayout) findViewById(R.id.framelayout);
+                    frameLayout.setVisibility(View.VISIBLE);
+                    return;
+                }
+                if (isInit) questions.clear();
                 questions = list;
-                showToast("获取我的提问列表成功");
                 mHandler.sendEmptyMessage(1);
             }
 
             @Override
             public void onError(int i, String s) {
-                showToast("获取我的提问列表失败");
+                if (mSwipeRefreshLayout == null)
+                    mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
+                mSwipeRefreshLayout.setRefreshing(false);
+                showToast("获取我的提问列表失败CASE:" + s);
             }
         });
     }
@@ -80,15 +116,16 @@ public class MyQuestionsAcitivity extends BaseActivity<MyQuestionsContract.Prese
     @Override
     protected void initView() {
         setToolbar();
-       // initRecyclerView();
-
     }
 
     private void initRecyclerView() {
+        if (mRecyclerView == null) mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setAdapter(new MyQuestionsAdapter(mHandler, questions,this));
+        myQuestionsAdapter = new MyQuestionsAdapter(mHandler, questions, this);
+        mRecyclerView.setAdapter(myQuestionsAdapter);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(MyQuestionsAcitivity.this, DividerItemDecoration.VERTICAL));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        isInit = true;
 
     }
 
@@ -104,16 +141,33 @@ public class MyQuestionsAcitivity extends BaseActivity<MyQuestionsContract.Prese
 
     @Override
     protected void initEvent() {
-
+        if (mSwipeRefreshLayout == null)
+            mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+        mSwipeRefreshLayout.setSize(SwipeRefreshLayout.DEFAULT);
+        mSwipeRefreshLayout.setProgressViewEndTarget(true, 200);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getQuestion();
+            }
+        });
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                isInit=false;
                 finish();
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        isInit = false;
     }
 }

@@ -4,12 +4,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.FrameLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,21 +39,41 @@ public class MyRecentLookActivity extends BaseActivity<MyRecentLookContract.Pres
 
     @BindView(R.id.recyclerview)
     RecyclerView mRecyclerView;
+    @BindView(R.id.framelayout)
+    FrameLayout frameLayout;
+    @BindView(R.id.swipeRefreshLayout)
+    SwipeRefreshLayout mSwipeRefreshLayout;
 
     private String intentUserID;
-    List<Question> questions = new ArrayList<>();
+    private List<Question> questions;
+    private MyRecentLookAdapter myRecentLookAdapter;
+    private List<Question> questions_adapter = new ArrayList<>();
+    private static boolean isInit = false;
+
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 1:
-                    initRecyclerView();
+                    if (isInit) {
+                        questions_adapter.clear();
+                        questions = questions_adapter;
+                        if (myRecentLookAdapter == null)
+                            myRecentLookAdapter = new MyRecentLookAdapter(mHandler, questions_adapter, MyRecentLookActivity.this);
+                        myRecentLookAdapter.notifyDataSetChanged();
+                    } else {
+                        initRecyclerView();
+                    }
+                    if (mSwipeRefreshLayout == null)
+                        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
+                    mSwipeRefreshLayout.setRefreshing(false);
                     break;
             }
 
         }
     };
+
 
     @Override
     protected MyRecentLookContract.Presenter createPresenter() {
@@ -66,22 +89,40 @@ public class MyRecentLookActivity extends BaseActivity<MyRecentLookContract.Pres
     protected void prepareData() {
         Intent intent = getIntent();
         intentUserID = intent.getStringExtra("intentUserID");
+        getRecentLook();
+    }
+
+    private void getRecentLook() {
+        if (mSwipeRefreshLayout == null)
+            mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
+        mSwipeRefreshLayout.setRefreshing(true);
+
         _User user = new _User();
         user.setObjectId(intentUserID);
         BmobQuery<Question> query = new BmobQuery<Question>();
         query.addWhereRelatedTo("recentlooks", new BmobPointer(user));
+        query.order("createdAt");
         query.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
         query.findObjects(JueQianAPP.getAppContext(), new FindListener<Question>() {
             @Override
             public void onSuccess(List<Question> list) {
+                questions = new ArrayList<>();
                 questions = list;
-                showToast("获取最近浏览列表成功");
+                if (questions.size() == 0) {
+                    if (frameLayout == null)
+                        frameLayout = (FrameLayout) findViewById(R.id.framelayout);
+                    frameLayout.setVisibility(View.VISIBLE);
+                    return;
+                }
                 mHandler.sendEmptyMessage(1);
             }
 
             @Override
             public void onError(int i, String s) {
-                showToast("获取最近浏览列表失败");
+                if (mSwipeRefreshLayout == null)
+                    mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
+                mSwipeRefreshLayout.setRefreshing(false);
+                showToast("获取最近浏览列表失败CASE:" + s);
             }
         });
     }
@@ -89,14 +130,16 @@ public class MyRecentLookActivity extends BaseActivity<MyRecentLookContract.Pres
     @Override
     protected void initView() {
         setToolbar();
-        //initRecyclerView();
     }
 
     private void initRecyclerView() {
+        if (mRecyclerView == null) mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setAdapter(new MyRecentLookAdapter(mHandler, questions,this));
+        myRecentLookAdapter = new MyRecentLookAdapter(mHandler, questions, this);
+        mRecyclerView.setAdapter(myRecentLookAdapter);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(MyRecentLookActivity.this, DividerItemDecoration.VERTICAL));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        isInit = true;
     }
 
     private void setToolbar() {
@@ -107,21 +150,38 @@ public class MyRecentLookActivity extends BaseActivity<MyRecentLookContract.Pres
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-
     }
 
     @Override
     protected void initEvent() {
-
+        if (mSwipeRefreshLayout == null)
+            mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+        mSwipeRefreshLayout.setSize(SwipeRefreshLayout.DEFAULT);
+        mSwipeRefreshLayout.setProgressViewEndTarget(true, 200);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getRecentLook();
+            }
+        });
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                isInit = false;
                 finish();
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        isInit = false;
     }
 }

@@ -2,8 +2,7 @@ package us.xingkong.jueqian.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
@@ -14,19 +13,20 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.squareup.picasso.Picasso;
 
-import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.listener.DeleteListener;
-import cn.bmob.v3.listener.DownloadFileListener;
 import us.xingkong.jueqian.R;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Answer;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Comment;
@@ -44,12 +44,24 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     private Context context;
     private BmobFile bmobFile_head;
     private BmobFile bmobFile_comments;
+    private String questionID;
+    private String question_userID;
+    private static final int FOOTER = 3;  //底部FootView
+    //上拉加载更多
+    public static final int PULLUP_LOAD_MORE = 0;
+    //正在加载中
+    public static final int LOADING_MORE = 1;
+    public static final int NO_MORE = 2;
+    //上拉加载更多状态-默认为0
+    private int load_more_status = 0;
 
-    public CommentRecyclerViewAdapter(Context context, Handler mHandler, Answer answer, ArrayList<Comment> comments) {
+    public CommentRecyclerViewAdapter(Context context, Handler mHandler, Answer answer, ArrayList<Comment> comments, String questionID, String question_userID) {
         this.mHandler = mHandler;
         this.answer = answer;
         this.comments = comments;
         this.context = context;
+        this.questionID = questionID;
+        this.question_userID = question_userID;
     }
 
     public void addItem(int position, Comment comment1) {
@@ -60,6 +72,15 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         mHandler.sendMessage(msg);
     }
 
+    public void addMoreItem(List<Comment> newDatas) {
+        comments.addAll(newDatas);
+        notifyDataSetChanged();
+    }
+
+    public void changeMoreStatus(int status) {
+        load_more_status = status;
+        notifyDataSetChanged();
+    }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -67,6 +88,8 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
             return new VH_head(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_comment_head, parent, false));
         } else if (viewType == TWO) {
             return new VH_comment(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_comment, parent, false));
+        }else if(viewType==FOOTER){
+            return new vh_footer(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_loadmore, parent, false));
         } else {
             return null;
         }
@@ -87,28 +110,7 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 
             bmobFile_head = answer.getUser().getProfile();
             if (bmobFile_head != null) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        bmobFile_head.download(context, new DownloadFileListener() {
-                            @Override
-                            public void onSuccess(String s) {
-                                File file = new File(s);
-                                if (file.exists()) {
-                                    Bitmap bm = BitmapFactory.decodeFile(s);
-                                    head.icon_head.setImageBitmap(bm);
-                                } else {
-                                    return;
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(int i, String s) {
-                                Toast.makeText(context, "网络连接超时", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
-                }).start();
+                Picasso.with(context).load(bmobFile_head.getUrl()).into(head.icon_head);
             } else {
                 head.icon_head.setBackgroundResource(R.mipmap.ic_launcher);
             }
@@ -127,6 +129,7 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
             _User now = BmobUser.getCurrentUser(context, _User.class);
             if (now.getObjectId().equals(answer.getUser().getObjectId())) {
                 head.delete_answer.setVisibility(View.VISIBLE);
+                head.delete_answer.setClickable(true);
                 head.delete_answer.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -144,9 +147,16 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                                         answer1.delete(context, new DeleteListener() {
                                             @Override
                                             public void onSuccess() {
+                                                QuestionActivity.close.finish();
                                                 Intent intent = new Intent(context, QuestionActivity.class);
+                                                intent.putExtra("questionid", questionID);
+                                                intent.putExtra("question_userID", question_userID);
                                                 context.startActivity(intent);
                                                 Toast.makeText(context, "删除成功", Toast.LENGTH_SHORT).show();
+                                                Message message=new Message();
+                                                message.what=8;
+                                                message.obj=answer.getObjectId();
+                                                mHandler.sendMessage(message);
                                             }
 
                                             @Override
@@ -169,6 +179,7 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                 });
             } else {
                 head.delete_answer.setVisibility(View.GONE);
+                head.delete_answer.setClickable(false);
             }
         }
         if (holder instanceof VH_comment) {
@@ -185,28 +196,29 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 
             bmobFile_comments = comments.get(position - 1).getUser().getProfile();
             if (bmobFile_comments != null) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        bmobFile_comments.download(context, new DownloadFileListener() {
-                            @Override
-                            public void onSuccess(String s) {
-                                File file = new File(s);
-                                if (file.exists()) {
-                                    Bitmap bm = BitmapFactory.decodeFile(s);
-                                    vh_comment.usericon_answer.setImageBitmap(bm);
-                                } else {
-                                    return;
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(int i, String s) {
-                                Toast.makeText(context, "网络连接超时", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
-                }).start();
+                Picasso.with(context).load(bmobFile_comments.getUrl()).into(vh_comment.usericon_answer);
+//                new Thread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        bmobFile_comments.download(context, new DownloadFileListener() {
+//                            @Override
+//                            public void onSuccess(String s) {
+//                                File file = new File(s);
+//                                if (file.exists()) {
+//                                    Bitmap bm = BitmapFactory.decodeFile(s);
+//                                    vh_comment.usericon_answer.setImageBitmap(bm);
+//                                } else {
+//                                    return;
+//                                }
+//                            }
+//
+//                            @Override
+//                            public void onFailure(int i, String s) {
+//                                Toast.makeText(context, "网络连接超时", Toast.LENGTH_SHORT).show();
+//                            }
+//                        });
+//                    }
+//                }).start();
             } else {
                 vh_comment.usericon_answer.setBackgroundResource(R.mipmap.ic_launcher);
             }
@@ -225,7 +237,10 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 
 
             _User now = BmobUser.getCurrentUser(context, _User.class);
-            if (now.getObjectId().equals(answer.getUser().getObjectId()))
+            if (now.getObjectId().equals(comments.get(position - 1).getUser().getObjectId()) || now.getObjectId().equals(answer.getObjectId())) {
+                vh_comment.delete_comments.setVisibility(View.VISIBLE);
+                vh_comment.delete_comments.setClickable(true);
+                final String commentID1=comments.get(position-1).getObjectId();
                 vh_comment.delete_comments.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -246,6 +261,12 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                                                 notifyItemRemoved(position - 1);
                                                 notifyItemRangeChanged(position - 1, comments.size());
                                                 Toast.makeText(context, "删除成功", Toast.LENGTH_SHORT).show();
+                                                Message msg=new Message();
+                                                Bundle bundle=new Bundle();
+                                                bundle.putString("commentID",commentID1);
+                                                msg.setData(bundle);
+                                                msg.what=11;
+                                                mHandler.sendMessage(msg);
                                             }
 
                                             @Override
@@ -266,19 +287,42 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 
                     }
                 });
+            } else {
+                vh_comment.delete_comments.setVisibility(View.GONE);
+                vh_comment.delete_comments.setClickable(false);
+            }
+        }
+        if (holder instanceof vh_footer) {
+            final vh_footer footer = (vh_footer) holder;
+            switch (load_more_status) {
+                case PULLUP_LOAD_MORE:
+                    footer.pro.setVisibility(View.GONE);
+                    footer.loadmore.setText("上拉加载更多...");
+                    break;
+                case LOADING_MORE:
+                    footer.pro.setVisibility(View.VISIBLE);
+                    footer.loadmore.setText("正在加载更多数据...");
+                    break;
+                case NO_MORE:
+                    footer.loadmore.setText("已经没有更多啦...");
+                    footer.pro.setVisibility(View.GONE);
+                    break;
+            }
         }
     }
 
 
     @Override
     public int getItemCount() {
-        return comments.size() + 1;
+        return comments.size() + 2;
     }
 
     @Override
     public int getItemViewType(int position) {
         if (position == 0) {
             return ONE;
+        } else if (position + 1 == getItemCount()) {
+            return FOOTER;
         } else {
             return TWO;
         }
@@ -324,4 +368,15 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
             lebal_comment = (ImageView) itemView.findViewById(R.id.lebal_comment);
         }
     }
+    class vh_footer extends RecyclerView.ViewHolder {
+        TextView loadmore;
+        ProgressBar pro;
+
+        public vh_footer(View itemView) {
+            super(itemView);
+            loadmore = (TextView) itemView.findViewById(R.id.item_loadmore_text);
+            pro = (ProgressBar) itemView.findViewById(R.id.pro);
+        }
+    }
+
 }

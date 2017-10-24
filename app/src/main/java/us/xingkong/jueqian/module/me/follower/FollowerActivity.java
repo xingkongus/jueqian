@@ -69,7 +69,6 @@ public class FollowerActivity extends BaseActivity<FollowerContract.Presenter> i
         Bundle bundle = intent.getExtras();
         intentUserID = bundle.getString("intentUserID");
         intentUser.setObjectId(intentUserID);
-
         updateFans();
     }
 
@@ -101,7 +100,8 @@ public class FollowerActivity extends BaseActivity<FollowerContract.Presenter> i
     }
 
     private void initRecyclerView() {
-        followerAdapter = new FollowerAdapter(mHandler, followers,this);
+        if (mRecyclerView == null) return;
+        followerAdapter = new FollowerAdapter(mHandler, followers, this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(followerAdapter);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(FollowerActivity.this, DividerItemDecoration.VERTICAL));

@@ -18,7 +18,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="12dp"
+            android:layout_margin="@dimen/dp_16"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -40,36 +40,30 @@
                     android:src="@mipmap/ic_launcher" />
 
                 <TextView
-                    android:layout_toRightOf="@+id/user_icon_questionpage"
                     android:id="@+id/username_questionpage"
+                    android:layout_centerVertical="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
                     android:layout_marginStart="8dp"
-                    android:text="admin" />
+                    android:layout_toRightOf="@+id/user_icon_questionpage"
+                    android:text=""
+                    android:textColor="@color/text_username" />
 
                 <ImageView
-                    android:layout_toRightOf="@+id/username_questionpage"
                     android:id="@+id/state_questionpage"
                     android:layout_width="16dp"
                     android:layout_height="16dp"
+                    android:layout_toRightOf="@+id/username_questionpage"
                     android:background="@mipmap/teacher"
                     android:paddingRight="3dp" />
 
-                <TextView
-                    android:layout_toRightOf="@+id/state_questionpage"
-                    android:id="@+id/question_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginStart="16dp"
-                    android:text="XXXX-XX-XX XX:XX" />
 
                 <ImageButton
-                    android:layout_alignParentRight="true"
                     android:id="@+id/delete11"
                     android:layout_width="12dp"
                     android:layout_height="12dp"
+                    android:layout_alignParentRight="true"
                     android:background="#00ffffff"
                     android:src="@drawable/delete" />
             </RelativeLayout>
@@ -78,10 +72,13 @@
                 android:id="@+id/content_questionpage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:ellipsize="end"
-                android:maxLines="2"
-                android:text="000" />
+                android:paddingBottom="@dimen/dp_8"
+                android:paddingRight="@dimen/dp_8"
+                android:paddingTop="@dimen/dp_8"
+                android:text="bbbbbbbbbbbbbb"
+                android:textColor="@color/text_content"
+                android:textSize="@dimen/sp_16" />
 
             <RelativeLayout
                 android:layout_width="wrap_content"
@@ -89,30 +86,45 @@
                 android:layout_marginTop="16dp"
                 android:orientation="horizontal">
 
+                <TextView
+                    android:id="@+id/question_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/dp_16"
+                    android:text=""
+                    android:textColor="@color/text_pinglun" />
+
                 <LinearLayout
                     android:id="@+id/zanlayout_question_item"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="5dp"
-                    android:orientation="horizontal">
+                    android:background="@drawable/buttonshape"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/dp_4"
+                    android:paddingLeft="@dimen/dp_8"
+                    android:paddingRight="@dimen/dp_8"
+                    android:paddingTop="@dimen/dp_4">
+
 
                     <TextView
-                        android:textSize="@dimen/dp_16"
-                        android:text="顶"
                         android:id="@+id/good_question_item"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="3dp"
-                        android:layout_marginRight="3dp"
                         android:layout_toLeftOf="@+id/like_questionpage_item"
-                        />
+                        android:text="顶"
+                        android:textColor="@color/text_white"
+                        android:textSize="@dimen/dp_16" />
 
                     <TextView
                         android:id="@+id/like_questionpage_item"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="1"
+                        android:layout_marginLeft="@dimen/dp_8"
+                        android:text=" "
+                        android:textColor="@color/text_white"
                         android:textSize="16sp" />
 
                 </LinearLayout>

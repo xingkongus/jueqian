@@ -1,6 +1,9 @@
 package us.xingkong.jueqian.module.Forum;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -13,6 +16,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -43,6 +47,8 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
     private static final String PAGE_COUNT = "page_count";
     ArrayList<Question> questions = new ArrayList<>();
     Boolean isRolling = false;
+    private boolean isInitRecyclewView = false;
+    private int item_count;
 
     public static ForumFragment getInstance(int page_count) {
         ForumFragment fra = new ForumFragment();
@@ -70,7 +76,6 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
     @Override
     protected void initView(View rootView) {
         initSwipeRefreshLayout();
-        initRecyclerview();
     }
 
     private void initSwipeRefreshLayout() {
@@ -82,7 +87,13 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
             public void onRefresh() {
                 showToast("刷新");
                 swipeRefreshLayout.setRefreshing(true);
-                mHandler.sendEmptyMessage(REQUEST_REFRESH);
+                if (isNetworkAvailable(MainActivity.instance)) {
+                    mHandler.sendEmptyMessage(REQUEST_REFRESH);
+                } else {
+                    showToast("网络不可用");
+                    swipeRefreshLayout.setRefreshing(false);
+                }
+
             }
         });
     }
@@ -90,8 +101,11 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
     @Override
     protected void initData(Bundle savedInstanceState) {
         swipeRefreshLayout.setRefreshing(true);
-        questions = (ArrayList<Question>) mPresenter.getBmobQuestion(getContext(), questions, mHandler,1);
-        swipeRefreshLayout.setRefreshing(false);
+        mPresenter.getBmobQuestion(getContext(), questions, mHandler, 1);
+//        if (questions != null && isInitRecyclewView == true) {
+//            initRecyclerview();
+//        }
+
     }
 
     @Override
@@ -119,23 +133,33 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
 //        recyclerview.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         recyclerview.setItemAnimator(new DefaultItemAnimator());
         recyclerview.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-//                super.onScrollStateChanged(recyclerView, newState);
-//
-//                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                LinearLayoutManager manager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {  // 当不滚动时
+                    int lastVisibleItem = manager.findLastCompletelyVisibleItemPosition();
+                    int totalItemCount = manager.getItemCount();
+                    // 判断是否滚动到底部
+                    if (lastVisibleItem == (totalItemCount - 1)) {
+                        //加载更多功能的代码
+                        ArrayList<Question> newQuestions = new ArrayList<>();
+                        mPresenter.getMoreBmobQuestion(getContext(), newQuestions, mHandler, item_count);
+                    }
+
+
 //                    if (!recyclerView.canScrollVertically(1)) {
-//
+//                        mPresenter.getMoreBmobQuestion(getContext(),questions,mHandler,item_count);
 //                    }
 //                    if (!recyclerView.canScrollVertically(-1)) {
 //                        showToast("刷新");
 //                        swipeRefreshLayout.setRefreshing(true);
 //                        mHandler.sendEmptyMessage(REQUEST_REFRESH);
-//
 //                    }
-//                }
-//
-//            }
+                }
+
+            }
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -147,8 +171,10 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
                     handler.sendEmptyMessage(1);
                 }
             }
+
         });
         recyclerview.setAdapter(recyclerViewAdapter);
+        isInitRecyclewView = true;
     }
 
     Handler mHandler = new Handler() {
@@ -156,22 +182,56 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
-                case REQUEST_REFRESH:
+                case REQUEST_REFRESH://刷新
+                    if (isInitRecyclewView == false) {
+                        initRecyclerview();
+                    }
                     questions.clear();
                     isRolling = true;
                     setRecyclewViewBug();
-                    mPresenter.getBmobQuestion(getContext(), questions, mHandler,2);
+                    mPresenter.getBmobQuestion(getContext(), questions, mHandler, 2);
+                    item_count=20;
                     break;
-                case 3:
-                    recyclerViewAdapter.notifyDataSetChanged();
-                    swipeRefreshLayout.setRefreshing(false);
-                    isRolling = false;
-                    setRecyclewViewBug();
-                    break;
+//                case 3:
+//                    if (questions != null && isInitRecyclewView == true) {
+//                        recyclerViewAdapter.notifyDataSetChanged();
+//                        swipeRefreshLayout.setRefreshing(false);
+//                        isRolling = false;
+//                        setRecyclewViewBug();
+//                    }
+//                    break;
                 case 4:
                     swipeRefreshLayout.setRefreshing(false);
                     isRolling = false;
                     setRecyclewViewBug();
+                    break;
+                case 5:
+                    questions = (ArrayList<Question>) msg.obj;
+                    if (questions.size() != 0) {
+                        if (isInitRecyclewView == false) {
+                            initRecyclerview();
+                            item_count = 20;
+                        }
+                        recyclerViewAdapter.notifyDataSetChanged();
+                        swipeRefreshLayout.setRefreshing(false);
+                        isRolling = false;
+                        setRecyclewViewBug();
+                    }
+                    break;
+                case 6://加载更多返回的数据操作
+                    List<Question> newQuestion = (List<Question>) msg.obj;
+                    if (newQuestion.size() != 0) {
+                        recyclerViewAdapter.addMoreItem(newQuestion);
+                        recyclerViewAdapter.changeMoreStatus(ForumRecyclerViewAdapter.LOADING_MORE);
+                        item_count += 20;
+                    } else {
+                        recyclerViewAdapter.changeMoreStatus(ForumRecyclerViewAdapter.NO_MORE);
+                    }
+
+                    break;
+                case 7://没有更多信息
+                    recyclerViewAdapter.changeMoreStatus(ForumRecyclerViewAdapter.NO_MORE);
+                    break;
             }
         }
     };
@@ -193,6 +253,21 @@ public class ForumFragment extends BaseFragment<ForumContract.Presenter> impleme
     @Override
     public void onStart() {
         super.onStart();
-        recyclerViewAdapter.notifyDataSetChanged();
+    }
+
+    public static boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivity = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivity != null) {
+            NetworkInfo info = connectivity.getActiveNetworkInfo();
+            if (info != null && info.isConnected()) {
+                // 当前网络是连接的
+                if (info.getState() == NetworkInfo.State.CONNECTED) {
+                    // 当前所连接的网络可用
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

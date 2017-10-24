@@ -32,13 +32,13 @@ import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
 
 public class NewAnswerActivity extends BaseActivity<NewAnswerContract.Presenter> implements NewAnswerContract.View {
 
-//    @BindView(R.id.new_huida)
-//    Button new_Answer;
     @BindView(R.id.new_huidacontent)
     EditText new_huidacontent;
     Context context;
     private String questionID;
     private String question_userID;
+    private _User user;
+    private String currentUserID;
 
     private Handler handler = new Handler() {
         @Override
@@ -46,7 +46,6 @@ public class NewAnswerActivity extends BaseActivity<NewAnswerContract.Presenter>
             super.handleMessage(msg);
             switch(msg.what){
                 case 0:
-                    _User user= BmobUser.getCurrentUser(context,_User.class);
                     Question question=new Question();
                     question.increment("answer_count");
                     question.update(context, questionID, new UpdateListener() {
@@ -59,20 +58,26 @@ public class NewAnswerActivity extends BaseActivity<NewAnswerContract.Presenter>
                         public void onFailure(int i, String s) {
                         }
                     });
-                    if (!user.getObjectId().equals(question_userID)) {
+                    //添加NewMessage关联
+                    if (!currentUserID.equals(question_userID)) {
+                        _User currentUser=new _User();
+                        currentUser.setObjectId(currentUserID);
                         Answer answer;
                         answer = (Answer) msg.obj;
                         NewMessage message = new NewMessage();
                         _User receiver = new _User();
-                        message.setSender(user);
+                        message.setSender(currentUser);
                         receiver.setObjectId(question_userID);
                         message.setReceiver(receiver);
                         message.setTYPE(2);
+                        message.setIsRead(0);
                         message.setMessAnswer(answer);
+                        Question answer_question=new Question();
+                        answer_question.setObjectId(questionID);
+                        message.setQuestion(answer_question);
                         message.save(context, new SaveListener() {
                             @Override
                             public void onSuccess() {
-
                             }
 
                             @Override
@@ -81,6 +86,7 @@ public class NewAnswerActivity extends BaseActivity<NewAnswerContract.Presenter>
                             }
                         });
                     }
+                    //添加用户表的我的回答
                     Answer answer;
                     answer= (Answer) msg.obj;
                     answer.setObjectId(answer.getObjectId());
@@ -116,6 +122,8 @@ public class NewAnswerActivity extends BaseActivity<NewAnswerContract.Presenter>
 
     @Override
     protected void prepareData() {
+        user= BmobUser.getCurrentUser(getApplicationContext(),_User.class);
+        currentUserID=user.getObjectId();
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         questionID = bundle.getString("questionObjectid");

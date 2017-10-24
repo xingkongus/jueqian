@@ -72,6 +72,7 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
     private _User current_user;
     private _User intentUser = new _User();
     private String followID;
+    boolean isNull = false;
 
     private Handler handler = new Handler() {
         @Override
@@ -86,6 +87,8 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
                         @Override
                         public void onSuccess() {
                             updateFans();
+                            if (bt_edit == null)
+                                bt_edit = (Button) findViewById(R.id.mainpage_bt_edit);
                             bt_edit.setText("关注 +");
                         }
 
@@ -116,6 +119,7 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
         intentUserID = intent.getStringExtra("intentUserID");
         intentUser.setObjectId(intentUserID);
 
+//        checkInfo();
         updateFans();
         updateFollowing();
     }
@@ -130,6 +134,8 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
             public void onSuccess(List<Follow> list) {
 //                showToast("获取关注的人成功" + list.size());
                 if (list.size() == 0) return;
+                if (tv_following == null)
+                    tv_following = (TextView) findViewById(R.id.mainpage_tv_following_count);
                 tv_following.setText("" + list.size());
             }
 
@@ -150,6 +156,8 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
         query_follower.findObjects(JueQianAPP.getAppContext(), new FindListener<Follow>() {
             @Override
             public void onSuccess(List<Follow> list) {
+                if (tv_followers == null)
+                    tv_followers = (TextView) findViewById(R.id.mainpage_tv_follower_count);
                 tv_followers.setText("" + list.size());
             }
 
@@ -181,6 +189,8 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
             @Override
             public void onSuccess(_User user) {
 //                showToast("更新用户昵称成功");
+                if (tv_selfIntro == null)
+                    tv_selfIntro = (TextView) findViewById(R.id.mainpage_tv_selfintro);
                 tv_selfIntro.setText(user.getSelfsign());
             }
 
@@ -204,6 +214,8 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
     }
 
     private void toFollowing() {
+        if (ry_following == null)
+            ry_following = (RelativeLayout) findViewById(R.id.mainpage_ry_following);
         ry_following.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -216,6 +228,7 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
     }
 
     private void initRecentLooks() {
+        if (rencentlooks == null) rencentlooks = (CardView) findViewById(R.id.mainpage_recentlooks);
         rencentlooks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -235,6 +248,8 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
         query.findObjects(JueQianAPP.getAppContext(), new FindListener<Question>() {
             @Override
             public void onSuccess(List<Question> list) {
+                if (tv_collectioncount == null)
+                    tv_collectioncount = (TextView) findViewById(R.id.collectioncount);
                 tv_collectioncount.setText("" + list.size());
             }
 
@@ -262,15 +277,17 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
             @Override
             public void onSuccess(List<_User> list) {
                 if (list.size() == 0) {
-                    showToast("当前用户无头像");
+//                    showToast("当前用户无头像");
                     return;
                 }
                 BmobFile bmobFile = list.get(0).getProfile();
                 if (bmobFile == null) {
-                    showToast("当前用户无头像");
+//                    showToast("当前用户无头像");
                     return;
                 }
                 String profileURL = bmobFile.getUrl();
+                if (iv_touxiang == null)
+                    iv_touxiang = (CircleImageView) findViewById(R.id.mainpage_touxiang);
                 Glide.with(JueQianAPP.getAppContext()).load(profileURL).into(iv_touxiang);
             }
 
@@ -288,6 +305,8 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
             @Override
             public void onSuccess(_User user) {
 //                showToast("更新用户昵称成功");
+                if (tv_nickname == null)
+                    tv_nickname = (TextView) findViewById(R.id.mainpage_nickname);
                 tv_nickname.setText(user.getNickname());
             }
 
@@ -305,6 +324,9 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
     }
 
     private void initFocusButton() {
+
+
+        if (bt_edit == null) bt_edit = (Button) findViewById(R.id.mainpage_bt_edit);
         if (BmobUser.getCurrentUser(JueQianAPP.getAppContext()) == null) {
             bt_edit.setVisibility(View.INVISIBLE);
             return;
@@ -324,7 +346,10 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
             bt_edit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    if (isNull) {
+                        showToast("请先完善个人信息");
+                        return;
+                    }
                     if (bt_edit.getText().equals("关注 +")) {
                         //添加关注关系
                         Follow follow = new Follow();
@@ -334,6 +359,7 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
                             @Override
                             public void onSuccess() {
                                 updateFans();
+                                if (bt_edit == null) return;
                                 bt_edit.setText("取消关注");
                             }
 
@@ -362,6 +388,8 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
                         query.findObjects(JueQianAPP.getAppContext(), new FindListener<Follow>() {
                             @Override
                             public void onSuccess(List<Follow> list) {
+                                if (bt_edit == null)
+                                    bt_edit = (Button) findViewById(R.id.mainpage_bt_edit);
                                 if (list.size() == 0) {
                                     bt_edit.setText("关注 +");
                                 } else if (list.size() == 1) {
@@ -384,6 +412,36 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
                 }
             });
         }
+
+    }
+
+    private boolean checkInfo() {
+        BmobQuery<_User> query = new BmobQuery<>();
+        query.addWhereEqualTo("objectId", BmobUser.getCurrentUser(JueQianAPP.getAppContext()).getObjectId());
+//        query.addQueryKeys("profile");
+        query.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
+        query.findObjects(JueQianAPP.getAppContext(), new FindListener<_User>() {
+            @Override
+            public void onSuccess(List<_User> list) {
+                BmobFile bmobFile = list.get(0).getProfile();
+                String nickname = list.get(0).getNickname();
+                if (bmobFile == null || nickname == null) {
+                    isNull = true;
+                    return;
+                }
+            }
+
+            @Override
+            public void onError(int i, String s) {
+            }
+        });
+
+        if (isNull) {
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
     private void isFocus() {
@@ -403,6 +461,7 @@ public class MainPageAcitivity extends BaseActivity<MainPageContract.Presenter> 
         query.findObjects(JueQianAPP.getAppContext(), new FindListener<Follow>() {
             @Override
             public void onSuccess(List<Follow> list) {
+                if (bt_edit == null) bt_edit = (Button) findViewById(R.id.mainpage_bt_edit);
 //                    handler.sendEmptyMessage(1);
                 if (list.size() == 0) {
                     bt_edit.setText("关注 +");

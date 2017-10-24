@@ -103,6 +103,7 @@ public class FollowingActivity extends BaseActivity<FollowingContract.Presenter>
     }
 
     private void initRecyclerView() {
+        if (mRecyclerView==null) return;
         followingAdapter = new FollowingAdapter(mHandler, follows,this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(followingAdapter);

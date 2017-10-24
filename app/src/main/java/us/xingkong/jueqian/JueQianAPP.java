@@ -3,6 +3,8 @@ package us.xingkong.jueqian;
 import android.app.Application;
 import android.content.Context;
 
+import com.pgyersdk.crash.PgyCrashManager;
+
 import cn.bmob.v3.Bmob;
 import us.xingkong.jueqian.utils.Key;
 import us.xingkong.jueqian.utils.ToastUtils;
@@ -31,6 +33,7 @@ public class JueQianAPP extends Application {
         super.onCreate();
         appContext = getApplicationContext();
         Bmob.initialize(this, Key.Application_ID);
+        PgyCrashManager.register(this);//蒲公英注册Crash接口
     }
 
     /**
