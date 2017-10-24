@@ -141,6 +141,7 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
                     String receiverID = receiverObj.getString("objectId");
                     int isRead = dataObject.getInt("isRead");
                     if (receiverID.equals(current_user.getObjectId()) && isRead == 0) {
+                        if (mCircleImageView_redpoint==null)  return;
                         mCircleImageView_redpoint.setVisibility(View.VISIBLE);
                     }
                 } catch (JSONException e) {
@@ -181,7 +182,8 @@ public class MeFragment extends BaseFragment<MeContract.Presenter> implements Me
                     mTextView_nickname.setText("请前往设置你的昵称..");
                     return;
                 }
-                mTextView_nickname.setText(user.getNickname());
+                if (mTextView_nickname != null)
+                    mTextView_nickname.setText(user.getNickname());
             }
 
             @Override

@@ -61,10 +61,9 @@ public class EditInfoActivity extends BaseActivity<EditInfoContract.Presenter> i
     TextView tv_selfintro;
     @BindView(R.id.tv_blog)
     TextView tv_blog;
-    @BindView(R.id.swipeRefreshLayout)
 
 
-//    private Activity activity = this;
+    private Activity activity = this;
     private BmobFile bmobFile;
     private File profile;
     private String inputNickName;
@@ -97,6 +96,14 @@ public class EditInfoActivity extends BaseActivity<EditInfoContract.Presenter> i
                     prepareData();
                     break;
                 case 3:
+                    if (inputNickName.length() >= 8) {
+                        showToast("昵称长度必须小于8个字符");
+                        return;
+                    }
+                    if (inputNickName.length() == 0) {
+                        showToast("昵称不能为空");
+                        return;
+                    }
                     _User u = new _User();
                     u.setNickname(inputNickName);
                     u.update(JueQianAPP.getAppContext(), BmobUser.getCurrentUser(JueQianAPP.getAppContext()).getObjectId(), new UpdateListener() {
@@ -114,6 +121,14 @@ public class EditInfoActivity extends BaseActivity<EditInfoContract.Presenter> i
                     });
                     break;
                 case 4:
+                    if (inputSelfIntro.length() >= 16) {
+                        showToast("自我介绍长度必须小于或等于16个字符");
+                        return;
+                    }
+                    if (inputSelfIntro.length() == 0) {
+                        showToast("自我介绍不能为空");
+                        return;
+                    }
                     _User u1 = new _User();
                     u1.setSelfsign(inputSelfIntro);
                     u1.update(JueQianAPP.getAppContext(), BmobUser.getCurrentUser(JueQianAPP.getAppContext()).getObjectId(), new UpdateListener() {
@@ -130,23 +145,23 @@ public class EditInfoActivity extends BaseActivity<EditInfoContract.Presenter> i
                         }
                     });
                     break;
-                case 5:
-                    _User u2 = new _User();
-                    u2.setBlog(inputBlog);
-                    u2.update(JueQianAPP.getAppContext(), BmobUser.getCurrentUser(JueQianAPP.getAppContext()).getObjectId(), new UpdateListener() {
-                        @Override
-                        public void onSuccess() {
-                            String nickname = BmobUser.getCurrentUser(JueQianAPP.getAppContext(), _User.class).getNickname();
-                            showToast("修改blog成功");
-                            handler.sendEmptyMessage(2);
-                        }
-
-                        @Override
-                        public void onFailure(int i, String s) {
-//                            showToast("修改blog失败CASE:" + s);
-                        }
-                    });
-                    break;
+//                case 5:
+//                    _User u2 = new _User();
+//                    u2.setBlog(inputBlog);
+//                    u2.update(JueQianAPP.getAppContext(), BmobUser.getCurrentUser(JueQianAPP.getAppContext()).getObjectId(), new UpdateListener() {
+//                        @Override
+//                        public void onSuccess() {
+//                            String nickname = BmobUser.getCurrentUser(JueQianAPP.getAppContext(), _User.class).getNickname();
+//                            showToast("修改blog成功");
+//                            handler.sendEmptyMessage(2);
+//                        }
+//
+//                        @Override
+//                        public void onFailure(int i, String s) {
+////                            showToast("修改blog失败CASE:" + s);
+//                        }
+//                    });
+//                    break;
             }
 
         }
@@ -170,10 +185,12 @@ public class EditInfoActivity extends BaseActivity<EditInfoContract.Presenter> i
             @Override
             public void onSuccess(_User user) {
                 update_user = user;
-                if (tv_nickname == null || tv_selfintro == null || tv_blog == null) return;
+                if (tv_nickname == null) tv_nickname = (TextView) findViewById(R.id.tv_nickname);
+                if (tv_selfintro == null) tv_selfintro = (TextView) findViewById(R.id.tv_selfintro);
+                if (tv_blog == null) tv_blog = (TextView) findViewById(R.id.tv_blog);
                 tv_nickname.setText(user.getNickname());
                 tv_selfintro.setText(user.getSelfsign());
-                tv_blog.setText(user.getBlog());
+//                tv_blog.setText(user.getBlog());
             }
 
             @Override
@@ -190,38 +207,39 @@ public class EditInfoActivity extends BaseActivity<EditInfoContract.Presenter> i
         setPhotoPick();
         setNickName();
         setSelfIntro();
-        setBlog();
+//        setBlog();
     }
-
-    private void setBlog() {
-        blog.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new MaterialDialog.Builder(view.getContext())
-                        .title("修改网站")
-                        .negativeText("取消")
-                        .positiveText("确认")
-                        .input("", "", new MaterialDialog.InputCallback() {
-                            @Override
-                            public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                                inputBlog = input.toString();
-                            }
-                        }).onNegative(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-
-                    }
-                }).onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        handler.sendEmptyMessage(5);
-                    }
-                }).show();
-            }
-        });
-    }
+//
+//    private void setBlog() {
+//        blog.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                new MaterialDialog.Builder(view.getContext())
+//                        .title("修改网站")
+//                        .negativeText("取消")
+//                        .positiveText("确认")
+//                        .input("", "", new MaterialDialog.InputCallback() {
+//                            @Override
+//                            public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+//                                inputBlog = input.toString();
+//                            }
+//                        }).onNegative(new MaterialDialog.SingleButtonCallback() {
+//                    @Override
+//                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+//
+//                    }
+//                }).onPositive(new MaterialDialog.SingleButtonCallback() {
+//                    @Override
+//                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+//                        handler.sendEmptyMessage(5);
+//                    }
+//                }).show();
+//            }
+//        });
+//    }
 
     private void setSelfIntro() {
+        if (selfintro == null) selfintro = (CardView) findViewById(R.id.layout_selfintro);
         selfintro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -250,6 +268,7 @@ public class EditInfoActivity extends BaseActivity<EditInfoContract.Presenter> i
     }
 
     private void setNickName() {
+        if (nickname == null) nickname = (CardView) findViewById(R.id.layout_nickname);
         nickname.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -294,8 +313,9 @@ public class EditInfoActivity extends BaseActivity<EditInfoContract.Presenter> i
 //                    showToast("bmobfile is null");
                     return;
                 }
-                if (iv_touxiang == null) return;
                 String profileURL = bmobFile.getUrl();
+                if (iv_touxiang == null)
+                    iv_touxiang = (CircleImageView) findViewById(R.id.iv_touxiang);
                 Picasso.with(EditInfoActivity.this).load(profileURL).into(iv_touxiang);
 //                if (iv_touxiang == null) return;
 //                Glide.with(JueQianAPP.getAppContext()).load(profileURL).diskCacheStrategy(DiskCacheStrategy.SOURCE).placeholder(R.mipmap.ic_launcher).into(new SimpleTarget<GlideDrawable>() {
@@ -322,16 +342,15 @@ public class EditInfoActivity extends BaseActivity<EditInfoContract.Presenter> i
                         .setShowCamera(true)
                         .setShowGif(false)
                         .setPreviewEnabled(false)
-                        .start(EditInfoActivity.this, PhotoPicker.REQUEST_CODE);
+                        .start(activity, PhotoPicker.REQUEST_CODE);
             }
         });
     }
 
     private void setToolbar() {
         ActionBar acb = getSupportActionBar();
-        acb.setTitle("编辑个人资料");
         acb.setDisplayHomeAsUpEnabled(true);
-
+        acb.setTitle("编辑个人资料");
     }
 
     @Override
@@ -345,33 +364,10 @@ public class EditInfoActivity extends BaseActivity<EditInfoContract.Presenter> i
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.menu_editinfo, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                if (BmobUser.getCurrentUser(JueQianAPP.getAppContext()).getUsername() == null) {
-                    Intent intent = new Intent(EditInfoActivity.this, LoginActivity.class);
-                    startActivity(intent);
-                    finish();
-                } else {
-                    finish();
-                }
-
-                break;
-            case R.id.item_finish:
-                if (tv_nickname.getText().equals("") || tv_selfintro.getText().equals("")) {
-                    showToast("请将信息填写完善");
-                } else {
-                    Intent intent = new Intent(EditInfoActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
+                finish();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -381,7 +377,6 @@ public class EditInfoActivity extends BaseActivity<EditInfoContract.Presenter> i
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == PhotoPicker.REQUEST_CODE) {
-
             if (data != null) {
                 ArrayList<String> photos = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
                 String photo = photos.get(0);

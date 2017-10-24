@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
@@ -152,7 +153,7 @@ public class MyMessageRecyclerAdapter extends RecyclerView.Adapter<MyMessageRecy
                 }
                 String content1 = messages.get(position).getMessAnswer().getMcontent();
                 String nickname1 = messages.get(position).getSender().getNickname();
-                String time1 = messages.get(position).getCreatedAt();
+                String time1 = changeTime(messages.get(position).getCreatedAt());
                 if (content1 == null || nickname1 == null || time1 == null) {
                     Toast.makeText(JueQianAPP.getAppContext(), "数据异常", Toast.LENGTH_SHORT).show();
                     break;
@@ -213,5 +214,19 @@ public class MyMessageRecyclerAdapter extends RecyclerView.Adapter<MyMessageRecy
             tv_content = (TextView) itemView.findViewById(R.id.item_mymessage_tv_content);
             item = (RelativeLayout) itemView.findViewById(R.id.item_mymessage);
         }
+    }
+
+    public String changeTime(String time){
+        String time_change = null;
+        String time_now=null;
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy");
+        time_now=sdf.format(new java.util.Date());
+        String year=time.substring(0,4);
+        if (year.equals(time_now)){
+            time_change=time.substring(5,7)+"月"+time.substring(8,10)+"日";
+        }else {
+            time_change=time.substring(0,10);
+        }
+        return time_change;
     }
 }

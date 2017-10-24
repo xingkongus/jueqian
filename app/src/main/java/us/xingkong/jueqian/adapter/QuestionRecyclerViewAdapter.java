@@ -22,6 +22,7 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -39,6 +40,7 @@ import us.xingkong.jueqian.bean.ForumBean.BombBean.Answer;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Ding;
 import us.xingkong.jueqian.bean.ForumBean.BombBean.Question;
 import us.xingkong.jueqian.bean.ForumBean.BombBean._User;
+import us.xingkong.jueqian.module.Forum.QuestionPage.QuestionActivity;
 import us.xingkong.jueqian.module.Forum.QuestionPage.richtext.RichText;
 import us.xingkong.jueqian.module.Login.LoginActivity;
 import us.xingkong.jueqian.module.main.MainActivity;
@@ -177,23 +179,12 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                         list.add(getQuestion.getImageFiles().get(i));
                     }
                     if (list.size() != 0) {
-//                        DisplayMetrics dm = context.getResources().getDisplayMetrics();
-//                        int imageSize = dm.widthPixels;
-                        float imageSize = vh_question.content_question.getTextSize();
                         String text = getQuestion.getMcontent();
-//                        SpannableString spannableString = new SpannableString(text);
                         Pattern p = Pattern.compile("\\/[^ .]+.(gif|jpg|jpeg|png)");//"\\/[^ .]+.(gif|jpg|jpeg|png)" <img src="[^"]+" />
                         final Matcher matcher = p.matcher(text);
                         while (matcher.find()) {
-//                            ImageSpan imageSpan;
-//                            String group=matcher.group();
                             String url = list.get(0);
-//                            Drawable drawable = new URLImageParser(holder.content_question, context, (int) imageSize).getDrawable(url);//异步获取网络图片
-//                            imageSpan = new ImageSpan(drawable,ImageSpan.ALIGN_BOTTOM);
-//                            spannableString.setSpan(imageSpan, matcher.start(), matcher.end(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-//                            spannableString.removeSpan(imageSpan);
                             text = text.replace(matcher.group(), url);
-
                             list.remove(0);
                         }
                         vh_question.content_question.setRichText(text);
@@ -203,7 +194,8 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                 }
                 vh_question.tag1.setText(getQuestion.getTAG1_ID());
                 vh_question.tag2.setText(getQuestion.getTAG2_ID());
-                vh_question.time.setText(getQuestion.getUpdatedAt());
+                String time = changeTime(getQuestion.getUpdatedAt());
+                vh_question.time.setText(time);
                 if (getQuestion.getUser().getNickname() != null) {
                     vh_question.username.setText(getQuestion.getUser().getNickname());
                 } else {
@@ -248,6 +240,7 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
             if (now != null && (now.getObjectId().equals(getQuestion.getUser().getObjectId()) || now.getObjectId().equals(answers.get(position - 1).getUser().getObjectId()))) {
                 vh_answer.delete.setVisibility(View.VISIBLE);
                 vh_answer.delete.setClickable(true);
+                final String answerID1=answers.get(position-1).getObjectId();
                 vh_answer.delete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -267,10 +260,12 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                                                 answers.remove(position - 1);
                                                 notifyItemRemoved(position - 1);
                                                 notifyItemRangeChanged(position - 1, answers.size());
+                                                notifyDataSetChanged();
                                                 Toast.makeText(context, "删除成功", Toast.LENGTH_SHORT).show();
                                                 Message msg = new Message();
                                                 Bundle bundle = new Bundle();
                                                 bundle.putString("questionID", getQuestion.getObjectId());
+                                                bundle.putString("answerID1",answerID1);
                                                 msg.setData(bundle);
                                                 msg.what = 8;
                                                 mHandler.sendMessage(msg);
@@ -290,8 +285,6 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
                                     }
                                 }).show();
-
-
                     }
                 });
             } else {
@@ -314,7 +307,8 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
             }
 
             vh_answer.like.setText(String.valueOf(answers.get(position - 1).getUps()));
-            vh_answer.question_time.setText(answers.get(position - 1).getUpdatedAt());
+            String time_answer=changeTime(answers.get(position - 1).getUpdatedAt());
+            vh_answer.question_time.setText(time_answer);
             if (answers.get(position - 1).getUser().getState() == 2) {
                 vh_answer.state_questionpage.setVisibility(View.VISIBLE);
             } else {
@@ -453,7 +447,6 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
             }
         }
 
-//        mHandler.sendEmptyMessage(15);
     }
 
     @Override
@@ -526,48 +519,18 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         }
     }
 
-    class VH extends RecyclerView.ViewHolder {
-//        TextView content;
-//        ImageButton question_delete;
-//        TextView title_question;
-//        RichText content_question;
-//        TextView tag1;
-//        TextView tag2;
-//        TextView username;
-//        TextView time;
-//        TextView username_answer;
-//        TextView like;
-//        TextView question_time;
-//        LinearLayout item_question;
-//        ImageView answer_icon;
-//        ImageView state_questionpage;
-//        LinearLayout zanLayout;
-//        TextView goodImag;
-//        ImageButton delete;
-//        TextView likecount;
-
-        public VH(View itemView) {
-            super(itemView);
-//            delete = (ImageButton) itemView.findViewById(R.id.delete11);
-//            item_question = (LinearLayout) itemView.findViewById(R.id.item_question);
-//            question_time = (TextView) itemView.findViewById(R.id.question_time);
-//            like = (TextView) itemView.findViewById(R.id.like_questionpage_item);
-//            username_answer = (TextView) itemView.findViewById(R.id.username_questionpage);
-//            content = (TextView) itemView.findViewById(R.id.content_questionpage);
-//            question_delete = (ImageButton) itemView.findViewById(R.id.more_questionpage);
-//            title_question = (TextView) itemView.findViewById(R.id.title_questionpage);
-//            content_question = (RichText) itemView.findViewById(R.id.content_question);
-//            tag1 = (TextView) itemView.findViewById(R.id.tag1_questionpage);
-//            tag2 = (TextView) itemView.findViewById(R.id.tag2_questionpage);
-//            username = (TextView) itemView.findViewById(R.id.username_question);
-//            time = (TextView) itemView.findViewById(R.id.time_question);
-//            answer_icon = (ImageView) itemView.findViewById(R.id.user_icon_questionpage);
-//            state_questionpage = (ImageView) itemView.findViewById(R.id.state_questionpage);
-//            zanLayout = (LinearLayout) itemView.findViewById(R.id.zanlayout_question_item);
-//            goodImag = (TextView) itemView.findViewById(R.id.good_question_item);
-//            likecount = (TextView) itemView.findViewById(R.id.likecount_question);
+    public String changeTime(String time){
+        String time_change = null;
+        String time_now=null;
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy");
+        time_now=sdf.format(new java.util.Date());
+        String year=time.substring(0,4);
+        if (year.equals(time_now)){
+            time_change=time.substring(5,7)+"月"+time.substring(8,10)+"日";
+        }else {
+            time_change=time.substring(0,10);
         }
+        return time_change;
     }
-
 
 }

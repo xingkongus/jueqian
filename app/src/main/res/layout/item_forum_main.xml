@@ -39,12 +39,13 @@
                     android:src="@mipmap/ic_launcher" />
 
                 <TextView
+                    android:singleLine="true"
                     android:id="@+id/username_forum"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
                     android:layout_marginStart="8dp"
-                    android:text="菠萝小莫s"
+                    android:text="菠萝小莫"
                     android:textColor="@color/text_username" />
 
                 <ImageView
@@ -86,8 +87,8 @@
                     android:layout_marginLeft="8dp"
                     android:layout_marginStart="8dp"
                     android:background="@color/bg_tag"
-                    android:paddingTop="@dimen/dp_2"
                     android:paddingBottom="@dimen/dp_2"
+                    android:paddingTop="@dimen/dp_2"
                     android:text="android"
                     android:textColor="@color/colorPrimary" />
 
@@ -98,8 +99,8 @@
                     android:layout_marginLeft="8dp"
                     android:layout_marginStart="8dp"
                     android:background="@color/bg_tag"
-                    android:paddingTop="@dimen/dp_2"
                     android:paddingBottom="@dimen/dp_2"
+                    android:paddingTop="@dimen/dp_2"
                     android:text="移动开发"
                     android:textColor="@color/colorPrimary" />
             </LinearLayout>
